@@ -6,13 +6,124 @@
 #include <t3d/t3danim.h>
 #include <t3d/t3ddebug.h>
 
-/**
- * Example project showcasing the usage of the animation system.
- * This includes instancing animations, blending animations, and controlling playback.
- */
+#include "time/time.h"
+#include "render/frame_alloc.h"
+#include "render/render_scene.h"
+#include "collision/collision_scene.h"
 
-float get_time_s() {
-  return (float)((double)get_ticks_us() / 1000000.0);
+#include "player/player.h"
+#include "map/map.h"
+#include "math/transform.h"
+#include "math/vector2.h"
+#include "math/vector3.h"
+
+#include "render/camera.h"
+#include "scene/camera_controller.h"
+
+volatile static int frame_happened = 0;
+
+static struct frame_memory_pool frame_memory_pools[2];
+static uint8_t next_frame_memoy_pool;
+
+uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
+uint8_t colorDir[4] = {0xFF, 0xAA, 0xAA, 0xFF};
+T3DVec3 lightDirVec = {{1.0f, 1.0f, 1.0f}};
+
+
+float currSpeed = 0.0f;
+float animBlend = 0.0f;
+bool isAttack = false;
+bool isJump = false;
+
+rspq_syncpoint_t syncPoint = 0;
+
+struct player player;
+struct map map;
+
+struct Camera camera;
+struct camera_controller camera_controller;
+
+struct player_definition playerDef = {
+    (struct Vector3){0, 0.15f, 0},
+    (struct Vector2){1, 0}
+};
+
+
+void setup(){
+  //TODO: load initial world state, for now load meshes and animations manually
+  render_scene_reset();
+  update_reset();
+  collision_scene_reset();
+  camera_init(&camera, 70.0f, 1.0f, 360.0f);
+  // camera.transform.position = (struct Vector3){0, 45.0f, 80.0f};
+  map_init(&map);
+  player_init(&player, &playerDef, &camera.transform);
+
+  camera_controller_init(&camera_controller, &camera, &player);
+
+  //TODO: implement mesh collision new
+  // mesh_collider_load(&world->mesh_collider, file);
+  // collision_scene_use_static_collision(&world->mesh_collider);
+}
+
+void render3d(){
+   // ======== Draw (3D) ======== //
+    t3d_frame_start();
+
+    struct frame_memory_pool *pool = &frame_memory_pools[next_frame_memoy_pool];
+    frame_pool_reset(pool);
+
+    T3DViewport *viewport = frame_malloc(pool, sizeof(T3DViewport));
+    *viewport = t3d_viewport_create();
+    t3d_viewport_attach(viewport);
+
+    t3d_screen_clear_color(RGBA32(0, 180, 180, 0xFF));
+    t3d_screen_clear_depth();
+
+    // position the camera behind the player
+    T3DVec3 camPos, camTarget;
+    camTarget.v[0] = player.transform.position.x;
+    camTarget.v[1] = player.transform.position.y;
+    camTarget.v[2] = player.transform.position.z;
+    camTarget.v[2] -= 20;
+    camPos.v[0] = camTarget.v[0];
+    camPos.v[1] = camTarget.v[1] + 45;
+    camPos.v[2] = camTarget.v[2] + 65;
+
+    // t3d_viewport_set_projection(&viewport, T3D_DEG_TO_RAD(85.0f), 10.0f, 150.0f);
+    t3d_viewport_look_at(viewport, &camPos, &camTarget, &(T3DVec3){{0,1,0}});
+
+    t3d_light_set_ambient(colorAmbient);
+    t3d_light_set_directional(0, colorDir, &lightDirVec);
+    t3d_light_set_count(1);
+
+    rdpq_mode_fog(RDPQ_FOG_STANDARD);
+    rdpq_set_fog_color((color_t){140, 50, 20, 0xFF});
+
+    t3d_fog_set_enabled(true);
+    t3d_fog_set_range(0.4f, 400.0f);
+
+    render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool]);
+}
+
+void render(surface_t* zbuffer) {
+    update_render_time();
+
+    render3d();
+
+    // ======== Draw (UI) ======== //
+    //TODO: Pack UI in its own function and register UI update callbacks
+    float posX = 16;
+    float posY = 24;
+
+    rdpq_sync_pipe();
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", player.is_attacking);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "FPS: %.6f", (render_time_step) );
+    posY = 200;
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
+
+    syncPoint = rspq_syncpoint_new();
 }
 
 int main()
@@ -23,228 +134,49 @@ int main()
   dfs_init(DFS_DEFAULT_LOCATION);
 
   display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS);
-  surface_t depthBuffer = surface_alloc(FMT_RGBA16, display_get_width(), display_get_height());
+  surface_t zbuffer = surface_alloc(FMT_RGBA16, display_get_width(), display_get_height());
 
   rdpq_init();
   joypad_init();
 
   t3d_init((T3DInitParams){});
   rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
-  T3DViewport viewport = t3d_viewport_create();
 
-  T3DMat4FP* modelMatFP = malloc_uncached(sizeof(T3DMat4FP));
-  T3DMat4FP* mapMatFP = malloc_uncached(sizeof(T3DMat4FP));
-  t3d_mat4fp_from_srt_euler(mapMatFP, (float[3]){0.3f, 0.3f, 0.3f}, (float[3]){0, 0, 0}, (float[3]){0, 0, -10});
+  setup();
 
-  T3DVec3 camPos = {{0, 45.0f, 80.0f}};
-  T3DVec3 camTarget = {{0, 0,-10}};
-
-  T3DVec3 lightDirVec = {{1.0f, 1.0f, 1.0f}};
   t3d_vec3_norm(&lightDirVec);
 
-  uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
-  uint8_t colorDir[4]     = {0xFF, 0xAA, 0xAA, 0xFF};
 
-  T3DModel *modelMap = t3d_model_load("rom:/models/map/map.t3dm");
-  T3DModel *modelShadow = t3d_model_load("rom:/models/shadow/shadow.t3dm");
-
-  // Model Credits: Quaternius (CC0) https://quaternius.com/packs/easyenemy.html
-  T3DModel *model = t3d_model_load("rom:/models/snake/snake.t3dm");
-
-  // First instantiate skeletons, they will be used to draw models in a specific pose
-  // And serve as the target for animations to modify
-  T3DSkeleton skel = t3d_skeleton_create(model);
-  T3DSkeleton skelBlend = t3d_skeleton_clone(&skel, false); // optimized for blending, has no matrices
-
-  // Now create animation instances (by name), the data in 'model' is fixed,
-  // whereas 'anim' contains all the runtime data.
-  // Note that tiny3d internally keeps no track of animations, it's up to the user to manage and play them.
-  T3DAnim animIdle = t3d_anim_create(model, "Snake_Idle");
-  t3d_anim_attach(&animIdle, &skel); // tells the animation which skeleton to modify
-
-  T3DAnim animWalk = t3d_anim_create(model, "Snake_Walk");
-  t3d_anim_attach(&animWalk, &skelBlend);
-
-  // multiple animations can attach to the same skeleton, this will NOT perform any blending
-  // rather the last animation that updates "wins", this can be useful if multiple animations touch different bones
-  T3DAnim animAttack = t3d_anim_create(model, "Snake_Attack");
-  t3d_anim_set_looping(&animAttack, false); // don't loop this animation
-  t3d_anim_set_playing(&animAttack, false); // start in a paused state
-  t3d_anim_attach(&animAttack, &skel);
-
-  T3DAnim animJump = t3d_anim_create(model, "Snake_Jump");
-  t3d_anim_set_looping(&animJump, false); // don't loop this animation
-  t3d_anim_set_playing(&animJump, false); // start in a paused state
-  t3d_anim_attach(&animJump, &skel);
-
-  rspq_block_begin();
-    t3d_matrix_push(modelMatFP);
-    rdpq_set_prim_color(RGBA32(255, 255, 255, 255));
-    t3d_model_draw_skinned(model, &skel); // as in the last example, draw skinned with the main skeleton
-
-    rdpq_set_prim_color(RGBA32(0, 0, 0, 120));
-    t3d_model_draw(modelShadow);
-    t3d_matrix_pop(1);
-  rspq_block_t *dplSnake = rspq_block_end();
-
-  rspq_block_begin();
-    t3d_matrix_push(mapMatFP);
-    rdpq_set_prim_color(RGBA32(255, 255, 255, 255));
-    t3d_model_draw(modelMap);
-    t3d_matrix_pop(1);
-  rspq_block_t *dplMap = rspq_block_end();
-
-  float lastTime = get_time_s() - (1.0f / 60.0f);
-  rspq_syncpoint_t syncPoint = 0;
-
-  T3DVec3 moveDir = {{0,0,0}};
-  T3DVec3 playerPos = {{0,0.15f,0}};
-
-  float rotY = 0.0f;
-  float currSpeed = 0.0f;
-  float animBlend = 0.0f;
-  bool isAttack = false;
-  bool isJump = false;
-
+  // ======== GAME LOOP ======== //
   for(;;)
   {
+    // while(!frame_happened){
+    //   // TODO: do something useful while waiting for the next frame
+    // }
+
     // ======== Update ======== //
     joypad_poll();
 
-    float newTime = get_time_s();
-    float deltaTime = newTime - lastTime;
-    lastTime = newTime;
-
-    joypad_inputs_t joypad = joypad_get_inputs(JOYPAD_PORT_1);
-    joypad_buttons_t btn = joypad_get_buttons_pressed(JOYPAD_PORT_1);
-
-    T3DVec3 newDir = {{
-       (float)joypad.stick_x * 0.05f, 0,
-      -(float)joypad.stick_y * 0.05f
-    }};
-    float speed = sqrtf(t3d_vec3_len2(&newDir));
-
-    // Player Attack
-    if(btn.a && !animAttack.isPlaying) {
-      t3d_anim_set_playing(&animAttack, true);
-      t3d_anim_set_time(&animAttack, 0.0f);
-      isAttack = true;
-    }
-    if(btn.b && !animJump.isPlaying) {
-      t3d_anim_set_playing(&animJump, true);
-      t3d_anim_set_time(&animJump, 0.0f);
-      isJump = true;
-    }
-
-    // Player movement
-    if(speed > 0.15f && !isAttack) {
-      newDir.v[0] /= speed;
-      newDir.v[2] /= speed;
-      moveDir = newDir;
-
-      float newAngle = atan2f(moveDir.v[0], moveDir.v[2]);
-      rotY = t3d_lerp_angle(rotY, newAngle, 0.25f);
-      currSpeed = t3d_lerp(currSpeed, speed * 0.15f, 0.15f);
-    } else {
-      currSpeed *= 0.8f;
-    }
-
-    // use blend based on speed for smooth transitions
-    animBlend = currSpeed / 0.51f;
-    if(animBlend > 1.0f)animBlend = 1.0f;
-
-    // move player...
-    playerPos.v[0] += moveDir.v[0] * currSpeed;
-    playerPos.v[2] += moveDir.v[2] * currSpeed;
-    // ...and limit position inside the box
-    const float BOX_SIZE = 140.0f;
-    if(playerPos.v[0] < -BOX_SIZE)playerPos.v[0] = -BOX_SIZE;
-    if(playerPos.v[0] >  BOX_SIZE)playerPos.v[0] =  BOX_SIZE;
-    if(playerPos.v[2] < -BOX_SIZE)playerPos.v[2] = -BOX_SIZE;
-    if(playerPos.v[2] >  BOX_SIZE)playerPos.v[2] =  BOX_SIZE;
-
-    // position the camera behind the player
-    camTarget = playerPos;
-    camTarget.v[2] -= 20;
-    camPos.v[0] = camTarget.v[0];
-    camPos.v[1] = camTarget.v[1] + 45;
-    camPos.v[2] = camTarget.v[2] + 65;
-
-    t3d_viewport_set_projection(&viewport, T3D_DEG_TO_RAD(85.0f), 10.0f, 150.0f);
-    t3d_viewport_look_at(&viewport, &camPos, &camTarget, &(T3DVec3){{0,1,0}});
-
-    // Update the animation and modify the skeleton, this will however NOT recalculate the matrices
-    t3d_anim_update(&animIdle, deltaTime);
-    t3d_anim_set_speed(&animWalk, animBlend + 0.15f);
-    t3d_anim_update(&animWalk, deltaTime);
-
-    if(isAttack) {
-      t3d_anim_update(&animAttack, deltaTime); // attack animation now overrides the idle one
-      if(!animAttack.isPlaying)isAttack = false;
-    }
-    if(isJump) {
-      t3d_anim_update(&animJump, deltaTime); // jump animation now overrides the idle one
-      if(!animJump.isPlaying)isJump = false;
-    }
-
-    // We now blend the walk animation with the idle/attack one
-    t3d_skeleton_blend(&skel, &skel, &skelBlend, animBlend);
-
     if(syncPoint)rspq_syncpoint_wait(syncPoint); // wait for the RSP to process the previous frame
 
-    // Now recalc. the matrices, this will cause any model referencing them to use the new pose
-    t3d_skeleton_update(&skel);
+    surface_t *fb = display_try_get();
 
-    // Update player matrix
-    t3d_mat4fp_from_srt_euler(modelMatFP,
-      (float[3]){0.125f, 0.125f, 0.125f},
-      (float[3]){0.0f, -rotY, 0},
-      playerPos.v
-    );
+    if (fb)
+    {
+      rdpq_attach(fb, &zbuffer);
 
-    // ======== Draw (3D) ======== //
-    rdpq_attach(display_get(), &depthBuffer);
-    t3d_frame_start();
-    t3d_viewport_attach(&viewport);
+      render(&zbuffer);
 
-    t3d_screen_clear_color(RGBA32(224, 180, 96, 0xFF));
-    t3d_screen_clear_depth();
+      rdpq_detach_show();
+    }
 
-    t3d_light_set_ambient(colorAmbient);
-    t3d_light_set_directional(0, colorDir, &lightDirVec);
-    t3d_light_set_count(1);
+    if (update_has_layer(UPDATE_LAYER_WORLD))
+    {
+      collision_scene_collide();
+    }
 
-    rspq_block_run(dplMap);
-    rspq_block_run(dplSnake);
-
-    syncPoint = rspq_syncpoint_new();
-
-    // ======== Draw (UI) ======== //
-    float posX = 16;
-    float posY = 24;
-
-    rdpq_sync_pipe();
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", isAttack);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", isJump);
-
-    posY = 216;
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Speed: %.4f", currSpeed); posY += 10;
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Blend: %.4f", animBlend); posY += 10;
-
-    rdpq_detach_show();
+    update_dispatch();
   }
-
-  t3d_skeleton_destroy(&skel);
-  t3d_skeleton_destroy(&skelBlend);
-
-  t3d_anim_destroy(&animIdle);
-  t3d_anim_destroy(&animWalk);
-  t3d_anim_destroy(&animAttack);
-  t3d_anim_destroy(&animJump);
-
-  t3d_model_free(model);
-  t3d_model_free(modelMap);
-  t3d_model_free(modelShadow);
 
   t3d_destroy();
   return 0;
