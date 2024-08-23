@@ -20,6 +20,10 @@
 #include "render/camera.h"
 #include "scene/camera_controller.h"
 
+#include "resource/model_cache.h"
+#include "render/renderable.h"
+
+
 volatile static int frame_happened = 0;
 
 static struct frame_memory_pool frame_memory_pools[2];
@@ -35,12 +39,10 @@ float animBlend = 0.0f;
 bool isAttack = false;
 bool isJump = false;
 
-rspq_syncpoint_t syncPoint = 0;
-
 struct player player;
 struct map map;
 
-struct Camera camera;
+struct camera camera;
 struct camera_controller camera_controller;
 
 struct player_definition playerDef = {
@@ -48,14 +50,17 @@ struct player_definition playerDef = {
     (struct Vector2){1, 0}
 };
 
+void on_vi_interrupt() {
+    frame_happened = 1;
+}
+
 
 void setup(){
   //TODO: load initial world state, for now load meshes and animations manually
   render_scene_reset();
   update_reset();
   collision_scene_reset();
-  camera_init(&camera, 70.0f, 1.0f, 360.0f);
-  // camera.transform.position = (struct Vector3){0, 45.0f, 80.0f};
+  camera_init(&camera, 70.0f, 1.0f, 460.0f);
   map_init(&map);
   player_init(&player, &playerDef, &camera.transform);
 
@@ -77,8 +82,14 @@ void render3d(){
     *viewport = t3d_viewport_create();
     t3d_viewport_attach(viewport);
 
+    // rdpq_mode_fog(RDPQ_FOG_STANDARD);
+    // rdpq_set_fog_color((color_t){140, 50, 20, 0xFF});
+
     t3d_screen_clear_color(RGBA32(0, 180, 180, 0xFF));
     t3d_screen_clear_depth();
+
+    // t3d_fog_set_enabled(true);
+    // t3d_fog_set_range(0.4f, 20.0f);
 
     // position the camera behind the player
     T3DVec3 camPos, camTarget;
@@ -97,12 +108,6 @@ void render3d(){
     t3d_light_set_directional(0, colorDir, &lightDirVec);
     t3d_light_set_count(1);
 
-    rdpq_mode_fog(RDPQ_FOG_STANDARD);
-    rdpq_set_fog_color((color_t){140, 50, 20, 0xFF});
-
-    t3d_fog_set_enabled(true);
-    t3d_fog_set_range(0.4f, 400.0f);
-
     render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool]);
 }
 
@@ -115,15 +120,14 @@ void render(surface_t* zbuffer) {
     //TODO: Pack UI in its own function and register UI update callbacks
     float posX = 16;
     float posY = 24;
+    
 
-    rdpq_sync_pipe();
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", player.is_attacking);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "FPS: %.6f", (render_time_step) );
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "fps: %.1f", (1 / (delta_time_s ? delta_time_s : 1)) );
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "dT: %.3f", delta_time_s );
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
-
-    syncPoint = rspq_syncpoint_new();
 }
 
 int main()
@@ -144,20 +148,20 @@ int main()
 
   setup();
 
-  t3d_vec3_norm(&lightDirVec);
+  register_VI_handler(on_vi_interrupt);
 
+  t3d_vec3_norm(&lightDirVec);
+  
 
   // ======== GAME LOOP ======== //
   for(;;)
   {
-    // while(!frame_happened){
-    //   // TODO: do something useful while waiting for the next frame
-    // }
 
-    // ======== Update ======== //
-    joypad_poll();
-
-    if(syncPoint)rspq_syncpoint_wait(syncPoint); // wait for the RSP to process the previous frame
+    while (!frame_happened)
+    {
+    // TODO: do something useful while waiting for the next frame
+    }
+    frame_happened = 0;
 
     surface_t *fb = display_try_get();
 
@@ -170,12 +174,24 @@ int main()
       rdpq_detach_show();
     }
 
+    // ======== Update ======== //
+    joypad_poll();
+    update_time();
+
+    //Limit 60fps
+    if (delta_time_s < 0.033f)
+    {
+      float wait_time = 0.033f - delta_time_s;
+      wait_time = wait_time * 1000;
+      wait_ms(wait_time);
+    }
+
+
+    update_dispatch();
     if (update_has_layer(UPDATE_LAYER_WORLD))
     {
       collision_scene_collide();
     }
-
-    update_dispatch();
   }
 
   t3d_destroy();

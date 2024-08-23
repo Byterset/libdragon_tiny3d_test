@@ -10,15 +10,15 @@ struct ClippingPlanes {
     struct Plane planes[5];
 };
 
-struct Camera {
+struct camera {
     struct Transform transform;
     float fov;
     float near;
     float far;
 };
 
-void camera_init(struct Camera* camera, float fov, float near, float far);
+void camera_init(struct camera* camera, float fov, float near, float far);
 
-void camera_apply(struct Camera* camera, T3DViewport* viewport, struct ClippingPlanes* clipping_planes, mat4x4 view_proj_matrix);
+void camera_apply(struct camera* camera, T3DViewport* viewport, struct ClippingPlanes* clipping_planes, mat4x4 view_proj_matrix);
 
 #endif

@@ -5,7 +5,7 @@
 #include "../math/matrix.h"
 #include "defs.h"
 
-void camera_init(struct Camera* camera, float fov, float near, float far) {
+void camera_init(struct camera* camera, float fov, float near, float far) {
     transformInitIdentity(&camera->transform);
     camera->fov = fov;
     camera->near = near;
@@ -24,7 +24,7 @@ void camera_extract_clipping_plane(float viewPersp[4][4], struct Plane* output, 
     output->d *= mult;
 }
 
-void camera_apply(struct Camera* camera, T3DViewport* viewport, struct ClippingPlanes* clipping_planes, mat4x4 view_proj_matrix) {
+void camera_apply(struct camera* camera, T3DViewport* viewport, struct ClippingPlanes* clipping_planes, mat4x4 view_proj_matrix) {
     float tan_fov = tanf(camera->fov * (0.5f * 3.14159f / 180.0f));
     float aspect_ratio = (float)viewport->size[0] / (float)viewport->size[1];
 

@@ -2,6 +2,7 @@
 
 #include <malloc.h>
 #include <memory.h>
+#include <libdragon.h>
 
 #include "../util/flags.h"
 #include "../util/blist.h"
@@ -24,11 +25,24 @@ static struct update_state g_update_state;
 float fixed_time_step;
 float scaled_time_step;
 float scaled_time_step_inv;
-float total_time;
 float game_time;
 float global_time_scale = 1.0f;
-float render_time_step;
+float render_time_step = 0.0f;
 float last_render_time = 0.0f;
+
+float total_time_s;
+float previous_time_s = 0.0f;
+float delta_time_s = 0.0f;
+
+float get_time_s() {
+  return (float)((double)get_ticks_us() / 1000000.0);
+}
+
+void update_time() {
+    total_time_s = get_time_s();
+    delta_time_s = total_time_s - previous_time_s;
+    previous_time_s = total_time_s;
+}
 
 int update_compare_elements(void* a, void* b) {
     struct update_element* a_el = (struct update_element*)a;
@@ -74,7 +88,6 @@ void update_render_time() {
 }
 
 void update_dispatch() {
-    total_time += fixed_time_step;
     scaled_time_step = fixed_time_step * global_time_scale;
     scaled_time_step_inv = 1.0f / scaled_time_step;
 

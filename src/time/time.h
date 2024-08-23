@@ -17,6 +17,7 @@ typedef int update_id;
 #define UPDATE_PRIORITY_CAMERA  2
 
 void update_reset();
+void update_time();
 void update_add(void* data, update_callback callback, int priority, int mask);
 void update_remove(void* data);
 void update_remove_with_data(void* data, update_callback callback);
@@ -32,9 +33,12 @@ void update_dispatch();
 extern float fixed_time_step;
 extern float scaled_time_step;
 extern float scaled_time_step_inv;
-extern float total_time;
 extern float game_time;
 extern float global_time_scale;
 extern float render_time_step;
+
+extern float total_time_s;
+extern float previous_time_s;
+extern float delta_time_s;
 
 #endif

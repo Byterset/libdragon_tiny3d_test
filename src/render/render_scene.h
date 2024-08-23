@@ -30,6 +30,6 @@ void render_scene_add_renderable(struct renderable* renderable, float radius);
 void render_scene_add_renderable_single_axis(struct renderable_single_axis* renderable, float radius);
 void render_scene_remove(void* data);
 
-void render_scene_render(struct Camera* camera, T3DViewport* viewport, struct frame_memory_pool* pool);
+void render_scene_render(struct camera* camera, T3DViewport* viewport, struct frame_memory_pool* pool);
 
 #endif

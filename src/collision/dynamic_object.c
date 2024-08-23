@@ -34,10 +34,10 @@ void dynamic_object_update(struct dynamic_object* object) {
         return;
     }
 
-    vector3AddScaled(object->position, &object->velocity, fixed_time_step * object->time_scalar, object->position);
+    vector3AddScaled(object->position, &object->velocity, delta_time_s * object->time_scalar, object->position);
 
     if (object->has_gravity) {
-        object->velocity.y += fixed_time_step * object->time_scalar * GRAVITY_CONSTANT;
+        object->velocity.y += delta_time_s * object->time_scalar * GRAVITY_CONSTANT;
     }
 }
 

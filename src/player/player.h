@@ -8,6 +8,9 @@
 #include "../collision/dynamic_object.h"
 #include <t3d/t3danim.h>
 
+#define PLAYER_MOVE_SPEED 50.0f
+#define PLAYER_TURN_SPEED 20.0f
+
 
 struct player_animations {
     T3DAnim idle;
@@ -29,7 +32,7 @@ struct player {
     bool is_attacking;
     bool is_jumping;
     struct dynamic_object collision;
-
+    T3DSkeleton skelBlend;
     struct player_animations animations;
 };
 

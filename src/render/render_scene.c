@@ -73,7 +73,7 @@ void render_scene_remove(void* data) {
     callback_list_remove(&r_scene_3d.callbacks, (callback_id)data);
 }
 
-void render_scene_render(struct Camera* camera, T3DViewport* viewport, struct frame_memory_pool* pool) {
+void render_scene_render(struct camera* camera, T3DViewport* viewport, struct frame_memory_pool* pool) {
     struct render_batch batch;
 
     struct ClippingPlanes clipping_planes;

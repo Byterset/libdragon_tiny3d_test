@@ -54,6 +54,7 @@ dkms.conf
 #custom
 .vscode/
 build/
+archive/
 libdragon/
 .libdragon/
 **/__pycache__/**
