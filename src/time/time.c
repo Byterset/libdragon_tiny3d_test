@@ -19,29 +19,30 @@ struct update_state {
     int enabled_layers;
 };
 
-#define MIN_UPDATE_COUNT    64
+#define MIN_UPDATE_CAPACITY    64
 
 static struct update_state g_update_state;
-float fixed_time_step;
-float scaled_time_step;
-float scaled_time_step_inv;
-float game_time;
-float global_time_scale = 1.0f;
-float render_time_step = 0.0f;
-float last_render_time = 0.0f;
 
-float total_time_s;
-float previous_time_s = 0.0f;
-float delta_time_s = 0.0f;
-
-float get_time_s() {
-  return (float)((double)get_ticks_us() / 1000000.0);
-}
+uint64_t oldtime_ticks = 0;
+uint32_t accumulator_ticks = 0;
+uint64_t currtime_ticks = 0;
+float currtime_sec = 0.0f;
+uint32_t frametime_ticks = 0;
+float frametime_sec = 0.0f;
 
 void update_time() {
-    total_time_s = get_time_s();
-    delta_time_s = total_time_s - previous_time_s;
-    previous_time_s = total_time_s;
+
+    currtime_ticks = get_ticks();
+    currtime_sec = (float)TICKS_TO_MS(currtime_ticks) / 1000.0f;
+    frametime_ticks = currtime_ticks - oldtime_ticks;
+
+    if (frametime_ticks > TICKS_FROM_US(SEC_TO_USEC(0.25f)))
+    {
+        frametime_ticks = TICKS_FROM_US(SEC_TO_USEC(0.25f));
+    }
+    oldtime_ticks = currtime_ticks;
+
+    frametime_sec = (float)TICKS_TO_MS((float)frametime_ticks) / 1000.0f;
 }
 
 int update_compare_elements(void* a, void* b) {
@@ -51,9 +52,8 @@ int update_compare_elements(void* a, void* b) {
 }
 
 void update_reset() {
-    callback_list_reset(&g_update_state.callbacks, sizeof(struct update_element), MIN_UPDATE_COUNT, update_compare_elements);
+    callback_list_reset(&g_update_state.callbacks, sizeof(struct update_element), MIN_UPDATE_CAPACITY, update_compare_elements);
     g_update_state.enabled_layers = ~0;
-    fixed_time_step = 1.0f / 30.0f;
 }
 
 void update_add(void* data, update_callback callback, int priority, int mask) {
@@ -82,18 +82,7 @@ bool update_has_layer(int mask) {
     return mask & g_update_state.enabled_layers;
 }
 
-void update_render_time() {
-    render_time_step = game_time - last_render_time;
-    last_render_time = game_time;
-}
-
 void update_dispatch() {
-    scaled_time_step = fixed_time_step * global_time_scale;
-    scaled_time_step_inv = 1.0f / scaled_time_step;
-
-    if (g_update_state.enabled_layers & UPDATE_LAYER_WORLD) {
-        game_time += scaled_time_step;
-    }
 
     callback_list_begin(&g_update_state.callbacks);
 

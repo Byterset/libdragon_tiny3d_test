@@ -5,11 +5,15 @@
 #include "../math/vector2.h"
 #include "../render/render_batch.h"
 #include "../render/renderable.h"
+#include <t3d/t3dmodel.h>
 
 
 struct map {
     struct Transform transform;
     struct renderable renderable;
+    rspq_block_t* block;
+    T3DModel* model;
+    float tileOffset;
 };
 
 void map_init(struct map* map);

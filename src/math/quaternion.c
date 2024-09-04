@@ -290,3 +290,11 @@ void quatDecompose(struct Quaternion* input, struct Vector3* axis, float* angle)
 float quatDot(struct Quaternion* a, struct Quaternion* b) {
     return a->x * b->x + a->y * b->y + a->z * b->z + a->w * b->w;
 }
+
+void quatRotateAxisEuler(struct Quaternion *q, struct Vector3 *axis, float angleRad, struct Quaternion *out)
+{
+    struct Quaternion tmp, quatRot;
+    quatAxisAngle(axis, angleRad, &quatRot);
+    quatMultiply(q, &quatRot, &tmp);
+    *out = tmp;
+}

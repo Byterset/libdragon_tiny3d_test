@@ -23,6 +23,7 @@
 #include "resource/model_cache.h"
 #include "render/renderable.h"
 
+#include <malloc.h>
 
 volatile static int frame_happened = 0;
 
@@ -33,17 +34,14 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xFF, 0xAA, 0xAA, 0xFF};
 T3DVec3 lightDirVec = {{1.0f, 1.0f, 1.0f}};
 
-
-float currSpeed = 0.0f;
-float animBlend = 0.0f;
-bool isAttack = false;
-bool isJump = false;
-
 struct player player;
 struct map map;
 
 struct camera camera;
 struct camera_controller camera_controller;
+
+
+float waiting_sec = 0.0f;
 
 struct player_definition playerDef = {
     (struct Vector3){0, 0.15f, 0},
@@ -53,7 +51,6 @@ struct player_definition playerDef = {
 void on_vi_interrupt() {
     frame_happened = 1;
 }
-
 
 void setup(){
   //TODO: load initial world state, for now load meshes and animations manually
@@ -82,14 +79,17 @@ void render3d(){
     *viewport = t3d_viewport_create();
     t3d_viewport_attach(viewport);
 
-    // rdpq_mode_fog(RDPQ_FOG_STANDARD);
-    // rdpq_set_fog_color((color_t){140, 50, 20, 0xFF});
+    rdpq_mode_fog(RDPQ_FOG_STANDARD);
+    rdpq_set_fog_color((color_t){255, 255, 255, 0xFF});
+    // rdpq_set_mode_standard();
+    // rdpq_mode_blender(RDPQ_BLENDER_MULTIPLY);
+
 
     t3d_screen_clear_color(RGBA32(0, 180, 180, 0xFF));
     t3d_screen_clear_depth();
 
-    // t3d_fog_set_enabled(true);
-    // t3d_fog_set_range(0.4f, 20.0f);
+    t3d_fog_set_enabled(true);
+    t3d_fog_set_range(10.0f, 400.0f);
 
     // position the camera behind the player
     T3DVec3 camPos, camTarget;
@@ -112,7 +112,6 @@ void render3d(){
 }
 
 void render(surface_t* zbuffer) {
-    update_render_time();
 
     render3d();
 
@@ -120,14 +119,16 @@ void render(surface_t* zbuffer) {
     //TODO: Pack UI in its own function and register UI update callbacks
     float posX = 16;
     float posY = 24;
-    
-
+    float fps = display_get_fps();
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", player.is_attacking);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "fps: %.1f", (1 / (delta_time_s ? delta_time_s : 1)) );
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "dT: %.3f", delta_time_s );
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "fps: %.1f", fps);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "idle time: %.5f", waiting_sec);
+    
+    
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "Vel: %.2f, %.2f, %.2f", player.collision.velocity.x, player.collision.velocity.y, player.collision.velocity.z);
 }
 
 int main()
@@ -151,18 +152,50 @@ int main()
   register_VI_handler(on_vi_interrupt);
 
   t3d_vec3_norm(&lightDirVec);
-  
+  const int64_t l_dt = TICKS_FROM_US(SEC_TO_USEC(FIXED_DELTATIME));
+
 
   // ======== GAME LOOP ======== //
   for(;;)
   {
 
+    waiting_sec = 0;
+    uint64_t wait_ticks = TICKS_READ();
+    // ======== Wait for the next frame ======== //
     while (!frame_happened)
     {
+      
     // TODO: do something useful while waiting for the next frame
     }
     frame_happened = 0;
+    wait_ticks = TICKS_READ() - wait_ticks;
 
+    waiting_sec =  (float)TICKS_TO_MS(wait_ticks) / 1000.0f;
+
+
+    // ======== Update the Time ======== //
+
+    update_time();
+    accumulator_ticks += frametime_ticks;
+
+    // ======== Update Joypad ======== //
+    joypad_poll();
+
+    // ======== Run the Physics in a fixed Deltatime Loop ======== //
+    while (accumulator_ticks >= l_dt){
+      
+      if (update_has_layer(UPDATE_LAYER_WORLD))
+      {
+        collision_scene_collide();
+      }
+      accumulator_ticks -= l_dt;
+    }
+
+    // ======== Run the Update Callbacks ======== //
+    update_dispatch();
+  
+
+    // ======== Render the Game ======== //
     surface_t *fb = display_try_get();
 
     if (fb)
@@ -174,24 +207,6 @@ int main()
       rdpq_detach_show();
     }
 
-    // ======== Update ======== //
-    joypad_poll();
-    update_time();
-
-    //Limit 60fps
-    if (delta_time_s < 0.033f)
-    {
-      float wait_time = 0.033f - delta_time_s;
-      wait_time = wait_time * 1000;
-      wait_ms(wait_time);
-    }
-
-
-    update_dispatch();
-    if (update_has_layer(UPDATE_LAYER_WORLD))
-    {
-      collision_scene_collide();
-    }
   }
 
   t3d_destroy();

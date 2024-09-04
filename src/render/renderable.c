@@ -7,18 +7,6 @@
 void renderable_init(struct renderable* renderable, struct Transform* transform, const char* model_filename) {
     renderable->transform = transform;
     renderable->model = model_cache_load(model_filename);
-    if(t3d_model_get_skeleton(renderable->model) != NULL){
-        renderable->skeleton = t3d_skeleton_create(renderable->model);
-        rspq_block_begin();
-        rdpq_set_prim_color(RGBA32(255, 255, 255, 255));
-        t3d_model_draw_skinned(renderable->model, &renderable->skeleton);
-        renderable->block = rspq_block_end();
-    }
-    else{
-        rspq_block_begin();
-        t3d_model_draw(renderable->model);
-        renderable->block = rspq_block_end();
-    }
 }
 
 /// @brief free the memory of a renderable object

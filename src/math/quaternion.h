@@ -29,6 +29,7 @@ void quatEulerAngles(struct Vector3* angles, struct Quaternion* out);
 void quatLerp(struct Quaternion* a, struct Quaternion* b, float t, struct Quaternion* out);
 void quatApplyAngularVelocity(struct Quaternion* input, struct Vector3* w, float timeStep, struct Quaternion* output);
 void quatDecompose(struct Quaternion* input, struct Vector3* axis, float* angle);
+void quatRotateAxisEuler(struct Quaternion* q, struct Vector3* axis, float angle, struct Quaternion* out);
 
 float quatDot(struct Quaternion* a, struct Quaternion* b);
 

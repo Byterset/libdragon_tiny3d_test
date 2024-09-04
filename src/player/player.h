@@ -32,6 +32,7 @@ struct player {
     bool is_attacking;
     bool is_jumping;
     struct dynamic_object collision;
+    T3DModel* model;
     T3DSkeleton skelBlend;
     struct player_animations animations;
 };

@@ -1,11 +1,18 @@
 #ifndef __TIME_TIME_H__
 #define __TIME_TIME_H__
 
+#include <stdint.h>
 #include <stdbool.h>
 
 typedef void (*update_callback)(void* data);
 
 typedef int update_id;
+
+#define TICKRATE 50.0f
+#define FIXED_DELTATIME (1.0f/TICKRATE)
+
+#define SEC_TO_USEC(a) (((double)a) * 1000000.0f)
+
 
 #define UPDATE_LAYER_WORLD          (1 << 0)
 #define UPDATE_LAYER_PLAYER         (1 << 1)
@@ -26,19 +33,14 @@ void update_pause_layers(int mask);
 void update_unpause_layers(int mask);
 bool update_has_layer(int mask);
 
-void update_render_time();
-
 void update_dispatch();
 
-extern float fixed_time_step;
-extern float scaled_time_step;
-extern float scaled_time_step_inv;
-extern float game_time;
-extern float global_time_scale;
-extern float render_time_step;
 
-extern float total_time_s;
-extern float previous_time_s;
-extern float delta_time_s;
+extern uint64_t oldtime_ticks;
+extern uint32_t accumulator_ticks;
+extern uint64_t currtime_ticks;
+extern uint32_t frametime_ticks;
+extern float currtime_sec;
+extern float frametime_sec;
 
 #endif

@@ -2,6 +2,7 @@
 
 #include "../time/time.h"
 #include "../math/minmax.h"
+#include "../render/defs.h"
 #include <math.h>
 #include <stddef.h>
 
@@ -34,11 +35,12 @@ void dynamic_object_update(struct dynamic_object* object) {
         return;
     }
 
-    vector3AddScaled(object->position, &object->velocity, delta_time_s * object->time_scalar, object->position);
-
-    if (object->has_gravity) {
-        object->velocity.y += delta_time_s * object->time_scalar * GRAVITY_CONSTANT;
+    if (object->has_gravity)
+    {
+        object->velocity.y += FIXED_DELTATIME * object->time_scalar * GRAVITY_CONSTANT * 15;
     }
+
+    vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
 }
 
 struct contact* dynamic_object_nearest_contact(struct dynamic_object* object) {

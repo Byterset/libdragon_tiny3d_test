@@ -27,7 +27,7 @@ void camera_controller_update_position(struct camera_controller* controller, str
     vector3AddScaled(&target->position, &offset, -CAMERA_FOLLOW_DISTANCE, &targetPosition);
     targetPosition.y += CAMERA_FOLLOW_HEIGHT;
 
-    vector3Lerp(&controller->camera->transform.position, &targetPosition, delta_time_s * 6.0f, &controller->camera->transform.position);
+    vector3Lerp(&controller->camera->transform.position, &targetPosition, frametime_sec * 6.0f, &controller->camera->transform.position);
 
     vector3Sub(&target->position, &controller->camera->transform.position, &offset);
     offset.y += CAMERA_FOLLOW_HEIGHT;
@@ -35,8 +35,7 @@ void camera_controller_update_position(struct camera_controller* controller, str
 }
 
 void camera_controller_update(struct camera_controller* controller) {
-    vector3Lerp(&controller->target, &controller->player->transform.position, delta_time_s * 54.0f, &controller->target);
-
+    vector3Lerp(&controller->target, &controller->player->transform.position, frametime_sec * 54.0f, &controller->target);
     camera_controller_update_position(controller, &controller->player->transform);
 }
 
@@ -49,7 +48,7 @@ void camera_controller_init(struct camera_controller* controller, struct camera*
     controller->target = player->transform.position;
     controller->follow_distace = 25.0f;
 
-    controller->camera->transform.position = gZeroVec;
+    controller->camera->transform.position = player->transform.position;
     controller->camera->transform.scale = gOneVec;
     quatAxisAngle(&gRight, 0.0f, &controller->camera->transform.rotation);
 

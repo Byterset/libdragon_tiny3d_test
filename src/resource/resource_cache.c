@@ -248,6 +248,14 @@ void resource_cache_remove(struct resource_cache* cache, struct resource_cache_e
     cache->entry_count -= 1;
 }
 
+
+/**
+ * Frees a resource from the resource cache.
+ *
+ * @param cache The resource cache.
+ * @param resource The resource to be freed.
+ * @return Returns true if the resource was successfully freed, false otherwise or if there are still references to the cached resource.
+ */
 bool resource_cache_free(struct resource_cache* cache, void* resource) {
     if (!resource) {
         return false;

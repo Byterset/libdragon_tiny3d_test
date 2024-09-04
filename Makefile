@@ -5,6 +5,8 @@ T3D_INST=$(shell realpath ../tiny3d)
 include $(N64_INST)/include/n64.mk
 include $(T3D_INST)/t3d.mk
 
+MK_ASSET=$(N64_INST)/bin/mkasset
+
 N64_CFLAGS += -std=gnu2x -Og
 # N64_ASSET_FLAGS += -c 2 -w 256
 
@@ -59,6 +61,21 @@ filesystem/models/%.t3dm: assets/models/%.glb
 	$(T3D_GLTF_TO_3D) "$<" $@
 	$(N64_BINDIR)/mkasset -o $(dir $@) -w 256
 
+
+#----------------
+# Materials
+#----------------
+
+MATERIAL_SOURCES := $(shell find assets/ -type f -name '*.mat.json' | sort)
+
+MATERIALS := $(MATERIAL_SOURCES:assets/%.mat.json=filesystem/%.mat)
+
+filesystem/%.mat: assets/%.mat.json
+	@mkdir -p $(dir $@)
+	@mkdir -p $(dir $(@:filesystem/%.mat=build/assets/%.mat))
+	python3 tools/mesh_export/material.py --default assets/materials/default.mat.json $< $(@:filesystem/%.mat=build/assets/%.mat)
+	$(MK_ASSET) -o $(dir $@) -w 4 $(@:filesystem/%.mat=build/assets/%.mat)
+
 #----------------
 # Code
 #----------------
@@ -70,9 +87,9 @@ SOURCE_OBJS := $(SOURCES:src/%.c=$(BUILD_DIR)/%.o)
 # Filesystem & Linking
 #----------------	
 
-filesystem/: $(SPRITES) $(T3DMESHES) $(FONTS)
+filesystem/: $(SPRITES) $(T3DMESHES) $(FONTS) $(MATERIALS)
 
-$(BUILD_DIR)/$(PROJECT_NAME).dfs: filesystem/ $(SPRITES) $(TMESHES) $(FONTS)
+$(BUILD_DIR)/$(PROJECT_NAME).dfs: filesystem/ $(SPRITES) $(T3DMESHES) $(FONTS) $(MATERIALS)
 $(BUILD_DIR)/$(PROJECT_NAME).elf: $(SOURCE_OBJS)
 
 $(PROJECT_NAME).z64: N64_ROM_TITLE="Tiny3D Playground"

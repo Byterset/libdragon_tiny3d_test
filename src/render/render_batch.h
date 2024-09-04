@@ -3,9 +3,10 @@
 
 #include <libdragon.h>
 #include <t3d/t3d.h>
-
 #include <t3d/t3dmodel.h>
 #include <t3d/t3dskeleton.h>
+
+#include "material.h"
 #include "frame_alloc.h"
 
 #include "../math/matrix.h"
@@ -37,7 +38,7 @@ struct render_batch;
 typedef void (*RenderCallback)(void* data, struct render_batch* batch);
 
 struct render_batch_element {
-    T3DMaterial* material;
+    struct material* material;
     uint16_t type;
     union {
         struct {
@@ -67,15 +68,15 @@ struct render_batch_element* render_batch_add(struct render_batch* batch);
 
 void render_batch_add_t3dmodel(struct render_batch* batch, rspq_block_t* block, T3DMat4FP* transform, T3DSkeleton* skeleton);
 
-void render_batch_add_callback(struct render_batch* batch, T3DMaterial* material, RenderCallback callback, void* data);
+void render_batch_add_callback(struct render_batch* batch, struct material* material, RenderCallback callback, void* data);
 // caller is responsible for populating sprite list
 // the sprite count returned may be less than the sprite count requested
-struct render_batch_billboard_element* render_batch_add_particles(struct render_batch* batch, T3DMaterial* material, int count);
+struct render_batch_billboard_element* render_batch_add_particles(struct render_batch* batch, struct material* material, int count);
 
 struct render_batch_billboard_element render_batch_get_sprites(struct render_batch* batch, int count);
 mat4x4* render_batch_get_transform(struct render_batch* batch);
 T3DMat4FP* render_batch_get_transformfp(struct render_batch* batch);
 
-void render_batch_finish(struct render_batch* batch, mat4x4 view_proj, T3DViewport* viewport);
+void render_batch_execute(struct render_batch* batch, mat4x4 view_proj, T3DViewport* viewport);
 
 #endif

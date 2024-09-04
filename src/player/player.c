@@ -10,6 +10,8 @@
 #include "../entity/entity_id.h"
 #include "../render/defs.h"
 
+#define PLAYER_MAX_SPEED    4.2f
+
 static struct Vector2 player_max_rotation;
 rspq_block_t* player_dpl;
 
@@ -74,23 +76,26 @@ void player_update(struct player* player) {
     }
     if (pressed.b && !player->animations.jump.isPlaying)
     {
-        t3d_anim_set_playing(&player->animations.jump, true);
+        t3d_anim_set_playing(&player->animations.jump, false);
         t3d_anim_set_time(&player->animations.jump, 0.0f);
         player->is_jumping = true;
     }
+    if (pressed.b){
+        player->collision.velocity.y = 90.0f;
+    }
 
     // Update the animation and modify the skeleton, this will however NOT recalculate the matrices
-    t3d_anim_update(&player->animations.idle, delta_time_s);
+    t3d_anim_update(&player->animations.idle, frametime_sec);
     // t3d_anim_set_speed(&animWalk, animBlend + 0.15f);
-    t3d_anim_update(&player->animations.walk, delta_time_s);
+    t3d_anim_update(&player->animations.walk, frametime_sec);
 
     if(player->is_attacking) {
-      t3d_anim_update(&player->animations.attack, delta_time_s); // attack animation now overrides the idle one
+      t3d_anim_update(&player->animations.attack, frametime_sec); // attack animation now overrides the idle one
       animBlend = 0.3f;
       if(!player->animations.attack.isPlaying)player->is_attacking = false;
     }
     if(player->is_jumping) {
-      t3d_anim_update(&player->animations.jump, delta_time_s); // attack animation now overrides the idle one
+      t3d_anim_update(&player->animations.jump, frametime_sec); // attack animation now overrides the idle one
       animBlend = 0.1f;
       if(!player->animations.jump.isPlaying)player->is_jumping = false;
     }
@@ -117,12 +122,12 @@ void player_update(struct player* player) {
     vector3Scale(&right, &directionWorld, direction.x);
     vector3AddScaled(&directionWorld, &forward, direction.y, &directionWorld);
 
-    // float prev_y = player->collision.velocity.y;
-    // vector3Scale(&directionWorld, &player->collision.velocity, PLAYER_MAX_SPEED);
-    // player->collision.velocity.y = prev_y;
+    float prev_y = player->collision.velocity.y;
+    vector3Scale(&directionWorld, &player->collision.velocity, PLAYER_MAX_SPEED);
+    player->collision.velocity.y = prev_y;
 
-    player->transform.position.x += directionWorld.x * delta_time_s * PLAYER_MOVE_SPEED;
-    player->transform.position.z += directionWorld.z * delta_time_s * PLAYER_MOVE_SPEED;
+    player->transform.position.x += directionWorld.x * frametime_sec * PLAYER_MOVE_SPEED;
+    player->transform.position.z += directionWorld.z * frametime_sec * PLAYER_MOVE_SPEED;
 
     if (magSqrd > 0.01f) {
         struct Vector2 directionUnit;
@@ -136,7 +141,7 @@ void player_update(struct player* player) {
         directionUnit.x = directionUnit.y;
         directionUnit.y = tmp;
 
-        vector2ComplexFromAngle(delta_time_s * PLAYER_TURN_SPEED, &player_max_rotation);
+        vector2ComplexFromAngle(frametime_sec * PLAYER_TURN_SPEED, &player_max_rotation);
 
         vector2RotateTowards(&player->look_direction, &directionUnit, &player_max_rotation, &player->look_direction);
     }
@@ -156,7 +161,10 @@ void player_update(struct player* player) {
     if(player->transform.position.x >  BOX_SIZE)player->transform.position.x =  BOX_SIZE;
     if(player->transform.position.z < -BOX_SIZE)player->transform.position.z = -BOX_SIZE;
     if(player->transform.position.z >  BOX_SIZE)player->transform.position.z =  BOX_SIZE;
-
+    if(player->transform.position.y <= 0){
+        player->transform.position.y = 0;
+        player->collision.velocity.y = player->collision.velocity.y <= 0 ? 0 : player->collision.velocity.y;    
+    }
 
     // struct contact* contact = player->collision.active_contacts;
 
@@ -171,6 +179,8 @@ void player_update(struct player* player) {
     // }
 }
 
+
+
 void player_init(struct player* player, struct player_definition* definition, struct Transform* camera_transform) {
     entity_id entity_id = entity_id_new();
 
@@ -178,7 +188,15 @@ void player_init(struct player* player, struct player_definition* definition, st
     
     renderable_init(&player->renderable, &player->transform, "rom:/models/snake/snake.t3dm");
 
+    //record the block to render the player
+    player->renderable.skeleton = t3d_skeleton_create(player->renderable.model);
+    rspq_block_begin();
+        rdpq_set_prim_color(RGBA32(255, 255, 255, 255));
+        t3d_model_draw_skinned(player->renderable.model, &player->renderable.skeleton);
+    player->renderable.block = rspq_block_end();
     assert(&player->renderable.skeleton != NULL && &player->renderable.model != NULL);
+
+    
     player->skelBlend = t3d_skeleton_clone(&player->renderable.skeleton, false);
     player->transform.scale = (struct Vector3){0.125f, 0.125f, 0.125f};
     player->camera_transform = camera_transform;
@@ -186,6 +204,7 @@ void player_init(struct player* player, struct player_definition* definition, st
     player->transform.position = definition->location;
 
     render_scene_add_renderable(&player->renderable, 2.0f);
+
 
     
     update_add(player, (update_callback)player_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
@@ -203,7 +222,7 @@ void player_init(struct player* player, struct player_definition* definition, st
         &player->look_direction
     );
 
-    player->collision.has_gravity = false;
+    player->collision.has_gravity = true;
     
 
     player->collision.center.y = player_collision.data.capsule.inner_half_height + player_collision.data.capsule.radius;
