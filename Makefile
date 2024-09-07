@@ -1,6 +1,6 @@
 SOURCE_DIR=src
 BUILD_DIR=build
-T3D_INST=$(shell realpath ../tiny3d)
+T3D_INST=$(shell realpath ./tiny3d)
 
 include $(N64_INST)/include/n64.mk
 include $(T3D_INST)/t3d.mk
@@ -17,7 +17,7 @@ src = src/main.c
 all: $(PROJECT_NAME).z64
 
 #----------------
-# Images
+# Images / Sprites
 #----------------
 
 PNG_RGBA16 := $(shell find assets/ -type f -name '*.png' | sort)
@@ -58,6 +58,7 @@ T3DMESHES := $(MESH_SOURCES:assets/models/%.glb=filesystem/models/%.t3dm)
 filesystem/models/%.t3dm: assets/models/%.glb
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(@:filesystem/models/%.t3dm=build/assets/models/%.t3dm))
+	@echo "    [T3DMODEL] $@"
 	$(T3D_GLTF_TO_3D) "$<" $@
 	$(N64_BINDIR)/mkasset -o $(dir $@) -w 256
 
@@ -73,6 +74,7 @@ MATERIALS := $(MATERIAL_SOURCES:assets/%.mat.json=filesystem/%.mat)
 filesystem/%.mat: assets/%.mat.json
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(@:filesystem/%.mat=build/assets/%.mat))
+	@echo "    [MATERIAL] $@"
 	python3 tools/mesh_export/material.py --default assets/materials/default.mat.json $< $(@:filesystem/%.mat=build/assets/%.mat)
 	$(MK_ASSET) -o $(dir $@) -w 4 $(@:filesystem/%.mat=build/assets/%.mat)
 

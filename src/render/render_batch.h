@@ -44,8 +44,6 @@ struct render_batch_element {
         struct {
             rspq_block_t* block;
             T3DMat4FP* transform;
-            T3DSkeleton* skeleton;
-            T3DMat4FP* tmp_fixed_pose;
         } model;
         struct render_batch_billboard_element billboard;
         struct {
@@ -63,8 +61,6 @@ struct render_batch {
 };
 
 void render_batch_init(struct render_batch* batch, struct Transform* camera_transform, struct frame_memory_pool* pool);
-
-struct render_batch_element* render_batch_add(struct render_batch* batch);
 
 void render_batch_add_t3dmodel(struct render_batch* batch, rspq_block_t* block, T3DMat4FP* transform, T3DSkeleton* skeleton);
 

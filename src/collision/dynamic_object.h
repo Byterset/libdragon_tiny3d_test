@@ -18,6 +18,10 @@ enum collision_layers {
     COLLISION_LAYER_DAMAGE_ENEMY = (1 << 2),
 };
 
+enum collision_group {
+    COLLISION_GROUP_PLAYER = 1,
+};
+
 typedef void (*bounding_box_calculator)(void* data, struct Vector2* rotation, struct Box3D* box);
 
 union dynamic_object_type_data
@@ -27,6 +31,7 @@ union dynamic_object_type_data
     struct { struct Vector3 half_size; } box;
     struct { struct Vector3 size; } cone;
     struct { float radius; float half_height; } cylinder;
+    struct { struct Vector2 range; float radius; float half_height; } sweep;
 };
 
 struct dynamic_object_type {
@@ -50,7 +55,9 @@ struct dynamic_object {
     uint16_t has_gravity: 1;
     uint16_t is_trigger: 1;
     uint16_t is_fixed: 1;
+    uint16_t is_out_of_bounds: 1;
     uint16_t collision_layers;
+    uint16_t collision_group;
     struct contact* active_contacts;
 };
 
@@ -70,20 +77,5 @@ bool dynamic_object_is_touching(struct dynamic_object* object, entity_id id);
 
 void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
 void dynamic_object_recalc_bb(struct dynamic_object* object);
-
-void dynamic_object_box_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
-void dynamic_object_box_bouding_box(void* data, struct Vector2* rotation, struct Box3D* box);
-
-void dynamic_object_cone_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
-void dynamic_object_cone_bounding_box(void* data, struct Vector2* rotation, struct Box3D* box);
-
-void dynamic_object_sphere_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
-void dynamic_object_sphere_bounding_box(void* data, struct Vector2* rotation, struct Box3D* box);
-
-void dynamic_object_capsule_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
-void dynamic_object_capsule_bounding_box(void* data, struct Vector2* rotation, struct Box3D* box);
-
-void dynamic_object_cylinder_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
-void dynamic_object_cylinder_bounding_box(void* data, struct Vector2* rotation, struct Box3D* box);
 
 #endif

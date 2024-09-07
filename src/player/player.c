@@ -6,6 +6,8 @@
 
 #include "../render/render_scene.h"
 #include "../collision/collision_scene.h"
+#include "../collision/shapes/capsule.h"
+#include "../collision/shapes/cylinder.h"
 #include "../time/time.h"
 #include "../entity/entity_id.h"
 #include "../render/defs.h"
@@ -16,8 +18,8 @@ static struct Vector2 player_max_rotation;
 rspq_block_t* player_dpl;
 
 static struct dynamic_object_type player_collision = {
-    .minkowsi_sum = dynamic_object_capsule_minkowski_sum,
-    .bounding_box = dynamic_object_capsule_bounding_box,
+    .minkowsi_sum = capsule_minkowski_sum,
+    .bounding_box = capsule_bounding_box,
     .data = {
         .capsule = {
             .radius = 0.25f,
@@ -27,8 +29,8 @@ static struct dynamic_object_type player_collision = {
 };
 
 static struct dynamic_object_type player_visual_shape = {
-    .minkowsi_sum = dynamic_object_cylinder_minkowski_sum,
-    .bounding_box = dynamic_object_cylinder_bounding_box,
+    .minkowsi_sum = cylinder_minkowski_sum,
+    .bounding_box = cylinder_bounding_box,
     .data = {
         .cylinder = {
             .half_height = 0.5f,
@@ -81,7 +83,7 @@ void player_update(struct player* player) {
         player->is_jumping = true;
     }
     if (pressed.b){
-        player->collision.velocity.y = 90.0f;
+        player->collision.velocity.y = 50.0f;
     }
 
     // Update the animation and modify the skeleton, this will however NOT recalculate the matrices
@@ -101,9 +103,9 @@ void player_update(struct player* player) {
     }
 
     // We now blend the walk animation with the idle/attack one
-    t3d_skeleton_blend(&player->renderable.skeleton, &player->renderable.skeleton, &player->skelBlend, animBlend);
+    t3d_skeleton_blend(&player->renderable.model->skeleton, &player->renderable.model->skeleton, &player->skelBlend, animBlend);
 
-    t3d_skeleton_update(&player->renderable.skeleton);
+    t3d_skeleton_update(&player->renderable.model->skeleton);
 
 
 
@@ -188,16 +190,10 @@ void player_init(struct player* player, struct player_definition* definition, st
     
     renderable_init(&player->renderable, &player->transform, "rom:/models/snake/snake.t3dm");
 
-    //record the block to render the player
-    player->renderable.skeleton = t3d_skeleton_create(player->renderable.model);
-    rspq_block_begin();
-        rdpq_set_prim_color(RGBA32(255, 255, 255, 255));
-        t3d_model_draw_skinned(player->renderable.model, &player->renderable.skeleton);
-    player->renderable.block = rspq_block_end();
-    assert(&player->renderable.skeleton != NULL && &player->renderable.model != NULL);
+    assert(player->renderable.model->has_skeleton && &player->renderable.model->t3d_model != NULL);
 
     
-    player->skelBlend = t3d_skeleton_clone(&player->renderable.skeleton, false);
+    player->skelBlend = t3d_skeleton_clone(&player->renderable.model->skeleton, false);
     player->transform.scale = (struct Vector3){0.125f, 0.125f, 0.125f};
     player->camera_transform = camera_transform;
 
@@ -229,20 +225,20 @@ void player_init(struct player* player, struct player_definition* definition, st
 
     collision_scene_add(&player->collision);
 
-    player->animations.jump = t3d_anim_create(player->renderable.model, "Snake_Jump");
+    player->animations.jump = t3d_anim_create(player->renderable.model->t3d_model, "Snake_Jump");
     t3d_anim_set_looping(&player->animations.jump, false); // don't loop this animation
     t3d_anim_set_playing(&player->animations.jump, false); // start in a paused state
-    t3d_anim_attach(&player->animations.jump, &player->renderable.skeleton);
+    t3d_anim_attach(&player->animations.jump, &player->renderable.model->skeleton);
 
-    player->animations.attack = t3d_anim_create(player->renderable.model, "Snake_Attack");
+    player->animations.attack = t3d_anim_create(player->renderable.model->t3d_model, "Snake_Attack");
     t3d_anim_set_looping(&player->animations.attack, false); // don't loop this animation
     t3d_anim_set_playing(&player->animations.attack, false); // start in a paused state
-    t3d_anim_attach(&player->animations.attack, &player->renderable.skeleton);
+    t3d_anim_attach(&player->animations.attack, &player->renderable.model->skeleton);
 
-    player->animations.idle = t3d_anim_create(player->renderable.model, "Snake_Idle");
-    t3d_anim_attach(&player->animations.idle, &player->renderable.skeleton);
+    player->animations.idle = t3d_anim_create(player->renderable.model->t3d_model, "Snake_Idle");
+    t3d_anim_attach(&player->animations.idle, &player->renderable.model->skeleton);
 
-    player->animations.walk = t3d_anim_create(player->renderable.model, "Snake_Walk");
+    player->animations.walk = t3d_anim_create(player->renderable.model->t3d_model, "Snake_Walk");
     t3d_anim_attach(&player->animations.walk, &player->skelBlend);
 
 }

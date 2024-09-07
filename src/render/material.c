@@ -3,6 +3,8 @@
 #include <t3d/t3d.h>
 #include "../resource/sprite_cache.h"
 
+/// @brief initialize a material with default values
+/// @param material 
 void material_init(struct material* material) {
     material->block = 0;
 
@@ -18,6 +20,8 @@ void material_init(struct material* material) {
     material->flags = 0;
 }
 
+/// @brief free the momory of a material object. Will free the associated textures, palette and rspq_block
+/// @param material pointer to the material to be destroyed
 void material_destroy(struct material* material) {
     if (material->tex0.sprite) {
         sprite_cache_release(material->tex0.sprite);
@@ -71,7 +75,12 @@ static GLenum material_filter_modes[] = {
     GL_LINEAR,
 };
 
-void material_load_tex(struct material_tex* tex, FILE* file, bool create_texture) {
+/// @brief load a texture from a sprite file via the sprite cache and set the texture parameters.
+/// First the filename is read from the file stream and the sprite loaded from the read filename, then the texture parameters are read and set.
+/// @param tex the target texture
+/// @param file the material file stream to read from
+/// @param create_texture 
+void material_load_tex(struct material_tex* tex, FILE* file) {
     uint8_t filename_len;
     fread(&filename_len, 1, 1, file);
 
@@ -102,36 +111,40 @@ void material_load_tex(struct material_tex* tex, FILE* file, bool create_texture
     fread(&mag_filter, 1, 1, file);
     uint8_t min_filter;
     fread(&min_filter, 1, 1, file);
-
-    if (!create_texture) {
-        return;
-    }
 }
 
+/// @brief Read a custom material from a file stream and create a material object with a rspq_block that contains the material commands
+/// @param into the target material
+/// @param material_file the file stream to read from
 void material_load(struct material* into, FILE* material_file) {
+    // read header and make sure it is equal to the expected header
     int header;
     fread(&header, 1, 4, material_file);
     assert(header == EXPECTED_HEADER);
 
     bool has_more = true;
 
+    //initialize an empty material
     material_init(into);
 
-    material_load_tex(&into->tex0, material_file, true);
-    material_load_tex(&into->tex1, material_file, true);
+    // load the given textures and their parameters
+    material_load_tex(&into->tex0, material_file);
+    material_load_tex(&into->tex1, material_file);
 
+
+    // record the rspq_block for applying the material
     rspq_block_begin();
 
+    // check if the material is using auto layout tmem
     bool autoLayoutTMem = into->tex1.sprite != 0 && into->tex1.params.tmem_addr == 0;
-
     if (autoLayoutTMem) {
         rdpq_tex_multi_begin();
     }
 
+    // upload the textures to the RDP texture memory
     if (into->tex0.sprite) {
         rdpq_sprite_upload(TILE0, into->tex0.sprite, &into->tex0.params);
     }
-
     if (into->tex1.sprite) {
         rdpq_sprite_upload(TILE1, into->tex1.sprite, &into->tex1.params);
     }
@@ -141,7 +154,7 @@ void material_load(struct material* into, FILE* material_file) {
     }
 
     rdpq_mode_begin();
-
+    //read the material commands from the file stream and apply them
     while (has_more) {
         uint8_t nextCommand;
         fread(&nextCommand, 1, 1, material_file);

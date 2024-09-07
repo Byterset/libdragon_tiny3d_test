@@ -5,6 +5,7 @@
 #include "../math/vector2.h"
 #include "../render/render_batch.h"
 #include "../render/renderable.h"
+#include "../render/model.h"
 #include "../collision/dynamic_object.h"
 #include <t3d/t3danim.h>
 
@@ -32,7 +33,6 @@ struct player {
     bool is_attacking;
     bool is_jumping;
     struct dynamic_object collision;
-    T3DModel* model;
     T3DSkeleton skelBlend;
     struct player_animations animations;
 };

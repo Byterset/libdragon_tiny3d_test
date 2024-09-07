@@ -3,31 +3,15 @@
 #include <malloc.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <math.h>
 
 #include "mesh_collider.h"
 #include "collide.h"
+#include "collide_swept.h"
 #include "contact.h"
 #include "../util/hash_map.h"
 
-#define MIN_DYNAMIC_OBJECTS 64
-#define MAX_ACTIVE_CONTACTS 128
-
-struct collision_scene_element {
-    struct dynamic_object* object;
-};
-
-struct collision_scene {
-    struct collision_scene_element* elements;
-    struct contact* next_free_contact;
-    struct contact* all_contacts;
-    struct hash_map entity_mapping;
-    uint16_t count;
-    uint16_t capacity;
-
-    struct mesh_collider* mesh_collider;
-};
-
-static struct collision_scene g_scene;
+struct collision_scene g_scene;
 
 void collision_scene_reset() {
     free(g_scene.elements);
@@ -228,6 +212,36 @@ void collision_scene_collide_dynamic() {
     }
 }
 
+#define MAX_SWEPT_ITERATIONS    5
+
+void collision_scene_collide_single(struct dynamic_object* object, struct Vector3* prev_pos) {
+    for (int i = 0; i < MAX_SWEPT_ITERATIONS; i += 1) {
+        struct Vector3 offset;
+        vector3Sub(object->position, prev_pos, &offset);
+        struct Vector3 bbSize;
+        vector3Sub(&object->bounding_box.max, &object->bounding_box.min, &bbSize);
+        vector3Scale(&bbSize, &bbSize, 0.5f);
+
+        if (fabs(offset.x) > bbSize.x ||
+            fabs(offset.y) > bbSize.y ||
+            fabs(offset.z) > bbSize.z
+        ) {
+            if (!collide_object_to_mesh_swept(object, g_scene.mesh_collider, prev_pos)) {
+                return;
+            }
+        } else {
+            collide_object_to_mesh(object, g_scene.mesh_collider);
+            return;
+        }
+    }
+
+    // too many swept iterations
+    // to prevent tunneling just move 
+    // the object back to the previous known
+    // valid location
+    *object->position = *prev_pos;
+}
+
 void collision_scene_collide() {
     struct Vector3 prev_pos[g_scene.count];
 
@@ -245,9 +259,13 @@ void collision_scene_collide() {
     for (int i = 0; i < g_scene.count; ++i) {
         struct collision_scene_element* element = &g_scene.elements[i];
 
-        if (g_scene.mesh_collider) {
-            collide_object_to_mesh(element->object, g_scene.mesh_collider);
+        if (!g_scene.mesh_collider) {
+            continue;
         }
+
+        collision_scene_collide_single(element->object, &prev_pos[i]);
+
+        element->object->is_out_of_bounds = mesh_index_is_contained(&g_scene.mesh_collider->index, element->object->position);
     }
 
     collision_scene_collide_dynamic();

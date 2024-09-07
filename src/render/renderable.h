@@ -6,12 +6,11 @@
 #include <t3d/t3dmodel.h>
 #include <t3d/t3dskeleton.h>
 #include "../resource/model_cache.h"
+#include "../render/model.h"
 
 struct renderable {
     struct Transform* transform; //the transform of the object
-    T3DModel* model; //the model of the object
-    T3DSkeleton skeleton; //the skeleton of the object (if it has one)
-    rspq_block_t* block; //the list of commands to be added to the rsp queue to render the object
+    struct model* model; //the model of the object
 };
 
 void renderable_init(struct renderable* renderable, struct Transform* transform, const char* model_filename);
@@ -19,8 +18,7 @@ void renderable_destroy(struct renderable* renderable);
 
 struct renderable_single_axis {
     struct TransformSingleAxis* transform;
-    T3DModel* model;
-    T3DSkeleton skeleton;
+    struct model* model;
     rspq_block_t* block;
 };
 

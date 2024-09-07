@@ -12,7 +12,7 @@ void render_batch_init(struct render_batch* batch, struct Transform* camera_tran
     transformToMatrix(camera_transform, batch->camera_matrix);
 }
 
-struct render_batch_element* render_batch_add(struct render_batch* batch) {
+static struct render_batch_element* render_batch_add_init(struct render_batch* batch) {
     if (batch->element_count >= RENDER_BATCH_MAX_SIZE) {
         return NULL;
     }
@@ -24,28 +24,24 @@ struct render_batch_element* render_batch_add(struct render_batch* batch) {
     result->type = RENDER_BATCH_MODEL;
     result->model.block = 0;
     result->model.transform = NULL;
-    result->model.skeleton = NULL;
-    result->model.tmp_fixed_pose = NULL;
 
     return result;
 }
 
 void render_batch_add_t3dmodel(struct render_batch* batch, rspq_block_t* block, T3DMat4FP* transform, T3DSkeleton* skeleton) {
-    struct render_batch_element* element = render_batch_add(batch);
+    struct render_batch_element* element = render_batch_add_init(batch);
 
     if (!element) {
         return;
     }
 
-
     element->model.block = block;
-    element->material = NULL;
+    element->material = NULL; //T3DModels have their own materials
     element->model.transform = transform;
-    element->model.skeleton = skeleton ? skeleton : NULL;
 }
 
 void render_batch_add_callback(struct render_batch* batch, struct material* material, RenderCallback callback, void* data) {
-    struct render_batch_element* element = render_batch_add(batch);
+    struct render_batch_element* element = render_batch_add_init(batch);
 
     if (!element) {
         return;
@@ -58,7 +54,7 @@ void render_batch_add_callback(struct render_batch* batch, struct material* mate
 }
 
 struct render_batch_billboard_element* render_batch_add_particles(struct render_batch* batch, struct material* material, int count) {
-    struct render_batch_element* result = render_batch_add(batch);
+    struct render_batch_element* result = render_batch_add_init(batch);
 
     result->type = RENDER_BATCH_BILLBOARD;
     result->material = material;
@@ -134,7 +130,6 @@ static bool element_type_2d[] = {
 
 void render_batch_execute(struct render_batch* batch, mat4x4 view_proj_matrix, T3DViewport* viewport) {
     uint16_t order[RENDER_BATCH_MAX_SIZE];
-    uint16_t order_tmp[RENDER_BATCH_MAX_SIZE];
 
     for (int i = 0; i < batch->element_count; ++i) {
         order[i] = i;
@@ -170,7 +165,11 @@ void render_batch_execute(struct render_batch* batch, mat4x4 view_proj_matrix, T
         int index = order[i];
         struct render_batch_element* element = &batch->elements[index];
 
-        if (current_mat != element->material)
+        if(!element->material)
+        {
+            current_mat = NULL;
+        }
+        else if (current_mat != element->material)
         {
             if (element->material->block)
             {
