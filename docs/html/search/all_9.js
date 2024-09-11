@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['id_316',['id',['../structinteractable.html#a8cd04dd2df2f1b8e1d0bade3691368b0',1,'interactable::id()'],['../structcallback__element.html#a58481106b8cebd272f5b68730ef4f03d',1,'callback_element::id()']]],
+  ['idle_317',['idle',['../structplayer__animations.html#aac77b2a4096b49b377fd765489272e5b',1,'player_animations']]],
+  ['idx_318',['idx',['../structmaterial__palette.html#ab21b99015e0d2dea6398b61a476919cf',1,'material_palette']]],
+  ['index_319',['index',['../structmesh__collider.html#a39229f672bf43a81a962612b82fb8bfd',1,'mesh_collider']]],
+  ['index_5findices_320',['index_indices',['../structmesh__index.html#a94a7fa19e8b12dc7d09dc7ef97c119e8',1,'mesh_index']]],
+  ['index_5foffset_321',['index_offset',['../structfire.html#a49c6328e34e2f44b512863c270fc0b22',1,'fire']]],
+  ['indexdata_322',['indexData',['../structSimplexTriangle.html#ae11d92b0d453c1fa8579430c0ba54bd6',1,'SimplexTriangle']]],
+  ['indices_323',['indices',['../unionSimplexTriangleIndexData.html#a960b7db45b573ecaaa8b5f4ca2675e3d',1,'SimplexTriangleIndexData::indices()'],['../structmesh__triangle__indices.html#affb54faeb1310cd3cdd0b9f74a593863',1,'mesh_triangle_indices::indices()']]],
+  ['inner_5fhalf_5fheight_324',['inner_half_height',['../uniondynamic__object__type__data.html#adf38d884ede3d583ea15f90e51d556ce',1,'dynamic_object_type_data']]],
+  ['interactable_325',['interactable',['../structinteractable.html',1,'']]],
+  ['interactable_2ec_326',['interactable.c',['../interactable_8c.html',1,'']]],
+  ['interactable_2eh_327',['interactable.h',['../interactable_8h.html',1,'']]],
+  ['interactable_5fdestroy_328',['interactable_destroy',['../interactable_8c.html#a61f3b21dcbfbed88e9da9dd5cad107ad',1,'interactable_destroy(struct interactable *interactable):&#160;interactable.c'],['../interactable_8h.html#a61f3b21dcbfbed88e9da9dd5cad107ad',1,'interactable_destroy(struct interactable *interactable):&#160;interactable.c']]],
+  ['interactable_5fget_329',['interactable_get',['../interactable_8c.html#a4e9bfed61673a4b92e7dce58633e0150',1,'interactable_get(entity_id id):&#160;interactable.c'],['../interactable_8h.html#a4e9bfed61673a4b92e7dce58633e0150',1,'interactable_get(entity_id id):&#160;interactable.c']]],
+  ['interactable_5finit_330',['interactable_init',['../interactable_8h.html#abdbe3315556951f9538f43d19f96de2f',1,'interactable_init(struct interactable *interactable, entity_id id, interaction_callback callback, void *data):&#160;interactable.c'],['../interactable_8c.html#abdbe3315556951f9538f43d19f96de2f',1,'interactable_init(struct interactable *interactable, entity_id id, interaction_callback callback, void *data):&#160;interactable.c']]],
+  ['interactable_5freset_331',['interactable_reset',['../interactable_8h.html#af5b82579996b78ac59a1b6a7653f2e62',1,'interactable_reset():&#160;interactable.c'],['../interactable_8c.html#af5b82579996b78ac59a1b6a7653f2e62',1,'interactable_reset():&#160;interactable.c']]],
+  ['interaction_5fcallback_332',['interaction_callback',['../interactable_8h.html#a6878cedb8654893c6352b901351b36d1',1,'interactable.h']]],
+  ['is_5fattacking_333',['is_attacking',['../structplayer.html#aac8433946ece52e6b9369a7fb0b320ba',1,'player']]],
+  ['is_5ffixed_334',['is_fixed',['../structdynamic__object.html#ac19f904efdd2a525d2d0436f14e7a697',1,'dynamic_object']]],
+  ['is_5finf_335',['is_inf',['../mesh__collider_8c.html#a39e8de9aa5c74858dfc18453dbfeeaa4',1,'mesh_collider.c']]],
+  ['is_5fjumping_336',['is_jumping',['../structplayer.html#adc873e5e51ba0483b2bd9e07b3d6ac0f',1,'player']]],
+  ['is_5fout_5fof_5fbounds_337',['is_out_of_bounds',['../structdynamic__object.html#aff423f4d7fd781343e9b6e23e2fd0dd1',1,'dynamic_object']]],
+  ['is_5fstart_5fedge_338',['is_start_edge',['../structcollide__edge.html#a77394e42674b4cd254eb95bbf26ecf19',1,'collide_edge']]],
+  ['is_5ftrigger_339',['is_trigger',['../structdynamic__object.html#a1fbbcf14be177efef184f40fc2753710',1,'dynamic_object']]]
+];

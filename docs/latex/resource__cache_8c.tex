@@ -1,0 +1,125 @@
+\hypertarget{resource__cache_8c}{}\doxysection{src/resource/resource\+\_\+cache.c File Reference}
+\label{resource__cache_8c}\index{src/resource/resource\_cache.c@{src/resource/resource\_cache.c}}
+{\ttfamily \#include \char`\"{}resource\+\_\+cache.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$malloc.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+Include dependency graph for resource\+\_\+cache.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{resource__cache_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{resource__cache_8c_a4579a0386df402aaeeb0e0bccf8cf9ab}{MAGIC\+\_\+\+PRIME}}~2748002342
+\item 
+\#define \mbox{\hyperlink{resource__cache_8c_adcf4c39a39364939c2ca5d6a066eb969}{NO\+\_\+\+ENTRY}}~-\/1
+\item 
+\#define \mbox{\hyperlink{resource__cache_8c_aa2d11c3aa8ec67eb6b7e08a93db0a807}{MIN\+\_\+\+TABLE\+\_\+\+SIZE}}~32
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{resource__cache_8c_a56993082a481b6e4f531ca6542bfe1e5}{string\+\_\+hash}} (const void $\ast$key)
+\item 
+void \mbox{\hyperlink{resource__cache_8c_a98314f00cb6ed3043cfdc9fb3b39b343}{resource\+\_\+cache\+\_\+reset}} (struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$cache)
+\item 
+struct \mbox{\hyperlink{structresource__cache__entry}{resource\+\_\+cache\+\_\+entry}} $\ast$ \mbox{\hyperlink{resource__cache_8c_ab9959da48b7aba037391b3c5debecebf}{resource\+\_\+cache\+\_\+next}} (struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$cache, struct \mbox{\hyperlink{structresource__cache__entry}{resource\+\_\+cache\+\_\+entry}} $\ast$entry)
+\item 
+void \mbox{\hyperlink{resource__cache_8c_a79c30e2911235e48e18a067d28423cab}{resource\+\_\+cache\+\_\+resize}} (struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$cache)
+\item 
+struct \mbox{\hyperlink{structresource__cache__entry}{resource\+\_\+cache\+\_\+entry}} $\ast$ \mbox{\hyperlink{resource__cache_8c_ac4f51ef79b5c87c31c3bc1a39fbc47a9}{resource\+\_\+cache\+\_\+insert}} (struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$cache, int filename\+\_\+index, uint32\+\_\+t filename\+\_\+hash, const char $\ast$filename)
+\item 
+struct \mbox{\hyperlink{structresource__cache__entry}{resource\+\_\+cache\+\_\+entry}} $\ast$ \mbox{\hyperlink{resource__cache_8c_ac7fd645cceaadd97a969df3e66c14d40}{resource\+\_\+cache\+\_\+use}} (struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$cache, const char $\ast$filename)
+\item 
+void \mbox{\hyperlink{resource__cache_8c_adee9e2f02ff125f862a66fcf0c9875e4}{resource\+\_\+cache\+\_\+remove}} (struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$cache, struct \mbox{\hyperlink{structresource__cache__entry}{resource\+\_\+cache\+\_\+entry}} $\ast$entry, int resource\+\_\+index)
+\item 
+bool \mbox{\hyperlink{resource__cache_8c_a56fee7f4a160a9bf1f03944985e092a6}{resource\+\_\+cache\+\_\+free}} (struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$cache, void $\ast$resource)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{resource__cache_8c_a4579a0386df402aaeeb0e0bccf8cf9ab}\label{resource__cache_8c_a4579a0386df402aaeeb0e0bccf8cf9ab}} 
+\index{resource\_cache.c@{resource\_cache.c}!MAGIC\_PRIME@{MAGIC\_PRIME}}
+\index{MAGIC\_PRIME@{MAGIC\_PRIME}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{MAGIC\_PRIME}{MAGIC\_PRIME}}
+{\footnotesize\ttfamily \#define MAGIC\+\_\+\+PRIME~2748002342}
+
+\mbox{\Hypertarget{resource__cache_8c_aa2d11c3aa8ec67eb6b7e08a93db0a807}\label{resource__cache_8c_aa2d11c3aa8ec67eb6b7e08a93db0a807}} 
+\index{resource\_cache.c@{resource\_cache.c}!MIN\_TABLE\_SIZE@{MIN\_TABLE\_SIZE}}
+\index{MIN\_TABLE\_SIZE@{MIN\_TABLE\_SIZE}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{MIN\_TABLE\_SIZE}{MIN\_TABLE\_SIZE}}
+{\footnotesize\ttfamily \#define MIN\+\_\+\+TABLE\+\_\+\+SIZE~32}
+
+\mbox{\Hypertarget{resource__cache_8c_adcf4c39a39364939c2ca5d6a066eb969}\label{resource__cache_8c_adcf4c39a39364939c2ca5d6a066eb969}} 
+\index{resource\_cache.c@{resource\_cache.c}!NO\_ENTRY@{NO\_ENTRY}}
+\index{NO\_ENTRY@{NO\_ENTRY}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{NO\_ENTRY}{NO\_ENTRY}}
+{\footnotesize\ttfamily \#define NO\+\_\+\+ENTRY~-\/1}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{resource__cache_8c_a56fee7f4a160a9bf1f03944985e092a6}\label{resource__cache_8c_a56fee7f4a160a9bf1f03944985e092a6}} 
+\index{resource\_cache.c@{resource\_cache.c}!resource\_cache\_free@{resource\_cache\_free}}
+\index{resource\_cache\_free@{resource\_cache\_free}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{resource\_cache\_free()}{resource\_cache\_free()}}
+{\footnotesize\ttfamily bool resource\+\_\+cache\+\_\+free (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$}]{cache,  }\item[{void $\ast$}]{resource }\end{DoxyParamCaption})}
+
+Frees a resource from the resource cache.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cache} & The resource cache. \\
+\hline
+{\em resource} & The resource to be freed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if the resource was successfully freed, false otherwise or if there are still references to the cached resource. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{resource__cache_8c_ac4f51ef79b5c87c31c3bc1a39fbc47a9}\label{resource__cache_8c_ac4f51ef79b5c87c31c3bc1a39fbc47a9}} 
+\index{resource\_cache.c@{resource\_cache.c}!resource\_cache\_insert@{resource\_cache\_insert}}
+\index{resource\_cache\_insert@{resource\_cache\_insert}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{resource\_cache\_insert()}{resource\_cache\_insert()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structresource__cache__entry}{resource\+\_\+cache\+\_\+entry}}$\ast$ resource\+\_\+cache\+\_\+insert (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$}]{cache,  }\item[{int}]{filename\+\_\+index,  }\item[{uint32\+\_\+t}]{filename\+\_\+hash,  }\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{resource__cache_8c_ab9959da48b7aba037391b3c5debecebf}\label{resource__cache_8c_ab9959da48b7aba037391b3c5debecebf}} 
+\index{resource\_cache.c@{resource\_cache.c}!resource\_cache\_next@{resource\_cache\_next}}
+\index{resource\_cache\_next@{resource\_cache\_next}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{resource\_cache\_next()}{resource\_cache\_next()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structresource__cache__entry}{resource\+\_\+cache\+\_\+entry}}$\ast$ resource\+\_\+cache\+\_\+next (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$}]{cache,  }\item[{struct \mbox{\hyperlink{structresource__cache__entry}{resource\+\_\+cache\+\_\+entry}} $\ast$}]{entry }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{resource__cache_8c_adee9e2f02ff125f862a66fcf0c9875e4}\label{resource__cache_8c_adee9e2f02ff125f862a66fcf0c9875e4}} 
+\index{resource\_cache.c@{resource\_cache.c}!resource\_cache\_remove@{resource\_cache\_remove}}
+\index{resource\_cache\_remove@{resource\_cache\_remove}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{resource\_cache\_remove()}{resource\_cache\_remove()}}
+{\footnotesize\ttfamily void resource\+\_\+cache\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$}]{cache,  }\item[{struct \mbox{\hyperlink{structresource__cache__entry}{resource\+\_\+cache\+\_\+entry}} $\ast$}]{entry,  }\item[{int}]{resource\+\_\+index }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{resource__cache_8c_a98314f00cb6ed3043cfdc9fb3b39b343}\label{resource__cache_8c_a98314f00cb6ed3043cfdc9fb3b39b343}} 
+\index{resource\_cache.c@{resource\_cache.c}!resource\_cache\_reset@{resource\_cache\_reset}}
+\index{resource\_cache\_reset@{resource\_cache\_reset}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{resource\_cache\_reset()}{resource\_cache\_reset()}}
+{\footnotesize\ttfamily void resource\+\_\+cache\+\_\+reset (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$}]{cache }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{resource__cache_8c_a79c30e2911235e48e18a067d28423cab}\label{resource__cache_8c_a79c30e2911235e48e18a067d28423cab}} 
+\index{resource\_cache.c@{resource\_cache.c}!resource\_cache\_resize@{resource\_cache\_resize}}
+\index{resource\_cache\_resize@{resource\_cache\_resize}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{resource\_cache\_resize()}{resource\_cache\_resize()}}
+{\footnotesize\ttfamily void resource\+\_\+cache\+\_\+resize (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$}]{cache }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{resource__cache_8c_ac7fd645cceaadd97a969df3e66c14d40}\label{resource__cache_8c_ac7fd645cceaadd97a969df3e66c14d40}} 
+\index{resource\_cache.c@{resource\_cache.c}!resource\_cache\_use@{resource\_cache\_use}}
+\index{resource\_cache\_use@{resource\_cache\_use}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{resource\_cache\_use()}{resource\_cache\_use()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structresource__cache__entry}{resource\+\_\+cache\+\_\+entry}}$\ast$ resource\+\_\+cache\+\_\+use (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} $\ast$}]{cache,  }\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{resource__cache_8c_a56993082a481b6e4f531ca6542bfe1e5}\label{resource__cache_8c_a56993082a481b6e4f531ca6542bfe1e5}} 
+\index{resource\_cache.c@{resource\_cache.c}!string\_hash@{string\_hash}}
+\index{string\_hash@{string\_hash}!resource\_cache.c@{resource\_cache.c}}
+\doxysubsubsection{\texorpdfstring{string\_hash()}{string\_hash()}}
+{\footnotesize\ttfamily uint32\+\_\+t string\+\_\+hash (\begin{DoxyParamCaption}\item[{const void $\ast$}]{key }\end{DoxyParamCaption})}
+

@@ -1,0 +1,70 @@
+\hypertarget{hash__map_8h}{}\doxysection{src/util/hash\+\_\+map.h File Reference}
+\label{hash__map_8h}\index{src/util/hash\_map.h@{src/util/hash\_map.h}}
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+Include dependency graph for hash\+\_\+map.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{hash__map_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{hash__map_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structhash__map__entry}{hash\+\_\+map\+\_\+entry}}
+\item 
+struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{hash__map_8h_a93644a92346db035933e659d06c4107f}{hash\+\_\+map\+\_\+init}} (struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} $\ast$\mbox{\hyperlink{structhash__map}{hash\+\_\+map}}, int capacity)
+\item 
+void \mbox{\hyperlink{hash__map_8h_a227514229cb481efd8eff6b8c2a9a1fd}{hash\+\_\+map\+\_\+destroy}} (struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} $\ast$\mbox{\hyperlink{structhash__map}{hash\+\_\+map}})
+\item 
+void $\ast$ \mbox{\hyperlink{hash__map_8h_a86355512591ce20a51f5b6de9123af59}{hash\+\_\+map\+\_\+get}} (struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} $\ast$\mbox{\hyperlink{structhash__map}{hash\+\_\+map}}, int key)
+\item 
+void \mbox{\hyperlink{hash__map_8h_a281e460307797fe7e69188409f16a8d3}{hash\+\_\+map\+\_\+set}} (struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} $\ast$\mbox{\hyperlink{structhash__map}{hash\+\_\+map}}, int key, void $\ast$value)
+\item 
+void \mbox{\hyperlink{hash__map_8h_a711dff7eb772c1846ff9424d29e4964a}{hash\+\_\+map\+\_\+delete}} (struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} $\ast$\mbox{\hyperlink{structhash__map}{hash\+\_\+map}}, int key)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{hash__map_8h_a711dff7eb772c1846ff9424d29e4964a}\label{hash__map_8h_a711dff7eb772c1846ff9424d29e4964a}} 
+\index{hash\_map.h@{hash\_map.h}!hash\_map\_delete@{hash\_map\_delete}}
+\index{hash\_map\_delete@{hash\_map\_delete}!hash\_map.h@{hash\_map.h}}
+\doxysubsubsection{\texorpdfstring{hash\_map\_delete()}{hash\_map\_delete()}}
+{\footnotesize\ttfamily void hash\+\_\+map\+\_\+delete (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} $\ast$}]{hash\+\_\+map,  }\item[{int}]{key }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{hash__map_8h_a227514229cb481efd8eff6b8c2a9a1fd}\label{hash__map_8h_a227514229cb481efd8eff6b8c2a9a1fd}} 
+\index{hash\_map.h@{hash\_map.h}!hash\_map\_destroy@{hash\_map\_destroy}}
+\index{hash\_map\_destroy@{hash\_map\_destroy}!hash\_map.h@{hash\_map.h}}
+\doxysubsubsection{\texorpdfstring{hash\_map\_destroy()}{hash\_map\_destroy()}}
+{\footnotesize\ttfamily void hash\+\_\+map\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} $\ast$}]{hash\+\_\+map }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{hash__map_8h_a86355512591ce20a51f5b6de9123af59}\label{hash__map_8h_a86355512591ce20a51f5b6de9123af59}} 
+\index{hash\_map.h@{hash\_map.h}!hash\_map\_get@{hash\_map\_get}}
+\index{hash\_map\_get@{hash\_map\_get}!hash\_map.h@{hash\_map.h}}
+\doxysubsubsection{\texorpdfstring{hash\_map\_get()}{hash\_map\_get()}}
+{\footnotesize\ttfamily void$\ast$ hash\+\_\+map\+\_\+get (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} $\ast$}]{hash\+\_\+map,  }\item[{int}]{key }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{hash__map_8h_a93644a92346db035933e659d06c4107f}\label{hash__map_8h_a93644a92346db035933e659d06c4107f}} 
+\index{hash\_map.h@{hash\_map.h}!hash\_map\_init@{hash\_map\_init}}
+\index{hash\_map\_init@{hash\_map\_init}!hash\_map.h@{hash\_map.h}}
+\doxysubsubsection{\texorpdfstring{hash\_map\_init()}{hash\_map\_init()}}
+{\footnotesize\ttfamily void hash\+\_\+map\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} $\ast$}]{hash\+\_\+map,  }\item[{int}]{capacity }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{hash__map_8h_a281e460307797fe7e69188409f16a8d3}\label{hash__map_8h_a281e460307797fe7e69188409f16a8d3}} 
+\index{hash\_map.h@{hash\_map.h}!hash\_map\_set@{hash\_map\_set}}
+\index{hash\_map\_set@{hash\_map\_set}!hash\_map.h@{hash\_map.h}}
+\doxysubsubsection{\texorpdfstring{hash\_map\_set()}{hash\_map\_set()}}
+{\footnotesize\ttfamily void hash\+\_\+map\+\_\+set (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} $\ast$}]{hash\+\_\+map,  }\item[{int}]{key,  }\item[{void $\ast$}]{value }\end{DoxyParamCaption})}
+

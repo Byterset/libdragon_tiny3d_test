@@ -1,0 +1,35 @@
+\hypertarget{capsule_8c}{}\doxysection{src/collision/shapes/capsule.c File Reference}
+\label{capsule_8c}\index{src/collision/shapes/capsule.c@{src/collision/shapes/capsule.c}}
+{\ttfamily \#include \char`\"{}cylinder.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../dynamic\+\_\+object.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}sphere.\+h\char`\"{}}\newline
+Include dependency graph for capsule.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{capsule_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{capsule_8c_ad4b965fdd7a584ab2223100e875c730f}{capsule\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+void \mbox{\hyperlink{capsule_8c_a954654edb5c2ca9ccda860c4f86adbeb}{capsule\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{capsule_8c_a954654edb5c2ca9ccda860c4f86adbeb}\label{capsule_8c_a954654edb5c2ca9ccda860c4f86adbeb}} 
+\index{capsule.c@{capsule.c}!capsule\_bounding\_box@{capsule\_bounding\_box}}
+\index{capsule\_bounding\_box@{capsule\_bounding\_box}!capsule.c@{capsule.c}}
+\doxysubsubsection{\texorpdfstring{capsule\_bounding\_box()}{capsule\_bounding\_box()}}
+{\footnotesize\ttfamily void capsule\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{capsule_8c_ad4b965fdd7a584ab2223100e875c730f}\label{capsule_8c_ad4b965fdd7a584ab2223100e875c730f}} 
+\index{capsule.c@{capsule.c}!capsule\_minkowski\_sum@{capsule\_minkowski\_sum}}
+\index{capsule\_minkowski\_sum@{capsule\_minkowski\_sum}!capsule.c@{capsule.c}}
+\doxysubsubsection{\texorpdfstring{capsule\_minkowski\_sum()}{capsule\_minkowski\_sum()}}
+{\footnotesize\ttfamily void capsule\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+

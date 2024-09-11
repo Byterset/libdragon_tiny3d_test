@@ -1,0 +1,44 @@
+\hypertarget{camera_8c}{}\doxysection{src/render/camera.c File Reference}
+\label{camera_8c}\index{src/render/camera.c@{src/render/camera.c}}
+{\ttfamily \#include \char`\"{}camera.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../math/matrix.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}defs.\+h\char`\"{}}\newline
+Include dependency graph for camera.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{camera_8c_a6f1563e004251171bc216a392472f04b}{camera\+\_\+init}} (struct \mbox{\hyperlink{structcamera}{camera}} $\ast$\mbox{\hyperlink{structcamera}{camera}}, float fov, float near, float far)
+\item 
+void \mbox{\hyperlink{camera_8c_ad46c8ca562638d6f4231c928ad6c44c3}{camera\+\_\+extract\+\_\+clipping\+\_\+plane}} (float view\+Persp\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}, struct \mbox{\hyperlink{structPlane}{Plane}} $\ast$output, int axis, float direction)
+\item 
+void \mbox{\hyperlink{camera_8c_a97a1a05213dabb717bf25ca5df53135b}{camera\+\_\+apply}} (struct \mbox{\hyperlink{structcamera}{camera}} $\ast$\mbox{\hyperlink{structcamera}{camera}}, T3\+DViewport $\ast$viewport, struct \mbox{\hyperlink{structClippingPlanes}{Clipping\+Planes}} $\ast$clipping\+\_\+planes, \mbox{\hyperlink{matrix_8h_ab4cd89c0952222b325c5c9c0165587b9}{mat4x4}} view\+\_\+proj\+\_\+matrix)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{camera_8c_a97a1a05213dabb717bf25ca5df53135b}\label{camera_8c_a97a1a05213dabb717bf25ca5df53135b}} 
+\index{camera.c@{camera.c}!camera\_apply@{camera\_apply}}
+\index{camera\_apply@{camera\_apply}!camera.c@{camera.c}}
+\doxysubsubsection{\texorpdfstring{camera\_apply()}{camera\_apply()}}
+{\footnotesize\ttfamily void camera\+\_\+apply (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcamera}{camera}} $\ast$}]{camera,  }\item[{T3\+DViewport $\ast$}]{viewport,  }\item[{struct \mbox{\hyperlink{structClippingPlanes}{Clipping\+Planes}} $\ast$}]{clipping\+\_\+planes,  }\item[{\mbox{\hyperlink{matrix_8h_ab4cd89c0952222b325c5c9c0165587b9}{mat4x4}}}]{view\+\_\+proj\+\_\+matrix }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{camera_8c_ad46c8ca562638d6f4231c928ad6c44c3}\label{camera_8c_ad46c8ca562638d6f4231c928ad6c44c3}} 
+\index{camera.c@{camera.c}!camera\_extract\_clipping\_plane@{camera\_extract\_clipping\_plane}}
+\index{camera\_extract\_clipping\_plane@{camera\_extract\_clipping\_plane}!camera.c@{camera.c}}
+\doxysubsubsection{\texorpdfstring{camera\_extract\_clipping\_plane()}{camera\_extract\_clipping\_plane()}}
+{\footnotesize\ttfamily void camera\+\_\+extract\+\_\+clipping\+\_\+plane (\begin{DoxyParamCaption}\item[{float}]{view\+Persp\mbox{[}4\mbox{]}\mbox{[}4\mbox{]},  }\item[{struct \mbox{\hyperlink{structPlane}{Plane}} $\ast$}]{output,  }\item[{int}]{axis,  }\item[{float}]{direction }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{camera_8c_a6f1563e004251171bc216a392472f04b}\label{camera_8c_a6f1563e004251171bc216a392472f04b}} 
+\index{camera.c@{camera.c}!camera\_init@{camera\_init}}
+\index{camera\_init@{camera\_init}!camera.c@{camera.c}}
+\doxysubsubsection{\texorpdfstring{camera\_init()}{camera\_init()}}
+{\footnotesize\ttfamily void camera\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcamera}{camera}} $\ast$}]{camera,  }\item[{float}]{fov,  }\item[{float}]{near,  }\item[{float}]{far }\end{DoxyParamCaption})}
+

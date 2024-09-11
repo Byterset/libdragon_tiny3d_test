@@ -1,0 +1,186 @@
+\hypertarget{quaternion_8c}{}\doxysection{src/math/quaternion.c File Reference}
+\label{quaternion_8c}\index{src/math/quaternion.c@{src/math/quaternion.c}}
+{\ttfamily \#include \char`\"{}quaternion.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}mathf.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+Include dependency graph for quaternion.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{quaternion_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{quaternion_8c_a1ec133ab599d7efd0e6fca8c8fc38fe4}{quat\+Ident}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$q)
+\item 
+void \mbox{\hyperlink{quaternion_8c_adfb7ce6701664de28b3285102b3c894d}{quat\+Axis\+Angle}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$axis, float angle, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a9e9eab533e3ae6a26582688b1752f20f}{quat\+Euler\+Angles}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$angles, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a42db0ea69c5467cebefb4a637260b64c}{quat\+Axis\+Complex}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$axis, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$complex, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_ad252a8d7d2de394de516eda950cfab1c}{quat\+Conjugate}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$in, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a88575333a1fcbe1cc9d8c0dcd19ddd98}{quat\+Negate}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$in, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a239f9e5d38751ef0988202f04b3fe356}{quat\+Mult\+Vector}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$q, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a989a9899b4fac5ed9533e9c82cb1c17a}{quat\+Rotated\+Bounding\+Box\+Size}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$q, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$half\+Box\+Size, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a0e91b8660bc4c5a62349ae8dfdc89ec7}{quat\+Multiply}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$a, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$b, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_aa93fa8f792aa76af8ce0168910c177a2}{quat\+Add}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$a, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$b, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a7847103b963a353c651d068af317ab5e}{quat\+To\+Matrix}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$q, float out\mbox{[}4\mbox{]}\mbox{[}4\mbox{]})
+\item 
+void \mbox{\hyperlink{quaternion_8c_afbff0950ef01a65d264468b458659a4f}{quat\+Normalize}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$q, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a650aa70345b2b27754d7dddf96b9e2c8}{quat\+Random}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$q)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a1ce233579c1d79bcb54cbfe064c85d68}{quat\+Look}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$look\+Dir, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$up, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_afaf6cc44a1ed67f76cd3a312e0fc28fc}{quat\+Lerp}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$a, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$b, float t, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\item 
+void \mbox{\hyperlink{quaternion_8c_af10a8b1896cc0d86dd010d2774dd174e}{quat\+Apply\+Angular\+Velocity}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$input, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$w, float time\+Step, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$output)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a127107efa71df58f4e4244a27d6fa1a8}{quat\+Decompose}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$input, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$axis, float $\ast$angle)
+\item 
+float \mbox{\hyperlink{quaternion_8c_a0b6ef1f221bea1b1267ad0520c7e1007}{quat\+Dot}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$a, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$b)
+\item 
+void \mbox{\hyperlink{quaternion_8c_a606a872c20831cbd8d2c0054615cfa02}{quat\+Rotate\+Axis\+Euler}} (struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$q, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$axis, float angle\+Rad, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$out)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structQuaternion}{Quaternion}} \mbox{\hyperlink{quaternion_8c_a36ccb3aa3709e849441155a5e4a56d72}{g\+Quaternion\+Zero}} = \{0.\+0f, 0.\+0f, 0.\+0f, 0.\+0f\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{quaternion_8c_aa93fa8f792aa76af8ce0168910c177a2}\label{quaternion_8c_aa93fa8f792aa76af8ce0168910c177a2}} 
+\index{quaternion.c@{quaternion.c}!quatAdd@{quatAdd}}
+\index{quatAdd@{quatAdd}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatAdd()}{quatAdd()}}
+{\footnotesize\ttfamily void quat\+Add (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{b,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_af10a8b1896cc0d86dd010d2774dd174e}\label{quaternion_8c_af10a8b1896cc0d86dd010d2774dd174e}} 
+\index{quaternion.c@{quaternion.c}!quatApplyAngularVelocity@{quatApplyAngularVelocity}}
+\index{quatApplyAngularVelocity@{quatApplyAngularVelocity}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatApplyAngularVelocity()}{quatApplyAngularVelocity()}}
+{\footnotesize\ttfamily void quat\+Apply\+Angular\+Velocity (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{input,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{w,  }\item[{float}]{time\+Step,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_adfb7ce6701664de28b3285102b3c894d}\label{quaternion_8c_adfb7ce6701664de28b3285102b3c894d}} 
+\index{quaternion.c@{quaternion.c}!quatAxisAngle@{quatAxisAngle}}
+\index{quatAxisAngle@{quatAxisAngle}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatAxisAngle()}{quatAxisAngle()}}
+{\footnotesize\ttfamily void quat\+Axis\+Angle (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{axis,  }\item[{float}]{angle,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a42db0ea69c5467cebefb4a637260b64c}\label{quaternion_8c_a42db0ea69c5467cebefb4a637260b64c}} 
+\index{quaternion.c@{quaternion.c}!quatAxisComplex@{quatAxisComplex}}
+\index{quatAxisComplex@{quatAxisComplex}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatAxisComplex()}{quatAxisComplex()}}
+{\footnotesize\ttfamily void quat\+Axis\+Complex (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{axis,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{complex,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_ad252a8d7d2de394de516eda950cfab1c}\label{quaternion_8c_ad252a8d7d2de394de516eda950cfab1c}} 
+\index{quaternion.c@{quaternion.c}!quatConjugate@{quatConjugate}}
+\index{quatConjugate@{quatConjugate}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatConjugate()}{quatConjugate()}}
+{\footnotesize\ttfamily void quat\+Conjugate (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{in,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a127107efa71df58f4e4244a27d6fa1a8}\label{quaternion_8c_a127107efa71df58f4e4244a27d6fa1a8}} 
+\index{quaternion.c@{quaternion.c}!quatDecompose@{quatDecompose}}
+\index{quatDecompose@{quatDecompose}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatDecompose()}{quatDecompose()}}
+{\footnotesize\ttfamily void quat\+Decompose (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{input,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{axis,  }\item[{float $\ast$}]{angle }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a0b6ef1f221bea1b1267ad0520c7e1007}\label{quaternion_8c_a0b6ef1f221bea1b1267ad0520c7e1007}} 
+\index{quaternion.c@{quaternion.c}!quatDot@{quatDot}}
+\index{quatDot@{quatDot}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatDot()}{quatDot()}}
+{\footnotesize\ttfamily float quat\+Dot (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{b }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a9e9eab533e3ae6a26582688b1752f20f}\label{quaternion_8c_a9e9eab533e3ae6a26582688b1752f20f}} 
+\index{quaternion.c@{quaternion.c}!quatEulerAngles@{quatEulerAngles}}
+\index{quatEulerAngles@{quatEulerAngles}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatEulerAngles()}{quatEulerAngles()}}
+{\footnotesize\ttfamily void quat\+Euler\+Angles (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{angles,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a1ec133ab599d7efd0e6fca8c8fc38fe4}\label{quaternion_8c_a1ec133ab599d7efd0e6fca8c8fc38fe4}} 
+\index{quaternion.c@{quaternion.c}!quatIdent@{quatIdent}}
+\index{quatIdent@{quatIdent}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatIdent()}{quatIdent()}}
+{\footnotesize\ttfamily void quat\+Ident (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_afaf6cc44a1ed67f76cd3a312e0fc28fc}\label{quaternion_8c_afaf6cc44a1ed67f76cd3a312e0fc28fc}} 
+\index{quaternion.c@{quaternion.c}!quatLerp@{quatLerp}}
+\index{quatLerp@{quatLerp}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatLerp()}{quatLerp()}}
+{\footnotesize\ttfamily void quat\+Lerp (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{b,  }\item[{float}]{t,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a1ce233579c1d79bcb54cbfe064c85d68}\label{quaternion_8c_a1ce233579c1d79bcb54cbfe064c85d68}} 
+\index{quaternion.c@{quaternion.c}!quatLook@{quatLook}}
+\index{quatLook@{quatLook}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatLook()}{quatLook()}}
+{\footnotesize\ttfamily void quat\+Look (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{look\+Dir,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{up,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a0e91b8660bc4c5a62349ae8dfdc89ec7}\label{quaternion_8c_a0e91b8660bc4c5a62349ae8dfdc89ec7}} 
+\index{quaternion.c@{quaternion.c}!quatMultiply@{quatMultiply}}
+\index{quatMultiply@{quatMultiply}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatMultiply()}{quatMultiply()}}
+{\footnotesize\ttfamily void quat\+Multiply (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{b,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a239f9e5d38751ef0988202f04b3fe356}\label{quaternion_8c_a239f9e5d38751ef0988202f04b3fe356}} 
+\index{quaternion.c@{quaternion.c}!quatMultVector@{quatMultVector}}
+\index{quatMultVector@{quatMultVector}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatMultVector()}{quatMultVector()}}
+{\footnotesize\ttfamily void quat\+Mult\+Vector (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{q,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a88575333a1fcbe1cc9d8c0dcd19ddd98}\label{quaternion_8c_a88575333a1fcbe1cc9d8c0dcd19ddd98}} 
+\index{quaternion.c@{quaternion.c}!quatNegate@{quatNegate}}
+\index{quatNegate@{quatNegate}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatNegate()}{quatNegate()}}
+{\footnotesize\ttfamily void quat\+Negate (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{in,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_afbff0950ef01a65d264468b458659a4f}\label{quaternion_8c_afbff0950ef01a65d264468b458659a4f}} 
+\index{quaternion.c@{quaternion.c}!quatNormalize@{quatNormalize}}
+\index{quatNormalize@{quatNormalize}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatNormalize()}{quatNormalize()}}
+{\footnotesize\ttfamily void quat\+Normalize (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{q,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a650aa70345b2b27754d7dddf96b9e2c8}\label{quaternion_8c_a650aa70345b2b27754d7dddf96b9e2c8}} 
+\index{quaternion.c@{quaternion.c}!quatRandom@{quatRandom}}
+\index{quatRandom@{quatRandom}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatRandom()}{quatRandom()}}
+{\footnotesize\ttfamily void quat\+Random (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a606a872c20831cbd8d2c0054615cfa02}\label{quaternion_8c_a606a872c20831cbd8d2c0054615cfa02}} 
+\index{quaternion.c@{quaternion.c}!quatRotateAxisEuler@{quatRotateAxisEuler}}
+\index{quatRotateAxisEuler@{quatRotateAxisEuler}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatRotateAxisEuler()}{quatRotateAxisEuler()}}
+{\footnotesize\ttfamily void quat\+Rotate\+Axis\+Euler (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{q,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{axis,  }\item[{float}]{angle\+Rad,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a989a9899b4fac5ed9533e9c82cb1c17a}\label{quaternion_8c_a989a9899b4fac5ed9533e9c82cb1c17a}} 
+\index{quaternion.c@{quaternion.c}!quatRotatedBoundingBoxSize@{quatRotatedBoundingBoxSize}}
+\index{quatRotatedBoundingBoxSize@{quatRotatedBoundingBoxSize}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatRotatedBoundingBoxSize()}{quatRotatedBoundingBoxSize()}}
+{\footnotesize\ttfamily void quat\+Rotated\+Bounding\+Box\+Size (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{q,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{half\+Box\+Size,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{quaternion_8c_a7847103b963a353c651d068af317ab5e}\label{quaternion_8c_a7847103b963a353c651d068af317ab5e}} 
+\index{quaternion.c@{quaternion.c}!quatToMatrix@{quatToMatrix}}
+\index{quatToMatrix@{quatToMatrix}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{quatToMatrix()}{quatToMatrix()}}
+{\footnotesize\ttfamily void quat\+To\+Matrix (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{q,  }\item[{float}]{out\mbox{[}4\mbox{]}\mbox{[}4\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{quaternion_8c_a36ccb3aa3709e849441155a5e4a56d72}\label{quaternion_8c_a36ccb3aa3709e849441155a5e4a56d72}} 
+\index{quaternion.c@{quaternion.c}!gQuaternionZero@{gQuaternionZero}}
+\index{gQuaternionZero@{gQuaternionZero}!quaternion.c@{quaternion.c}}
+\doxysubsubsection{\texorpdfstring{gQuaternionZero}{gQuaternionZero}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structQuaternion}{Quaternion}} g\+Quaternion\+Zero = \{0.\+0f, 0.\+0f, 0.\+0f, 0.\+0f\}}
+

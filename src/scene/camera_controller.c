@@ -3,9 +3,6 @@
 #include "../time/time.h"
 #include "../render/defs.h"
 
-#define CAMERA_FOLLOW_DISTANCE  45.0f
-#define CAMERA_FOLLOW_HEIGHT    30.0f
-
 void camera_controller_update_position(struct camera_controller* controller, struct Transform* target) {
     struct Vector3 offset;
 
@@ -22,20 +19,22 @@ void camera_controller_update_position(struct camera_controller* controller, str
         }
     }
     
-
+    //calculate the target position of where the camera should be
     struct Vector3 targetPosition;
     vector3AddScaled(&target->position, &offset, -CAMERA_FOLLOW_DISTANCE, &targetPosition);
     targetPosition.y += CAMERA_FOLLOW_HEIGHT;
 
+    //move the camera towards the target position
     vector3Lerp(&controller->camera->transform.position, &targetPosition, frametime_sec * 6.0f, &controller->camera->transform.position);
 
+    //look at the target
     vector3Sub(&target->position, &controller->camera->transform.position, &offset);
     offset.y += CAMERA_FOLLOW_HEIGHT;
     quatLook(&offset, &gUp, &controller->camera->transform.rotation);
 }
 
 void camera_controller_update(struct camera_controller* controller) {
-    vector3Lerp(&controller->target, &controller->player->transform.position, frametime_sec * 54.0f, &controller->target);
+    vector3Lerp(&controller->target, &controller->player->transform.position, 1, &controller->target);
     camera_controller_update_position(controller, &controller->player->transform);
 }
 
@@ -46,7 +45,7 @@ void camera_controller_init(struct camera_controller* controller, struct camera*
     update_add(controller, (update_callback)camera_controller_update, UPDATE_PRIORITY_CAMERA, UPDATE_LAYER_WORLD);
 
     controller->target = player->transform.position;
-    controller->follow_distace = 25.0f;
+    controller->follow_distace = 3.0f;
 
     controller->camera->transform.position = player->transform.position;
     controller->camera->transform.scale = gOneVec;

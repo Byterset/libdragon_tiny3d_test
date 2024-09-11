@@ -1,0 +1,85 @@
+\hypertarget{player_8c}{}\doxysection{src/player/player.c File Reference}
+\label{player_8c}\index{src/player/player.c@{src/player/player.c}}
+{\ttfamily \#include \char`\"{}player.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$libdragon.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../render/render\+\_\+scene.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../collision/collision\+\_\+scene.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../collision/shapes/capsule.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../collision/shapes/cylinder.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../time/time.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../entity/entity\+\_\+id.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/defs.\+h\char`\"{}}\newline
+Include dependency graph for player.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{player_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{player_8c_a9e5036cddf12afce2f37ae0c25934d9c}{PLAYER\+\_\+\+MAX\+\_\+\+SPEED}}~4.\+2f
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{player_8c_af44f18ce924907b8d377825214a61fe1}{player\+\_\+get\+\_\+move\+\_\+basis}} (struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$transform, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$forward, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$right)
+\item 
+void \mbox{\hyperlink{player_8c_ab3738b09bb737c62e2567dd74c5d1ffe}{player\+\_\+update}} (struct \mbox{\hyperlink{structplayer}{player}} $\ast$\mbox{\hyperlink{structplayer}{player}})
+\item 
+void \mbox{\hyperlink{player_8c_a084bb3eaf8f6a8c2d373909c403dd3cc}{player\+\_\+init}} (struct \mbox{\hyperlink{structplayer}{player}} $\ast$\mbox{\hyperlink{structplayer}{player}}, struct \mbox{\hyperlink{structplayer__definition}{player\+\_\+definition}} $\ast$definition, struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$camera\+\_\+transform)
+\item 
+void \mbox{\hyperlink{player_8c_af70b4352eed410c90498788398ca2588}{player\+\_\+destroy}} (struct \mbox{\hyperlink{structplayer}{player}} $\ast$\mbox{\hyperlink{structplayer}{player}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+rspq\+\_\+block\+\_\+t $\ast$ \mbox{\hyperlink{player_8c_a8760fa2314dde0d62ffafb9c1f818b1d}{player\+\_\+dpl}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{player_8c_a9e5036cddf12afce2f37ae0c25934d9c}\label{player_8c_a9e5036cddf12afce2f37ae0c25934d9c}} 
+\index{player.c@{player.c}!PLAYER\_MAX\_SPEED@{PLAYER\_MAX\_SPEED}}
+\index{PLAYER\_MAX\_SPEED@{PLAYER\_MAX\_SPEED}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{PLAYER\_MAX\_SPEED}{PLAYER\_MAX\_SPEED}}
+{\footnotesize\ttfamily \#define PLAYER\+\_\+\+MAX\+\_\+\+SPEED~4.\+2f}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{player_8c_af70b4352eed410c90498788398ca2588}\label{player_8c_af70b4352eed410c90498788398ca2588}} 
+\index{player.c@{player.c}!player\_destroy@{player\_destroy}}
+\index{player\_destroy@{player\_destroy}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_destroy()}{player\_destroy()}}
+{\footnotesize\ttfamily void player\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structplayer}{player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{player_8c_af44f18ce924907b8d377825214a61fe1}\label{player_8c_af44f18ce924907b8d377825214a61fe1}} 
+\index{player.c@{player.c}!player\_get\_move\_basis@{player\_get\_move\_basis}}
+\index{player\_get\_move\_basis@{player\_get\_move\_basis}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_get\_move\_basis()}{player\_get\_move\_basis()}}
+{\footnotesize\ttfamily void player\+\_\+get\+\_\+move\+\_\+basis (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{transform,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{forward,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{right }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{player_8c_a084bb3eaf8f6a8c2d373909c403dd3cc}\label{player_8c_a084bb3eaf8f6a8c2d373909c403dd3cc}} 
+\index{player.c@{player.c}!player\_init@{player\_init}}
+\index{player\_init@{player\_init}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_init()}{player\_init()}}
+{\footnotesize\ttfamily void player\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structplayer}{player}} $\ast$}]{player,  }\item[{struct \mbox{\hyperlink{structplayer__definition}{player\+\_\+definition}} $\ast$}]{definition,  }\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{camera\+\_\+transform }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{player_8c_ab3738b09bb737c62e2567dd74c5d1ffe}\label{player_8c_ab3738b09bb737c62e2567dd74c5d1ffe}} 
+\index{player.c@{player.c}!player\_update@{player\_update}}
+\index{player\_update@{player\_update}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_update()}{player\_update()}}
+{\footnotesize\ttfamily void player\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structplayer}{player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{player_8c_a8760fa2314dde0d62ffafb9c1f818b1d}\label{player_8c_a8760fa2314dde0d62ffafb9c1f818b1d}} 
+\index{player.c@{player.c}!player\_dpl@{player\_dpl}}
+\index{player\_dpl@{player\_dpl}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_dpl}{player\_dpl}}
+{\footnotesize\ttfamily rspq\+\_\+block\+\_\+t$\ast$ player\+\_\+dpl}
+

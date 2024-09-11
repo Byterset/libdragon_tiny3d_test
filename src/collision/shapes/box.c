@@ -11,7 +11,7 @@ void box_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* ou
     output->z = direction->z > 0.0f ? shape_data->box.half_size.z : -shape_data->box.half_size.z;
 }
 
-void box_bounding_box(void* data, struct Vector2* rotation, struct Box3D* box) {
+void box_bounding_box(void* data, struct Vector2* rotation, struct AABB* box) {
     union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)data;
 
     struct Vector3* half_size = &shape_data->box.half_size;

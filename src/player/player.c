@@ -2,8 +2,6 @@
 
 #include <libdragon.h>
 
-#include "../math/vector2.h"
-
 #include "../render/render_scene.h"
 #include "../collision/collision_scene.h"
 #include "../collision/shapes/capsule.h"
@@ -22,8 +20,8 @@ static struct dynamic_object_type player_collision = {
     .bounding_box = capsule_bounding_box,
     .data = {
         .capsule = {
-            .radius = 0.25f,
-            .inner_half_height = 0.5f,
+            .radius = 1.0f,
+            .inner_half_height = 1.0f,
         }
     }
 };
@@ -33,8 +31,8 @@ static struct dynamic_object_type player_visual_shape = {
     .bounding_box = cylinder_bounding_box,
     .data = {
         .cylinder = {
-            .half_height = 0.5f,
-            .radius = 0.5f,
+            .half_height = 1.0f,
+            .radius = 1.0f,
         }
     }
 };
@@ -83,7 +81,7 @@ void player_update(struct player* player) {
         player->is_jumping = true;
     }
     if (pressed.b){
-        player->collision.velocity.y = 50.0f;
+        player->collision.velocity.y = 5.0f;
     }
 
     // Update the animation and modify the skeleton, this will however NOT recalculate the matrices
@@ -125,7 +123,7 @@ void player_update(struct player* player) {
     vector3AddScaled(&directionWorld, &forward, direction.y, &directionWorld);
 
     float prev_y = player->collision.velocity.y;
-    vector3Scale(&directionWorld, &player->collision.velocity, PLAYER_MAX_SPEED);
+    vector3Scale(&directionWorld, &player->collision.velocity, PLAYER_MOVE_SPEED);
     player->collision.velocity.y = prev_y;
 
     player->transform.position.x += directionWorld.x * frametime_sec * PLAYER_MOVE_SPEED;
@@ -158,7 +156,7 @@ void player_update(struct player* player) {
     // player->transform.position.x += moveDir.x * currSpeed;
     // player->transform.position.z += moveDir.z * currSpeed;
     // ...and limit position inside the box
-    const float BOX_SIZE = 140.0f;
+    const float BOX_SIZE = 40.0f;
     if(player->transform.position.x < -BOX_SIZE)player->transform.position.x = -BOX_SIZE;
     if(player->transform.position.x >  BOX_SIZE)player->transform.position.x =  BOX_SIZE;
     if(player->transform.position.z < -BOX_SIZE)player->transform.position.z = -BOX_SIZE;
@@ -194,7 +192,7 @@ void player_init(struct player* player, struct player_definition* definition, st
 
     
     player->skelBlend = t3d_skeleton_clone(&player->renderable.model->skeleton, false);
-    player->transform.scale = (struct Vector3){0.125f, 0.125f, 0.125f};
+    player->transform.scale = (struct Vector3){1, 1, 1};
     player->camera_transform = camera_transform;
 
     player->transform.position = definition->location;
@@ -217,6 +215,8 @@ void player_init(struct player* player, struct player_definition* definition, st
         &player->transform.position,
         &player->look_direction
     );
+
+    player->collision.collision_group = COLLISION_GROUP_PLAYER;
 
     player->collision.has_gravity = true;
     
@@ -248,7 +248,7 @@ void player_destroy(struct player* player) {
 
     render_scene_remove(&player->renderable);
     update_remove(player);
-    // collision_scene_remove(&player->collision);
+    collision_scene_remove(&player->collision);
     t3d_anim_destroy(&player->animations.idle);
     t3d_anim_destroy(&player->animations.walk);
     t3d_anim_destroy(&player->animations.attack);

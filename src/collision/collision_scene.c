@@ -185,7 +185,7 @@ void collision_scene_collide_dynamic() {
             for (int active_index = 0; active_index < active_object_count; active_index += 1) {
                 struct dynamic_object* b = g_scene.elements[active_objects[active_index]].object;
 
-                if (box3DHasOverlap(&a->bounding_box, &b->bounding_box)) {
+                if (AABBHasOverlap(&a->bounding_box, &b->bounding_box)) {
                     collide_object_to_object(a, b);
                 }
             }
@@ -293,7 +293,7 @@ void positioned_shape_mink_sum(void* data, struct Vector3* direction, struct Vec
 }
 
 void collision_scene_query(struct dynamic_object_type* shape, struct Vector3* center, int collision_layers, collision_scene_query_callback callback, void* callback_data) {
-    struct Box3D bounding_box;
+    struct AABB bounding_box;
     shape->bounding_box(&shape->data, NULL, &bounding_box);
     vector3Add(&bounding_box.min, center, &bounding_box.min);
     vector3Add(&bounding_box.max, center, &bounding_box.max);
@@ -310,7 +310,7 @@ void collision_scene_query(struct dynamic_object_type* shape, struct Vector3* ce
             continue;
         }
 
-        if (!box3DHasOverlap(&bounding_box, &element->object->bounding_box)) {
+        if (!AABBHasOverlap(&bounding_box, &element->object->bounding_box)) {
             continue;
         }
 

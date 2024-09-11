@@ -1,0 +1,41 @@
+\hypertarget{cylinder_8h}{}\doxysection{src/collision/shapes/cylinder.h File Reference}
+\label{cylinder_8h}\index{src/collision/shapes/cylinder.h@{src/collision/shapes/cylinder.h}}
+{\ttfamily \#include \char`\"{}../../math/vector2.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../math/vector3.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../math/aabb.\+h\char`\"{}}\newline
+Include dependency graph for cylinder.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{cylinder_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cylinder_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{cylinder_8h_a8bbce21d2b7547f7d978f6ef31c8e432}{cylinder\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+void \mbox{\hyperlink{cylinder_8h_a8f99d5fafa159c96184bdb6d5f9f75c7}{cylinder\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{cylinder_8h_a8f99d5fafa159c96184bdb6d5f9f75c7}\label{cylinder_8h_a8f99d5fafa159c96184bdb6d5f9f75c7}} 
+\index{cylinder.h@{cylinder.h}!cylinder\_bounding\_box@{cylinder\_bounding\_box}}
+\index{cylinder\_bounding\_box@{cylinder\_bounding\_box}!cylinder.h@{cylinder.h}}
+\doxysubsubsection{\texorpdfstring{cylinder\_bounding\_box()}{cylinder\_bounding\_box()}}
+{\footnotesize\ttfamily void cylinder\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{cylinder_8h_a8bbce21d2b7547f7d978f6ef31c8e432}\label{cylinder_8h_a8bbce21d2b7547f7d978f6ef31c8e432}} 
+\index{cylinder.h@{cylinder.h}!cylinder\_minkowski\_sum@{cylinder\_minkowski\_sum}}
+\index{cylinder\_minkowski\_sum@{cylinder\_minkowski\_sum}!cylinder.h@{cylinder.h}}
+\doxysubsubsection{\texorpdfstring{cylinder\_minkowski\_sum()}{cylinder\_minkowski\_sum()}}
+{\footnotesize\ttfamily void cylinder\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+

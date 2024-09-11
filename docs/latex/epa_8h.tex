@@ -1,0 +1,53 @@
+\hypertarget{epa_8h}{}\doxysection{src/collision/epa.h File Reference}
+\label{epa_8h}\index{src/collision/epa.h@{src/collision/epa.h}}
+{\ttfamily \#include \char`\"{}gjk.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+Include dependency graph for epa.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{epa_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{epa_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structEpaResult}{Epa\+Result}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{epa_8h_a9bf03e911146642afdf82e2f56acbafa}{epa\+Solve}} (struct \mbox{\hyperlink{structSimplex}{Simplex}} $\ast$starting\+Simplex, void $\ast$objectA, \mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}} object\+ASum, void $\ast$objectB, \mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}} object\+BSum, struct \mbox{\hyperlink{structEpaResult}{Epa\+Result}} $\ast$result)
+\item 
+int \mbox{\hyperlink{epa_8h_a445dad10a777de78e72c811d32d56cdc}{epa\+Solve\+Swept}} (struct \mbox{\hyperlink{structSimplex}{Simplex}} $\ast$starting\+Simplex, void $\ast$objectA, \mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}} object\+ASum, void $\ast$objectB, \mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}} object\+BSum, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b\+Start, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b\+End, struct \mbox{\hyperlink{structEpaResult}{Epa\+Result}} $\ast$result)
+\item 
+void \mbox{\hyperlink{epa_8h_adf3e9b77a5cad2a29960a73b2b322d28}{epa\+Swap\+Result}} (struct \mbox{\hyperlink{structEpaResult}{Epa\+Result}} $\ast$result)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{epa_8h_a9bf03e911146642afdf82e2f56acbafa}\label{epa_8h_a9bf03e911146642afdf82e2f56acbafa}} 
+\index{epa.h@{epa.h}!epaSolve@{epaSolve}}
+\index{epaSolve@{epaSolve}!epa.h@{epa.h}}
+\doxysubsubsection{\texorpdfstring{epaSolve()}{epaSolve()}}
+{\footnotesize\ttfamily bool epa\+Solve (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structSimplex}{Simplex}} $\ast$}]{starting\+Simplex,  }\item[{void $\ast$}]{objectA,  }\item[{\mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}}}]{object\+ASum,  }\item[{void $\ast$}]{objectB,  }\item[{\mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}}}]{object\+BSum,  }\item[{struct \mbox{\hyperlink{structEpaResult}{Epa\+Result}} $\ast$}]{result }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{epa_8h_a445dad10a777de78e72c811d32d56cdc}\label{epa_8h_a445dad10a777de78e72c811d32d56cdc}} 
+\index{epa.h@{epa.h}!epaSolveSwept@{epaSolveSwept}}
+\index{epaSolveSwept@{epaSolveSwept}!epa.h@{epa.h}}
+\doxysubsubsection{\texorpdfstring{epaSolveSwept()}{epaSolveSwept()}}
+{\footnotesize\ttfamily int epa\+Solve\+Swept (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structSimplex}{Simplex}} $\ast$}]{starting\+Simplex,  }\item[{void $\ast$}]{objectA,  }\item[{\mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}}}]{object\+ASum,  }\item[{void $\ast$}]{objectB,  }\item[{\mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}}}]{object\+BSum,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{b\+Start,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{b\+End,  }\item[{struct \mbox{\hyperlink{structEpaResult}{Epa\+Result}} $\ast$}]{result }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{epa_8h_adf3e9b77a5cad2a29960a73b2b322d28}\label{epa_8h_adf3e9b77a5cad2a29960a73b2b322d28}} 
+\index{epa.h@{epa.h}!epaSwapResult@{epaSwapResult}}
+\index{epaSwapResult@{epaSwapResult}!epa.h@{epa.h}}
+\doxysubsubsection{\texorpdfstring{epaSwapResult()}{epaSwapResult()}}
+{\footnotesize\ttfamily void epa\+Swap\+Result (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structEpaResult}{Epa\+Result}} $\ast$}]{result }\end{DoxyParamCaption})}
+

@@ -1,0 +1,201 @@
+\hypertarget{material_8c}{}\doxysection{src/render/material.c File Reference}
+\label{material_8c}\index{src/render/material.c@{src/render/material.c}}
+{\ttfamily \#include \char`\"{}material.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$t3d/t3d.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../resource/sprite\+\_\+cache.\+h\char`\"{}}\newline
+Include dependency graph for material.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{material_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtext__axis}{text\+\_\+axis}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{material_8c_aa5a0329e4b1d3df426a8713ee0dc477f}{EXPECTED\+\_\+\+HEADER}}~0x4\+D415452
+\item 
+\#define \mbox{\hyperlink{material_8c_a50a0dec69fd800a4a3a512f4f3ca5c08}{COMMAND\+\_\+\+EOF}}~0x00
+\item 
+\#define \mbox{\hyperlink{material_8c_a42ddf93e40624f5c17f723d8ec3cbc6c}{COMMAND\+\_\+\+COMBINE}}~0x01
+\item 
+\#define \mbox{\hyperlink{material_8c_a649ee25a6b940a555ff36b256649f4cf}{COMMAND\+\_\+\+BLEND}}~0x02
+\item 
+\#define \mbox{\hyperlink{material_8c_a34c3ff9626bbd2f86fc399c18eae43a6}{COMMAND\+\_\+\+ENV}}~0x03
+\item 
+\#define \mbox{\hyperlink{material_8c_aa9db920eecd6cd46da9697bc66152ab4}{COMMAND\+\_\+\+PRIM}}~0x04
+\item 
+\#define \mbox{\hyperlink{material_8c_adb88509ab70038200944e584b3db7c5c}{COMMAND\+\_\+\+BLEND\+\_\+\+COLOR}}~0x05
+\item 
+\#define \mbox{\hyperlink{material_8c_adc2b2eac6022ce6e6ee499c79fc4db8b}{COMMAND\+\_\+\+FLAGS}}~0x06
+\item 
+\#define \mbox{\hyperlink{material_8c_a258fbaac6c6b76e34ebee4650f930cb1}{COMMAND\+\_\+\+PALETTE}}~0x07
+\item 
+\#define \mbox{\hyperlink{material_8c_a7e3559e2cd9e3fbd30d4ec44f1ee8644}{COMMAND\+\_\+\+UV\+\_\+\+GEN}}~0x08
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{material_8c_ab8fd168e4d023481cd26c6a6a780de4b}{material\+\_\+init}} (struct \mbox{\hyperlink{structmaterial}{material}} $\ast$\mbox{\hyperlink{structmaterial}{material}})
+\begin{DoxyCompactList}\small\item\em initialize a material with default values \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{material_8c_a847a0ef364ebc45a07932f1c3ca3b3e8}{material\+\_\+destroy}} (struct \mbox{\hyperlink{structmaterial}{material}} $\ast$\mbox{\hyperlink{structmaterial}{material}})
+\begin{DoxyCompactList}\small\item\em free the momory of a material object. Will free the associated textures, palette and rspq\+\_\+block \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{material_8c_a195c63b774f810deb973f1f0028ac1ff}{material\+\_\+load\+\_\+tex\+\_\+axis}} (struct \mbox{\hyperlink{structtext__axis}{text\+\_\+axis}} $\ast$axis, FILE $\ast$file)
+\item 
+void \mbox{\hyperlink{material_8c_a549ec72e3abf5843602618773b4f4e97}{material\+\_\+load\+\_\+tex}} (struct \mbox{\hyperlink{structmaterial__tex}{material\+\_\+tex}} $\ast$tex, FILE $\ast$file)
+\begin{DoxyCompactList}\small\item\em load a texture from a sprite file via the sprite cache and set the texture parameters. First the filename is read from the file stream and the sprite loaded from the read filename, then the texture parameters are read and set. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{material_8c_a13f9e935ad04fc85d8b5e32508595cd0}{material\+\_\+load}} (struct \mbox{\hyperlink{structmaterial}{material}} $\ast$into, FILE $\ast$material\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Read a custom material from a file stream and create a material object with a rspq\+\_\+block that contains the material commands. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{material_8c_a84311e47f7f707d1ae5534ec6bcb5047}{material\+\_\+release}} (struct \mbox{\hyperlink{structmaterial}{material}} $\ast$\mbox{\hyperlink{structmaterial}{material}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{material_8c_a649ee25a6b940a555ff36b256649f4cf}\label{material_8c_a649ee25a6b940a555ff36b256649f4cf}} 
+\index{material.c@{material.c}!COMMAND\_BLEND@{COMMAND\_BLEND}}
+\index{COMMAND\_BLEND@{COMMAND\_BLEND}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{COMMAND\_BLEND}{COMMAND\_BLEND}}
+{\footnotesize\ttfamily \#define COMMAND\+\_\+\+BLEND~0x02}
+
+\mbox{\Hypertarget{material_8c_adb88509ab70038200944e584b3db7c5c}\label{material_8c_adb88509ab70038200944e584b3db7c5c}} 
+\index{material.c@{material.c}!COMMAND\_BLEND\_COLOR@{COMMAND\_BLEND\_COLOR}}
+\index{COMMAND\_BLEND\_COLOR@{COMMAND\_BLEND\_COLOR}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{COMMAND\_BLEND\_COLOR}{COMMAND\_BLEND\_COLOR}}
+{\footnotesize\ttfamily \#define COMMAND\+\_\+\+BLEND\+\_\+\+COLOR~0x05}
+
+\mbox{\Hypertarget{material_8c_a42ddf93e40624f5c17f723d8ec3cbc6c}\label{material_8c_a42ddf93e40624f5c17f723d8ec3cbc6c}} 
+\index{material.c@{material.c}!COMMAND\_COMBINE@{COMMAND\_COMBINE}}
+\index{COMMAND\_COMBINE@{COMMAND\_COMBINE}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{COMMAND\_COMBINE}{COMMAND\_COMBINE}}
+{\footnotesize\ttfamily \#define COMMAND\+\_\+\+COMBINE~0x01}
+
+\mbox{\Hypertarget{material_8c_a34c3ff9626bbd2f86fc399c18eae43a6}\label{material_8c_a34c3ff9626bbd2f86fc399c18eae43a6}} 
+\index{material.c@{material.c}!COMMAND\_ENV@{COMMAND\_ENV}}
+\index{COMMAND\_ENV@{COMMAND\_ENV}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{COMMAND\_ENV}{COMMAND\_ENV}}
+{\footnotesize\ttfamily \#define COMMAND\+\_\+\+ENV~0x03}
+
+\mbox{\Hypertarget{material_8c_a50a0dec69fd800a4a3a512f4f3ca5c08}\label{material_8c_a50a0dec69fd800a4a3a512f4f3ca5c08}} 
+\index{material.c@{material.c}!COMMAND\_EOF@{COMMAND\_EOF}}
+\index{COMMAND\_EOF@{COMMAND\_EOF}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{COMMAND\_EOF}{COMMAND\_EOF}}
+{\footnotesize\ttfamily \#define COMMAND\+\_\+\+EOF~0x00}
+
+\mbox{\Hypertarget{material_8c_adc2b2eac6022ce6e6ee499c79fc4db8b}\label{material_8c_adc2b2eac6022ce6e6ee499c79fc4db8b}} 
+\index{material.c@{material.c}!COMMAND\_FLAGS@{COMMAND\_FLAGS}}
+\index{COMMAND\_FLAGS@{COMMAND\_FLAGS}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{COMMAND\_FLAGS}{COMMAND\_FLAGS}}
+{\footnotesize\ttfamily \#define COMMAND\+\_\+\+FLAGS~0x06}
+
+\mbox{\Hypertarget{material_8c_a258fbaac6c6b76e34ebee4650f930cb1}\label{material_8c_a258fbaac6c6b76e34ebee4650f930cb1}} 
+\index{material.c@{material.c}!COMMAND\_PALETTE@{COMMAND\_PALETTE}}
+\index{COMMAND\_PALETTE@{COMMAND\_PALETTE}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{COMMAND\_PALETTE}{COMMAND\_PALETTE}}
+{\footnotesize\ttfamily \#define COMMAND\+\_\+\+PALETTE~0x07}
+
+\mbox{\Hypertarget{material_8c_aa9db920eecd6cd46da9697bc66152ab4}\label{material_8c_aa9db920eecd6cd46da9697bc66152ab4}} 
+\index{material.c@{material.c}!COMMAND\_PRIM@{COMMAND\_PRIM}}
+\index{COMMAND\_PRIM@{COMMAND\_PRIM}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{COMMAND\_PRIM}{COMMAND\_PRIM}}
+{\footnotesize\ttfamily \#define COMMAND\+\_\+\+PRIM~0x04}
+
+\mbox{\Hypertarget{material_8c_a7e3559e2cd9e3fbd30d4ec44f1ee8644}\label{material_8c_a7e3559e2cd9e3fbd30d4ec44f1ee8644}} 
+\index{material.c@{material.c}!COMMAND\_UV\_GEN@{COMMAND\_UV\_GEN}}
+\index{COMMAND\_UV\_GEN@{COMMAND\_UV\_GEN}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{COMMAND\_UV\_GEN}{COMMAND\_UV\_GEN}}
+{\footnotesize\ttfamily \#define COMMAND\+\_\+\+UV\+\_\+\+GEN~0x08}
+
+\mbox{\Hypertarget{material_8c_aa5a0329e4b1d3df426a8713ee0dc477f}\label{material_8c_aa5a0329e4b1d3df426a8713ee0dc477f}} 
+\index{material.c@{material.c}!EXPECTED\_HEADER@{EXPECTED\_HEADER}}
+\index{EXPECTED\_HEADER@{EXPECTED\_HEADER}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{EXPECTED\_HEADER}{EXPECTED\_HEADER}}
+{\footnotesize\ttfamily \#define EXPECTED\+\_\+\+HEADER~0x4\+D415452}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{material_8c_a847a0ef364ebc45a07932f1c3ca3b3e8}\label{material_8c_a847a0ef364ebc45a07932f1c3ca3b3e8}} 
+\index{material.c@{material.c}!material\_destroy@{material\_destroy}}
+\index{material\_destroy@{material\_destroy}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{material\_destroy()}{material\_destroy()}}
+{\footnotesize\ttfamily void material\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{material }\end{DoxyParamCaption})}
+
+
+
+free the momory of a material object. Will free the associated textures, palette and rspq\+\_\+block 
+
+
+\begin{DoxyParams}{Parameters}
+{\em material} & pointer to the material to be destroyed \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{material_8c_ab8fd168e4d023481cd26c6a6a780de4b}\label{material_8c_ab8fd168e4d023481cd26c6a6a780de4b}} 
+\index{material.c@{material.c}!material\_init@{material\_init}}
+\index{material\_init@{material\_init}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{material\_init()}{material\_init()}}
+{\footnotesize\ttfamily void material\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{material }\end{DoxyParamCaption})}
+
+
+
+initialize a material with default values 
+
+
+\begin{DoxyParams}{Parameters}
+{\em material} & ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{material_8c_a13f9e935ad04fc85d8b5e32508595cd0}\label{material_8c_a13f9e935ad04fc85d8b5e32508595cd0}} 
+\index{material.c@{material.c}!material\_load@{material\_load}}
+\index{material\_load@{material\_load}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{material\_load()}{material\_load()}}
+{\footnotesize\ttfamily void material\+\_\+load (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{into,  }\item[{FILE $\ast$}]{material\+\_\+file }\end{DoxyParamCaption})}
+
+
+
+Read a custom material from a file stream and create a material object with a rspq\+\_\+block that contains the material commands. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em into} & the target material \\
+\hline
+{\em material\+\_\+file} & the file stream to read from \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{material_8c_a549ec72e3abf5843602618773b4f4e97}\label{material_8c_a549ec72e3abf5843602618773b4f4e97}} 
+\index{material.c@{material.c}!material\_load\_tex@{material\_load\_tex}}
+\index{material\_load\_tex@{material\_load\_tex}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{material\_load\_tex()}{material\_load\_tex()}}
+{\footnotesize\ttfamily void material\+\_\+load\+\_\+tex (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmaterial__tex}{material\+\_\+tex}} $\ast$}]{tex,  }\item[{FILE $\ast$}]{file }\end{DoxyParamCaption})}
+
+
+
+load a texture from a sprite file via the sprite cache and set the texture parameters. First the filename is read from the file stream and the sprite loaded from the read filename, then the texture parameters are read and set. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tex} & the target texture \\
+\hline
+{\em file} & the material file stream to read from \\
+\hline
+{\em create\+\_\+texture} & ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{material_8c_a195c63b774f810deb973f1f0028ac1ff}\label{material_8c_a195c63b774f810deb973f1f0028ac1ff}} 
+\index{material.c@{material.c}!material\_load\_tex\_axis@{material\_load\_tex\_axis}}
+\index{material\_load\_tex\_axis@{material\_load\_tex\_axis}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{material\_load\_tex\_axis()}{material\_load\_tex\_axis()}}
+{\footnotesize\ttfamily void material\+\_\+load\+\_\+tex\+\_\+axis (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtext__axis}{text\+\_\+axis}} $\ast$}]{axis,  }\item[{FILE $\ast$}]{file }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{material_8c_a84311e47f7f707d1ae5534ec6bcb5047}\label{material_8c_a84311e47f7f707d1ae5534ec6bcb5047}} 
+\index{material.c@{material.c}!material\_release@{material\_release}}
+\index{material\_release@{material\_release}!material.c@{material.c}}
+\doxysubsubsection{\texorpdfstring{material\_release()}{material\_release()}}
+{\footnotesize\ttfamily void material\+\_\+release (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{material }\end{DoxyParamCaption})}
+

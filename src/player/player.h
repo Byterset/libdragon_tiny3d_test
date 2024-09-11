@@ -9,7 +9,7 @@
 #include "../collision/dynamic_object.h"
 #include <t3d/t3danim.h>
 
-#define PLAYER_MOVE_SPEED 50.0f
+#define PLAYER_MOVE_SPEED 5.0f
 #define PLAYER_TURN_SPEED 20.0f
 
 
@@ -38,8 +38,6 @@ struct player {
 };
 
 void player_init(struct player* player, struct player_definition* definition, struct Transform* camera_transform);
-
-void player_render(struct player* player, struct render_batch* batch);
 
 void player_destroy(struct player* player);
 

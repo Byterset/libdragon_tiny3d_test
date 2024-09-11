@@ -1,0 +1,148 @@
+\hypertarget{callback__list_8h}{}\doxysection{src/util/callback\+\_\+list.h File Reference}
+\label{callback__list_8h}\index{src/util/callback\_list.h@{src/util/callback\_list.h}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{callback__list_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcallback__element}{callback\+\_\+element}}
+\item 
+struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{callback__list_8h_adeacd440af2d9d79602ac04fa08188a9}{callback\+\_\+list\+\_\+get}}(list,  index)~(struct \mbox{\hyperlink{structcallback__element}{callback\+\_\+element}}$\ast$)((char$\ast$)(list)-\/$>$elements + (index) $\ast$ (list)-\/$>$element\+\_\+size)
+\item 
+\#define \mbox{\hyperlink{callback__list_8h_af9449c868fd7ca9dfd566e196b39a2f5}{callback\+\_\+element\+\_\+get\+\_\+data}}(element)~(void$\ast$)((element) + 1)
+\item 
+\#define \mbox{\hyperlink{callback__list_8h_a37bb0115c06918baa564d8721b3c35b9}{callback\+\_\+list\+\_\+next}}(list,  curr)~(struct \mbox{\hyperlink{structcallback__element}{callback\+\_\+element}}$\ast$)((char$\ast$)(curr) + (list)-\/$>$element\+\_\+size)
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef int \mbox{\hyperlink{callback__list_8h_a037380520c1f7b4d509786dc1b1b8bb5}{callback\+\_\+id}}
+\item 
+typedef int($\ast$ \mbox{\hyperlink{callback__list_8h_a623c04f9a2c16ed15a795190a85f860a}{data\+\_\+compare}}) (void $\ast$a, void $\ast$b)
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{callback__list_8h_a65990328f05e4c602640bc5330de6946}{callback\+\_\+list\+\_\+flags}} \{ \mbox{\hyperlink{callback__list_8h_a65990328f05e4c602640bc5330de6946af478004c28e63277a91faf8daa664fc1}{CALLBACK\+\_\+\+LIST\+\_\+\+ENUMERATING}} = (1 $<$$<$ 0)
+, \mbox{\hyperlink{callback__list_8h_a65990328f05e4c602640bc5330de6946a57bd40a095086479352bea74df6851b9}{CALLBACK\+\_\+\+LIST\+\_\+\+HAS\+\_\+\+DELETIONS}} = (1 $<$$<$ 1)
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{callback__list_8h_ab5bedb8c5bd594a9dc19c65d8cb1f948}{callback\+\_\+list\+\_\+reset}} (struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$list, int data\+\_\+size, int min\+\_\+capcity, \mbox{\hyperlink{callback__list_8h_a623c04f9a2c16ed15a795190a85f860a}{data\+\_\+compare}} data\+\_\+compare\+\_\+callback)
+\item 
+\mbox{\hyperlink{callback__list_8h_a037380520c1f7b4d509786dc1b1b8bb5}{callback\+\_\+id}} \mbox{\hyperlink{callback__list_8h_ab39123b59dead327301594b4aa763939}{callback\+\_\+list\+\_\+insert}} (struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$list, void $\ast$callback, void $\ast$data)
+\item 
+void \mbox{\hyperlink{callback__list_8h_a385f932b4bdcae66e9bcf9b83d5041a0}{callback\+\_\+list\+\_\+insert\+\_\+with\+\_\+id}} (struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$list, void $\ast$callback, void $\ast$data, \mbox{\hyperlink{callback__list_8h_a037380520c1f7b4d509786dc1b1b8bb5}{callback\+\_\+id}} id)
+\item 
+void \mbox{\hyperlink{callback__list_8h_a2839beaef1e5d32aa5052312c1d09fdd}{callback\+\_\+list\+\_\+remove}} (struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$list, \mbox{\hyperlink{callback__list_8h_a037380520c1f7b4d509786dc1b1b8bb5}{callback\+\_\+id}} id)
+\item 
+void \mbox{\hyperlink{callback__list_8h_a273dca9afa82e250fda85ab403dd5c70}{callback\+\_\+list\+\_\+begin}} (struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$list)
+\item 
+void \mbox{\hyperlink{callback__list_8h_ac3d3c2cfa723c7315ae10228214e789a}{callback\+\_\+list\+\_\+end}} (struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$list)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{callback__list_8h_af9449c868fd7ca9dfd566e196b39a2f5}\label{callback__list_8h_af9449c868fd7ca9dfd566e196b39a2f5}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_element\_get\_data@{callback\_element\_get\_data}}
+\index{callback\_element\_get\_data@{callback\_element\_get\_data}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_element\_get\_data}{callback\_element\_get\_data}}
+{\footnotesize\ttfamily \#define callback\+\_\+element\+\_\+get\+\_\+data(\begin{DoxyParamCaption}\item[{}]{element }\end{DoxyParamCaption})~(void$\ast$)((element) + 1)}
+
+\mbox{\Hypertarget{callback__list_8h_adeacd440af2d9d79602ac04fa08188a9}\label{callback__list_8h_adeacd440af2d9d79602ac04fa08188a9}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_list\_get@{callback\_list\_get}}
+\index{callback\_list\_get@{callback\_list\_get}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_list\_get}{callback\_list\_get}}
+{\footnotesize\ttfamily \#define callback\+\_\+list\+\_\+get(\begin{DoxyParamCaption}\item[{}]{list,  }\item[{}]{index }\end{DoxyParamCaption})~(struct \mbox{\hyperlink{structcallback__element}{callback\+\_\+element}}$\ast$)((char$\ast$)(list)-\/$>$elements + (index) $\ast$ (list)-\/$>$element\+\_\+size)}
+
+\mbox{\Hypertarget{callback__list_8h_a37bb0115c06918baa564d8721b3c35b9}\label{callback__list_8h_a37bb0115c06918baa564d8721b3c35b9}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_list\_next@{callback\_list\_next}}
+\index{callback\_list\_next@{callback\_list\_next}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_list\_next}{callback\_list\_next}}
+{\footnotesize\ttfamily \#define callback\+\_\+list\+\_\+next(\begin{DoxyParamCaption}\item[{}]{list,  }\item[{}]{curr }\end{DoxyParamCaption})~(struct \mbox{\hyperlink{structcallback__element}{callback\+\_\+element}}$\ast$)((char$\ast$)(curr) + (list)-\/$>$element\+\_\+size)}
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{callback__list_8h_a037380520c1f7b4d509786dc1b1b8bb5}\label{callback__list_8h_a037380520c1f7b4d509786dc1b1b8bb5}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_id@{callback\_id}}
+\index{callback\_id@{callback\_id}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_id}{callback\_id}}
+{\footnotesize\ttfamily typedef int \mbox{\hyperlink{callback__list_8h_a037380520c1f7b4d509786dc1b1b8bb5}{callback\+\_\+id}}}
+
+\mbox{\Hypertarget{callback__list_8h_a623c04f9a2c16ed15a795190a85f860a}\label{callback__list_8h_a623c04f9a2c16ed15a795190a85f860a}} 
+\index{callback\_list.h@{callback\_list.h}!data\_compare@{data\_compare}}
+\index{data\_compare@{data\_compare}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{data\_compare}{data\_compare}}
+{\footnotesize\ttfamily typedef int($\ast$ data\+\_\+compare) (void $\ast$a, void $\ast$b)}
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{callback__list_8h_a65990328f05e4c602640bc5330de6946}\label{callback__list_8h_a65990328f05e4c602640bc5330de6946}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_list\_flags@{callback\_list\_flags}}
+\index{callback\_list\_flags@{callback\_list\_flags}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_list\_flags}{callback\_list\_flags}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{callback__list_8h_a65990328f05e4c602640bc5330de6946}{callback\+\_\+list\+\_\+flags}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CALLBACK\_LIST\_ENUMERATING@{CALLBACK\_LIST\_ENUMERATING}!callback\_list.h@{callback\_list.h}}\index{callback\_list.h@{callback\_list.h}!CALLBACK\_LIST\_ENUMERATING@{CALLBACK\_LIST\_ENUMERATING}}}\mbox{\Hypertarget{callback__list_8h_a65990328f05e4c602640bc5330de6946af478004c28e63277a91faf8daa664fc1}\label{callback__list_8h_a65990328f05e4c602640bc5330de6946af478004c28e63277a91faf8daa664fc1}} 
+CALLBACK\+\_\+\+LIST\+\_\+\+ENUMERATING&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CALLBACK\_LIST\_HAS\_DELETIONS@{CALLBACK\_LIST\_HAS\_DELETIONS}!callback\_list.h@{callback\_list.h}}\index{callback\_list.h@{callback\_list.h}!CALLBACK\_LIST\_HAS\_DELETIONS@{CALLBACK\_LIST\_HAS\_DELETIONS}}}\mbox{\Hypertarget{callback__list_8h_a65990328f05e4c602640bc5330de6946a57bd40a095086479352bea74df6851b9}\label{callback__list_8h_a65990328f05e4c602640bc5330de6946a57bd40a095086479352bea74df6851b9}} 
+CALLBACK\+\_\+\+LIST\+\_\+\+HAS\+\_\+\+DELETIONS&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{callback__list_8h_a273dca9afa82e250fda85ab403dd5c70}\label{callback__list_8h_a273dca9afa82e250fda85ab403dd5c70}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_list\_begin@{callback\_list\_begin}}
+\index{callback\_list\_begin@{callback\_list\_begin}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_list\_begin()}{callback\_list\_begin()}}
+{\footnotesize\ttfamily void callback\+\_\+list\+\_\+begin (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{callback__list_8h_ac3d3c2cfa723c7315ae10228214e789a}\label{callback__list_8h_ac3d3c2cfa723c7315ae10228214e789a}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_list\_end@{callback\_list\_end}}
+\index{callback\_list\_end@{callback\_list\_end}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_list\_end()}{callback\_list\_end()}}
+{\footnotesize\ttfamily void callback\+\_\+list\+\_\+end (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{callback__list_8h_ab39123b59dead327301594b4aa763939}\label{callback__list_8h_ab39123b59dead327301594b4aa763939}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_list\_insert@{callback\_list\_insert}}
+\index{callback\_list\_insert@{callback\_list\_insert}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_list\_insert()}{callback\_list\_insert()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{callback__list_8h_a037380520c1f7b4d509786dc1b1b8bb5}{callback\+\_\+id}} callback\+\_\+list\+\_\+insert (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$}]{list,  }\item[{void $\ast$}]{callback,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{callback__list_8h_a385f932b4bdcae66e9bcf9b83d5041a0}\label{callback__list_8h_a385f932b4bdcae66e9bcf9b83d5041a0}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_list\_insert\_with\_id@{callback\_list\_insert\_with\_id}}
+\index{callback\_list\_insert\_with\_id@{callback\_list\_insert\_with\_id}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_list\_insert\_with\_id()}{callback\_list\_insert\_with\_id()}}
+{\footnotesize\ttfamily void callback\+\_\+list\+\_\+insert\+\_\+with\+\_\+id (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$}]{list,  }\item[{void $\ast$}]{callback,  }\item[{void $\ast$}]{data,  }\item[{\mbox{\hyperlink{callback__list_8h_a037380520c1f7b4d509786dc1b1b8bb5}{callback\+\_\+id}}}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{callback__list_8h_a2839beaef1e5d32aa5052312c1d09fdd}\label{callback__list_8h_a2839beaef1e5d32aa5052312c1d09fdd}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_list\_remove@{callback\_list\_remove}}
+\index{callback\_list\_remove@{callback\_list\_remove}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_list\_remove()}{callback\_list\_remove()}}
+{\footnotesize\ttfamily void callback\+\_\+list\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$}]{list,  }\item[{\mbox{\hyperlink{callback__list_8h_a037380520c1f7b4d509786dc1b1b8bb5}{callback\+\_\+id}}}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{callback__list_8h_ab5bedb8c5bd594a9dc19c65d8cb1f948}\label{callback__list_8h_ab5bedb8c5bd594a9dc19c65d8cb1f948}} 
+\index{callback\_list.h@{callback\_list.h}!callback\_list\_reset@{callback\_list\_reset}}
+\index{callback\_list\_reset@{callback\_list\_reset}!callback\_list.h@{callback\_list.h}}
+\doxysubsubsection{\texorpdfstring{callback\_list\_reset()}{callback\_list\_reset()}}
+{\footnotesize\ttfamily void callback\+\_\+list\+\_\+reset (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcallback__list}{callback\+\_\+list}} $\ast$}]{list,  }\item[{int}]{data\+\_\+size,  }\item[{int}]{min\+\_\+capcity,  }\item[{\mbox{\hyperlink{callback__list_8h_a623c04f9a2c16ed15a795190a85f860a}{data\+\_\+compare}}}]{data\+\_\+compare\+\_\+callback }\end{DoxyParamCaption})}
+

@@ -35,7 +35,7 @@ void sweep_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* 
     output->z = result_2d.y * shape_data->sweep.radius;
 }
 
-void sweep_bounding_box(void* data, struct Vector2* rotation, struct Box3D* box) {
+void sweep_bounding_box(void* data, struct Vector2* rotation, struct AABB* box) {
     union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)data;
 
     box->min = (struct Vector3){0.0f, -shape_data->sweep.half_height, 0.0f};

@@ -1,0 +1,107 @@
+\hypertarget{transform_8h}{}\doxysection{src/math/transform.h File Reference}
+\label{transform_8h}\index{src/math/transform.h@{src/math/transform.h}}
+{\ttfamily \#include \char`\"{}vector3.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}quaternion.\+h\char`\"{}}\newline
+Include dependency graph for transform.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{transform_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{transform_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structTransform}{Transform}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structTransform}{Transform}} \mbox{\hyperlink{transform_8h_a512254f7ee8948f0323992006331503c}{Transform}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{transform_8h_a10dc33efe46c19eff8ff9533a34e9911}{transform\+Init\+Identity}} (struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$in)
+\item 
+void \mbox{\hyperlink{transform_8h_aa4dcde4164a60732180e4eb71f347753}{transform\+To\+Matrix}} (struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$in, float mtx\mbox{[}4\mbox{]}\mbox{[}4\mbox{]})
+\item 
+void \mbox{\hyperlink{transform_8h_aa8c1cdc3355613a5f1e025eaa2073c87}{transform\+Invert}} (struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$in, struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$out)
+\item 
+void \mbox{\hyperlink{transform_8h_ab5972d0a8a020b16fa74a89488e257e0}{transform\+Point}} (struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$transform, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$in, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
+\item 
+void \mbox{\hyperlink{transform_8h_a64a240fc710ab7042a80a7618f392b99}{transform\+Point\+Inverse}} (struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$transform, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$in, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
+\item 
+void \mbox{\hyperlink{transform_8h_a4311328dbedbead5e65bdf33eafd0315}{transform\+Point\+Inverse\+No\+Scale}} (struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$transform, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$in, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
+\item 
+void \mbox{\hyperlink{transform_8h_ad103632ca71737921d7ae7fc7004d442}{transform\+Concat}} (struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$left, struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$right, struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$output)
+\item 
+void \mbox{\hyperlink{transform_8h_a515426ddd830cf63ffa6f9f3b9e69787}{transform\+Lerp}} (struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$a, struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$b, float t, struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$output)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{transform_8h_a512254f7ee8948f0323992006331503c}\label{transform_8h_a512254f7ee8948f0323992006331503c}} 
+\index{transform.h@{transform.h}!Transform@{Transform}}
+\index{Transform@{Transform}!transform.h@{transform.h}}
+\doxysubsubsection{\texorpdfstring{Transform}{Transform}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structTransform}{Transform}} \mbox{\hyperlink{structTransform}{Transform}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{transform_8h_ad103632ca71737921d7ae7fc7004d442}\label{transform_8h_ad103632ca71737921d7ae7fc7004d442}} 
+\index{transform.h@{transform.h}!transformConcat@{transformConcat}}
+\index{transformConcat@{transformConcat}!transform.h@{transform.h}}
+\doxysubsubsection{\texorpdfstring{transformConcat()}{transformConcat()}}
+{\footnotesize\ttfamily void transform\+Concat (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{left,  }\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{right,  }\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{transform_8h_a10dc33efe46c19eff8ff9533a34e9911}\label{transform_8h_a10dc33efe46c19eff8ff9533a34e9911}} 
+\index{transform.h@{transform.h}!transformInitIdentity@{transformInitIdentity}}
+\index{transformInitIdentity@{transformInitIdentity}!transform.h@{transform.h}}
+\doxysubsubsection{\texorpdfstring{transformInitIdentity()}{transformInitIdentity()}}
+{\footnotesize\ttfamily void transform\+Init\+Identity (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{in }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{transform_8h_aa8c1cdc3355613a5f1e025eaa2073c87}\label{transform_8h_aa8c1cdc3355613a5f1e025eaa2073c87}} 
+\index{transform.h@{transform.h}!transformInvert@{transformInvert}}
+\index{transformInvert@{transformInvert}!transform.h@{transform.h}}
+\doxysubsubsection{\texorpdfstring{transformInvert()}{transformInvert()}}
+{\footnotesize\ttfamily void transform\+Invert (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{in,  }\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{transform_8h_a515426ddd830cf63ffa6f9f3b9e69787}\label{transform_8h_a515426ddd830cf63ffa6f9f3b9e69787}} 
+\index{transform.h@{transform.h}!transformLerp@{transformLerp}}
+\index{transformLerp@{transformLerp}!transform.h@{transform.h}}
+\doxysubsubsection{\texorpdfstring{transformLerp()}{transformLerp()}}
+{\footnotesize\ttfamily void transform\+Lerp (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{b,  }\item[{float}]{t,  }\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{transform_8h_ab5972d0a8a020b16fa74a89488e257e0}\label{transform_8h_ab5972d0a8a020b16fa74a89488e257e0}} 
+\index{transform.h@{transform.h}!transformPoint@{transformPoint}}
+\index{transformPoint@{transformPoint}!transform.h@{transform.h}}
+\doxysubsubsection{\texorpdfstring{transformPoint()}{transformPoint()}}
+{\footnotesize\ttfamily void transform\+Point (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{transform,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{in,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{transform_8h_a64a240fc710ab7042a80a7618f392b99}\label{transform_8h_a64a240fc710ab7042a80a7618f392b99}} 
+\index{transform.h@{transform.h}!transformPointInverse@{transformPointInverse}}
+\index{transformPointInverse@{transformPointInverse}!transform.h@{transform.h}}
+\doxysubsubsection{\texorpdfstring{transformPointInverse()}{transformPointInverse()}}
+{\footnotesize\ttfamily void transform\+Point\+Inverse (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{transform,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{in,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{transform_8h_a4311328dbedbead5e65bdf33eafd0315}\label{transform_8h_a4311328dbedbead5e65bdf33eafd0315}} 
+\index{transform.h@{transform.h}!transformPointInverseNoScale@{transformPointInverseNoScale}}
+\index{transformPointInverseNoScale@{transformPointInverseNoScale}!transform.h@{transform.h}}
+\doxysubsubsection{\texorpdfstring{transformPointInverseNoScale()}{transformPointInverseNoScale()}}
+{\footnotesize\ttfamily void transform\+Point\+Inverse\+No\+Scale (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{transform,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{in,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{transform_8h_aa4dcde4164a60732180e4eb71f347753}\label{transform_8h_aa4dcde4164a60732180e4eb71f347753}} 
+\index{transform.h@{transform.h}!transformToMatrix@{transformToMatrix}}
+\index{transformToMatrix@{transformToMatrix}!transform.h@{transform.h}}
+\doxysubsubsection{\texorpdfstring{transformToMatrix()}{transformToMatrix()}}
+{\footnotesize\ttfamily void transform\+To\+Matrix (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{in,  }\item[{float}]{mtx\mbox{[}4\mbox{]}\mbox{[}4\mbox{]} }\end{DoxyParamCaption})}
+

@@ -1,0 +1,55 @@
+\hypertarget{model_8c}{}\doxysection{src/render/model.c File Reference}
+\label{model_8c}\index{src/render/model.c@{src/render/model.c}}
+{\ttfamily \#include \char`\"{}model.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$t3d/t3d.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../resource/sprite\+\_\+cache.\+h\char`\"{}}\newline
+Include dependency graph for model.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{model_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{model_8c_af9bfa4fa0dd5f452cd5bcad312f40761}{model\+\_\+load}} (struct \mbox{\hyperlink{structmodel}{model}} $\ast$into, const char $\ast$model\+\_\+filename)
+\begin{DoxyCompactList}\small\item\em Load a T3D model from a file and store it in the model struct. Also load the skeleton if the model has one. Depending on if a Skeleton exists, the rspq\+\_\+block will be generated to draw the model skinned or unskinned. The generated RSPQ Block is a default t3d\+\_\+model\+\_\+draw block, to customize the drawing, create a callback to the custom draw function and add it to the renderbatch. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{model_8c_a836a7304741e7539db2b58939fa2a702}{model\+\_\+release}} (struct \mbox{\hyperlink{structmodel}{model}} $\ast$\mbox{\hyperlink{structmodel}{model}})
+\begin{DoxyCompactList}\small\item\em Free the memory associated with the model struct. This will also destroy the associated T3\+DModel \& skeleton if it exists as well as free the rspq\+\_\+block. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{model_8c_af9bfa4fa0dd5f452cd5bcad312f40761}\label{model_8c_af9bfa4fa0dd5f452cd5bcad312f40761}} 
+\index{model.c@{model.c}!model\_load@{model\_load}}
+\index{model\_load@{model\_load}!model.c@{model.c}}
+\doxysubsubsection{\texorpdfstring{model\_load()}{model\_load()}}
+{\footnotesize\ttfamily void model\+\_\+load (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmodel}{model}} $\ast$}]{into,  }\item[{const char $\ast$}]{model\+\_\+filename }\end{DoxyParamCaption})}
+
+
+
+Load a T3D model from a file and store it in the model struct. Also load the skeleton if the model has one. Depending on if a Skeleton exists, the rspq\+\_\+block will be generated to draw the model skinned or unskinned. The generated RSPQ Block is a default t3d\+\_\+model\+\_\+draw block, to customize the drawing, create a callback to the custom draw function and add it to the renderbatch. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em into} & the model struct to store the loaded model \\
+\hline
+{\em model\+\_\+filename} & the path to the T3\+DModel in the rom file system \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{model_8c_a836a7304741e7539db2b58939fa2a702}\label{model_8c_a836a7304741e7539db2b58939fa2a702}} 
+\index{model.c@{model.c}!model\_release@{model\_release}}
+\index{model\_release@{model\_release}!model.c@{model.c}}
+\doxysubsubsection{\texorpdfstring{model\_release()}{model\_release()}}
+{\footnotesize\ttfamily void model\+\_\+release (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmodel}{model}} $\ast$}]{model }\end{DoxyParamCaption})}
+
+
+
+Free the memory associated with the model struct. This will also destroy the associated T3\+DModel \& skeleton if it exists as well as free the rspq\+\_\+block. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em model} & ~\newline
+ \\
+\hline
+\end{DoxyParams}

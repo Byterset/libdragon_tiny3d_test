@@ -1,0 +1,149 @@
+\hypertarget{collision__scene_8h}{}\doxysection{src/collision/collision\+\_\+scene.h File Reference}
+\label{collision__scene_8h}\index{src/collision/collision\_scene.h@{src/collision/collision\_scene.h}}
+{\ttfamily \#include \char`\"{}dynamic\+\_\+object.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../collision/mesh\+\_\+collider.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../util/hash\+\_\+map.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}contact.\+h\char`\"{}}\newline
+Include dependency graph for collision\+\_\+scene.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{collision__scene_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{collision__scene_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcollision__scene__element}{collision\+\_\+scene\+\_\+element}}
+\item 
+struct \mbox{\hyperlink{structcollision__scene}{collision\+\_\+scene}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{collision__scene_8h_a33b4723bacb0035ad133569779f4fa24}{MIN\+\_\+\+DYNAMIC\+\_\+\+OBJECTS}}~64
+\item 
+\#define \mbox{\hyperlink{collision__scene_8h_a307621021c9ea642b588289859d75501}{MAX\+\_\+\+ACTIVE\+\_\+\+CONTACTS}}~128
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef int \mbox{\hyperlink{collision__scene_8h_a3ec51b8df5b1174c4266f0ae3c79c518}{collision\+\_\+id}}
+\item 
+typedef void($\ast$ \mbox{\hyperlink{collision__scene_8h_a281377cd4625cd4ebeda2093d365f87b}{collision\+\_\+scene\+\_\+query\+\_\+callback}}) (void $\ast$data, struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$overlaps)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{collision__scene_8h_ad775fb1f73ec2ae6a0dc2ca0d00e8ed2}{collision\+\_\+scene\+\_\+reset}} ()
+\item 
+void \mbox{\hyperlink{collision__scene_8h_a03774f704991105eb143a861cebd147b}{collision\+\_\+scene\+\_\+add}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\item 
+void \mbox{\hyperlink{collision__scene_8h_a5ba45fae8b09d623d25e33b09891fd86}{collision\+\_\+scene\+\_\+remove}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\item 
+struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$ \mbox{\hyperlink{collision__scene_8h_a2598d141dad1d54acf74a58a7dab3981}{collision\+\_\+scene\+\_\+find\+\_\+object}} (\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} id)
+\item 
+void \mbox{\hyperlink{collision__scene_8h_a0183409b6a832e1216d453f3a360549e}{collision\+\_\+scene\+\_\+use\+\_\+static\+\_\+collision}} (struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$collider)
+\item 
+void \mbox{\hyperlink{collision__scene_8h_ae8ec705874a9738babea196a583d1eb6}{collision\+\_\+scene\+\_\+remove\+\_\+static\+\_\+collision}} (struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$collider)
+\item 
+void \mbox{\hyperlink{collision__scene_8h_a77d3a55e0a584b5ee833f332c67fc970}{collision\+\_\+scene\+\_\+collide}} ()
+\item 
+struct \mbox{\hyperlink{structcontact}{contact}} $\ast$ \mbox{\hyperlink{collision__scene_8h_aef93064a3e4c7692aac96c267f484831}{collision\+\_\+scene\+\_\+new\+\_\+contact}} ()
+\item 
+void \mbox{\hyperlink{collision__scene_8h_acd2e9cb870ec13254d1c991b93093e8c}{collision\+\_\+scene\+\_\+query}} (struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$shape, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$center, int \mbox{\hyperlink{dynamic__object_8h_aa005f963232c81966557e7ec5b93d9e2}{collision\+\_\+layers}}, \mbox{\hyperlink{collision__scene_8h_a281377cd4625cd4ebeda2093d365f87b}{collision\+\_\+scene\+\_\+query\+\_\+callback}} callback, void $\ast$callback\+\_\+data)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{collision__scene_8h_a307621021c9ea642b588289859d75501}\label{collision__scene_8h_a307621021c9ea642b588289859d75501}} 
+\index{collision\_scene.h@{collision\_scene.h}!MAX\_ACTIVE\_CONTACTS@{MAX\_ACTIVE\_CONTACTS}}
+\index{MAX\_ACTIVE\_CONTACTS@{MAX\_ACTIVE\_CONTACTS}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_ACTIVE\_CONTACTS}{MAX\_ACTIVE\_CONTACTS}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+ACTIVE\+\_\+\+CONTACTS~128}
+
+\mbox{\Hypertarget{collision__scene_8h_a33b4723bacb0035ad133569779f4fa24}\label{collision__scene_8h_a33b4723bacb0035ad133569779f4fa24}} 
+\index{collision\_scene.h@{collision\_scene.h}!MIN\_DYNAMIC\_OBJECTS@{MIN\_DYNAMIC\_OBJECTS}}
+\index{MIN\_DYNAMIC\_OBJECTS@{MIN\_DYNAMIC\_OBJECTS}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{MIN\_DYNAMIC\_OBJECTS}{MIN\_DYNAMIC\_OBJECTS}}
+{\footnotesize\ttfamily \#define MIN\+\_\+\+DYNAMIC\+\_\+\+OBJECTS~64}
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{collision__scene_8h_a3ec51b8df5b1174c4266f0ae3c79c518}\label{collision__scene_8h_a3ec51b8df5b1174c4266f0ae3c79c518}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_id@{collision\_id}}
+\index{collision\_id@{collision\_id}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_id}{collision\_id}}
+{\footnotesize\ttfamily typedef int \mbox{\hyperlink{collision__scene_8h_a3ec51b8df5b1174c4266f0ae3c79c518}{collision\+\_\+id}}}
+
+\mbox{\Hypertarget{collision__scene_8h_a281377cd4625cd4ebeda2093d365f87b}\label{collision__scene_8h_a281377cd4625cd4ebeda2093d365f87b}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_scene\_query\_callback@{collision\_scene\_query\_callback}}
+\index{collision\_scene\_query\_callback@{collision\_scene\_query\_callback}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_query\_callback}{collision\_scene\_query\_callback}}
+{\footnotesize\ttfamily typedef void($\ast$ collision\+\_\+scene\+\_\+query\+\_\+callback) (void $\ast$data, struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$overlaps)}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{collision__scene_8h_a03774f704991105eb143a861cebd147b}\label{collision__scene_8h_a03774f704991105eb143a861cebd147b}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_scene\_add@{collision\_scene\_add}}
+\index{collision\_scene\_add@{collision\_scene\_add}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_add()}{collision\_scene\_add()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+add (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8h_a77d3a55e0a584b5ee833f332c67fc970}\label{collision__scene_8h_a77d3a55e0a584b5ee833f332c67fc970}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_scene\_collide@{collision\_scene\_collide}}
+\index{collision\_scene\_collide@{collision\_scene\_collide}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_collide()}{collision\_scene\_collide()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+collide (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8h_a2598d141dad1d54acf74a58a7dab3981}\label{collision__scene_8h_a2598d141dad1d54acf74a58a7dab3981}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_scene\_find\_object@{collision\_scene\_find\_object}}
+\index{collision\_scene\_find\_object@{collision\_scene\_find\_object}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_find\_object()}{collision\_scene\_find\_object()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}}$\ast$ collision\+\_\+scene\+\_\+find\+\_\+object (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8h_aef93064a3e4c7692aac96c267f484831}\label{collision__scene_8h_aef93064a3e4c7692aac96c267f484831}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_scene\_new\_contact@{collision\_scene\_new\_contact}}
+\index{collision\_scene\_new\_contact@{collision\_scene\_new\_contact}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_new\_contact()}{collision\_scene\_new\_contact()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structcontact}{contact}}$\ast$ collision\+\_\+scene\+\_\+new\+\_\+contact (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8h_acd2e9cb870ec13254d1c991b93093e8c}\label{collision__scene_8h_acd2e9cb870ec13254d1c991b93093e8c}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_scene\_query@{collision\_scene\_query}}
+\index{collision\_scene\_query@{collision\_scene\_query}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_query()}{collision\_scene\_query()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+query (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$}]{shape,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{center,  }\item[{int}]{collision\+\_\+layers,  }\item[{\mbox{\hyperlink{collision__scene_8h_a281377cd4625cd4ebeda2093d365f87b}{collision\+\_\+scene\+\_\+query\+\_\+callback}}}]{callback,  }\item[{void $\ast$}]{callback\+\_\+data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8h_a5ba45fae8b09d623d25e33b09891fd86}\label{collision__scene_8h_a5ba45fae8b09d623d25e33b09891fd86}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_scene\_remove@{collision\_scene\_remove}}
+\index{collision\_scene\_remove@{collision\_scene\_remove}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_remove()}{collision\_scene\_remove()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8h_ae8ec705874a9738babea196a583d1eb6}\label{collision__scene_8h_ae8ec705874a9738babea196a583d1eb6}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_scene\_remove\_static\_collision@{collision\_scene\_remove\_static\_collision}}
+\index{collision\_scene\_remove\_static\_collision@{collision\_scene\_remove\_static\_collision}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_remove\_static\_collision()}{collision\_scene\_remove\_static\_collision()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+remove\+\_\+static\+\_\+collision (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$}]{collider }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8h_ad775fb1f73ec2ae6a0dc2ca0d00e8ed2}\label{collision__scene_8h_ad775fb1f73ec2ae6a0dc2ca0d00e8ed2}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_scene\_reset@{collision\_scene\_reset}}
+\index{collision\_scene\_reset@{collision\_scene\_reset}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_reset()}{collision\_scene\_reset()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8h_a0183409b6a832e1216d453f3a360549e}\label{collision__scene_8h_a0183409b6a832e1216d453f3a360549e}} 
+\index{collision\_scene.h@{collision\_scene.h}!collision\_scene\_use\_static\_collision@{collision\_scene\_use\_static\_collision}}
+\index{collision\_scene\_use\_static\_collision@{collision\_scene\_use\_static\_collision}!collision\_scene.h@{collision\_scene.h}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_use\_static\_collision()}{collision\_scene\_use\_static\_collision()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+use\+\_\+static\+\_\+collision (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$}]{collider }\end{DoxyParamCaption})}
+

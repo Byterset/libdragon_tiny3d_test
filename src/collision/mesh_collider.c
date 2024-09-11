@@ -124,7 +124,7 @@ bool mesh_index_traverse_index(
     return did_hit;
 }
 
-void mesh_index_calculate_box(struct mesh_index* index, struct Box3D* box, struct Vector3i32* min, struct Vector3i32* max) {
+void mesh_index_calculate_box(struct mesh_index* index, struct AABB* box, struct Vector3i32* min, struct Vector3i32* max) {
     struct Vector3 offset;
     vector3Sub(&box->min, &index->min, &offset);
     struct Vector3 grid_index;
@@ -150,7 +150,7 @@ void mesh_index_calculate_box(struct mesh_index* index, struct Box3D* box, struc
     max->z = MIN(index->block_count.z, max->z);
 }
 
-void mesh_index_lookup_triangle_indices(struct mesh_index* index, struct Box3D* box, triangle_callback callback, void* data) {
+void mesh_index_lookup_triangle_indices(struct mesh_index* index, struct AABB* box, triangle_callback callback, void* data) {
     struct Vector3i32 min;
     struct Vector3i32 max;
 
@@ -170,7 +170,7 @@ float mesh_index_inv_offset(float input) {
 
 void mesh_index_swept_init(
     struct mesh_index* index, 
-    struct Box3D* start_position,
+    struct AABB* start_position,
     struct Vector3* move_amount,
     struct Vector3* dir_inv,
     struct Vector3* dir_local,
@@ -277,8 +277,8 @@ bool is_inf(float value) {
     return value == infinityf() || value == -infinityf();
 }
 
-bool mesh_index_swept_lookup(struct mesh_index* index, struct Box3D* end_position, struct Vector3* move_amount, triangle_callback callback, void* data) {
-    struct Box3D start_position;
+bool mesh_index_swept_lookup(struct mesh_index* index, struct AABB* end_position, struct Vector3* move_amount, triangle_callback callback, void* data) {
+    struct AABB start_position;
     vector3Sub(&end_position->min, move_amount, &start_position.min);
     vector3Sub(&end_position->max, move_amount, &start_position.max);
 

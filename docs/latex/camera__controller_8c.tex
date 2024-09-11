@@ -1,0 +1,51 @@
+\hypertarget{camera__controller_8c}{}\doxysection{src/scene/camera\+\_\+controller.c File Reference}
+\label{camera__controller_8c}\index{src/scene/camera\_controller.c@{src/scene/camera\_controller.c}}
+{\ttfamily \#include \char`\"{}camera\+\_\+controller.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../time/time.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/defs.\+h\char`\"{}}\newline
+Include dependency graph for camera\+\_\+controller.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__controller_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{camera__controller_8c_a28ccb265511d93f0bc48620c41d352f2}{camera\+\_\+controller\+\_\+update\+\_\+position}} (struct \mbox{\hyperlink{structcamera__controller}{camera\+\_\+controller}} $\ast$controller, struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$target)
+\item 
+void \mbox{\hyperlink{camera__controller_8c_a13c4d9b8f3ec8af6a85f3d4bed425291}{camera\+\_\+controller\+\_\+update}} (struct \mbox{\hyperlink{structcamera__controller}{camera\+\_\+controller}} $\ast$controller)
+\item 
+void \mbox{\hyperlink{camera__controller_8c_ac1ff0b65b130a3d69aa6d1feec330152}{camera\+\_\+controller\+\_\+init}} (struct \mbox{\hyperlink{structcamera__controller}{camera\+\_\+controller}} $\ast$controller, struct \mbox{\hyperlink{structcamera}{camera}} $\ast$\mbox{\hyperlink{structcamera}{camera}}, struct \mbox{\hyperlink{structplayer}{player}} $\ast$\mbox{\hyperlink{structplayer}{player}})
+\item 
+void \mbox{\hyperlink{camera__controller_8c_ac6a270c9156f1ccc4c31372d1828ab1c}{camera\+\_\+controller\+\_\+destroy}} (struct \mbox{\hyperlink{structcamera__controller}{camera\+\_\+controller}} $\ast$controller)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{camera__controller_8c_ac6a270c9156f1ccc4c31372d1828ab1c}\label{camera__controller_8c_ac6a270c9156f1ccc4c31372d1828ab1c}} 
+\index{camera\_controller.c@{camera\_controller.c}!camera\_controller\_destroy@{camera\_controller\_destroy}}
+\index{camera\_controller\_destroy@{camera\_controller\_destroy}!camera\_controller.c@{camera\_controller.c}}
+\doxysubsubsection{\texorpdfstring{camera\_controller\_destroy()}{camera\_controller\_destroy()}}
+{\footnotesize\ttfamily void camera\+\_\+controller\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcamera__controller}{camera\+\_\+controller}} $\ast$}]{controller }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{camera__controller_8c_ac1ff0b65b130a3d69aa6d1feec330152}\label{camera__controller_8c_ac1ff0b65b130a3d69aa6d1feec330152}} 
+\index{camera\_controller.c@{camera\_controller.c}!camera\_controller\_init@{camera\_controller\_init}}
+\index{camera\_controller\_init@{camera\_controller\_init}!camera\_controller.c@{camera\_controller.c}}
+\doxysubsubsection{\texorpdfstring{camera\_controller\_init()}{camera\_controller\_init()}}
+{\footnotesize\ttfamily void camera\+\_\+controller\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcamera__controller}{camera\+\_\+controller}} $\ast$}]{controller,  }\item[{struct \mbox{\hyperlink{structcamera}{camera}} $\ast$}]{camera,  }\item[{struct \mbox{\hyperlink{structplayer}{player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{camera__controller_8c_a13c4d9b8f3ec8af6a85f3d4bed425291}\label{camera__controller_8c_a13c4d9b8f3ec8af6a85f3d4bed425291}} 
+\index{camera\_controller.c@{camera\_controller.c}!camera\_controller\_update@{camera\_controller\_update}}
+\index{camera\_controller\_update@{camera\_controller\_update}!camera\_controller.c@{camera\_controller.c}}
+\doxysubsubsection{\texorpdfstring{camera\_controller\_update()}{camera\_controller\_update()}}
+{\footnotesize\ttfamily void camera\+\_\+controller\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcamera__controller}{camera\+\_\+controller}} $\ast$}]{controller }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{camera__controller_8c_a28ccb265511d93f0bc48620c41d352f2}\label{camera__controller_8c_a28ccb265511d93f0bc48620c41d352f2}} 
+\index{camera\_controller.c@{camera\_controller.c}!camera\_controller\_update\_position@{camera\_controller\_update\_position}}
+\index{camera\_controller\_update\_position@{camera\_controller\_update\_position}!camera\_controller.c@{camera\_controller.c}}
+\doxysubsubsection{\texorpdfstring{camera\_controller\_update\_position()}{camera\_controller\_update\_position()}}
+{\footnotesize\ttfamily void camera\+\_\+controller\+\_\+update\+\_\+position (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcamera__controller}{camera\+\_\+controller}} $\ast$}]{controller,  }\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{target }\end{DoxyParamCaption})}
+

@@ -1,3 +1,8 @@
+/**
+ * @file mathf.h
+ * @brief This file contains the declaration of commonly used math functions.
+ * 
+ */
 
 #ifndef _MATH_MATHF_H
 #define _MATH_MATHF_H
@@ -14,7 +19,6 @@ float mathfRandomFloat();
 float mathfMod(float input, float divisor);
 float clampf(float input, float min, float max);
 float signf(float input);
-
 int sign(int input);
 int abs(int input);
 

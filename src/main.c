@@ -13,6 +13,8 @@
 
 #include "player/player.h"
 #include "map/map.h"
+#include "objects/box/box.h"
+#include "effects/fire.h"
 #include "math/transform.h"
 #include "math/vector2.h"
 #include "math/vector3.h"
@@ -36,6 +38,8 @@ T3DVec3 lightDirVec = {{1.0f, 1.0f, 1.0f}};
 
 struct player player;
 struct map map;
+struct box box;
+struct fire fire;
 
 struct camera camera;
 struct camera_controller camera_controller;
@@ -57,9 +61,13 @@ void setup(){
   render_scene_reset();
   update_reset();
   collision_scene_reset();
-  camera_init(&camera, 70.0f, 1.0f, 460.0f);
+  camera_init(&camera, 70.0f, 1.0f, 100.0f);
   map_init(&map);
+  box_init(&box, (struct Vector3){0, 1.4f, 0});
+  fire_init(&fire);
+
   player_init(&player, &playerDef, &camera.transform);
+  
 
   camera_controller_init(&camera_controller, &camera, &player);
 
@@ -72,41 +80,26 @@ void render3d(){
    // ======== Draw (3D) ======== //
     t3d_frame_start();
 
+    t3d_screen_clear_color(RGBA32(0, 0, 0, 0xFF));
+    t3d_screen_clear_depth();
+
+    t3d_light_set_ambient(colorAmbient);
+    t3d_light_set_directional(0, colorDir, &lightDirVec);
+    t3d_light_set_count(1);
+
     struct frame_memory_pool *pool = &frame_memory_pools[next_frame_memoy_pool];
     frame_pool_reset(pool);
 
     T3DViewport *viewport = frame_malloc(pool, sizeof(T3DViewport));
     *viewport = t3d_viewport_create();
-    t3d_viewport_attach(viewport);
 
-    rdpq_mode_fog(RDPQ_FOG_STANDARD);
-    rdpq_set_fog_color((color_t){255, 255, 255, 0xFF});
-    // rdpq_set_mode_standard();
-    // rdpq_mode_blender(RDPQ_BLENDER_MULTIPLY);
+  rdpq_set_mode_standard();
+    // rdpq_mode_fog(RDPQ_FOG_STANDARD);
+    // rdpq_set_fog_color((color_t){255, 255, 255, 0xFF});
+  
 
-
-    t3d_screen_clear_color(RGBA32(0, 180, 180, 0xFF));
-    t3d_screen_clear_depth();
-
-    t3d_fog_set_enabled(true);
-    t3d_fog_set_range(10.0f, 400.0f);
-
-    // position the camera behind the player
-    T3DVec3 camPos, camTarget;
-    camTarget.v[0] = player.transform.position.x;
-    camTarget.v[1] = player.transform.position.y;
-    camTarget.v[2] = player.transform.position.z;
-    camTarget.v[2] -= 20;
-    camPos.v[0] = camTarget.v[0];
-    camPos.v[1] = camTarget.v[1] + 45;
-    camPos.v[2] = camTarget.v[2] + 65;
-
-    // t3d_viewport_set_projection(&viewport, T3D_DEG_TO_RAD(85.0f), 10.0f, 150.0f);
-    t3d_viewport_look_at(viewport, &camPos, &camTarget, &(T3DVec3){{0,1,0}});
-
-    t3d_light_set_ambient(colorAmbient);
-    t3d_light_set_directional(0, colorDir, &lightDirVec);
-    t3d_light_set_count(1);
+    // t3d_fog_set_enabled(true);
+    // t3d_fog_set_range(100.0f, 2000.0f);
 
     render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool]);
 }
@@ -124,7 +117,6 @@ void render(surface_t* zbuffer) {
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "fps: %.1f", fps);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "idle time: %.5f", waiting_sec);
-    
     
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
@@ -181,6 +173,8 @@ int main()
     // ======== Update Joypad ======== //
     joypad_poll();
 
+
+
     // ======== Run the Physics in a fixed Deltatime Loop ======== //
     while (accumulator_ticks >= l_dt){
       
@@ -193,7 +187,6 @@ int main()
 
     // ======== Run the Update Callbacks ======== //
     update_dispatch();
-  
 
     // ======== Render the Game ======== //
     surface_t *fb = display_try_get();

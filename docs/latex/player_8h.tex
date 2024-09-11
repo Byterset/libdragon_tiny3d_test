@@ -1,0 +1,77 @@
+\hypertarget{player_8h}{}\doxysection{src/player/player.h File Reference}
+\label{player_8h}\index{src/player/player.h@{src/player/player.h}}
+{\ttfamily \#include \char`\"{}../math/transform.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/vector2.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/render\+\_\+batch.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/renderable.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/model.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../collision/dynamic\+\_\+object.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$t3d/t3danim.\+h$>$}\newline
+Include dependency graph for player.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{player_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{player_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structplayer__animations}{player\+\_\+animations}}
+\item 
+struct \mbox{\hyperlink{structplayer__definition}{player\+\_\+definition}}
+\item 
+struct \mbox{\hyperlink{structplayer}{player}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{player_8h_aa7d6456606cb871e7505952566c8d4d4}{PLAYER\+\_\+\+MOVE\+\_\+\+SPEED}}~5.\+0f
+\item 
+\#define \mbox{\hyperlink{player_8h_ae70792103dbd4eba86a68e2b9984f6f0}{PLAYER\+\_\+\+TURN\+\_\+\+SPEED}}~20.\+0f
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{player_8h_a084bb3eaf8f6a8c2d373909c403dd3cc}{player\+\_\+init}} (struct \mbox{\hyperlink{structplayer}{player}} $\ast$\mbox{\hyperlink{structplayer}{player}}, struct \mbox{\hyperlink{structplayer__definition}{player\+\_\+definition}} $\ast$definition, struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$camera\+\_\+transform)
+\item 
+void \mbox{\hyperlink{player_8h_af70b4352eed410c90498788398ca2588}{player\+\_\+destroy}} (struct \mbox{\hyperlink{structplayer}{player}} $\ast$\mbox{\hyperlink{structplayer}{player}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{player_8h_aa7d6456606cb871e7505952566c8d4d4}\label{player_8h_aa7d6456606cb871e7505952566c8d4d4}} 
+\index{player.h@{player.h}!PLAYER\_MOVE\_SPEED@{PLAYER\_MOVE\_SPEED}}
+\index{PLAYER\_MOVE\_SPEED@{PLAYER\_MOVE\_SPEED}!player.h@{player.h}}
+\doxysubsubsection{\texorpdfstring{PLAYER\_MOVE\_SPEED}{PLAYER\_MOVE\_SPEED}}
+{\footnotesize\ttfamily \#define PLAYER\+\_\+\+MOVE\+\_\+\+SPEED~5.\+0f}
+
+\mbox{\Hypertarget{player_8h_ae70792103dbd4eba86a68e2b9984f6f0}\label{player_8h_ae70792103dbd4eba86a68e2b9984f6f0}} 
+\index{player.h@{player.h}!PLAYER\_TURN\_SPEED@{PLAYER\_TURN\_SPEED}}
+\index{PLAYER\_TURN\_SPEED@{PLAYER\_TURN\_SPEED}!player.h@{player.h}}
+\doxysubsubsection{\texorpdfstring{PLAYER\_TURN\_SPEED}{PLAYER\_TURN\_SPEED}}
+{\footnotesize\ttfamily \#define PLAYER\+\_\+\+TURN\+\_\+\+SPEED~20.\+0f}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{player_8h_af70b4352eed410c90498788398ca2588}\label{player_8h_af70b4352eed410c90498788398ca2588}} 
+\index{player.h@{player.h}!player\_destroy@{player\_destroy}}
+\index{player\_destroy@{player\_destroy}!player.h@{player.h}}
+\doxysubsubsection{\texorpdfstring{player\_destroy()}{player\_destroy()}}
+{\footnotesize\ttfamily void player\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structplayer}{player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{player_8h_a084bb3eaf8f6a8c2d373909c403dd3cc}\label{player_8h_a084bb3eaf8f6a8c2d373909c403dd3cc}} 
+\index{player.h@{player.h}!player\_init@{player\_init}}
+\index{player\_init@{player\_init}!player.h@{player.h}}
+\doxysubsubsection{\texorpdfstring{player\_init()}{player\_init()}}
+{\footnotesize\ttfamily void player\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structplayer}{player}} $\ast$}]{player,  }\item[{struct \mbox{\hyperlink{structplayer__definition}{player\+\_\+definition}} $\ast$}]{definition,  }\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{camera\+\_\+transform }\end{DoxyParamCaption})}
+

@@ -16,7 +16,7 @@ void cone_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* o
     }
 }
 
-void cone_bounding_box(void* data, struct Vector2* rotation, struct Box3D* box) {
+void cone_bounding_box(void* data, struct Vector2* rotation, struct AABB* box) {
     union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)data;
 
     struct Vector2 corner;

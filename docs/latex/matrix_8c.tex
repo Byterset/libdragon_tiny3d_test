@@ -1,0 +1,220 @@
+\hypertarget{matrix_8c}{}\doxysection{src/math/matrix.c File Reference}
+\label{matrix_8c}\index{src/math/matrix.c@{src/math/matrix.c}}
+
+
+This file contains the implementation of 4x4 matrix functions.  
+
+
+{\ttfamily \#include \char`\"{}matrix.\+h\char`\"{}}\newline
+Include dependency graph for matrix.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{matrix_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{matrix_8c_ad62a27efd7e7897df7de8a74c571da1f}{matrix\+Perspective}} (float matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}, float l, float r, float t, float b, float near, float far)
+\begin{DoxyCompactList}\small\item\em Sets up a perspective projection matrix. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{matrix_8c_a91f21cc48e4711cd3a99af61d224f084}{matrix\+Normalized\+ZValue}} (float depth, float near, float far)
+\begin{DoxyCompactList}\small\item\em Computes the normalized Z value for a given depth within a specified near and far plane. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{matrix_8c_a7f2652d44292a7bd5ba9fcbfe43c3c11}{matrix\+Vec3\+Mul}} (float matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$input, struct \mbox{\hyperlink{structVector4}{Vector4}} $\ast$output)
+\begin{DoxyCompactList}\small\item\em Multiplies a 4x4 matrix by a 3D vector. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{matrix_8c_a32149866fd2d663759725fb789f39610}{matrix\+From\+Basis}} (float matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$origin, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$x, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$y, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$z)
+\begin{DoxyCompactList}\small\item\em Generates a 4x4 matrix from a basis. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{matrix_8c_a7e388c0eb73831b266049558138e6e40}{matrix\+From\+Position}} (float matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$position)
+\begin{DoxyCompactList}\small\item\em Generates a 4x4 matrix from a position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{matrix_8c_a56cb7dedeb35f569f7bac66270aed84f}{matrix\+From\+Scale}} (float matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}, float scale)
+\begin{DoxyCompactList}\small\item\em Generates a 4x4 matrix from a scale factor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{matrix_8c_a9ec5a668ebb0dbd492c9ec9038fba059}{matrix\+Apply\+Position}} (float matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$position)
+\begin{DoxyCompactList}\small\item\em Applies a position to a 4x4 matrix. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{matrix_8c_a1e35d6780f3380b44e3ad47ff0ba7739}{matrix\+Mul}} (float a\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}, float b\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}, float output\mbox{[}4\mbox{]}\mbox{[}4\mbox{]})
+\begin{DoxyCompactList}\small\item\em Multiplies two 4x4 matrices. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains the implementation of 4x4 matrix functions. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{matrix_8c_a9ec5a668ebb0dbd492c9ec9038fba059}\label{matrix_8c_a9ec5a668ebb0dbd492c9ec9038fba059}} 
+\index{matrix.c@{matrix.c}!matrixApplyPosition@{matrixApplyPosition}}
+\index{matrixApplyPosition@{matrixApplyPosition}!matrix.c@{matrix.c}}
+\doxysubsubsection{\texorpdfstring{matrixApplyPosition()}{matrixApplyPosition()}}
+{\footnotesize\ttfamily void matrix\+Apply\+Position (\begin{DoxyParamCaption}\item[{float}]{matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]},  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{position }\end{DoxyParamCaption})}
+
+
+
+Applies a position to a 4x4 matrix. 
+
+This function applies a position to a 4x4 matrix.
+
+
+\begin{DoxyParams}{Parameters}
+{\em matrix} & The 4x4 matrix to be modified. \\
+\hline
+{\em position} & The position vector to be applied. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{matrix_8c_a32149866fd2d663759725fb789f39610}\label{matrix_8c_a32149866fd2d663759725fb789f39610}} 
+\index{matrix.c@{matrix.c}!matrixFromBasis@{matrixFromBasis}}
+\index{matrixFromBasis@{matrixFromBasis}!matrix.c@{matrix.c}}
+\doxysubsubsection{\texorpdfstring{matrixFromBasis()}{matrixFromBasis()}}
+{\footnotesize\ttfamily void matrix\+From\+Basis (\begin{DoxyParamCaption}\item[{float}]{matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]},  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{origin,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{x,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{y,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{z }\end{DoxyParamCaption})}
+
+
+
+Generates a 4x4 matrix from a basis. 
+
+This function generates a 4x4 matrix from a basis defined by an origin and three vectors (x, y, z).
+
+
+\begin{DoxyParams}{Parameters}
+{\em matrix} & The 4x4 matrix to be initialized. \\
+\hline
+{\em origin} & The origin of the basis. \\
+\hline
+{\em x} & The x vector of the basis. \\
+\hline
+{\em y} & The y vector of the basis. \\
+\hline
+{\em z} & The z vector of the basis. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{matrix_8c_a7e388c0eb73831b266049558138e6e40}\label{matrix_8c_a7e388c0eb73831b266049558138e6e40}} 
+\index{matrix.c@{matrix.c}!matrixFromPosition@{matrixFromPosition}}
+\index{matrixFromPosition@{matrixFromPosition}!matrix.c@{matrix.c}}
+\doxysubsubsection{\texorpdfstring{matrixFromPosition()}{matrixFromPosition()}}
+{\footnotesize\ttfamily void matrix\+From\+Position (\begin{DoxyParamCaption}\item[{float}]{matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]},  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{position }\end{DoxyParamCaption})}
+
+
+
+Generates a 4x4 matrix from a position. 
+
+This function generates a 4x4 matrix from a position vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em matrix} & The 4x4 matrix to be initialized. \\
+\hline
+{\em position} & The position vector. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{matrix_8c_a56cb7dedeb35f569f7bac66270aed84f}\label{matrix_8c_a56cb7dedeb35f569f7bac66270aed84f}} 
+\index{matrix.c@{matrix.c}!matrixFromScale@{matrixFromScale}}
+\index{matrixFromScale@{matrixFromScale}!matrix.c@{matrix.c}}
+\doxysubsubsection{\texorpdfstring{matrixFromScale()}{matrixFromScale()}}
+{\footnotesize\ttfamily void matrix\+From\+Scale (\begin{DoxyParamCaption}\item[{float}]{matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]},  }\item[{float}]{scale }\end{DoxyParamCaption})}
+
+
+
+Generates a 4x4 matrix from a scale factor. 
+
+This function generates a 4x4 matrix from a scale factor.
+
+
+\begin{DoxyParams}{Parameters}
+{\em matrix} & The 4x4 matrix to be initialized. \\
+\hline
+{\em scale} & The scale factor. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{matrix_8c_a1e35d6780f3380b44e3ad47ff0ba7739}\label{matrix_8c_a1e35d6780f3380b44e3ad47ff0ba7739}} 
+\index{matrix.c@{matrix.c}!matrixMul@{matrixMul}}
+\index{matrixMul@{matrixMul}!matrix.c@{matrix.c}}
+\doxysubsubsection{\texorpdfstring{matrixMul()}{matrixMul()}}
+{\footnotesize\ttfamily void matrix\+Mul (\begin{DoxyParamCaption}\item[{float}]{a\mbox{[}4\mbox{]}\mbox{[}4\mbox{]},  }\item[{float}]{b\mbox{[}4\mbox{]}\mbox{[}4\mbox{]},  }\item[{float}]{output\mbox{[}4\mbox{]}\mbox{[}4\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Multiplies two 4x4 matrices. 
+
+This function multiplies two 4x4 matrices and stores the result in an output matrix.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & The first 4x4 matrix to be multiplied. \\
+\hline
+{\em b} & The second 4x4 matrix to be multiplied. \\
+\hline
+{\em output} & The output 4x4 matrix where the result will be stored. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{matrix_8c_a91f21cc48e4711cd3a99af61d224f084}\label{matrix_8c_a91f21cc48e4711cd3a99af61d224f084}} 
+\index{matrix.c@{matrix.c}!matrixNormalizedZValue@{matrixNormalizedZValue}}
+\index{matrixNormalizedZValue@{matrixNormalizedZValue}!matrix.c@{matrix.c}}
+\doxysubsubsection{\texorpdfstring{matrixNormalizedZValue()}{matrixNormalizedZValue()}}
+{\footnotesize\ttfamily float matrix\+Normalized\+ZValue (\begin{DoxyParamCaption}\item[{float}]{depth,  }\item[{float}]{near,  }\item[{float}]{far }\end{DoxyParamCaption})}
+
+
+
+Computes the normalized Z value for a given depth within a specified near and far plane. 
+
+This function calculates the normalized Z value based on the depth, near, and far plane distances. The normalized Z value is used to map depth values to a normalized range.
+
+
+\begin{DoxyParams}{Parameters}
+{\em depth} & The depth value to be normalized. \\
+\hline
+{\em near} & The near plane distance. \\
+\hline
+{\em far} & The far plane distance. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The normalized Z value. Returns -\/1.\+0 if the depth is greater than or equal to -\/near, 1.\+0 if the depth is less than or equal to -\/far, otherwise returns the computed normalized Z value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{matrix_8c_ad62a27efd7e7897df7de8a74c571da1f}\label{matrix_8c_ad62a27efd7e7897df7de8a74c571da1f}} 
+\index{matrix.c@{matrix.c}!matrixPerspective@{matrixPerspective}}
+\index{matrixPerspective@{matrixPerspective}!matrix.c@{matrix.c}}
+\doxysubsubsection{\texorpdfstring{matrixPerspective()}{matrixPerspective()}}
+{\footnotesize\ttfamily void matrix\+Perspective (\begin{DoxyParamCaption}\item[{float}]{matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]},  }\item[{float}]{l,  }\item[{float}]{r,  }\item[{float}]{t,  }\item[{float}]{b,  }\item[{float}]{near,  }\item[{float}]{far }\end{DoxyParamCaption})}
+
+
+
+Sets up a perspective projection matrix. 
+
+This function initializes a 4x4 matrix to represent a perspective projection transformation. The resulting matrix can be used to transform 3D coordinates into a perspective view.
+
+
+\begin{DoxyParams}{Parameters}
+{\em matrix} & The 4x4 matrix to be initialized. \\
+\hline
+{\em l} & The coordinate for the left vertical clipping plane. \\
+\hline
+{\em r} & The coordinate for the right vertical clipping plane. \\
+\hline
+{\em t} & The coordinate for the top horizontal clipping plane. \\
+\hline
+{\em b} & The coordinate for the bottom horizontal clipping plane. \\
+\hline
+{\em near} & The distance to the near clipping plane. \\
+\hline
+{\em far} & The distance to the far clipping plane. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{matrix_8c_a7f2652d44292a7bd5ba9fcbfe43c3c11}\label{matrix_8c_a7f2652d44292a7bd5ba9fcbfe43c3c11}} 
+\index{matrix.c@{matrix.c}!matrixVec3Mul@{matrixVec3Mul}}
+\index{matrixVec3Mul@{matrixVec3Mul}!matrix.c@{matrix.c}}
+\doxysubsubsection{\texorpdfstring{matrixVec3Mul()}{matrixVec3Mul()}}
+{\footnotesize\ttfamily void matrix\+Vec3\+Mul (\begin{DoxyParamCaption}\item[{float}]{matrix\mbox{[}4\mbox{]}\mbox{[}4\mbox{]},  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{input,  }\item[{struct \mbox{\hyperlink{structVector4}{Vector4}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+
+
+Multiplies a 4x4 matrix by a 3D vector. 
+
+This function multiplies a 4x4 matrix by a 3D vector, storing the result in a 4D vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em matrix} & The 4x4 matrix to be multiplied. \\
+\hline
+{\em input} & The input 3D vector to be multiplied. \\
+\hline
+{\em output} & The output 4D vector where the result will be stored. \\
+\hline
+\end{DoxyParams}

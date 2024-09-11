@@ -66,23 +66,19 @@ void map_init(struct map* map) {
     entity_id entity_id = entity_id_new();
 
     transformInitIdentity(&map->transform);
-    // renderable_init(&map->renderable, &map->transform, "rom:/models/map/map.t3dm");
-
-    // rspq_block_begin();
-    //     t3d_model_draw(map->renderable.model);
-    // map->renderable.block = rspq_block_end();
+    renderable_init(&map->renderable, &map->transform, "rom:/models/map/map.t3dm");
 
 
-    map->transform.position = (struct Vector3){0,0,-10};
-    map->transform.scale = (struct Vector3){0.3f, 0.3f, 0.3f};
+    map->transform.position = (struct Vector3){0,0,0};
+    map->transform.scale = (struct Vector3){5.0f, 5.0f, 5.0f};
     map->tileOffset = 0.0f;
 
     map->model = model_cache_load("rom:/models/map/map.t3dm");
 
-    // render_scene_add_renderable(&map->renderable, 1.0f);
-    render_scene_add(&map->transform.position, 80.0f, map_custom_render, map);
+    render_scene_add_renderable(&map->renderable, 1.0f);
+    // render_scene_add(&map->transform.position, 80.0f, map_custom_render, map);
 
-    update_add(map, (update_callback)map_update, UPDATE_PRIORITY_SPELLS, UPDATE_LAYER_WORLD);
+    // update_add(map, (update_callback)map_update, UPDATE_PRIORITY_SPELLS, UPDATE_LAYER_WORLD);
 
 }
 

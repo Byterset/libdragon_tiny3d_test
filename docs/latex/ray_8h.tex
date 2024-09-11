@@ -1,0 +1,45 @@
+\hypertarget{ray_8h}{}\doxysection{src/math/ray.h File Reference}
+\label{ray_8h}\index{src/math/ray.h@{src/math/ray.h}}
+{\ttfamily \#include \char`\"{}vector3.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}transform.\+h\char`\"{}}\newline
+Include dependency graph for ray.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=235pt]{ray_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{ray_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structRay}{Ray}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{ray_8h_a17c87a91bb8f5894d872d56e9f9187bf}{ray\+Transform}} (struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$transform, struct \mbox{\hyperlink{structRay}{Ray}} $\ast$ray, struct \mbox{\hyperlink{structRay}{Ray}} $\ast$output)
+\item 
+float \mbox{\hyperlink{ray_8h_a725ca9eb07942ff6f8b9f485149e9b49}{ray\+Determine\+Distance}} (struct \mbox{\hyperlink{structRay}{Ray}} $\ast$ray, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{ray_8h_a725ca9eb07942ff6f8b9f485149e9b49}\label{ray_8h_a725ca9eb07942ff6f8b9f485149e9b49}} 
+\index{ray.h@{ray.h}!rayDetermineDistance@{rayDetermineDistance}}
+\index{rayDetermineDistance@{rayDetermineDistance}!ray.h@{ray.h}}
+\doxysubsubsection{\texorpdfstring{rayDetermineDistance()}{rayDetermineDistance()}}
+{\footnotesize\ttfamily float ray\+Determine\+Distance (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structRay}{Ray}} $\ast$}]{ray,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{point }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{ray_8h_a17c87a91bb8f5894d872d56e9f9187bf}\label{ray_8h_a17c87a91bb8f5894d872d56e9f9187bf}} 
+\index{ray.h@{ray.h}!rayTransform@{rayTransform}}
+\index{rayTransform@{rayTransform}!ray.h@{ray.h}}
+\doxysubsubsection{\texorpdfstring{rayTransform()}{rayTransform()}}
+{\footnotesize\ttfamily void ray\+Transform (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{transform,  }\item[{struct \mbox{\hyperlink{structRay}{Ray}} $\ast$}]{ray,  }\item[{struct \mbox{\hyperlink{structRay}{Ray}} $\ast$}]{output }\end{DoxyParamCaption})}
+

@@ -1,0 +1,169 @@
+\hypertarget{time_8c}{}\doxysection{src/time/time.c File Reference}
+\label{time_8c}\index{src/time/time.c@{src/time/time.c}}
+{\ttfamily \#include \char`\"{}time.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$malloc.\+h$>$}\newline
+{\ttfamily \#include $<$memory.\+h$>$}\newline
+{\ttfamily \#include $<$libdragon.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../util/flags.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../util/blist.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../util/callback\+\_\+list.\+h\char`\"{}}\newline
+Include dependency graph for time.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{time_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structupdate__element}{update\+\_\+element}}
+\item 
+struct \mbox{\hyperlink{structupdate__state}{update\+\_\+state}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{time_8c_a903d14c153ff5b9582ed2a57f498dd3b}{MIN\+\_\+\+UPDATE\+\_\+\+CAPACITY}}~64
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{time_8c_ad61a080e275c71ef3e109c0a28cf9ab7}{update\+\_\+time}} ()
+\item 
+int \mbox{\hyperlink{time_8c_aed607f4c6c38f7d1266eca0f32a679c4}{update\+\_\+compare\+\_\+elements}} (void $\ast$a, void $\ast$b)
+\item 
+void \mbox{\hyperlink{time_8c_abb00b664c771b4c229e93f1aa4a9bcc7}{update\+\_\+reset}} ()
+\item 
+void \mbox{\hyperlink{time_8c_adf99f35761e50b1d589dca2296df36f6}{update\+\_\+add}} (void $\ast$data, \mbox{\hyperlink{time_8h_a75c4cc3bf2c23905b9fc6dc91fad9aeb}{update\+\_\+callback}} callback, int priority, int mask)
+\item 
+void \mbox{\hyperlink{time_8c_ac77ad383cc72480534cc4d0507c784f3}{update\+\_\+remove}} (void $\ast$data)
+\item 
+void \mbox{\hyperlink{time_8c_a35a703a467d1849b173ad83750e3599f}{update\+\_\+pause\+\_\+layers}} (int mask)
+\item 
+void \mbox{\hyperlink{time_8c_a3bf16b798833abff114a66fa5816e0af}{update\+\_\+unpause\+\_\+layers}} (int mask)
+\item 
+bool \mbox{\hyperlink{time_8c_ab1a1da703948187acc2f98533facec58}{update\+\_\+has\+\_\+layer}} (int mask)
+\item 
+void \mbox{\hyperlink{time_8c_aaa8da4768bd7f8ab0b35b824a4aee69b}{update\+\_\+dispatch}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+uint64\+\_\+t \mbox{\hyperlink{time_8c_ae4dad1b5c8ab8adf9cdd7ddbc6cc3ac7}{oldtime\+\_\+ticks}} = 0
+\item 
+uint32\+\_\+t \mbox{\hyperlink{time_8c_a032a90d35c9f4c1d78b5db2044ece7a1}{accumulator\+\_\+ticks}} = 0
+\item 
+uint64\+\_\+t \mbox{\hyperlink{time_8c_a9921f52ccbaae0f625325ea993a8493f}{currtime\+\_\+ticks}} = 0
+\item 
+float \mbox{\hyperlink{time_8c_a1f5098e885164f048d806a31fe46643a}{currtime\+\_\+sec}} = 0.\+0f
+\item 
+uint32\+\_\+t \mbox{\hyperlink{time_8c_a44b1d3f13f0c400ce9a995645d83422d}{frametime\+\_\+ticks}} = 0
+\item 
+float \mbox{\hyperlink{time_8c_a80227714b4d9b676b4dd36466332e7ba}{frametime\+\_\+sec}} = 0.\+0f
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{time_8c_a903d14c153ff5b9582ed2a57f498dd3b}\label{time_8c_a903d14c153ff5b9582ed2a57f498dd3b}} 
+\index{time.c@{time.c}!MIN\_UPDATE\_CAPACITY@{MIN\_UPDATE\_CAPACITY}}
+\index{MIN\_UPDATE\_CAPACITY@{MIN\_UPDATE\_CAPACITY}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{MIN\_UPDATE\_CAPACITY}{MIN\_UPDATE\_CAPACITY}}
+{\footnotesize\ttfamily \#define MIN\+\_\+\+UPDATE\+\_\+\+CAPACITY~64}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{time_8c_adf99f35761e50b1d589dca2296df36f6}\label{time_8c_adf99f35761e50b1d589dca2296df36f6}} 
+\index{time.c@{time.c}!update\_add@{update\_add}}
+\index{update\_add@{update\_add}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{update\_add()}{update\_add()}}
+{\footnotesize\ttfamily void update\+\_\+add (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{\mbox{\hyperlink{time_8h_a75c4cc3bf2c23905b9fc6dc91fad9aeb}{update\+\_\+callback}}}]{callback,  }\item[{int}]{priority,  }\item[{int}]{mask }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{time_8c_aed607f4c6c38f7d1266eca0f32a679c4}\label{time_8c_aed607f4c6c38f7d1266eca0f32a679c4}} 
+\index{time.c@{time.c}!update\_compare\_elements@{update\_compare\_elements}}
+\index{update\_compare\_elements@{update\_compare\_elements}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{update\_compare\_elements()}{update\_compare\_elements()}}
+{\footnotesize\ttfamily int update\+\_\+compare\+\_\+elements (\begin{DoxyParamCaption}\item[{void $\ast$}]{a,  }\item[{void $\ast$}]{b }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{time_8c_aaa8da4768bd7f8ab0b35b824a4aee69b}\label{time_8c_aaa8da4768bd7f8ab0b35b824a4aee69b}} 
+\index{time.c@{time.c}!update\_dispatch@{update\_dispatch}}
+\index{update\_dispatch@{update\_dispatch}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{update\_dispatch()}{update\_dispatch()}}
+{\footnotesize\ttfamily void update\+\_\+dispatch (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{time_8c_ab1a1da703948187acc2f98533facec58}\label{time_8c_ab1a1da703948187acc2f98533facec58}} 
+\index{time.c@{time.c}!update\_has\_layer@{update\_has\_layer}}
+\index{update\_has\_layer@{update\_has\_layer}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{update\_has\_layer()}{update\_has\_layer()}}
+{\footnotesize\ttfamily bool update\+\_\+has\+\_\+layer (\begin{DoxyParamCaption}\item[{int}]{mask }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{time_8c_a35a703a467d1849b173ad83750e3599f}\label{time_8c_a35a703a467d1849b173ad83750e3599f}} 
+\index{time.c@{time.c}!update\_pause\_layers@{update\_pause\_layers}}
+\index{update\_pause\_layers@{update\_pause\_layers}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{update\_pause\_layers()}{update\_pause\_layers()}}
+{\footnotesize\ttfamily void update\+\_\+pause\+\_\+layers (\begin{DoxyParamCaption}\item[{int}]{mask }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{time_8c_ac77ad383cc72480534cc4d0507c784f3}\label{time_8c_ac77ad383cc72480534cc4d0507c784f3}} 
+\index{time.c@{time.c}!update\_remove@{update\_remove}}
+\index{update\_remove@{update\_remove}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{update\_remove()}{update\_remove()}}
+{\footnotesize\ttfamily void update\+\_\+remove (\begin{DoxyParamCaption}\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{time_8c_abb00b664c771b4c229e93f1aa4a9bcc7}\label{time_8c_abb00b664c771b4c229e93f1aa4a9bcc7}} 
+\index{time.c@{time.c}!update\_reset@{update\_reset}}
+\index{update\_reset@{update\_reset}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{update\_reset()}{update\_reset()}}
+{\footnotesize\ttfamily void update\+\_\+reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{time_8c_ad61a080e275c71ef3e109c0a28cf9ab7}\label{time_8c_ad61a080e275c71ef3e109c0a28cf9ab7}} 
+\index{time.c@{time.c}!update\_time@{update\_time}}
+\index{update\_time@{update\_time}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{update\_time()}{update\_time()}}
+{\footnotesize\ttfamily void update\+\_\+time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{time_8c_a3bf16b798833abff114a66fa5816e0af}\label{time_8c_a3bf16b798833abff114a66fa5816e0af}} 
+\index{time.c@{time.c}!update\_unpause\_layers@{update\_unpause\_layers}}
+\index{update\_unpause\_layers@{update\_unpause\_layers}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{update\_unpause\_layers()}{update\_unpause\_layers()}}
+{\footnotesize\ttfamily void update\+\_\+unpause\+\_\+layers (\begin{DoxyParamCaption}\item[{int}]{mask }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{time_8c_a032a90d35c9f4c1d78b5db2044ece7a1}\label{time_8c_a032a90d35c9f4c1d78b5db2044ece7a1}} 
+\index{time.c@{time.c}!accumulator\_ticks@{accumulator\_ticks}}
+\index{accumulator\_ticks@{accumulator\_ticks}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{accumulator\_ticks}{accumulator\_ticks}}
+{\footnotesize\ttfamily uint32\+\_\+t accumulator\+\_\+ticks = 0}
+
+\mbox{\Hypertarget{time_8c_a1f5098e885164f048d806a31fe46643a}\label{time_8c_a1f5098e885164f048d806a31fe46643a}} 
+\index{time.c@{time.c}!currtime\_sec@{currtime\_sec}}
+\index{currtime\_sec@{currtime\_sec}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{currtime\_sec}{currtime\_sec}}
+{\footnotesize\ttfamily float currtime\+\_\+sec = 0.\+0f}
+
+\mbox{\Hypertarget{time_8c_a9921f52ccbaae0f625325ea993a8493f}\label{time_8c_a9921f52ccbaae0f625325ea993a8493f}} 
+\index{time.c@{time.c}!currtime\_ticks@{currtime\_ticks}}
+\index{currtime\_ticks@{currtime\_ticks}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{currtime\_ticks}{currtime\_ticks}}
+{\footnotesize\ttfamily uint64\+\_\+t currtime\+\_\+ticks = 0}
+
+\mbox{\Hypertarget{time_8c_a80227714b4d9b676b4dd36466332e7ba}\label{time_8c_a80227714b4d9b676b4dd36466332e7ba}} 
+\index{time.c@{time.c}!frametime\_sec@{frametime\_sec}}
+\index{frametime\_sec@{frametime\_sec}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{frametime\_sec}{frametime\_sec}}
+{\footnotesize\ttfamily float frametime\+\_\+sec = 0.\+0f}
+
+\mbox{\Hypertarget{time_8c_a44b1d3f13f0c400ce9a995645d83422d}\label{time_8c_a44b1d3f13f0c400ce9a995645d83422d}} 
+\index{time.c@{time.c}!frametime\_ticks@{frametime\_ticks}}
+\index{frametime\_ticks@{frametime\_ticks}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{frametime\_ticks}{frametime\_ticks}}
+{\footnotesize\ttfamily uint32\+\_\+t frametime\+\_\+ticks = 0}
+
+\mbox{\Hypertarget{time_8c_ae4dad1b5c8ab8adf9cdd7ddbc6cc3ac7}\label{time_8c_ae4dad1b5c8ab8adf9cdd7ddbc6cc3ac7}} 
+\index{time.c@{time.c}!oldtime\_ticks@{oldtime\_ticks}}
+\index{oldtime\_ticks@{oldtime\_ticks}!time.c@{time.c}}
+\doxysubsubsection{\texorpdfstring{oldtime\_ticks}{oldtime\_ticks}}
+{\footnotesize\ttfamily uint64\+\_\+t oldtime\+\_\+ticks = 0}
+

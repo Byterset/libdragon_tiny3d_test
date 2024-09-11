@@ -1,5 +1,26 @@
+/**
+ * @file matrix.c
+ * @brief This file contains the implementation of 4x4 matrix functions.
+ * 
+ */
+
 #include "matrix.h"
 
+/**
+ * @brief Sets up a perspective projection matrix.
+ *
+ * This function initializes a 4x4 matrix to represent a perspective projection
+ * transformation. The resulting matrix can be used to transform 3D coordinates
+ * into a perspective view.
+ *
+ * @param matrix The 4x4 matrix to be initialized.
+ * @param l The coordinate for the left vertical clipping plane.
+ * @param r The coordinate for the right vertical clipping plane.
+ * @param t The coordinate for the top horizontal clipping plane.
+ * @param b The coordinate for the bottom horizontal clipping plane.
+ * @param near The distance to the near clipping plane.
+ * @param far The distance to the far clipping plane.
+ */
 void matrixPerspective(float matrix[4][4], float l, float r, float t, float b, float near, float far) {
     matrix[0][0] = 2.0f * near / (r - l);
     matrix[0][1] = 0.0f;
@@ -22,6 +43,18 @@ void matrixPerspective(float matrix[4][4], float l, float r, float t, float b, f
     matrix[3][3] = 0.0f;
 }
 
+/**
+ * @brief Computes the normalized Z value for a given depth within a specified near and far plane.
+ *
+ * This function calculates the normalized Z value based on the depth, near, and far plane distances.
+ * The normalized Z value is used to map depth values to a normalized range.
+ *
+ * @param depth The depth value to be normalized.
+ * @param near The near plane distance.
+ * @param far The far plane distance.
+ * @return The normalized Z value. Returns -1.0 if the depth is greater than or equal to -near,
+ *         1.0 if the depth is less than or equal to -far, otherwise returns the computed normalized Z value.
+ */
 float matrixNormalizedZValue(float depth, float near, float far) {
     if (depth >= -near) {
         return -1.0f;
@@ -34,6 +67,15 @@ float matrixNormalizedZValue(float depth, float near, float far) {
     return (far * (depth + near) + 2.0 * far * near) / (depth * (far - near));
 }
 
+/**
+ * @brief Multiplies a 4x4 matrix by a 3D vector.
+ *
+ * This function multiplies a 4x4 matrix by a 3D vector, storing the result in a 4D vector.
+ *
+ * @param matrix The 4x4 matrix to be multiplied.
+ * @param input The input 3D vector to be multiplied.
+ * @param output The output 4D vector where the result will be stored.
+ */
 void matrixVec3Mul(float matrix[4][4], struct Vector3* input, struct Vector4* output) {
     output->x = matrix[0][0] * input->x + matrix[1][0] * input->y + matrix[2][0] * input->z + matrix[3][0];
     output->y = matrix[0][1] * input->x + matrix[1][1] * input->y + matrix[2][1] * input->z + matrix[3][1];
@@ -41,6 +83,17 @@ void matrixVec3Mul(float matrix[4][4], struct Vector3* input, struct Vector4* ou
     output->w = matrix[0][3] * input->x + matrix[1][3] * input->y + matrix[2][3] * input->z + matrix[3][3];
 }
 
+/**
+ * @brief Generates a 4x4 matrix from a basis.
+ *
+ * This function generates a 4x4 matrix from a basis defined by an origin and three vectors (x, y, z).
+ *
+ * @param matrix The 4x4 matrix to be initialized.
+ * @param origin The origin of the basis.
+ * @param x The x vector of the basis.
+ * @param y The y vector of the basis.
+ * @param z The z vector of the basis.
+ */
 void matrixFromBasis(float matrix[4][4], struct Vector3* origin, struct Vector3* x, struct Vector3* y, struct Vector3* z) {
     matrix[0][0] = x->x;
     matrix[0][1] = x->y;
@@ -63,6 +116,14 @@ void matrixFromBasis(float matrix[4][4], struct Vector3* origin, struct Vector3*
     matrix[3][3] = 1.0f;
 }
 
+/**
+ * @brief Generates a 4x4 matrix from a position.
+ *
+ * This function generates a 4x4 matrix from a position vector.
+ *
+ * @param matrix The 4x4 matrix to be initialized.
+ * @param position The position vector.
+ */
 void matrixFromPosition(float matrix[4][4], struct Vector3* position) {
     matrix[0][0] = 1.0f;
     matrix[0][1] = 0.0f;
@@ -85,6 +146,14 @@ void matrixFromPosition(float matrix[4][4], struct Vector3* position) {
     matrix[3][3] = 1.0f;
 }
 
+/**
+ * @brief Generates a 4x4 matrix from a scale factor.
+ *
+ * This function generates a 4x4 matrix from a scale factor.
+ *
+ * @param matrix The 4x4 matrix to be initialized.
+ * @param scale The scale factor.
+ */
 void matrixFromScale(float matrix[4][4], float scale) {
     matrix[0][0] = scale;
     matrix[0][1] = 0.0f;
@@ -107,12 +176,29 @@ void matrixFromScale(float matrix[4][4], float scale) {
     matrix[3][3] = 1.0f;
 }
 
+/**
+ * @brief Applies a position to a 4x4 matrix.
+ *
+ * This function applies a position to a 4x4 matrix.
+ *
+ * @param matrix The 4x4 matrix to be modified.
+ * @param position The position vector to be applied.
+ */
 void matrixApplyPosition(float matrix[4][4], struct Vector3* position) {
     matrix[3][0] = position->x;
     matrix[3][1] = position->y;
     matrix[3][2] = position->z;
 }
 
+/**
+ * @brief Multiplies two 4x4 matrices.
+ *
+ * This function multiplies two 4x4 matrices and stores the result in an output matrix.
+ *
+ * @param a The first 4x4 matrix to be multiplied.
+ * @param b The second 4x4 matrix to be multiplied.
+ * @param output The output 4x4 matrix where the result will be stored.
+ */
 void matrixMul(float a[4][4], float b[4][4], float output[4][4]) {
     for (int x = 0; x < 4; ++x) {
         for (int y = 0; y < 4; ++y) {

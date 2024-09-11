@@ -1,0 +1,149 @@
+\hypertarget{material_8h}{}\doxysection{src/render/material.h File Reference}
+\label{material_8h}\index{src/render/material.h@{src/render/material.h}}
+{\ttfamily \#include $<$GL/gl.\+h$>$}\newline
+{\ttfamily \#include $<$libdragon.\+h$>$}\newline
+Include dependency graph for material.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{material_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{material_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmaterial__tex}{material\+\_\+tex}}
+\item 
+struct \mbox{\hyperlink{structmaterial__palette}{material\+\_\+palette}}
+\item 
+struct \mbox{\hyperlink{structmaterial}{material}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{material_8h_a355487560eb61acf4ea3b5e581345116}{SORT\+\_\+\+PRIORITY\+\_\+\+NO\+\_\+\+DEPTH\+\_\+\+TEST}}~-\/100
+\item 
+\#define \mbox{\hyperlink{material_8h_abbdeb4ae426b24f6807c8439d3e6addf}{SORT\+\_\+\+PRIORITY\+\_\+\+OPAQUE}}~0
+\item 
+\#define \mbox{\hyperlink{material_8h_a5e93b7c704788d7f5fab1d79bfd513a9}{SORT\+\_\+\+PRIORITY\+\_\+\+DECAL}}~100
+\item 
+\#define \mbox{\hyperlink{material_8h_a7f4019aac6994408a404cfffb83b1f00}{SORT\+\_\+\+PRIORITY\+\_\+\+TRANSPARENT}}~200
+\item 
+\#define \mbox{\hyperlink{material_8h_a80fb420e5f21759150f772d669e9285b}{MATERIAL\+\_\+\+FLAGS\+\_\+\+Z\+\_\+\+WRITE}}~(1 $<$$<$ 0)
+\item 
+\#define \mbox{\hyperlink{material_8h_a881219372c190a36acbb3a0e237229d1}{MATERIAL\+\_\+\+FLAGS\+\_\+\+Z\+\_\+\+READ}}~(1 $<$$<$ 1)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{material_8h_ab8fd168e4d023481cd26c6a6a780de4b}{material\+\_\+init}} (struct \mbox{\hyperlink{structmaterial}{material}} $\ast$\mbox{\hyperlink{structmaterial}{material}})
+\begin{DoxyCompactList}\small\item\em initialize a material with default values \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{material_8h_a847a0ef364ebc45a07932f1c3ca3b3e8}{material\+\_\+destroy}} (struct \mbox{\hyperlink{structmaterial}{material}} $\ast$\mbox{\hyperlink{structmaterial}{material}})
+\begin{DoxyCompactList}\small\item\em free the momory of a material object. Will free the associated textures, palette and rspq\+\_\+block \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{material_8h_a13f9e935ad04fc85d8b5e32508595cd0}{material\+\_\+load}} (struct \mbox{\hyperlink{structmaterial}{material}} $\ast$into, FILE $\ast$material\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Read a custom material from a file stream and create a material object with a rspq\+\_\+block that contains the material commands. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{material_8h_a84311e47f7f707d1ae5534ec6bcb5047}{material\+\_\+release}} (struct \mbox{\hyperlink{structmaterial}{material}} $\ast$\mbox{\hyperlink{structmaterial}{material}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{material_8h_a881219372c190a36acbb3a0e237229d1}\label{material_8h_a881219372c190a36acbb3a0e237229d1}} 
+\index{material.h@{material.h}!MATERIAL\_FLAGS\_Z\_READ@{MATERIAL\_FLAGS\_Z\_READ}}
+\index{MATERIAL\_FLAGS\_Z\_READ@{MATERIAL\_FLAGS\_Z\_READ}!material.h@{material.h}}
+\doxysubsubsection{\texorpdfstring{MATERIAL\_FLAGS\_Z\_READ}{MATERIAL\_FLAGS\_Z\_READ}}
+{\footnotesize\ttfamily \#define MATERIAL\+\_\+\+FLAGS\+\_\+\+Z\+\_\+\+READ~(1 $<$$<$ 1)}
+
+\mbox{\Hypertarget{material_8h_a80fb420e5f21759150f772d669e9285b}\label{material_8h_a80fb420e5f21759150f772d669e9285b}} 
+\index{material.h@{material.h}!MATERIAL\_FLAGS\_Z\_WRITE@{MATERIAL\_FLAGS\_Z\_WRITE}}
+\index{MATERIAL\_FLAGS\_Z\_WRITE@{MATERIAL\_FLAGS\_Z\_WRITE}!material.h@{material.h}}
+\doxysubsubsection{\texorpdfstring{MATERIAL\_FLAGS\_Z\_WRITE}{MATERIAL\_FLAGS\_Z\_WRITE}}
+{\footnotesize\ttfamily \#define MATERIAL\+\_\+\+FLAGS\+\_\+\+Z\+\_\+\+WRITE~(1 $<$$<$ 0)}
+
+\mbox{\Hypertarget{material_8h_a5e93b7c704788d7f5fab1d79bfd513a9}\label{material_8h_a5e93b7c704788d7f5fab1d79bfd513a9}} 
+\index{material.h@{material.h}!SORT\_PRIORITY\_DECAL@{SORT\_PRIORITY\_DECAL}}
+\index{SORT\_PRIORITY\_DECAL@{SORT\_PRIORITY\_DECAL}!material.h@{material.h}}
+\doxysubsubsection{\texorpdfstring{SORT\_PRIORITY\_DECAL}{SORT\_PRIORITY\_DECAL}}
+{\footnotesize\ttfamily \#define SORT\+\_\+\+PRIORITY\+\_\+\+DECAL~100}
+
+\mbox{\Hypertarget{material_8h_a355487560eb61acf4ea3b5e581345116}\label{material_8h_a355487560eb61acf4ea3b5e581345116}} 
+\index{material.h@{material.h}!SORT\_PRIORITY\_NO\_DEPTH\_TEST@{SORT\_PRIORITY\_NO\_DEPTH\_TEST}}
+\index{SORT\_PRIORITY\_NO\_DEPTH\_TEST@{SORT\_PRIORITY\_NO\_DEPTH\_TEST}!material.h@{material.h}}
+\doxysubsubsection{\texorpdfstring{SORT\_PRIORITY\_NO\_DEPTH\_TEST}{SORT\_PRIORITY\_NO\_DEPTH\_TEST}}
+{\footnotesize\ttfamily \#define SORT\+\_\+\+PRIORITY\+\_\+\+NO\+\_\+\+DEPTH\+\_\+\+TEST~-\/100}
+
+\mbox{\Hypertarget{material_8h_abbdeb4ae426b24f6807c8439d3e6addf}\label{material_8h_abbdeb4ae426b24f6807c8439d3e6addf}} 
+\index{material.h@{material.h}!SORT\_PRIORITY\_OPAQUE@{SORT\_PRIORITY\_OPAQUE}}
+\index{SORT\_PRIORITY\_OPAQUE@{SORT\_PRIORITY\_OPAQUE}!material.h@{material.h}}
+\doxysubsubsection{\texorpdfstring{SORT\_PRIORITY\_OPAQUE}{SORT\_PRIORITY\_OPAQUE}}
+{\footnotesize\ttfamily \#define SORT\+\_\+\+PRIORITY\+\_\+\+OPAQUE~0}
+
+\mbox{\Hypertarget{material_8h_a7f4019aac6994408a404cfffb83b1f00}\label{material_8h_a7f4019aac6994408a404cfffb83b1f00}} 
+\index{material.h@{material.h}!SORT\_PRIORITY\_TRANSPARENT@{SORT\_PRIORITY\_TRANSPARENT}}
+\index{SORT\_PRIORITY\_TRANSPARENT@{SORT\_PRIORITY\_TRANSPARENT}!material.h@{material.h}}
+\doxysubsubsection{\texorpdfstring{SORT\_PRIORITY\_TRANSPARENT}{SORT\_PRIORITY\_TRANSPARENT}}
+{\footnotesize\ttfamily \#define SORT\+\_\+\+PRIORITY\+\_\+\+TRANSPARENT~200}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{material_8h_a847a0ef364ebc45a07932f1c3ca3b3e8}\label{material_8h_a847a0ef364ebc45a07932f1c3ca3b3e8}} 
+\index{material.h@{material.h}!material\_destroy@{material\_destroy}}
+\index{material\_destroy@{material\_destroy}!material.h@{material.h}}
+\doxysubsubsection{\texorpdfstring{material\_destroy()}{material\_destroy()}}
+{\footnotesize\ttfamily void material\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{material }\end{DoxyParamCaption})}
+
+
+
+free the momory of a material object. Will free the associated textures, palette and rspq\+\_\+block 
+
+
+\begin{DoxyParams}{Parameters}
+{\em material} & pointer to the material to be destroyed \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{material_8h_ab8fd168e4d023481cd26c6a6a780de4b}\label{material_8h_ab8fd168e4d023481cd26c6a6a780de4b}} 
+\index{material.h@{material.h}!material\_init@{material\_init}}
+\index{material\_init@{material\_init}!material.h@{material.h}}
+\doxysubsubsection{\texorpdfstring{material\_init()}{material\_init()}}
+{\footnotesize\ttfamily void material\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{material }\end{DoxyParamCaption})}
+
+
+
+initialize a material with default values 
+
+
+\begin{DoxyParams}{Parameters}
+{\em material} & ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{material_8h_a13f9e935ad04fc85d8b5e32508595cd0}\label{material_8h_a13f9e935ad04fc85d8b5e32508595cd0}} 
+\index{material.h@{material.h}!material\_load@{material\_load}}
+\index{material\_load@{material\_load}!material.h@{material.h}}
+\doxysubsubsection{\texorpdfstring{material\_load()}{material\_load()}}
+{\footnotesize\ttfamily void material\+\_\+load (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{into,  }\item[{FILE $\ast$}]{material\+\_\+file }\end{DoxyParamCaption})}
+
+
+
+Read a custom material from a file stream and create a material object with a rspq\+\_\+block that contains the material commands. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em into} & the target material \\
+\hline
+{\em material\+\_\+file} & the file stream to read from \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{material_8h_a84311e47f7f707d1ae5534ec6bcb5047}\label{material_8h_a84311e47f7f707d1ae5534ec6bcb5047}} 
+\index{material.h@{material.h}!material\_release@{material\_release}}
+\index{material\_release@{material\_release}!material.h@{material.h}}
+\doxysubsubsection{\texorpdfstring{material\_release()}{material\_release()}}
+{\footnotesize\ttfamily void material\+\_\+release (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{material }\end{DoxyParamCaption})}
+

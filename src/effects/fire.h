@@ -4,8 +4,10 @@
 #include <t3d/t3dmodel.h>
 #include "../math/vector3.h"
 #include "../math/vector2.h"
+#include "../render/material.h"
+#include "../resource/material_cache.h"
 
-#define MAX_FIRE_PARTICLE_COUNT     8
+#define MAX_FIRE_PARTICLE_COUNT     6
 
 struct fire {
     struct Vector3 particle_offset[MAX_FIRE_PARTICLE_COUNT];
@@ -15,8 +17,6 @@ struct fire {
     float total_time;
     float end_time;
     uint16_t index_offset;
-    T3DMaterial* material;
-    rspq_block_t* mat_block;
 };
 
 void fire_init(struct fire* fire);

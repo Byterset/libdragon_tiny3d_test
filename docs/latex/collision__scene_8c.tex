@@ -1,0 +1,180 @@
+\hypertarget{collision__scene_8c}{}\doxysection{src/collision/collision\+\_\+scene.c File Reference}
+\label{collision__scene_8c}\index{src/collision/collision\_scene.c@{src/collision/collision\_scene.c}}
+{\ttfamily \#include \char`\"{}collision\+\_\+scene.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$malloc.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}mesh\+\_\+collider.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}collide.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}collide\+\_\+swept.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}contact.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../util/hash\+\_\+map.\+h\char`\"{}}\newline
+Include dependency graph for collision\+\_\+scene.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{collision__scene_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcollide__edge}{collide\+\_\+edge}}
+\item 
+struct \mbox{\hyperlink{structpositioned__shape}{positioned\+\_\+shape}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{collision__scene_8c_ae802ccf54b4d431358718926fb804387}{MAX\+\_\+\+SWEPT\+\_\+\+ITERATIONS}}~5
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{collision__scene_8c_ad775fb1f73ec2ae6a0dc2ca0d00e8ed2}{collision\+\_\+scene\+\_\+reset}} ()
+\item 
+void \mbox{\hyperlink{collision__scene_8c_a03774f704991105eb143a861cebd147b}{collision\+\_\+scene\+\_\+add}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\item 
+struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$ \mbox{\hyperlink{collision__scene_8c_a2598d141dad1d54acf74a58a7dab3981}{collision\+\_\+scene\+\_\+find\+\_\+object}} (\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} id)
+\item 
+void \mbox{\hyperlink{collision__scene_8c_a80ab6a404e54a5d393441ace10cffa69}{collision\+\_\+scene\+\_\+return\+\_\+contacts}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\item 
+void \mbox{\hyperlink{collision__scene_8c_a5ba45fae8b09d623d25e33b09891fd86}{collision\+\_\+scene\+\_\+remove}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\item 
+void \mbox{\hyperlink{collision__scene_8c_a0183409b6a832e1216d453f3a360549e}{collision\+\_\+scene\+\_\+use\+\_\+static\+\_\+collision}} (struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$collider)
+\item 
+void \mbox{\hyperlink{collision__scene_8c_ae8ec705874a9738babea196a583d1eb6}{collision\+\_\+scene\+\_\+remove\+\_\+static\+\_\+collision}} (struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$collider)
+\item 
+int \mbox{\hyperlink{collision__scene_8c_ad5d5bda9c0be11c9cf81a773670878e9}{collide\+\_\+edge\+\_\+compare}} (struct \mbox{\hyperlink{structcollide__edge}{collide\+\_\+edge}} a, struct \mbox{\hyperlink{structcollide__edge}{collide\+\_\+edge}} b)
+\item 
+void \mbox{\hyperlink{collision__scene_8c_ac05e33bd29cd6d38681ff119e28b6736}{collide\+\_\+edge\+\_\+sort}} (struct \mbox{\hyperlink{structcollide__edge}{collide\+\_\+edge}} $\ast$edges, struct \mbox{\hyperlink{structcollide__edge}{collide\+\_\+edge}} $\ast$tmp, int start, int end)
+\item 
+void \mbox{\hyperlink{collision__scene_8c_a304ab9c198dadece50b7e72706f18a0c}{collision\+\_\+scene\+\_\+collide\+\_\+dynamic}} ()
+\item 
+void \mbox{\hyperlink{collision__scene_8c_aa22e07ca652685aea2f5521c62c98468}{collision\+\_\+scene\+\_\+collide\+\_\+single}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$prev\+\_\+pos)
+\item 
+void \mbox{\hyperlink{collision__scene_8c_a77d3a55e0a584b5ee833f332c67fc970}{collision\+\_\+scene\+\_\+collide}} ()
+\item 
+struct \mbox{\hyperlink{structcontact}{contact}} $\ast$ \mbox{\hyperlink{collision__scene_8c_aef93064a3e4c7692aac96c267f484831}{collision\+\_\+scene\+\_\+new\+\_\+contact}} ()
+\item 
+void \mbox{\hyperlink{collision__scene_8c_a6cc6d0b0ba5ace5496453975ae952800}{positioned\+\_\+shape\+\_\+mink\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+void \mbox{\hyperlink{collision__scene_8c_acd2e9cb870ec13254d1c991b93093e8c}{collision\+\_\+scene\+\_\+query}} (struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$shape, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$center, int \mbox{\hyperlink{dynamic__object_8h_aa005f963232c81966557e7ec5b93d9e2}{collision\+\_\+layers}}, \mbox{\hyperlink{collision__scene_8h_a281377cd4625cd4ebeda2093d365f87b}{collision\+\_\+scene\+\_\+query\+\_\+callback}} callback, void $\ast$callback\+\_\+data)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcollision__scene}{collision\+\_\+scene}} \mbox{\hyperlink{collision__scene_8c_ad32685dd50615a7f993a2a00b8e5a50d}{g\+\_\+scene}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{collision__scene_8c_ae802ccf54b4d431358718926fb804387}\label{collision__scene_8c_ae802ccf54b4d431358718926fb804387}} 
+\index{collision\_scene.c@{collision\_scene.c}!MAX\_SWEPT\_ITERATIONS@{MAX\_SWEPT\_ITERATIONS}}
+\index{MAX\_SWEPT\_ITERATIONS@{MAX\_SWEPT\_ITERATIONS}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{MAX\_SWEPT\_ITERATIONS}{MAX\_SWEPT\_ITERATIONS}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+SWEPT\+\_\+\+ITERATIONS~5}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{collision__scene_8c_ad5d5bda9c0be11c9cf81a773670878e9}\label{collision__scene_8c_ad5d5bda9c0be11c9cf81a773670878e9}} 
+\index{collision\_scene.c@{collision\_scene.c}!collide\_edge\_compare@{collide\_edge\_compare}}
+\index{collide\_edge\_compare@{collide\_edge\_compare}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collide\_edge\_compare()}{collide\_edge\_compare()}}
+{\footnotesize\ttfamily int collide\+\_\+edge\+\_\+compare (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcollide__edge}{collide\+\_\+edge}}}]{a,  }\item[{struct \mbox{\hyperlink{structcollide__edge}{collide\+\_\+edge}}}]{b }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_ac05e33bd29cd6d38681ff119e28b6736}\label{collision__scene_8c_ac05e33bd29cd6d38681ff119e28b6736}} 
+\index{collision\_scene.c@{collision\_scene.c}!collide\_edge\_sort@{collide\_edge\_sort}}
+\index{collide\_edge\_sort@{collide\_edge\_sort}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collide\_edge\_sort()}{collide\_edge\_sort()}}
+{\footnotesize\ttfamily void collide\+\_\+edge\+\_\+sort (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structcollide__edge}{collide\+\_\+edge}} $\ast$}]{edges,  }\item[{struct \mbox{\hyperlink{structcollide__edge}{collide\+\_\+edge}} $\ast$}]{tmp,  }\item[{int}]{start,  }\item[{int}]{end }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_a03774f704991105eb143a861cebd147b}\label{collision__scene_8c_a03774f704991105eb143a861cebd147b}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_add@{collision\_scene\_add}}
+\index{collision\_scene\_add@{collision\_scene\_add}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_add()}{collision\_scene\_add()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+add (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_a77d3a55e0a584b5ee833f332c67fc970}\label{collision__scene_8c_a77d3a55e0a584b5ee833f332c67fc970}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_collide@{collision\_scene\_collide}}
+\index{collision\_scene\_collide@{collision\_scene\_collide}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_collide()}{collision\_scene\_collide()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+collide (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_a304ab9c198dadece50b7e72706f18a0c}\label{collision__scene_8c_a304ab9c198dadece50b7e72706f18a0c}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_collide\_dynamic@{collision\_scene\_collide\_dynamic}}
+\index{collision\_scene\_collide\_dynamic@{collision\_scene\_collide\_dynamic}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_collide\_dynamic()}{collision\_scene\_collide\_dynamic()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+collide\+\_\+dynamic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_aa22e07ca652685aea2f5521c62c98468}\label{collision__scene_8c_aa22e07ca652685aea2f5521c62c98468}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_collide\_single@{collision\_scene\_collide\_single}}
+\index{collision\_scene\_collide\_single@{collision\_scene\_collide\_single}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_collide\_single()}{collision\_scene\_collide\_single()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+collide\+\_\+single (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{prev\+\_\+pos }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_a2598d141dad1d54acf74a58a7dab3981}\label{collision__scene_8c_a2598d141dad1d54acf74a58a7dab3981}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_find\_object@{collision\_scene\_find\_object}}
+\index{collision\_scene\_find\_object@{collision\_scene\_find\_object}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_find\_object()}{collision\_scene\_find\_object()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}}$\ast$ collision\+\_\+scene\+\_\+find\+\_\+object (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_aef93064a3e4c7692aac96c267f484831}\label{collision__scene_8c_aef93064a3e4c7692aac96c267f484831}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_new\_contact@{collision\_scene\_new\_contact}}
+\index{collision\_scene\_new\_contact@{collision\_scene\_new\_contact}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_new\_contact()}{collision\_scene\_new\_contact()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structcontact}{contact}}$\ast$ collision\+\_\+scene\+\_\+new\+\_\+contact (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_acd2e9cb870ec13254d1c991b93093e8c}\label{collision__scene_8c_acd2e9cb870ec13254d1c991b93093e8c}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_query@{collision\_scene\_query}}
+\index{collision\_scene\_query@{collision\_scene\_query}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_query()}{collision\_scene\_query()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+query (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$}]{shape,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{center,  }\item[{int}]{collision\+\_\+layers,  }\item[{\mbox{\hyperlink{collision__scene_8h_a281377cd4625cd4ebeda2093d365f87b}{collision\+\_\+scene\+\_\+query\+\_\+callback}}}]{callback,  }\item[{void $\ast$}]{callback\+\_\+data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_a5ba45fae8b09d623d25e33b09891fd86}\label{collision__scene_8c_a5ba45fae8b09d623d25e33b09891fd86}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_remove@{collision\_scene\_remove}}
+\index{collision\_scene\_remove@{collision\_scene\_remove}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_remove()}{collision\_scene\_remove()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_ae8ec705874a9738babea196a583d1eb6}\label{collision__scene_8c_ae8ec705874a9738babea196a583d1eb6}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_remove\_static\_collision@{collision\_scene\_remove\_static\_collision}}
+\index{collision\_scene\_remove\_static\_collision@{collision\_scene\_remove\_static\_collision}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_remove\_static\_collision()}{collision\_scene\_remove\_static\_collision()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+remove\+\_\+static\+\_\+collision (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$}]{collider }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_ad775fb1f73ec2ae6a0dc2ca0d00e8ed2}\label{collision__scene_8c_ad775fb1f73ec2ae6a0dc2ca0d00e8ed2}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_reset@{collision\_scene\_reset}}
+\index{collision\_scene\_reset@{collision\_scene\_reset}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_reset()}{collision\_scene\_reset()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_a80ab6a404e54a5d393441ace10cffa69}\label{collision__scene_8c_a80ab6a404e54a5d393441ace10cffa69}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_return\_contacts@{collision\_scene\_return\_contacts}}
+\index{collision\_scene\_return\_contacts@{collision\_scene\_return\_contacts}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_return\_contacts()}{collision\_scene\_return\_contacts()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+return\+\_\+contacts (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_a0183409b6a832e1216d453f3a360549e}\label{collision__scene_8c_a0183409b6a832e1216d453f3a360549e}} 
+\index{collision\_scene.c@{collision\_scene.c}!collision\_scene\_use\_static\_collision@{collision\_scene\_use\_static\_collision}}
+\index{collision\_scene\_use\_static\_collision@{collision\_scene\_use\_static\_collision}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{collision\_scene\_use\_static\_collision()}{collision\_scene\_use\_static\_collision()}}
+{\footnotesize\ttfamily void collision\+\_\+scene\+\_\+use\+\_\+static\+\_\+collision (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$}]{collider }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision__scene_8c_a6cc6d0b0ba5ace5496453975ae952800}\label{collision__scene_8c_a6cc6d0b0ba5ace5496453975ae952800}} 
+\index{collision\_scene.c@{collision\_scene.c}!positioned\_shape\_mink\_sum@{positioned\_shape\_mink\_sum}}
+\index{positioned\_shape\_mink\_sum@{positioned\_shape\_mink\_sum}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{positioned\_shape\_mink\_sum()}{positioned\_shape\_mink\_sum()}}
+{\footnotesize\ttfamily void positioned\+\_\+shape\+\_\+mink\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{collision__scene_8c_ad32685dd50615a7f993a2a00b8e5a50d}\label{collision__scene_8c_ad32685dd50615a7f993a2a00b8e5a50d}} 
+\index{collision\_scene.c@{collision\_scene.c}!g\_scene@{g\_scene}}
+\index{g\_scene@{g\_scene}!collision\_scene.c@{collision\_scene.c}}
+\doxysubsubsection{\texorpdfstring{g\_scene}{g\_scene}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structcollision__scene}{collision\+\_\+scene}} g\+\_\+scene}
+

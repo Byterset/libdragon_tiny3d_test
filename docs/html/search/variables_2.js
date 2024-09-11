@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['callback_1345',['callback',['../structrender__batch__element.html#a2e5c2a5c46ed48a2182f77c443dfd674',1,'render_batch_element::callback()'],['../structrender__batch__element.html#a59f5347eab80bcf4ac340486b574ac27',1,'render_batch_element::callback()'],['../structcallback__element.html#a19d3a2f26a2b7003773552484278e8de',1,'callback_element::callback()'],['../structinteractable.html#a70d8eba315b334b420e2252c57c57898',1,'interactable::callback()']]],
+  ['callbacks_1346',['callbacks',['../structrender__scene.html#aaf6d62e827779eda3c74b83a0ea91683',1,'render_scene::callbacks()'],['../structupdate__state.html#ad0d40c67c6882bb9c57e90ceb32543b7',1,'update_state::callbacks()']]],
+  ['camera_1347',['camera',['../main_8c.html#a8738a254b347f9aa4a18f7b62dbe8b1c',1,'camera():&#160;main.c'],['../structcamera__controller.html#a0258ceb6e7bb06fdfc2a7d00a83d88ee',1,'camera_controller::camera()']]],
+  ['camera_5fcontroller_1348',['camera_controller',['../main_8c.html#acea2e3f1d00acf78533905a6b2af4665',1,'main.c']]],
+  ['camera_5fmatrix_1349',['camera_matrix',['../structrender__batch.html#aeb79f75f678be7233cb0d16079e99ec7',1,'render_batch']]],
+  ['camera_5ftransform_1350',['camera_transform',['../structplayer.html#a2cbadcbc7e6f8bf9344a691c9ab24332',1,'player']]],
+  ['capacity_1351',['capacity',['../structcollision__scene.html#aac47282ef26158f77a9949bef56a5a7d',1,'collision_scene::capacity()'],['../structcallback__list.html#af8143696bd977127248b91b89b475ad9',1,'callback_list::capacity()'],['../structhash__map.html#a779cb1a5a38514219a9d8776df5deeeb',1,'hash_map::capacity()']]],
+  ['capsule_1352',['capsule',['../uniondynamic__object__type__data.html#a3404797c533dffbf444785fcbebed116',1,'dynamic_object_type_data']]],
+  ['center_1353',['center',['../structpositioned__shape.html#a378e9164751a98e50c3123e7c630763b',1,'positioned_shape::center()'],['../structdynamic__object.html#a9ab3d0afdd6156f298dcbbc9e9c82b42',1,'dynamic_object::center()'],['../structrender__scene__element.html#aa1c56744f197c4b24db196f7fb2c4414',1,'render_scene_element::center()']]],
+  ['collision_1354',['collision',['../structbox.html#aa559ce570ca98643bc24497804b8765b',1,'box::collision()'],['../structplayer.html#a961acdd11b15b5f68ec91a9648d434f5',1,'player::collision()']]],
+  ['collision_5fgroup_1355',['collision_group',['../structdynamic__object.html#abc7c09970d8a6ad01158952ff2f9cb8e',1,'dynamic_object']]],
+  ['collision_5flayers_1356',['collision_layers',['../structdynamic__object.html#a3cc636fad520c96703f6dc3a689e366e',1,'dynamic_object']]],
+  ['color_1357',['color',['../structrender__billboard__sprite.html#a45ed95bba3459ef1932709c3c474d9c7',1,'render_billboard_sprite']]],
+  ['colorambient_1358',['colorAmbient',['../main_8c.html#a3adcf78197d2c94d61550404656b0b1f',1,'main.c']]],
+  ['colordir_1359',['colorDir',['../main_8c.html#a74a50bf39243b88c4be84b8224a144d2',1,'main.c']]],
+  ['cone_1360',['cone',['../uniondynamic__object__type__data.html#a77e3b84f3faacbd52b122a01cac113f5',1,'dynamic_object_type_data']]],
+  ['contacta_1361',['contactA',['../structEpaResult.html#ad9843594a2df27e10af0bd9678e9766b',1,'EpaResult']]],
+  ['contactb_1362',['contactB',['../structEpaResult.html#ae63b3bcb779f4d4d49ef1ab27017dbf3',1,'EpaResult']]],
+  ['count_1363',['count',['../structcollision__scene.html#abca705ecbdd9705471367fe6e69e8e86',1,'collision_scene::count()'],['../structhash__map.html#a64bb2a47123296cc99e8304b64a5753c',1,'hash_map::count()'],['../structcallback__list.html#a17bf44aa9747b2c1324ee3088c4e4c5d',1,'callback_list::count()']]],
+  ['current_5fgame_5fmode_1364',['current_game_mode',['../game__mode_8c.html#a3df16ca734c75230d9e1ce19a6b8edac',1,'current_game_mode():&#160;game_mode.c'],['../game__mode_8h.html#a3df16ca734c75230d9e1ce19a6b8edac',1,'current_game_mode():&#160;game_mode.c']]],
+  ['current_5fword_1365',['current_word',['../structframe__memory__pool.html#a5e422664adcd35ded76c8ab512c98476',1,'frame_memory_pool::current_word()'],['../frame__alloc_8h.html#ac9d4087dbb7e6d5e8689d898224c4e92',1,'current_word():&#160;frame_alloc.h']]],
+  ['currtime_5fsec_1366',['currtime_sec',['../time_8c.html#a1f5098e885164f048d806a31fe46643a',1,'currtime_sec():&#160;time.c'],['../time_8h.html#a1f5098e885164f048d806a31fe46643a',1,'currtime_sec():&#160;time.c']]],
+  ['currtime_5fticks_1367',['currtime_ticks',['../time_8c.html#a9921f52ccbaae0f625325ea993a8493f',1,'currtime_ticks():&#160;time.c'],['../time_8h.html#a9921f52ccbaae0f625325ea993a8493f',1,'currtime_ticks():&#160;time.c']]],
+  ['cycle_5ftime_1368',['cycle_time',['../structfire.html#a4c82ffe3a4ff1341783f46fca68f1310',1,'fire']]],
+  ['cylinder_1369',['cylinder',['../uniondynamic__object__type__data.html#a22391073e7f6f55320883b1cde77adb3',1,'dynamic_object_type_data']]]
+];

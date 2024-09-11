@@ -5,16 +5,16 @@
 #include "../math/mathf.h"
 
 
-#define CYCLE_TIME  0.08f
+#define CYCLE_TIME  0.1f
 
-#define FIRE_LENGTH         4.0f
+#define FIRE_LENGTH         3.0f
 
-#define MAX_RADIUS          0.5f
+#define MAX_RADIUS          0.7f
 #define MAX_RANDOM_OFFSET   0.3f
 
 #define START_FADE          0.75f
 
-#define TIP_RISE            0.5f
+#define TIP_RISE            0.6f
 
 
 void fire_apply_transform(struct fire* fire) {
@@ -41,43 +41,44 @@ void fire_render(struct fire* fire, struct render_batch* batch) {
         particle_count -= particle_offset;
     }
 
-    // struct render_batch_billboard_element* element = render_batch_add_particles(batch, fire->material->textureA.texture, fire->mat_block, particle_count);
+    struct material* material = material_cache_load("rom:/materials/spell/fire_particle.mat");
 
-    // float time_lerp = fire->cycle_time * (1.0f / CYCLE_TIME);
+    struct render_batch_billboard_element* element = render_batch_add_particles(batch, material, particle_count);
 
-    // for (int i = 0; i < element->sprite_count; i += 1) {
-    //     struct render_billboard_sprite* sprite = &element->sprites[i];
+    float time_lerp = fire->cycle_time * (1.0f / CYCLE_TIME);
 
-    //     float particle_time = (i + particle_offset + time_lerp) * (1.0f / MAX_FIRE_PARTICLE_COUNT);
+    for (int i = 0; i < element->sprite_count; i += 1) {
+        struct render_billboard_sprite* sprite = &element->sprites[i];
 
-    //     sprite->color.r = 255;
-    //     sprite->color.g = 255;
-    //     sprite->color.b = 255;
-    //     sprite->color.a = 255;
+        float particle_time = (i + particle_offset + time_lerp) * (1.0f / MAX_FIRE_PARTICLE_COUNT);
 
-    //     sprite->radius = particle_time * MAX_RADIUS;
+        sprite->color.r = 255;
+        sprite->color.g = 255;
+        sprite->color.b = 255;
+        sprite->color.a = 255;
 
-    //     int final_index = i + fire->index_offset;
+        sprite->radius = particle_time * MAX_RADIUS;
 
-    //     if (final_index >= MAX_FIRE_PARTICLE_COUNT) {
-    //         final_index -= MAX_FIRE_PARTICLE_COUNT;
-    //     }
+        int final_index = i + fire->index_offset;
 
-    //     vector3AddScaled(&sprite->position, &fire->particle_offset[final_index], particle_time, &sprite->position);
+        if (final_index >= MAX_FIRE_PARTICLE_COUNT) {
+            final_index -= MAX_FIRE_PARTICLE_COUNT;
+        }
+        vector3AddScaled(&fire->position, &(struct Vector3){0, 1, 0}, particle_time * FIRE_LENGTH, &sprite->position);
+        vector3AddScaled(&sprite->position, &fire->particle_offset[final_index], particle_time, &sprite->position);
 
-    //     if (particle_time > START_FADE) {
-    //         float alpha = 1.0f - (particle_time - START_FADE) * (1.0f / (1.0f - START_FADE));
+        if (particle_time > START_FADE) {
+            float alpha = 1.0f - (particle_time - START_FADE) * (1.0f / (1.0f - START_FADE));
 
-    //         sprite->color.a = (uint8_t)(alpha * 255);
-    //         sprite->position.y += TIP_RISE * (1.0f - alpha);
-    //     }
-    // }
+            sprite->color.a = (uint8_t)(alpha * 255);
+            sprite->position.y += TIP_RISE * (1.0f - alpha);
+        }
+    }
 }
 
 void fire_init(struct fire* fire) {
     render_scene_add(&gZeroVec, 4.0f, (render_scene_callback)fire_render, fire);
 
-    // fire->material = t3d_material_create()
     fire->cycle_time = 0.0f;
     fire->total_time = 0.0f;
     fire->end_time = -1.0f;
@@ -94,6 +95,8 @@ void fire_init(struct fire* fire) {
         offset->y = randomInRangef(-MAX_RANDOM_OFFSET, MAX_RANDOM_OFFSET);
         offset->z = randomInRangef(-MAX_RANDOM_OFFSET, MAX_RANDOM_OFFSET);
     }
+
+    update_add(fire, (update_callback)fire_update, UPDATE_PRIORITY_SPELLS, UPDATE_LAYER_WORLD);
 
 }
 

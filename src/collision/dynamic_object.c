@@ -37,7 +37,7 @@ void dynamic_object_update(struct dynamic_object* object) {
     }
 
     if (object->has_gravity) {
-        object->velocity.y += FIXED_DELTATIME * object->time_scalar * GRAVITY_CONSTANT * 7.0f;
+        object->velocity.y += FIXED_DELTATIME * object->time_scalar * GRAVITY_CONSTANT;
     }
 
     vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);

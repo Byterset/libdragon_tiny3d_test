@@ -1,0 +1,78 @@
+\hypertarget{structExpandingSimplex}{}\doxysection{Expanding\+Simplex Struct Reference}
+\label{structExpandingSimplex}\index{ExpandingSimplex@{ExpandingSimplex}}
+
+
+Collaboration diagram for Expanding\+Simplex\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{structExpandingSimplex__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structVector3}{Vector3}} \mbox{\hyperlink{structExpandingSimplex_a834104e82b34d5570843bd7b1d8bae23}{points}} \mbox{[}\mbox{\hyperlink{epa_8c_a7a63662f55cb687505d94be7e03b6ada}{MAX\+\_\+\+SIMPLEX\+\_\+\+POINTS}}\mbox{]}
+\item 
+struct \mbox{\hyperlink{structVector3}{Vector3}} \mbox{\hyperlink{structExpandingSimplex_a7d0cd68b9f412f7432d7d819fa2eb556}{a\+Points}} \mbox{[}\mbox{\hyperlink{epa_8c_a7a63662f55cb687505d94be7e03b6ada}{MAX\+\_\+\+SIMPLEX\+\_\+\+POINTS}}\mbox{]}
+\item 
+struct \mbox{\hyperlink{structSimplexTriangle}{Simplex\+Triangle}} \mbox{\hyperlink{structExpandingSimplex_a43f721e1d4c87ffdf834b8229fcdd11b}{triangles}} \mbox{[}\mbox{\hyperlink{epa_8c_a76db094680bff26d14032901f72cad1c}{MAX\+\_\+\+SIMPLEX\+\_\+\+TRIANGLES}}\mbox{]}
+\item 
+short \mbox{\hyperlink{structExpandingSimplex_a0ce73dc1a6b9168956603c5ba2219f4d}{point\+Count}}
+\item 
+short \mbox{\hyperlink{structExpandingSimplex_a4e294e236664ad4e23bcdd327a051e7a}{triangle\+Count}}
+\item 
+unsigned char \mbox{\hyperlink{structExpandingSimplex_a9382cb756678ec13e404c9e514a845f4}{triangle\+Heap}} \mbox{[}\mbox{\hyperlink{epa_8c_a76db094680bff26d14032901f72cad1c}{MAX\+\_\+\+SIMPLEX\+\_\+\+TRIANGLES}}\mbox{]}
+\item 
+short \mbox{\hyperlink{structExpandingSimplex_a6b24d80fd0dc40ae24910c2e72e1d239}{flags}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structExpandingSimplex_a7d0cd68b9f412f7432d7d819fa2eb556}\label{structExpandingSimplex_a7d0cd68b9f412f7432d7d819fa2eb556}} 
+\index{ExpandingSimplex@{ExpandingSimplex}!aPoints@{aPoints}}
+\index{aPoints@{aPoints}!ExpandingSimplex@{ExpandingSimplex}}
+\doxysubsubsection{\texorpdfstring{aPoints}{aPoints}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structVector3}{Vector3}} Expanding\+Simplex\+::a\+Points\mbox{[}\mbox{\hyperlink{epa_8c_a7a63662f55cb687505d94be7e03b6ada}{MAX\+\_\+\+SIMPLEX\+\_\+\+POINTS}}\mbox{]}}
+
+\mbox{\Hypertarget{structExpandingSimplex_a6b24d80fd0dc40ae24910c2e72e1d239}\label{structExpandingSimplex_a6b24d80fd0dc40ae24910c2e72e1d239}} 
+\index{ExpandingSimplex@{ExpandingSimplex}!flags@{flags}}
+\index{flags@{flags}!ExpandingSimplex@{ExpandingSimplex}}
+\doxysubsubsection{\texorpdfstring{flags}{flags}}
+{\footnotesize\ttfamily short Expanding\+Simplex\+::flags}
+
+\mbox{\Hypertarget{structExpandingSimplex_a0ce73dc1a6b9168956603c5ba2219f4d}\label{structExpandingSimplex_a0ce73dc1a6b9168956603c5ba2219f4d}} 
+\index{ExpandingSimplex@{ExpandingSimplex}!pointCount@{pointCount}}
+\index{pointCount@{pointCount}!ExpandingSimplex@{ExpandingSimplex}}
+\doxysubsubsection{\texorpdfstring{pointCount}{pointCount}}
+{\footnotesize\ttfamily short Expanding\+Simplex\+::point\+Count}
+
+\mbox{\Hypertarget{structExpandingSimplex_a834104e82b34d5570843bd7b1d8bae23}\label{structExpandingSimplex_a834104e82b34d5570843bd7b1d8bae23}} 
+\index{ExpandingSimplex@{ExpandingSimplex}!points@{points}}
+\index{points@{points}!ExpandingSimplex@{ExpandingSimplex}}
+\doxysubsubsection{\texorpdfstring{points}{points}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structVector3}{Vector3}} Expanding\+Simplex\+::points\mbox{[}\mbox{\hyperlink{epa_8c_a7a63662f55cb687505d94be7e03b6ada}{MAX\+\_\+\+SIMPLEX\+\_\+\+POINTS}}\mbox{]}}
+
+\mbox{\Hypertarget{structExpandingSimplex_a4e294e236664ad4e23bcdd327a051e7a}\label{structExpandingSimplex_a4e294e236664ad4e23bcdd327a051e7a}} 
+\index{ExpandingSimplex@{ExpandingSimplex}!triangleCount@{triangleCount}}
+\index{triangleCount@{triangleCount}!ExpandingSimplex@{ExpandingSimplex}}
+\doxysubsubsection{\texorpdfstring{triangleCount}{triangleCount}}
+{\footnotesize\ttfamily short Expanding\+Simplex\+::triangle\+Count}
+
+\mbox{\Hypertarget{structExpandingSimplex_a9382cb756678ec13e404c9e514a845f4}\label{structExpandingSimplex_a9382cb756678ec13e404c9e514a845f4}} 
+\index{ExpandingSimplex@{ExpandingSimplex}!triangleHeap@{triangleHeap}}
+\index{triangleHeap@{triangleHeap}!ExpandingSimplex@{ExpandingSimplex}}
+\doxysubsubsection{\texorpdfstring{triangleHeap}{triangleHeap}}
+{\footnotesize\ttfamily unsigned char Expanding\+Simplex\+::triangle\+Heap\mbox{[}\mbox{\hyperlink{epa_8c_a76db094680bff26d14032901f72cad1c}{MAX\+\_\+\+SIMPLEX\+\_\+\+TRIANGLES}}\mbox{]}}
+
+\mbox{\Hypertarget{structExpandingSimplex_a43f721e1d4c87ffdf834b8229fcdd11b}\label{structExpandingSimplex_a43f721e1d4c87ffdf834b8229fcdd11b}} 
+\index{ExpandingSimplex@{ExpandingSimplex}!triangles@{triangles}}
+\index{triangles@{triangles}!ExpandingSimplex@{ExpandingSimplex}}
+\doxysubsubsection{\texorpdfstring{triangles}{triangles}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structSimplexTriangle}{Simplex\+Triangle}} Expanding\+Simplex\+::triangles\mbox{[}\mbox{\hyperlink{epa_8c_a76db094680bff26d14032901f72cad1c}{MAX\+\_\+\+SIMPLEX\+\_\+\+TRIANGLES}}\mbox{]}}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/collision/\mbox{\hyperlink{epa_8c}{epa.\+c}}\end{DoxyCompactItemize}

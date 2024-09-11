@@ -1,0 +1,154 @@
+\hypertarget{structdynamic__object}{}\doxysection{dynamic\+\_\+object Struct Reference}
+\label{structdynamic__object}\index{dynamic\_object@{dynamic\_object}}
+
+
+{\ttfamily \#include $<$dynamic\+\_\+object.\+h$>$}
+
+
+
+Collaboration diagram for dynamic\+\_\+object\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structdynamic__object__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} \mbox{\hyperlink{structdynamic__object_a5beaa2763631c1a63fec1f5f943f273c}{entity\+\_\+id}}
+\item 
+struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$ \mbox{\hyperlink{structdynamic__object_aa364ee64f118b33f422bac7d50f00e71}{type}}
+\item 
+struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$ \mbox{\hyperlink{structdynamic__object_a9641806f6cfc0aa50b1490c0d6356943}{position}}
+\item 
+struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$ \mbox{\hyperlink{structdynamic__object_a38928c09e3bdad96596a29f5dcd11f19}{rotation}}
+\item 
+struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$ \mbox{\hyperlink{structdynamic__object_a89e3a755ef8d63e9f6ba1b832034f0e0}{pitch}}
+\item 
+struct \mbox{\hyperlink{structVector3}{Vector3}} \mbox{\hyperlink{structdynamic__object_a9ab3d0afdd6156f298dcbbc9e9c82b42}{center}}
+\item 
+struct \mbox{\hyperlink{structVector3}{Vector3}} \mbox{\hyperlink{structdynamic__object_a3825f63e4b2be7ea6014baf4f7d6d8ad}{velocity}}
+\item 
+struct \mbox{\hyperlink{structAABB}{AABB}} \mbox{\hyperlink{structdynamic__object_a067ab5fd5c6fb9efccc517e5e70231ed}{bounding\+\_\+box}}
+\item 
+float \mbox{\hyperlink{structdynamic__object_a93700dc00a2301487b5cb5daf61355aa}{time\+\_\+scalar}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structdynamic__object_aa97f98f609210298a320d2077f366c4e}{has\+\_\+gravity}}\+: 1
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structdynamic__object_a1fbbcf14be177efef184f40fc2753710}{is\+\_\+trigger}}\+: 1
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structdynamic__object_ac19f904efdd2a525d2d0436f14e7a697}{is\+\_\+fixed}}\+: 1
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structdynamic__object_aff423f4d7fd781343e9b6e23e2fd0dd1}{is\+\_\+out\+\_\+of\+\_\+bounds}}\+: 1
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structdynamic__object_a3cc636fad520c96703f6dc3a689e366e}{collision\+\_\+layers}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structdynamic__object_abc7c09970d8a6ad01158952ff2f9cb8e}{collision\+\_\+group}}
+\item 
+struct \mbox{\hyperlink{structcontact}{contact}} $\ast$ \mbox{\hyperlink{structdynamic__object_a7548a1324a2fcd1a7ecf9d560bd1c8d3}{active\+\_\+contacts}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structdynamic__object_a7548a1324a2fcd1a7ecf9d560bd1c8d3}\label{structdynamic__object_a7548a1324a2fcd1a7ecf9d560bd1c8d3}} 
+\index{dynamic\_object@{dynamic\_object}!active\_contacts@{active\_contacts}}
+\index{active\_contacts@{active\_contacts}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{active\_contacts}{active\_contacts}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structcontact}{contact}}$\ast$ dynamic\+\_\+object\+::active\+\_\+contacts}
+
+\mbox{\Hypertarget{structdynamic__object_a067ab5fd5c6fb9efccc517e5e70231ed}\label{structdynamic__object_a067ab5fd5c6fb9efccc517e5e70231ed}} 
+\index{dynamic\_object@{dynamic\_object}!bounding\_box@{bounding\_box}}
+\index{bounding\_box@{bounding\_box}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{bounding\_box}{bounding\_box}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structAABB}{AABB}} dynamic\+\_\+object\+::bounding\+\_\+box}
+
+\mbox{\Hypertarget{structdynamic__object_a9ab3d0afdd6156f298dcbbc9e9c82b42}\label{structdynamic__object_a9ab3d0afdd6156f298dcbbc9e9c82b42}} 
+\index{dynamic\_object@{dynamic\_object}!center@{center}}
+\index{center@{center}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{center}{center}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structVector3}{Vector3}} dynamic\+\_\+object\+::center}
+
+\mbox{\Hypertarget{structdynamic__object_abc7c09970d8a6ad01158952ff2f9cb8e}\label{structdynamic__object_abc7c09970d8a6ad01158952ff2f9cb8e}} 
+\index{dynamic\_object@{dynamic\_object}!collision\_group@{collision\_group}}
+\index{collision\_group@{collision\_group}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{collision\_group}{collision\_group}}
+{\footnotesize\ttfamily uint16\+\_\+t dynamic\+\_\+object\+::collision\+\_\+group}
+
+\mbox{\Hypertarget{structdynamic__object_a3cc636fad520c96703f6dc3a689e366e}\label{structdynamic__object_a3cc636fad520c96703f6dc3a689e366e}} 
+\index{dynamic\_object@{dynamic\_object}!collision\_layers@{collision\_layers}}
+\index{collision\_layers@{collision\_layers}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{collision\_layers}{collision\_layers}}
+{\footnotesize\ttfamily uint16\+\_\+t dynamic\+\_\+object\+::collision\+\_\+layers}
+
+\mbox{\Hypertarget{structdynamic__object_a5beaa2763631c1a63fec1f5f943f273c}\label{structdynamic__object_a5beaa2763631c1a63fec1f5f943f273c}} 
+\index{dynamic\_object@{dynamic\_object}!entity\_id@{entity\_id}}
+\index{entity\_id@{entity\_id}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{entity\_id}{entity\_id}}
+{\footnotesize\ttfamily \mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} dynamic\+\_\+object\+::entity\+\_\+id}
+
+\mbox{\Hypertarget{structdynamic__object_aa97f98f609210298a320d2077f366c4e}\label{structdynamic__object_aa97f98f609210298a320d2077f366c4e}} 
+\index{dynamic\_object@{dynamic\_object}!has\_gravity@{has\_gravity}}
+\index{has\_gravity@{has\_gravity}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{has\_gravity}{has\_gravity}}
+{\footnotesize\ttfamily uint16\+\_\+t dynamic\+\_\+object\+::has\+\_\+gravity}
+
+\mbox{\Hypertarget{structdynamic__object_ac19f904efdd2a525d2d0436f14e7a697}\label{structdynamic__object_ac19f904efdd2a525d2d0436f14e7a697}} 
+\index{dynamic\_object@{dynamic\_object}!is\_fixed@{is\_fixed}}
+\index{is\_fixed@{is\_fixed}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{is\_fixed}{is\_fixed}}
+{\footnotesize\ttfamily uint16\+\_\+t dynamic\+\_\+object\+::is\+\_\+fixed}
+
+\mbox{\Hypertarget{structdynamic__object_aff423f4d7fd781343e9b6e23e2fd0dd1}\label{structdynamic__object_aff423f4d7fd781343e9b6e23e2fd0dd1}} 
+\index{dynamic\_object@{dynamic\_object}!is\_out\_of\_bounds@{is\_out\_of\_bounds}}
+\index{is\_out\_of\_bounds@{is\_out\_of\_bounds}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{is\_out\_of\_bounds}{is\_out\_of\_bounds}}
+{\footnotesize\ttfamily uint16\+\_\+t dynamic\+\_\+object\+::is\+\_\+out\+\_\+of\+\_\+bounds}
+
+\mbox{\Hypertarget{structdynamic__object_a1fbbcf14be177efef184f40fc2753710}\label{structdynamic__object_a1fbbcf14be177efef184f40fc2753710}} 
+\index{dynamic\_object@{dynamic\_object}!is\_trigger@{is\_trigger}}
+\index{is\_trigger@{is\_trigger}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{is\_trigger}{is\_trigger}}
+{\footnotesize\ttfamily uint16\+\_\+t dynamic\+\_\+object\+::is\+\_\+trigger}
+
+\mbox{\Hypertarget{structdynamic__object_a89e3a755ef8d63e9f6ba1b832034f0e0}\label{structdynamic__object_a89e3a755ef8d63e9f6ba1b832034f0e0}} 
+\index{dynamic\_object@{dynamic\_object}!pitch@{pitch}}
+\index{pitch@{pitch}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{pitch}{pitch}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structVector2}{Vector2}}$\ast$ dynamic\+\_\+object\+::pitch}
+
+\mbox{\Hypertarget{structdynamic__object_a9641806f6cfc0aa50b1490c0d6356943}\label{structdynamic__object_a9641806f6cfc0aa50b1490c0d6356943}} 
+\index{dynamic\_object@{dynamic\_object}!position@{position}}
+\index{position@{position}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{position}{position}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structVector3}{Vector3}}$\ast$ dynamic\+\_\+object\+::position}
+
+\mbox{\Hypertarget{structdynamic__object_a38928c09e3bdad96596a29f5dcd11f19}\label{structdynamic__object_a38928c09e3bdad96596a29f5dcd11f19}} 
+\index{dynamic\_object@{dynamic\_object}!rotation@{rotation}}
+\index{rotation@{rotation}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{rotation}{rotation}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structVector2}{Vector2}}$\ast$ dynamic\+\_\+object\+::rotation}
+
+\mbox{\Hypertarget{structdynamic__object_a93700dc00a2301487b5cb5daf61355aa}\label{structdynamic__object_a93700dc00a2301487b5cb5daf61355aa}} 
+\index{dynamic\_object@{dynamic\_object}!time\_scalar@{time\_scalar}}
+\index{time\_scalar@{time\_scalar}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{time\_scalar}{time\_scalar}}
+{\footnotesize\ttfamily float dynamic\+\_\+object\+::time\+\_\+scalar}
+
+\mbox{\Hypertarget{structdynamic__object_aa364ee64f118b33f422bac7d50f00e71}\label{structdynamic__object_aa364ee64f118b33f422bac7d50f00e71}} 
+\index{dynamic\_object@{dynamic\_object}!type@{type}}
+\index{type@{type}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}}$\ast$ dynamic\+\_\+object\+::type}
+
+\mbox{\Hypertarget{structdynamic__object_a3825f63e4b2be7ea6014baf4f7d6d8ad}\label{structdynamic__object_a3825f63e4b2be7ea6014baf4f7d6d8ad}} 
+\index{dynamic\_object@{dynamic\_object}!velocity@{velocity}}
+\index{velocity@{velocity}!dynamic\_object@{dynamic\_object}}
+\doxysubsubsection{\texorpdfstring{velocity}{velocity}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structVector3}{Vector3}} dynamic\+\_\+object\+::velocity}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/collision/\mbox{\hyperlink{dynamic__object_8h}{dynamic\+\_\+object.\+h}}\end{DoxyCompactItemize}

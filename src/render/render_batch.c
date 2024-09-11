@@ -88,6 +88,11 @@ int render_batch_compare_element(struct render_batch* batch, uint16_t a_index, u
         return 0;
     }
 
+    if ((a->material && b->material) && a->material->sort_priority != b->material->sort_priority)
+    {
+        return a->material->sort_priority - b->material->sort_priority;
+    }
+
     if (a->material != b->material) {
         return (int)a->material - (int)b->material;
     }
@@ -165,14 +170,13 @@ void render_batch_execute(struct render_batch* batch, mat4x4 view_proj_matrix, T
         int index = order[i];
         struct render_batch_element* element = &batch->elements[index];
 
-        if(!element->material)
-        {
-            current_mat = NULL;
+        if(!element->material && current_mat != 0) {
+            current_mat = 0;
+            rdpq_mode_zbuf(true, true);
         }
-        else if (current_mat != element->material)
-        {
-            if (element->material->block)
-            {
+        else if (current_mat != element->material) {
+            if (element->material->block) {
+                
                 rspq_block_run(element->material->block);
             }
 
@@ -182,8 +186,7 @@ void render_batch_execute(struct render_batch* batch, mat4x4 view_proj_matrix, T
             bool need_z_write = (element->material->flags & MATERIAL_FLAGS_Z_WRITE) != 0;
             bool need_z_read = (element->material->flags & MATERIAL_FLAGS_Z_READ) != 0;
 
-            if (need_z_write != z_write || need_z_read != z_read)
-            {
+            if (need_z_write != z_write || need_z_read != z_read) {
                 rdpq_mode_zbuf(need_z_read, need_z_write);
                 z_write = need_z_write;
                 z_read = need_z_read;
@@ -220,6 +223,11 @@ void render_batch_execute(struct render_batch* batch, mat4x4 view_proj_matrix, T
                 t3d_matrix_pop(1);
             }
         } else if (element->type == RENDER_BATCH_BILLBOARD) {
+            if (!element->material)
+            {
+                continue;
+            }
+
             for (int sprite_index = 0; sprite_index < element->billboard.sprite_count; ++sprite_index) {
                 struct render_billboard_sprite sprite = element->billboard.sprites[sprite_index];
 
@@ -255,9 +263,9 @@ void render_batch_execute(struct render_batch* batch, mat4x4 view_proj_matrix, T
                 int image_w = 32;
                 int image_h = 32;
 
-                if (current_mat && current_mat->tex0.sprite) {
-                    image_w = current_mat->tex0.sprite->width * 32;
-                    image_h = current_mat->tex0.sprite->height * 32;
+                if (element->material && element->material->tex0.sprite) {
+                    image_w = element->material->tex0.sprite->width * 32;
+                    image_h = element->material->tex0.sprite->height * 32;
                 }
 
                 rdpq_set_prim_color(sprite.color);

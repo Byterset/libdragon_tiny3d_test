@@ -1,0 +1,41 @@
+\hypertarget{sweep_8h}{}\doxysection{src/collision/shapes/sweep.h File Reference}
+\label{sweep_8h}\index{src/collision/shapes/sweep.h@{src/collision/shapes/sweep.h}}
+{\ttfamily \#include \char`\"{}../../math/vector2.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../math/vector3.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../math/aabb.\+h\char`\"{}}\newline
+Include dependency graph for sweep.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{sweep_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{sweep_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sweep_8h_a38d1d078dd602e34d937e79ba3408aea}{sweep\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+void \mbox{\hyperlink{sweep_8h_ab64bb2d14cbbab07464fc3656d3f1631}{sweep\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sweep_8h_ab64bb2d14cbbab07464fc3656d3f1631}\label{sweep_8h_ab64bb2d14cbbab07464fc3656d3f1631}} 
+\index{sweep.h@{sweep.h}!sweep\_bounding\_box@{sweep\_bounding\_box}}
+\index{sweep\_bounding\_box@{sweep\_bounding\_box}!sweep.h@{sweep.h}}
+\doxysubsubsection{\texorpdfstring{sweep\_bounding\_box()}{sweep\_bounding\_box()}}
+{\footnotesize\ttfamily void sweep\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{sweep_8h_a38d1d078dd602e34d937e79ba3408aea}\label{sweep_8h_a38d1d078dd602e34d937e79ba3408aea}} 
+\index{sweep.h@{sweep.h}!sweep\_minkowski\_sum@{sweep\_minkowski\_sum}}
+\index{sweep\_minkowski\_sum@{sweep\_minkowski\_sum}!sweep.h@{sweep.h}}
+\doxysubsubsection{\texorpdfstring{sweep\_minkowski\_sum()}{sweep\_minkowski\_sum()}}
+{\footnotesize\ttfamily void sweep\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+

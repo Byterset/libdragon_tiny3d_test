@@ -1,0 +1,41 @@
+\hypertarget{collision_2shapes_2box_8h}{}\doxysection{src/collision/shapes/box.h File Reference}
+\label{collision_2shapes_2box_8h}\index{src/collision/shapes/box.h@{src/collision/shapes/box.h}}
+{\ttfamily \#include \char`\"{}../../math/vector2.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../math/vector3.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../math/aabb.\+h\char`\"{}}\newline
+Include dependency graph for box.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{collision_2shapes_2box_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{collision_2shapes_2box_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{collision_2shapes_2box_8h_ac924e846c45b04c459484ec3a3fc3b6c}{box\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+void \mbox{\hyperlink{collision_2shapes_2box_8h_a2e8edcd5aebdf104b25b4347f4850a78}{box\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{collision_2shapes_2box_8h_a2e8edcd5aebdf104b25b4347f4850a78}\label{collision_2shapes_2box_8h_a2e8edcd5aebdf104b25b4347f4850a78}} 
+\index{box.h@{box.h}!box\_bounding\_box@{box\_bounding\_box}}
+\index{box\_bounding\_box@{box\_bounding\_box}!box.h@{box.h}}
+\doxysubsubsection{\texorpdfstring{box\_bounding\_box()}{box\_bounding\_box()}}
+{\footnotesize\ttfamily void box\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision_2shapes_2box_8h_ac924e846c45b04c459484ec3a3fc3b6c}\label{collision_2shapes_2box_8h_ac924e846c45b04c459484ec3a3fc3b6c}} 
+\index{box.h@{box.h}!box\_minkowski\_sum@{box\_minkowski\_sum}}
+\index{box\_minkowski\_sum@{box\_minkowski\_sum}!box.h@{box.h}}
+\doxysubsubsection{\texorpdfstring{box\_minkowski\_sum()}{box\_minkowski\_sum()}}
+{\footnotesize\ttfamily void box\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+

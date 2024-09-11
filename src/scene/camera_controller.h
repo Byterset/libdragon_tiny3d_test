@@ -4,6 +4,9 @@
 #include "../render/camera.h"
 #include "../player/player.h"
 
+#define CAMERA_FOLLOW_DISTANCE  7.0f
+#define CAMERA_FOLLOW_HEIGHT    3.5f
+
 struct camera_controller {
     struct camera* camera;
     struct player* player;

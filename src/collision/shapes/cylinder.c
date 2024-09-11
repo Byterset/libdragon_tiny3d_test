@@ -27,7 +27,7 @@ void cylinder_minkowski_sum(void* data, struct Vector3* direction, struct Vector
     output->y = direction->y > 0.0f ? shape_data->cylinder.half_height : -shape_data->cylinder.half_height;
 }
 
-void cylinder_bounding_box(void* data, struct Vector2* rotation, struct Box3D* box) {
+void cylinder_bounding_box(void* data, struct Vector2* rotation, struct AABB* box) {
     union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)data;
 
     box->min.x = -shape_data->cylinder.radius;

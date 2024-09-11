@@ -1,0 +1,178 @@
+\hypertarget{aabb_8h}{}\doxysection{src/math/aabb.h File Reference}
+\label{aabb_8h}\index{src/math/aabb.h@{src/math/aabb.h}}
+
+
+This file provides the definition of the \mbox{\hyperlink{structAABB}{AABB}} structure and functions to work with Axis Aligned Bounding Boxes.  
+
+
+{\ttfamily \#include \char`\"{}vector3.\+h\char`\"{}}\newline
+Include dependency graph for aabb.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{aabb_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{aabb_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structAABB}{AABB}}
+\begin{DoxyCompactList}\small\item\em The Axis Aligned Bounding Box (\mbox{\hyperlink{structAABB}{AABB}}) structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{aabb_8h_af3c0201f691cca6e377f6616bb265f07}{AABBContains\+Point}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point)
+\begin{DoxyCompactList}\small\item\em Checks if a point is contained within an Axis-\/\+Aligned Bounding Box (\mbox{\hyperlink{structAABB}{AABB}}). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{aabb_8h_a1b27c22223b8ed8c09d4b31164324cfd}{AABBHas\+Overlap}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$b)
+\begin{DoxyCompactList}\small\item\em Checks if two Axis-\/\+Aligned Bounding Boxes (\mbox{\hyperlink{structAABB}{AABB}}) overlap. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{aabb_8h_ac64481c6047f7ceab90b5d0ea7cd7221}{AABBUnion}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$b, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$out)
+\begin{DoxyCompactList}\small\item\em Computes the union of two axis-\/aligned bounding boxes (AABBs). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{aabb_8h_adf716aac365d38ee4ca4135172088726}{AABBUnion\+Point}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$out)
+\begin{DoxyCompactList}\small\item\em Computes the union of an axis-\/aligned bounding box (\mbox{\hyperlink{structAABB}{AABB}}) and a point. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{aabb_8h_aa93a3d326d2d87e50857347cc48da712}{AABBExtend\+Direction}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$out)
+\begin{DoxyCompactList}\small\item\em Extends an axis-\/aligned bounding box (\mbox{\hyperlink{structAABB}{AABB}}) in a specified direction. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{aabb_8h_a82a00d8bb55f1b93a90f8ff62b566117}{AABBSupport\+Function}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$input, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\begin{DoxyCompactList}\small\item\em Computes the support function for an axis-\/aligned bounding box (\mbox{\hyperlink{structAABB}{AABB}}). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file provides the definition of the \mbox{\hyperlink{structAABB}{AABB}} structure and functions to work with Axis Aligned Bounding Boxes. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{aabb_8h_af3c0201f691cca6e377f6616bb265f07}\label{aabb_8h_af3c0201f691cca6e377f6616bb265f07}} 
+\index{aabb.h@{aabb.h}!AABBContainsPoint@{AABBContainsPoint}}
+\index{AABBContainsPoint@{AABBContainsPoint}!aabb.h@{aabb.h}}
+\doxysubsubsection{\texorpdfstring{AABBContainsPoint()}{AABBContainsPoint()}}
+{\footnotesize\ttfamily int AABBContains\+Point (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{point }\end{DoxyParamCaption})}
+
+
+
+Checks if a point is contained within an Axis-\/\+Aligned Bounding Box (\mbox{\hyperlink{structAABB}{AABB}}). 
+
+This function determines whether a given point lies within the boundaries of a specified \mbox{\hyperlink{structAABB}{AABB}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em box} & A pointer to the \mbox{\hyperlink{structAABB}{AABB}} structure that defines the bounding box. \\
+\hline
+{\em point} & A pointer to the \mbox{\hyperlink{structVector3}{Vector3}} structure that defines the point to be checked. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns 1 if the point is within the \mbox{\hyperlink{structAABB}{AABB}}, otherwise returns 0. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{aabb_8h_aa93a3d326d2d87e50857347cc48da712}\label{aabb_8h_aa93a3d326d2d87e50857347cc48da712}} 
+\index{aabb.h@{aabb.h}!AABBExtendDirection@{AABBExtendDirection}}
+\index{AABBExtendDirection@{AABBExtendDirection}!aabb.h@{aabb.h}}
+\doxysubsubsection{\texorpdfstring{AABBExtendDirection()}{AABBExtendDirection()}}
+{\footnotesize\ttfamily void AABBExtend\+Direction (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+
+
+Extends an axis-\/aligned bounding box (\mbox{\hyperlink{structAABB}{AABB}}) in a specified direction. 
+
+This function takes an \mbox{\hyperlink{structAABB}{AABB}} {\ttfamily a} and a direction vector {\ttfamily direction}, and extends the \mbox{\hyperlink{structAABB}{AABB}} in the specified direction. The result is stored in the output \mbox{\hyperlink{structAABB}{AABB}} {\ttfamily out}. The extension is equal to the magnitude of the direction.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Pointer to the \mbox{\hyperlink{structAABB}{AABB}} to be extended. \\
+\hline
+{\em direction} & Pointer to the direction vector. \\
+\hline
+{\em out} & Pointer to the output \mbox{\hyperlink{structAABB}{AABB}} where the result will be stored. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{aabb_8h_a1b27c22223b8ed8c09d4b31164324cfd}\label{aabb_8h_a1b27c22223b8ed8c09d4b31164324cfd}} 
+\index{aabb.h@{aabb.h}!AABBHasOverlap@{AABBHasOverlap}}
+\index{AABBHasOverlap@{AABBHasOverlap}!aabb.h@{aabb.h}}
+\doxysubsubsection{\texorpdfstring{AABBHasOverlap()}{AABBHasOverlap()}}
+{\footnotesize\ttfamily int AABBHas\+Overlap (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{b }\end{DoxyParamCaption})}
+
+
+
+Checks if two Axis-\/\+Aligned Bounding Boxes (\mbox{\hyperlink{structAABB}{AABB}}) overlap. 
+
+This function determines whether two AABBs intersect by comparing their minimum and maximum coordinates along the x, y, and z axes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Pointer to the first \mbox{\hyperlink{structAABB}{AABB}} structure. \\
+\hline
+{\em b} & Pointer to the second \mbox{\hyperlink{structAABB}{AABB}} structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 1 if the AABBs overlap, 0 otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{aabb_8h_a82a00d8bb55f1b93a90f8ff62b566117}\label{aabb_8h_a82a00d8bb55f1b93a90f8ff62b566117}} 
+\index{aabb.h@{aabb.h}!AABBSupportFunction@{AABBSupportFunction}}
+\index{AABBSupportFunction@{AABBSupportFunction}!aabb.h@{aabb.h}}
+\doxysubsubsection{\texorpdfstring{AABBSupportFunction()}{AABBSupportFunction()}}
+{\footnotesize\ttfamily void AABBSupport\+Function (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{input,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+
+
+Computes the support function for an axis-\/aligned bounding box (\mbox{\hyperlink{structAABB}{AABB}}). 
+
+This function computes the support function for an \mbox{\hyperlink{structAABB}{AABB}} in the specified direction. The support function returns the point on the \mbox{\hyperlink{structAABB}{AABB}} that is farthest in the given direction.
+
+
+\begin{DoxyParams}{Parameters}
+{\em box} & Pointer to the \mbox{\hyperlink{structAABB}{AABB}}. \\
+\hline
+{\em input} & Pointer to the direction vector. \\
+\hline
+{\em output} & Pointer to the output vector where the result will be stored. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{aabb_8h_ac64481c6047f7ceab90b5d0ea7cd7221}\label{aabb_8h_ac64481c6047f7ceab90b5d0ea7cd7221}} 
+\index{aabb.h@{aabb.h}!AABBUnion@{AABBUnion}}
+\index{AABBUnion@{AABBUnion}!aabb.h@{aabb.h}}
+\doxysubsubsection{\texorpdfstring{AABBUnion()}{AABBUnion()}}
+{\footnotesize\ttfamily void AABBUnion (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{b,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+
+
+Computes the union of two axis-\/aligned bounding boxes (AABBs). 
+
+This function takes two AABBs, {\ttfamily a} and {\ttfamily b}, and computes their union, storing the result in the output \mbox{\hyperlink{structAABB}{AABB}} {\ttfamily out}. The union of two AABBs is the smallest \mbox{\hyperlink{structAABB}{AABB}} that contains both {\ttfamily a} and {\ttfamily b}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Pointer to the first \mbox{\hyperlink{structAABB}{AABB}}. \\
+\hline
+{\em b} & Pointer to the second \mbox{\hyperlink{structAABB}{AABB}}. \\
+\hline
+{\em out} & Pointer to the output \mbox{\hyperlink{structAABB}{AABB}} where the result will be stored. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{aabb_8h_adf716aac365d38ee4ca4135172088726}\label{aabb_8h_adf716aac365d38ee4ca4135172088726}} 
+\index{aabb.h@{aabb.h}!AABBUnionPoint@{AABBUnionPoint}}
+\index{AABBUnionPoint@{AABBUnionPoint}!aabb.h@{aabb.h}}
+\doxysubsubsection{\texorpdfstring{AABBUnionPoint()}{AABBUnionPoint()}}
+{\footnotesize\ttfamily void AABBUnion\+Point (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{point,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+
+
+Computes the union of an axis-\/aligned bounding box (\mbox{\hyperlink{structAABB}{AABB}}) and a point. 
+
+This function takes an \mbox{\hyperlink{structAABB}{AABB}} {\ttfamily a} and a point {\ttfamily point}, and computes the union of the \mbox{\hyperlink{structAABB}{AABB}} and the point. The result is stored in the output \mbox{\hyperlink{structAABB}{AABB}} {\ttfamily out}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Pointer to the \mbox{\hyperlink{structAABB}{AABB}}. \\
+\hline
+{\em point} & Pointer to the point. \\
+\hline
+{\em out} & Pointer to the output \mbox{\hyperlink{structAABB}{AABB}} where the result will be stored. \\
+\hline
+\end{DoxyParams}

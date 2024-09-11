@@ -1,0 +1,69 @@
+\hypertarget{model__cache_8c}{}\doxysection{src/resource/model\+\_\+cache.c File Reference}
+\label{model__cache_8c}\index{src/resource/model\_cache.c@{src/resource/model\_cache.c}}
+{\ttfamily \#include \char`\"{}model\+\_\+cache.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}resource\+\_\+cache.\+h\char`\"{}}\newline
+Include dependency graph for model\+\_\+cache.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{model__cache_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmodel}{model}} $\ast$ \mbox{\hyperlink{model__cache_8c_a2c0c697d73136bf6d0e76bb0be842063}{model\+\_\+cache\+\_\+load}} (const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em Will look for the model in the associated resource cache. If the model is not in the cache, it will be loaded and added to the cache. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{model__cache_8c_ad4f14e36f21328ec775f0a7d015d326c}{model\+\_\+cache\+\_\+release}} (struct \mbox{\hyperlink{structmodel}{model}} $\ast$\mbox{\hyperlink{structmodel}{model}})
+\begin{DoxyCompactList}\small\item\em Attempts to remove model from the associated resource cache. If the model is not in the cache or still referenced, it will not be freed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} \mbox{\hyperlink{model__cache_8c_a913d954c6b210b9de41d65b093acaac6}{model\+\_\+resource\+\_\+cache}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{model__cache_8c_a2c0c697d73136bf6d0e76bb0be842063}\label{model__cache_8c_a2c0c697d73136bf6d0e76bb0be842063}} 
+\index{model\_cache.c@{model\_cache.c}!model\_cache\_load@{model\_cache\_load}}
+\index{model\_cache\_load@{model\_cache\_load}!model\_cache.c@{model\_cache.c}}
+\doxysubsubsection{\texorpdfstring{model\_cache\_load()}{model\_cache\_load()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structmodel}{model}}$\ast$ model\+\_\+cache\+\_\+load (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+Will look for the model in the associated resource cache. If the model is not in the cache, it will be loaded and added to the cache. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & path to the model in the rom file system \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+~\newline
+ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{model__cache_8c_ad4f14e36f21328ec775f0a7d015d326c}\label{model__cache_8c_ad4f14e36f21328ec775f0a7d015d326c}} 
+\index{model\_cache.c@{model\_cache.c}!model\_cache\_release@{model\_cache\_release}}
+\index{model\_cache\_release@{model\_cache\_release}!model\_cache.c@{model\_cache.c}}
+\doxysubsubsection{\texorpdfstring{model\_cache\_release()}{model\_cache\_release()}}
+{\footnotesize\ttfamily void model\+\_\+cache\+\_\+release (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmodel}{model}} $\ast$}]{model }\end{DoxyParamCaption})}
+
+
+
+Attempts to remove model from the associated resource cache. If the model is not in the cache or still referenced, it will not be freed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em model} & pointer to the model to be freed \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{model__cache_8c_a913d954c6b210b9de41d65b093acaac6}\label{model__cache_8c_a913d954c6b210b9de41d65b093acaac6}} 
+\index{model\_cache.c@{model\_cache.c}!model\_resource\_cache@{model\_resource\_cache}}
+\index{model\_resource\_cache@{model\_resource\_cache}!model\_cache.c@{model\_cache.c}}
+\doxysubsubsection{\texorpdfstring{model\_resource\_cache}{model\_resource\_cache}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structresource__cache}{resource\+\_\+cache}} model\+\_\+resource\+\_\+cache}
+

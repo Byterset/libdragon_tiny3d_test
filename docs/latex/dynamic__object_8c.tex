@@ -1,0 +1,69 @@
+\hypertarget{dynamic__object_8c}{}\doxysection{src/collision/dynamic\+\_\+object.c File Reference}
+\label{dynamic__object_8c}\index{src/collision/dynamic\_object.c@{src/collision/dynamic\_object.c}}
+{\ttfamily \#include \char`\"{}dynamic\+\_\+object.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../time/time.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/minmax.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+Include dependency graph for dynamic\+\_\+object.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dynamic__object_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{dynamic__object_8c_a3e356307902822049b6cfe98d47c6acf}{dynamic\+\_\+object\+\_\+init}} (\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} \mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}, struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$type, uint16\+\_\+t \mbox{\hyperlink{dynamic__object_8h_aa005f963232c81966557e7ec5b93d9e2}{collision\+\_\+layers}}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$position, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation)
+\item 
+void \mbox{\hyperlink{dynamic__object_8c_a12892a38ed35d4ce768e024fcebc6602}{dynamic\+\_\+object\+\_\+update}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\item 
+struct \mbox{\hyperlink{structcontact}{contact}} $\ast$ \mbox{\hyperlink{dynamic__object_8c_afdfc1a03d2a934b88a927152c699f7af}{dynamic\+\_\+object\+\_\+nearest\+\_\+contact}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\item 
+bool \mbox{\hyperlink{dynamic__object_8c_aa7d4b2abb85c648b72c4418211266504}{dynamic\+\_\+object\+\_\+is\+\_\+touching}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, \mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} id)
+\item 
+void \mbox{\hyperlink{dynamic__object_8c_a24e500bbddc728608bbd424d474dbe64}{dynamic\+\_\+object\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+void \mbox{\hyperlink{dynamic__object_8c_a052ac720dfdd75cab4da5192f0a8a1a2}{dynamic\+\_\+object\+\_\+recalc\+\_\+bb}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{dynamic__object_8c_a3e356307902822049b6cfe98d47c6acf}\label{dynamic__object_8c_a3e356307902822049b6cfe98d47c6acf}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_init@{dynamic\_object\_init}}
+\index{dynamic\_object\_init@{dynamic\_object\_init}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_init()}{dynamic\_object\_init()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}}]{entity\+\_\+id,  }\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$}]{type,  }\item[{uint16\+\_\+t}]{collision\+\_\+layers,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{position,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{dynamic__object_8c_aa7d4b2abb85c648b72c4418211266504}\label{dynamic__object_8c_aa7d4b2abb85c648b72c4418211266504}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_is\_touching@{dynamic\_object\_is\_touching}}
+\index{dynamic\_object\_is\_touching@{dynamic\_object\_is\_touching}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_is\_touching()}{dynamic\_object\_is\_touching()}}
+{\footnotesize\ttfamily bool dynamic\+\_\+object\+\_\+is\+\_\+touching (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{dynamic__object_8c_a24e500bbddc728608bbd424d474dbe64}\label{dynamic__object_8c_a24e500bbddc728608bbd424d474dbe64}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_minkowski\_sum@{dynamic\_object\_minkowski\_sum}}
+\index{dynamic\_object\_minkowski\_sum@{dynamic\_object\_minkowski\_sum}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_minkowski\_sum()}{dynamic\_object\_minkowski\_sum()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{dynamic__object_8c_afdfc1a03d2a934b88a927152c699f7af}\label{dynamic__object_8c_afdfc1a03d2a934b88a927152c699f7af}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_nearest\_contact@{dynamic\_object\_nearest\_contact}}
+\index{dynamic\_object\_nearest\_contact@{dynamic\_object\_nearest\_contact}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_nearest\_contact()}{dynamic\_object\_nearest\_contact()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structcontact}{contact}}$\ast$ dynamic\+\_\+object\+\_\+nearest\+\_\+contact (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{dynamic__object_8c_a052ac720dfdd75cab4da5192f0a8a1a2}\label{dynamic__object_8c_a052ac720dfdd75cab4da5192f0a8a1a2}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_recalc\_bb@{dynamic\_object\_recalc\_bb}}
+\index{dynamic\_object\_recalc\_bb@{dynamic\_object\_recalc\_bb}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_recalc\_bb()}{dynamic\_object\_recalc\_bb()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+recalc\+\_\+bb (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{dynamic__object_8c_a12892a38ed35d4ce768e024fcebc6602}\label{dynamic__object_8c_a12892a38ed35d4ce768e024fcebc6602}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_update@{dynamic\_object\_update}}
+\index{dynamic\_object\_update@{dynamic\_object\_update}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_update()}{dynamic\_object\_update()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+

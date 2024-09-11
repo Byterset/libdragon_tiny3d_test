@@ -1,0 +1,103 @@
+\hypertarget{structrender__batch__element}{}\doxysection{render\+\_\+batch\+\_\+element Struct Reference}
+\label{structrender__batch__element}\index{render\_batch\_element@{render\_batch\_element}}
+
+
+{\ttfamily \#include $<$render\+\_\+batch.\+h$>$}
+
+
+
+Collaboration diagram for render\+\_\+batch\+\_\+element\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structrender__batch__element__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmaterial}{material}} $\ast$ \mbox{\hyperlink{structrender__batch__element_abca8fb9cfc2d7b77ccc932c0c59b6205}{material}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structrender__batch__element_ad08d3fa394d6a8c04bb57b9368ab4734}{type}}
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>struct \{\\
+\>\>rspq\_block\_t $\ast$ \mbox{\hyperlink{structrender__batch__element_aa56fca3eb9270534657cb145de4679b0}{block}}\\
+\>\>T3DMat4FP $\ast$ \mbox{\hyperlink{structrender__batch__element_a6fb41e04b60cc480846b6b363a8a71d6}{transform}}\\
+\>\} \mbox{\hyperlink{structrender__batch__element_a9d9130eb9c4ebcb0c414beb6b7321f7e}{model}}\\
+\>struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\_batch\_billboard\_element}} \mbox{\hyperlink{structrender__batch__element_aa49c839b0e6451fc8646739e97350fca}{billboard}}\\
+\>struct \{\\
+\>\>\mbox{\hyperlink{render__batch_8h_a7ad11d197fa06b737c2f891f755de0be}{RenderCallback}} \mbox{\hyperlink{structrender__batch__element_a2e5c2a5c46ed48a2182f77c443dfd674}{callback}}\\
+\>\>void $\ast$ \mbox{\hyperlink{structrender__batch__element_acef6d7e95aa97911df320c17e82c767c}{data}}\\
+\>\} \mbox{\hyperlink{structrender__batch__element_a59f5347eab80bcf4ac340486b574ac27}{callback}}\\
+\}; \\
+
+\end{tabbing}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structrender__batch__element_a48f33dc67f9ba6d7fbaf9a7596630853}\label{structrender__batch__element_a48f33dc67f9ba6d7fbaf9a7596630853}} 
+\doxysubsubsection{\texorpdfstring{}{}}
+{\footnotesize\ttfamily union \{ ... \} }
+
+\mbox{\Hypertarget{structrender__batch__element_aa49c839b0e6451fc8646739e97350fca}\label{structrender__batch__element_aa49c839b0e6451fc8646739e97350fca}} 
+\index{render\_batch\_element@{render\_batch\_element}!billboard@{billboard}}
+\index{billboard@{billboard}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{billboard}{billboard}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\+\_\+batch\+\_\+billboard\+\_\+element}} render\+\_\+batch\+\_\+element\+::billboard}
+
+\mbox{\Hypertarget{structrender__batch__element_aa56fca3eb9270534657cb145de4679b0}\label{structrender__batch__element_aa56fca3eb9270534657cb145de4679b0}} 
+\index{render\_batch\_element@{render\_batch\_element}!block@{block}}
+\index{block@{block}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{block}{block}}
+{\footnotesize\ttfamily rspq\+\_\+block\+\_\+t$\ast$ render\+\_\+batch\+\_\+element\+::block}
+
+\mbox{\Hypertarget{structrender__batch__element_a2e5c2a5c46ed48a2182f77c443dfd674}\label{structrender__batch__element_a2e5c2a5c46ed48a2182f77c443dfd674}} 
+\index{render\_batch\_element@{render\_batch\_element}!callback@{callback}}
+\index{callback@{callback}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{callback}{callback}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{render__batch_8h_a7ad11d197fa06b737c2f891f755de0be}{Render\+Callback}} render\+\_\+batch\+\_\+element\+::callback}
+
+\mbox{\Hypertarget{structrender__batch__element_a59f5347eab80bcf4ac340486b574ac27}\label{structrender__batch__element_a59f5347eab80bcf4ac340486b574ac27}} 
+\index{render\_batch\_element@{render\_batch\_element}!callback@{callback}}
+\index{callback@{callback}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{}{}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily struct \{ ... \}  render\+\_\+batch\+\_\+element\+::callback}
+
+\mbox{\Hypertarget{structrender__batch__element_acef6d7e95aa97911df320c17e82c767c}\label{structrender__batch__element_acef6d7e95aa97911df320c17e82c767c}} 
+\index{render\_batch\_element@{render\_batch\_element}!data@{data}}
+\index{data@{data}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily void$\ast$ render\+\_\+batch\+\_\+element\+::data}
+
+\mbox{\Hypertarget{structrender__batch__element_abca8fb9cfc2d7b77ccc932c0c59b6205}\label{structrender__batch__element_abca8fb9cfc2d7b77ccc932c0c59b6205}} 
+\index{render\_batch\_element@{render\_batch\_element}!material@{material}}
+\index{material@{material}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{material}{material}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structmaterial}{material}}$\ast$ render\+\_\+batch\+\_\+element\+::material}
+
+\mbox{\Hypertarget{structrender__batch__element_a9d9130eb9c4ebcb0c414beb6b7321f7e}\label{structrender__batch__element_a9d9130eb9c4ebcb0c414beb6b7321f7e}} 
+\index{render\_batch\_element@{render\_batch\_element}!model@{model}}
+\index{model@{model}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{}{}}
+{\footnotesize\ttfamily struct \{ ... \}  render\+\_\+batch\+\_\+element\+::model}
+
+\mbox{\Hypertarget{structrender__batch__element_a6fb41e04b60cc480846b6b363a8a71d6}\label{structrender__batch__element_a6fb41e04b60cc480846b6b363a8a71d6}} 
+\index{render\_batch\_element@{render\_batch\_element}!transform@{transform}}
+\index{transform@{transform}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{transform}{transform}}
+{\footnotesize\ttfamily T3\+DMat4\+FP$\ast$ render\+\_\+batch\+\_\+element\+::transform}
+
+\mbox{\Hypertarget{structrender__batch__element_ad08d3fa394d6a8c04bb57b9368ab4734}\label{structrender__batch__element_ad08d3fa394d6a8c04bb57b9368ab4734}} 
+\index{render\_batch\_element@{render\_batch\_element}!type@{type}}
+\index{type@{type}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily uint16\+\_\+t render\+\_\+batch\+\_\+element\+::type}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/render/\mbox{\hyperlink{render__batch_8h}{render\+\_\+batch.\+h}}\end{DoxyCompactItemize}

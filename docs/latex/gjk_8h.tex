@@ -1,0 +1,80 @@
+\hypertarget{gjk_8h}{}\doxysection{src/collision/gjk.h File Reference}
+\label{gjk_8h}\index{src/collision/gjk.h@{src/collision/gjk.h}}
+{\ttfamily \#include \char`\"{}../math/vector3.\+h\char`\"{}}\newline
+Include dependency graph for gjk.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{gjk_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gjk_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structSimplex}{Simplex}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{gjk_8h_aba90688f5c3008675da66e35a7a0f90a}{MAX\+\_\+\+SIMPLEX\+\_\+\+SIZE}}~4
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef void($\ast$ \mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}}) (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{gjk_8h_a3b66502a89a2fe01e80c043ae8ce0c51}{simplex\+Init}} (struct \mbox{\hyperlink{structSimplex}{Simplex}} $\ast$simplex)
+\item 
+int \mbox{\hyperlink{gjk_8h_a036f6c6d0366d68c163831aac9074f44}{simplex\+Check}} (struct \mbox{\hyperlink{structSimplex}{Simplex}} $\ast$simplex, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$next\+Direction)
+\item 
+int \mbox{\hyperlink{gjk_8h_afd055c44c344bcbb4e8bc5ea95c7a5e9}{gjk\+Check\+For\+Overlap}} (struct \mbox{\hyperlink{structSimplex}{Simplex}} $\ast$simplex, void $\ast$objectA, \mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}} object\+ASum, void $\ast$objectB, \mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}} object\+BSum, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$first\+Direction)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{gjk_8h_aba90688f5c3008675da66e35a7a0f90a}\label{gjk_8h_aba90688f5c3008675da66e35a7a0f90a}} 
+\index{gjk.h@{gjk.h}!MAX\_SIMPLEX\_SIZE@{MAX\_SIMPLEX\_SIZE}}
+\index{MAX\_SIMPLEX\_SIZE@{MAX\_SIMPLEX\_SIZE}!gjk.h@{gjk.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_SIMPLEX\_SIZE}{MAX\_SIMPLEX\_SIZE}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+SIMPLEX\+\_\+\+SIZE~4}
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}\label{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}} 
+\index{gjk.h@{gjk.h}!MinkowsiSum@{MinkowsiSum}}
+\index{MinkowsiSum@{MinkowsiSum}!gjk.h@{gjk.h}}
+\doxysubsubsection{\texorpdfstring{MinkowsiSum}{MinkowsiSum}}
+{\footnotesize\ttfamily typedef void($\ast$ Minkowsi\+Sum) (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{gjk_8h_afd055c44c344bcbb4e8bc5ea95c7a5e9}\label{gjk_8h_afd055c44c344bcbb4e8bc5ea95c7a5e9}} 
+\index{gjk.h@{gjk.h}!gjkCheckForOverlap@{gjkCheckForOverlap}}
+\index{gjkCheckForOverlap@{gjkCheckForOverlap}!gjk.h@{gjk.h}}
+\doxysubsubsection{\texorpdfstring{gjkCheckForOverlap()}{gjkCheckForOverlap()}}
+{\footnotesize\ttfamily int gjk\+Check\+For\+Overlap (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structSimplex}{Simplex}} $\ast$}]{simplex,  }\item[{void $\ast$}]{objectA,  }\item[{\mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}}}]{object\+ASum,  }\item[{void $\ast$}]{objectB,  }\item[{\mbox{\hyperlink{gjk_8h_adafd414fd7bc4c928fa9877ccc917703}{Minkowsi\+Sum}}}]{object\+BSum,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{first\+Direction }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{gjk_8h_a036f6c6d0366d68c163831aac9074f44}\label{gjk_8h_a036f6c6d0366d68c163831aac9074f44}} 
+\index{gjk.h@{gjk.h}!simplexCheck@{simplexCheck}}
+\index{simplexCheck@{simplexCheck}!gjk.h@{gjk.h}}
+\doxysubsubsection{\texorpdfstring{simplexCheck()}{simplexCheck()}}
+{\footnotesize\ttfamily int simplex\+Check (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structSimplex}{Simplex}} $\ast$}]{simplex,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{next\+Direction }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{gjk_8h_a3b66502a89a2fe01e80c043ae8ce0c51}\label{gjk_8h_a3b66502a89a2fe01e80c043ae8ce0c51}} 
+\index{gjk.h@{gjk.h}!simplexInit@{simplexInit}}
+\index{simplexInit@{simplexInit}!gjk.h@{gjk.h}}
+\doxysubsubsection{\texorpdfstring{simplexInit()}{simplexInit()}}
+{\footnotesize\ttfamily void simplex\+Init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structSimplex}{Simplex}} $\ast$}]{simplex }\end{DoxyParamCaption})}
+

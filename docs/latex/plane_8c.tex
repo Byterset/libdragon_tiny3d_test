@@ -1,0 +1,74 @@
+\hypertarget{plane_8c}{}\doxysection{src/math/plane.c File Reference}
+\label{plane_8c}\index{src/math/plane.c@{src/math/plane.c}}
+{\ttfamily \#include \char`\"{}plane.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mathf.\+h\char`\"{}}\newline
+Include dependency graph for plane.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{plane_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{plane_8c_a625f777f0669c9678d4722e4075fdacb}{plane\+Init\+With\+Normal\+And\+Point}} (struct \mbox{\hyperlink{structPlane}{Plane}} $\ast$plane, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$normal, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point)
+\item 
+int \mbox{\hyperlink{plane_8c_a59b4ccd7950fb3de95ca3127ad520ffe}{plane\+Ray\+Intersection}} (struct \mbox{\hyperlink{structPlane}{Plane}} $\ast$plane, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$ray\+Origin, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$ray\+Direction, float $\ast$ray\+Distance)
+\item 
+float \mbox{\hyperlink{plane_8c_a5de6d0b7b5e5a051d8783f1d4e39fafd}{plane\+Point\+Distance}} (struct \mbox{\hyperlink{structPlane}{Plane}} $\ast$plane, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point)
+\item 
+void \mbox{\hyperlink{plane_8c_a2f1513f207d431f8c4fc731e90607ba6}{plane\+Project\+Point}} (struct \mbox{\hyperlink{structPlane}{Plane}} $\ast$plane, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+float \mbox{\hyperlink{plane_8c_ab1e037ad3f3db388e4bd3ae840b4a06a}{calculate\+Lerp}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point)
+\item 
+void \mbox{\hyperlink{plane_8c_a43f206478c390508a20c3e8eaad2e4d0}{calculate\+Barycentric\+Coords}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$c, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+void \mbox{\hyperlink{plane_8c_a0c008264cb0708f589bbe87e682e88cb}{evaluate\+Barycentric\+Coords}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$c, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$bary, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{plane_8c_a43f206478c390508a20c3e8eaad2e4d0}\label{plane_8c_a43f206478c390508a20c3e8eaad2e4d0}} 
+\index{plane.c@{plane.c}!calculateBarycentricCoords@{calculateBarycentricCoords}}
+\index{calculateBarycentricCoords@{calculateBarycentricCoords}!plane.c@{plane.c}}
+\doxysubsubsection{\texorpdfstring{calculateBarycentricCoords()}{calculateBarycentricCoords()}}
+{\footnotesize\ttfamily void calculate\+Barycentric\+Coords (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{b,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{c,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{point,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{plane_8c_ab1e037ad3f3db388e4bd3ae840b4a06a}\label{plane_8c_ab1e037ad3f3db388e4bd3ae840b4a06a}} 
+\index{plane.c@{plane.c}!calculateLerp@{calculateLerp}}
+\index{calculateLerp@{calculateLerp}!plane.c@{plane.c}}
+\doxysubsubsection{\texorpdfstring{calculateLerp()}{calculateLerp()}}
+{\footnotesize\ttfamily float calculate\+Lerp (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{b,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{point }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{plane_8c_a0c008264cb0708f589bbe87e682e88cb}\label{plane_8c_a0c008264cb0708f589bbe87e682e88cb}} 
+\index{plane.c@{plane.c}!evaluateBarycentricCoords@{evaluateBarycentricCoords}}
+\index{evaluateBarycentricCoords@{evaluateBarycentricCoords}!plane.c@{plane.c}}
+\doxysubsubsection{\texorpdfstring{evaluateBarycentricCoords()}{evaluateBarycentricCoords()}}
+{\footnotesize\ttfamily void evaluate\+Barycentric\+Coords (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{b,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{c,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{bary,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{plane_8c_a625f777f0669c9678d4722e4075fdacb}\label{plane_8c_a625f777f0669c9678d4722e4075fdacb}} 
+\index{plane.c@{plane.c}!planeInitWithNormalAndPoint@{planeInitWithNormalAndPoint}}
+\index{planeInitWithNormalAndPoint@{planeInitWithNormalAndPoint}!plane.c@{plane.c}}
+\doxysubsubsection{\texorpdfstring{planeInitWithNormalAndPoint()}{planeInitWithNormalAndPoint()}}
+{\footnotesize\ttfamily void plane\+Init\+With\+Normal\+And\+Point (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structPlane}{Plane}} $\ast$}]{plane,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{normal,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{point }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{plane_8c_a5de6d0b7b5e5a051d8783f1d4e39fafd}\label{plane_8c_a5de6d0b7b5e5a051d8783f1d4e39fafd}} 
+\index{plane.c@{plane.c}!planePointDistance@{planePointDistance}}
+\index{planePointDistance@{planePointDistance}!plane.c@{plane.c}}
+\doxysubsubsection{\texorpdfstring{planePointDistance()}{planePointDistance()}}
+{\footnotesize\ttfamily float plane\+Point\+Distance (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structPlane}{Plane}} $\ast$}]{plane,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{point }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{plane_8c_a2f1513f207d431f8c4fc731e90607ba6}\label{plane_8c_a2f1513f207d431f8c4fc731e90607ba6}} 
+\index{plane.c@{plane.c}!planeProjectPoint@{planeProjectPoint}}
+\index{planeProjectPoint@{planeProjectPoint}!plane.c@{plane.c}}
+\doxysubsubsection{\texorpdfstring{planeProjectPoint()}{planeProjectPoint()}}
+{\footnotesize\ttfamily void plane\+Project\+Point (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structPlane}{Plane}} $\ast$}]{plane,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{point,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{plane_8c_a59b4ccd7950fb3de95ca3127ad520ffe}\label{plane_8c_a59b4ccd7950fb3de95ca3127ad520ffe}} 
+\index{plane.c@{plane.c}!planeRayIntersection@{planeRayIntersection}}
+\index{planeRayIntersection@{planeRayIntersection}!plane.c@{plane.c}}
+\doxysubsubsection{\texorpdfstring{planeRayIntersection()}{planeRayIntersection()}}
+{\footnotesize\ttfamily int plane\+Ray\+Intersection (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structPlane}{Plane}} $\ast$}]{plane,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{ray\+Origin,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{ray\+Direction,  }\item[{float $\ast$}]{ray\+Distance }\end{DoxyParamCaption})}
+

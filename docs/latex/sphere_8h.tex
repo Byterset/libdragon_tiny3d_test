@@ -1,0 +1,41 @@
+\hypertarget{sphere_8h}{}\doxysection{src/collision/shapes/sphere.h File Reference}
+\label{sphere_8h}\index{src/collision/shapes/sphere.h@{src/collision/shapes/sphere.h}}
+{\ttfamily \#include \char`\"{}../../math/vector2.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../math/vector3.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../math/aabb.\+h\char`\"{}}\newline
+Include dependency graph for sphere.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{sphere_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=322pt]{sphere_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sphere_8h_aefbe3a8c80f3cdbe94a998d0569d2551}{sphere\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+void \mbox{\hyperlink{sphere_8h_af345f4883018ba5b9fc48f60e33357c4}{sphere\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sphere_8h_af345f4883018ba5b9fc48f60e33357c4}\label{sphere_8h_af345f4883018ba5b9fc48f60e33357c4}} 
+\index{sphere.h@{sphere.h}!sphere\_bounding\_box@{sphere\_bounding\_box}}
+\index{sphere\_bounding\_box@{sphere\_bounding\_box}!sphere.h@{sphere.h}}
+\doxysubsubsection{\texorpdfstring{sphere\_bounding\_box()}{sphere\_bounding\_box()}}
+{\footnotesize\ttfamily void sphere\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{sphere_8h_aefbe3a8c80f3cdbe94a998d0569d2551}\label{sphere_8h_aefbe3a8c80f3cdbe94a998d0569d2551}} 
+\index{sphere.h@{sphere.h}!sphere\_minkowski\_sum@{sphere\_minkowski\_sum}}
+\index{sphere\_minkowski\_sum@{sphere\_minkowski\_sum}!sphere.h@{sphere.h}}
+\doxysubsubsection{\texorpdfstring{sphere\_minkowski\_sum()}{sphere\_minkowski\_sum()}}
+{\footnotesize\ttfamily void sphere\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+

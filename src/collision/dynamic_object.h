@@ -3,8 +3,8 @@
 
 #include "../entity/entity_id.h"
 #include "../math/vector3.h"
-#include "../math/box3d.h"
-#include "../math/box2d.h"
+#include "../math/vector2.h"
+#include "../math/aabb.h"
 #include "contact.h"
 #include "gjk.h"
 #include <stdint.h>
@@ -22,7 +22,7 @@ enum collision_group {
     COLLISION_GROUP_PLAYER = 1,
 };
 
-typedef void (*bounding_box_calculator)(void* data, struct Vector2* rotation, struct Box3D* box);
+typedef void (*bounding_box_calculator)(void* data, struct Vector2* rotation, struct AABB* box);
 
 union dynamic_object_type_data
 {
@@ -50,7 +50,7 @@ struct dynamic_object {
     struct Vector2* pitch;
     struct Vector3 center;
     struct Vector3 velocity;
-    struct Box3D bounding_box;
+    struct AABB bounding_box;
     float time_scalar;
     uint16_t has_gravity: 1;
     uint16_t is_trigger: 1;

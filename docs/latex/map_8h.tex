@@ -1,0 +1,58 @@
+\hypertarget{map_8h}{}\doxysection{src/map/map.h File Reference}
+\label{map_8h}\index{src/map/map.h@{src/map/map.h}}
+{\ttfamily \#include \char`\"{}../math/transform.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/vector2.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/render\+\_\+batch.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/renderable.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/model.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../resource/model\+\_\+cache.\+h\char`\"{}}\newline
+Include dependency graph for map.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{map_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=254pt]{map_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmap}{map}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{map_8h_aa34918333a037ed91132e4f4eb2487ec}{map\+\_\+init}} (struct \mbox{\hyperlink{structmap}{map}} $\ast$\mbox{\hyperlink{structmap}{map}})
+\item 
+void \mbox{\hyperlink{map_8h_adb833214318be18e96911919c6e96c2d}{map\+\_\+render}} (struct \mbox{\hyperlink{structmap}{map}} $\ast$\mbox{\hyperlink{structmap}{map}}, struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch)
+\item 
+void \mbox{\hyperlink{map_8h_a0b7d4ab29383d6183dd7ce1c95b38865}{map\+\_\+destroy}} (struct \mbox{\hyperlink{structmap}{map}} $\ast$\mbox{\hyperlink{structmap}{map}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{map_8h_a0b7d4ab29383d6183dd7ce1c95b38865}\label{map_8h_a0b7d4ab29383d6183dd7ce1c95b38865}} 
+\index{map.h@{map.h}!map\_destroy@{map\_destroy}}
+\index{map\_destroy@{map\_destroy}!map.h@{map.h}}
+\doxysubsubsection{\texorpdfstring{map\_destroy()}{map\_destroy()}}
+{\footnotesize\ttfamily void map\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmap}{map}} $\ast$}]{map }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{map_8h_aa34918333a037ed91132e4f4eb2487ec}\label{map_8h_aa34918333a037ed91132e4f4eb2487ec}} 
+\index{map.h@{map.h}!map\_init@{map\_init}}
+\index{map\_init@{map\_init}!map.h@{map.h}}
+\doxysubsubsection{\texorpdfstring{map\_init()}{map\_init()}}
+{\footnotesize\ttfamily void map\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmap}{map}} $\ast$}]{map }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{map_8h_adb833214318be18e96911919c6e96c2d}\label{map_8h_adb833214318be18e96911919c6e96c2d}} 
+\index{map.h@{map.h}!map\_render@{map\_render}}
+\index{map\_render@{map\_render}!map.h@{map.h}}
+\doxysubsubsection{\texorpdfstring{map\_render()}{map\_render()}}
+{\footnotesize\ttfamily void map\+\_\+render (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmap}{map}} $\ast$}]{map,  }\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch }\end{DoxyParamCaption})}
+

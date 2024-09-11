@@ -15,7 +15,7 @@ void capsule_minkowski_sum(void* data, struct Vector3* direction, struct Vector3
     }
 }
 
-void capsule_bounding_box(void* data, struct Vector2* rotation, struct Box3D* box) {
+void capsule_bounding_box(void* data, struct Vector2* rotation, struct AABB* box) {
     union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)data;
 
     vector3Scale(&gOneVec, &box->max, shape_data->capsule.radius);
