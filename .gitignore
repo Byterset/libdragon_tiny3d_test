@@ -54,6 +54,7 @@ dkms.conf
 #custom
 .vscode/
 build/
+filesystem/
 archive/
 libdragon/
 .libdragon/
