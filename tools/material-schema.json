@@ -74,35 +74,35 @@
                     "items": [
                         {
                             "enum": [
-                                "COMBINED",
-                                "TEX0",
-                                "TEX1",
-                                "PRIM",
-                                "SHADE",
-                                "ENV",
+                                "COMBINED_ALPHA",
+                                "TEX0_ALPHA",
+                                "TEX1_ALPHA",
+                                "PRIM_ALPHA",
+                                "SHADE_ALPHA",
+                                "ENV_ALPHA",
                                 "1",
                                 "0"
                             ]
                         },
                         {
                             "enum": [
-                                "COMBINED",
-                                "TEX0",
-                                "TEX1",
-                                "PRIM",
-                                "SHADE",
-                                "ENV",
+                                "COMBINED_ALPHA",
+                                "TEX0_ALPHA",
+                                "TEX1_ALPHA",
+                                "PRIM_ALPHA",
+                                "SHADE_ALPHA",
+                                "ENV_ALPHA",
                                 "1",
                                 "0"
                             ]
                         },
                         {
                             "enum": [
-                                "TEX0",
-                                "TEX1",
-                                "PRIM",
-                                "SHADE",
-                                "ENV",
+                                "TEX0_ALPHA",
+                                "TEX1_ALPHA",
+                                "PRIM_ALPHA",
+                                "SHADE_ALPHA",
+                                "ENV_ALPHA",
                                 "LOD_FRACTION",
                                 "PRIM_LOD_FRAC",
                                 "0"
@@ -110,12 +110,12 @@
                         },
                         {
                             "enum": [
-                                "COMBINED",
-                                "TEX0",
-                                "TEX1",
-                                "PRIM",
-                                "SHADE",
-                                "ENV",
+                                "COMBINED_ALPHA",
+                                "TEX0_ALPHA",
+                                "TEX1_ALPHA",
+                                "PRIM_ALPHA",
+                                "SHADE_ALPHA",
+                                "ENV_ALPHA",
                                 "1",
                                 "0"
                             ]

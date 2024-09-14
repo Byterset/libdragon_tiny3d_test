@@ -6,7 +6,6 @@
 
 #include "../render/render_scene.h"
 #include "../time/time.h"
-#include "../entity/entity_id.h"
 #include "../render/defs.h"
 
 
@@ -63,8 +62,6 @@ void map_update(struct map* map) {
 
 
 void map_init(struct map* map) {
-    entity_id entity_id = entity_id_new();
-
     transformInitIdentity(&map->transform);
     renderable_init(&map->renderable, &map->transform, "rom:/models/map/map.t3dm");
 

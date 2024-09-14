@@ -70,11 +70,6 @@ void material_load_tex_axis(struct text_axis* axis, FILE* file) {
     axis->mirror = (repeats & 0x8000) != 0;
 }
 
-static GLenum material_filter_modes[] = {
-    GL_NEAREST,
-    GL_LINEAR,
-};
-
 /// @brief load a texture from a sprite file via the sprite cache and set the texture parameters.
 /// First the filename is read from the file stream and the sprite loaded from the read filename, then the texture parameters are read and set.
 /// @param tex the target texture

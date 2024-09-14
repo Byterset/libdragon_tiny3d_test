@@ -17,6 +17,7 @@ struct fire {
     float total_time;
     float end_time;
     uint16_t index_offset;
+    T3DMat4FP *particle_matrices;
 };
 
 void fire_init(struct fire* fire);

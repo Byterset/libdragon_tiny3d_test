@@ -86,12 +86,12 @@ COMB_D = {
 }
 
 ACOMB_A = {
-    "COMBINED": 0,
-    "TEX0": 1,
-    "TEX1": 2,
-    "PRIM": 3,
-    "SHADE": 4,
-    "ENV": 5,
+    "COMBINED_ALPHA": 0,
+    "TEX0_ALPHA": 1,
+    "TEX1_ALPHA": 2,
+    "PRIM_ALPHA": 3,
+    "SHADE_ALPHA": 4,
+    "ENV_ALPHA": 5,
     
     "ONE": 6,
     "1": 6,
@@ -101,11 +101,11 @@ ACOMB_A = {
 
 ACOMB_MUL = {
     "LOD_FRAC": 0,
-    "TEX0": 1,
-    "TEX1": 2,
-    "PRIM": 3,
-    "SHADE": 4,
-    "ENV": 5,
+    "TEX0_ALPHA": 1,
+    "TEX1_ALPHA": 2,
+    "PRIM_ALPHA": 3,
+    "SHADE_ALPHA": 4,
+    "ENV_ALPHA": 5,
     "PRIM_LOD_FRAC": 6,
     "ZERO": 7,
     "0": 7,
@@ -199,7 +199,7 @@ def _serialize_combine(file, combine: material.CombineMode, force_cyc2: bool):
         aa1 = ACOMB_A['0']
         ab1 = ACOMB_A['0']
         ac1 = ACOMB_MUL['0']
-        ad1 = ACOMB_A['COMBINED']
+        ad1 = ACOMB_A['COMBINED_ALPHA']
 
         flags |= RDPQ_COMBINER_2PASS
 

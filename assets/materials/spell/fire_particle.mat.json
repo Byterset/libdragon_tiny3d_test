@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../tools/material-schema.json",
     "tex0": {
         "filename": "../../images/spell/fire_particle.png",
         "s": {
@@ -12,9 +13,16 @@
     },
     "combineMode": [{
         "color": ["TEX0", "0", "PRIM", "0"],
-        "alpha": ["TEX0", "0", "PRIM", "0"]
+        "alpha": ["TEX0_ALPHA", "0", "PRIM_ALPHA", "0"]
     }],
     "primColor": [255, 255, 255, 255],
-    "blendMode": "ALPHA_CLIP",
+    "blendMode": {
+        "cyc1": ["IN", "IN_A", "MEMORY", "INV_MUX_A"],
+        "zMode": "TRANSPARENT",
+        "zWrite": false,
+        "zCompare": true
+
+    },
+    "culling": false,
     "zBuffer": true
 }

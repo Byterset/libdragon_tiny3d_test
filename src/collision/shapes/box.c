@@ -2,6 +2,7 @@
 
 #include "../dynamic_object.h"
 #include <math.h>
+#include "../../render/defs.h"
 
 void box_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output) {
     union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)data;

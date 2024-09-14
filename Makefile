@@ -85,6 +85,11 @@ filesystem/%.mat: assets/%.mat.json
 SOURCES := $(shell find src/ -type f -name '*.c' | sort)
 SOURCE_OBJS := $(SOURCES:src/%.c=$(BUILD_DIR)/%.o)
 
+DEPS := $(SOURCE_OBJS:.o=.d)
+
+# Include the dependency files, if they exist
+-include $(DEPS)
+
 #----------------
 # Filesystem & Linking
 #----------------	

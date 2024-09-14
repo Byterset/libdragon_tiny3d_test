@@ -13,15 +13,15 @@ static struct dynamic_object_type box_collision = {
     .bounding_box = box_bounding_box,
     .data = {
         .box = {
-            .half_size = {64.0f, 64.0f, 64.0f}
+            .half_size = {1.0f, 1.0f, 1.0f}
         }
     }
 };
 
 void box_update(struct box* box){
-    if (box->transform.position.y <= 0)
+    if (box->transform.position.y <= 1)
     {
-        box->transform.position.y = 0;
+        box->transform.position.y = 1;
         box->collision.velocity.y = box->collision.velocity.y <= 0 ? 0 : box->collision.velocity.y;
     }
 }

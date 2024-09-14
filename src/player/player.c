@@ -6,6 +6,7 @@
 #include "../collision/collision_scene.h"
 #include "../collision/shapes/capsule.h"
 #include "../collision/shapes/cylinder.h"
+#include "../collision/shapes/box.h"
 #include "../time/time.h"
 #include "../entity/entity_id.h"
 #include "../render/defs.h"
@@ -15,28 +16,26 @@
 static struct Vector2 player_max_rotation;
 rspq_block_t* player_dpl;
 
+// static struct dynamic_object_type player_collision = {
+//     .minkowsi_sum = capsule_minkowski_sum,
+//     .bounding_box = capsule_bounding_box,
+//     .data = {
+//         .capsule = {
+//             .radius = 2.0f,
+//             .inner_half_height = 0.1f,
+//         }
+//     }
+// };
+
 static struct dynamic_object_type player_collision = {
-    .minkowsi_sum = capsule_minkowski_sum,
-    .bounding_box = capsule_bounding_box,
+    .minkowsi_sum = box_minkowski_sum,
+    .bounding_box = box_bounding_box,
     .data = {
-        .capsule = {
-            .radius = 1.0f,
-            .inner_half_height = 1.0f,
+        .box = {
+            .half_size = {2.0f, 1.0f, 2.0f}
         }
     }
 };
-
-static struct dynamic_object_type player_visual_shape = {
-    .minkowsi_sum = cylinder_minkowski_sum,
-    .bounding_box = cylinder_bounding_box,
-    .data = {
-        .cylinder = {
-            .half_height = 1.0f,
-            .radius = 1.0f,
-        }
-    }
-};
-
 
 void player_get_move_basis(struct Transform* transform, struct Vector3* forward, struct Vector3* right) {
     quatMultVector(&transform->rotation, &gForward, forward);
@@ -221,7 +220,7 @@ void player_init(struct player* player, struct player_definition* definition, st
     player->collision.has_gravity = true;
     
 
-    player->collision.center.y = player_collision.data.capsule.inner_half_height + player_collision.data.capsule.radius;
+    player->collision.center.y = player_collision.data.box.half_size.y + 1;
 
     collision_scene_add(&player->collision);
 

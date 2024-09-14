@@ -25,6 +25,7 @@ struct render_billboard_sprite {
 enum render_batch_type {
     RENDER_BATCH_MODEL,
     RENDER_BATCH_BILLBOARD,
+    RENDER_BATCH_BILLBOARD_OLD,
     RENDER_BATCH_CALLBACK,
 };
 
@@ -45,7 +46,10 @@ struct render_batch_element {
             rspq_block_t* block;
             T3DMat4FP* transform;
         } model;
-        struct render_batch_billboard_element billboard;
+        struct {
+            struct render_batch_billboard_element billboard;
+            T3DMat4FP* sprite_mtx;
+        } billboard;
         struct {
             RenderCallback callback;
             void* data;
@@ -67,7 +71,7 @@ void render_batch_add_t3dmodel(struct render_batch* batch, rspq_block_t* block, 
 void render_batch_add_callback(struct render_batch* batch, struct material* material, RenderCallback callback, void* data);
 // caller is responsible for populating sprite list
 // the sprite count returned may be less than the sprite count requested
-struct render_batch_billboard_element* render_batch_add_particles(struct render_batch* batch, struct material* material, int count);
+struct render_batch_billboard_element* render_batch_add_particles(struct render_batch* batch, struct material* material, int count, T3DMat4FP* sprite_mtx);
 
 struct render_batch_billboard_element render_batch_get_sprites(struct render_batch* batch, int count);
 mat4x4* render_batch_get_transform(struct render_batch* batch);
