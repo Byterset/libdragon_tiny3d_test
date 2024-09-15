@@ -2,6 +2,148 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "title": "Schema for an N64 material",
     "definitions": {
+        "texture": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "description": "the Path of the texture"
+                },
+                {
+                    "type": "object",
+                    "description": "Texture definition including tex Params",
+                    "properties": {
+                        "filename": {
+                            "type": "string"
+                        },
+                        "s": {
+                            "type": "object",
+                            "properties": {
+                                "mirror": {
+                                    "type": "boolean"
+                                },
+                                "repeats": {
+                                    "type": "integer",
+                                    "default": "2048",
+                                    "minimum": 0,
+                                    "maximum": 2048
+                                },
+                                "scroll": {
+                                    "type": "number"
+                                },
+                                "translate": {
+                                    "type": "integer"
+                                },
+                                "scale_log": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "t": {
+                            "type": "object",
+                            "properties": {
+                                "mirror": {
+                                    "type": "boolean"
+                                },
+                                "repeats": {
+                                    "type": "integer",
+                                    "default": "2048",
+                                    "minimum": 0,
+                                    "maximum": 2048
+                                },
+                                "scroll": {
+                                    "type": "number"
+                                },
+                                "translate": {
+                                    "type": "integer"
+                                },
+                                "scale_log": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "tmem_addr": {
+                            "type": "integer"
+                        },
+                        "palette": {
+                            "type": "integer"
+                        },
+                        "min_filter": {
+                            "type": "string",
+                            "default": "nearest",
+                            "enum": [
+                                "nearest",
+                                "linear"
+                            ]
+                        },
+                        "mag_filer": {
+                            "type": "string",
+                            "default": "nearest",
+                            "enum": [
+                                "nearest",
+                                "linear"
+                            ]
+                        },
+                        "sequenceLength": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "filename"
+                    ]
+                }
+            ]
+        },
+        "color": {
+            "type": "array",
+            "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+            },
+            "minItems": 4,
+            "maxItems": 4
+        },
+        "blenderCycle": {
+            "type": "array",
+            "items": [
+                {
+                    "enum": [
+                        "IN",
+                        "MEMORY",
+                        "BLEND",
+                        "FOG"
+                    ]
+                },
+                {
+                    "enum": [
+                        "IN_A",
+                        "FOG_A",
+                        "SHADE_A",
+                        "ZERO",
+                        "0"
+                    ]
+                },
+                {
+                    "enum": [
+                        "IN",
+                        "MEMORY",
+                        "BLEND",
+                        "FOG"
+                    ]
+                },
+                {
+                    "enum": [
+                        "INV_MUX_A",
+                        "MEMORY_CVG",
+                        "ONE",
+                        "1",
+                        "ZERO",
+                        "0"
+                    ]
+                }
+            ]
+
+        },
         "combineMode": {
             "type": "object",
             "properties": {
@@ -141,6 +283,83 @@
                     "$ref": "#/definitions/combineMode"
                 }
             ]
+        },
+        "tex0": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/texture"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "tex1": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/texture"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "envColor": {
+            "$ref": "#/definitions/color"
+        },
+        "primColor": {
+            "$ref": "#/definitions/color"
+        },
+        "blendColor": {
+            "$ref": "#/definitions/color"
+        },
+        "lighting": {
+            "type": "boolean"
+        },
+        "vertexGamma": {
+            "type": "number"
+        },
+        "blendMode": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "description": "A string representing one of the preset blend modes.",
+                    "default": "OPAQUE",
+                    "enum": ["OPAQUE", "TRANSPARENT", "ALPHA_CLIP", "ADD"]
+                },
+                {
+                    "type": "object",
+                    "description": "Custom blend mode",
+                    "properties": {
+                        "cyc1": {
+                            "$ref": "#/definitions/blenderCycle"
+                        },
+                        "cyc2": {
+                            "$ref": "#/definitions/blenderCycle"
+                        },
+                        "zMode": {
+                            "type": "string",
+                            "enum": ["OPAQUE", "INTER", "TRANSPARENT", "DECAL"]
+                        },
+                        "zWrite": {
+                            "type": "boolean"
+                        },
+                        "zCompare": {
+                            "type": "boolean"
+                        }
+                    },
+                    "required": ["cyc1", "zMode"]
+                }
+            ]
+        },
+        "culling": {
+            "type": "boolean"
+        },
+        "zBuffer": {
+            "type": "boolean"
         }
-    }
+
+    },
+    "required": ["tex0", "combineMode", "blendMode"],
+    "additionalProperties": false
 }

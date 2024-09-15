@@ -23,6 +23,6 @@
         "zCompare": true
 
     },
-    "culling": false,
+    "culling": true,
     "zBuffer": true
 }
