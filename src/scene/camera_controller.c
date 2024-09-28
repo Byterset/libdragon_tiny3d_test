@@ -18,11 +18,24 @@ void camera_controller_update_position(struct camera_controller* controller, str
             offset = gForward;
         }
     }
+
+
     
     //calculate the target position of where the camera should be
     struct Vector3 targetPosition;
     vector3AddScaled(&target->position, &offset, -CAMERA_FOLLOW_DISTANCE, &targetPosition);
     targetPosition.y += CAMERA_FOLLOW_HEIGHT;
+
+    // move the target Position up or down to look from above or below
+    //TODO: this has been added to test the skybox code and can be removed safely later
+    if (joypad_get_buttons_held(0).d_down)
+    {
+        targetPosition.y -= 15;
+    }
+    else if (joypad_get_buttons_held(0).d_up)
+    {
+        targetPosition.y += 15;
+    }
 
     //move the camera towards the target position
     vector3Lerp(&controller->camera->transform.position, &targetPosition, frametime_sec * 6.0f, &controller->camera->transform.position);

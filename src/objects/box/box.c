@@ -43,7 +43,8 @@ void box_init(struct box* box, struct Vector3 position){
         &box_collision,
         COLLISION_LAYER_TANGIBLE,
         &box->transform.position,
-        &box->look_direction
+        &box->look_direction,
+        10.0f
     );
 
     box->collision.center.y = box_collision.data.box.half_size.y;

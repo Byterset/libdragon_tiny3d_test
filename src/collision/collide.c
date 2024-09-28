@@ -125,9 +125,11 @@ void collide_object_to_object(struct dynamic_object* a, struct dynamic_object* b
     float friction = a->type->friction < b->type->friction ? a->type->friction : b->type->friction;
     float bounce = a->type->friction > b->type->friction ? a->type->friction : b->type->friction;
 
+    float massRatio = a->mass / (a->mass + b->mass);
+
     // TODO determine push 
-    correct_overlap(b, &result, -0.5f, friction, bounce);
-    correct_overlap(a, &result, 0.5f, friction, bounce);
+    correct_overlap(b, &result, -(1.0f - massRatio), friction, bounce);
+    correct_overlap(a, &result, massRatio, friction, bounce);
 
     struct contact* contact = collision_scene_new_contact();
 

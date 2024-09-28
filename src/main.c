@@ -15,6 +15,7 @@
 #include "map/map.h"
 #include "objects/box/box.h"
 #include "effects/fire.h"
+#include "skybox/skybox_flat.h"
 #include "math/transform.h"
 #include "math/vector2.h"
 #include "math/vector3.h"
@@ -25,6 +26,8 @@
 #include "resource/model_cache.h"
 #include "render/renderable.h"
 
+#include "render/defs.h"
+
 #include <malloc.h>
 
 volatile static int frame_happened = 0;
@@ -33,13 +36,14 @@ static struct frame_memory_pool frame_memory_pools[2];
 static uint8_t next_frame_memoy_pool;
 
 uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
-uint8_t colorDir[4] = {0xFF, 0xAA, 0xAA, 0xFF};
-T3DVec3 lightDirVec = {{1.0f, 1.0f, 1.0f}};
+uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
+T3DVec3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
 struct player player;
 struct map map;
 struct box box;
 struct fire fire;
+struct skybox_flat skybox_flat;
 
 struct camera camera;
 struct camera_controller camera_controller;
@@ -61,9 +65,10 @@ void setup()
     render_scene_reset();
     update_reset();
     collision_scene_reset();
-    camera_init(&camera, 70.0f, 1.0f, 100.0f);
+    camera_init(&camera, 70.0f, 1.0f, 150.0f);
+    skybox_flat_init(&skybox_flat);
     map_init(&map);
-    box_init(&box, (struct Vector3){0, 1.4f, 0});
+    box_init(&box, (struct Vector3){4, 18.0f, 4});
     fire_init(&fire);
 
     player_init(&player, &playerDef, &camera.transform);
@@ -97,14 +102,14 @@ void render3d()
     rdpq_mode_fog(RDPQ_FOG_STANDARD);
     rdpq_set_fog_color((color_t){255, 255, 255, 0xFF});
     t3d_fog_set_enabled(true);
-    t3d_fog_set_range(100.0f, 2000.0f);
+    t3d_fog_set_range(2.0f * SCENE_SCALE, 40.0f * SCENE_SCALE);
 
     render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool]);
 }
 
 void render(surface_t *zbuffer)
 {
-
+    // ======== Draw (3D) ======== //
     render3d();
 
     // ======== Draw (UI) ======== //
@@ -112,6 +117,7 @@ void render(surface_t *zbuffer)
     float posX = 16;
     float posY = 24;
     float fps = display_get_fps();
+
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", player.is_attacking);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "fps: %.1f", fps);
@@ -148,7 +154,6 @@ int main()
     // ======== GAME LOOP ======== //
     for (;;)
     {
-
         waiting_sec = 0;
         uint64_t wait_ticks = TICKS_READ();
         // ======== Wait for the next frame ======== //

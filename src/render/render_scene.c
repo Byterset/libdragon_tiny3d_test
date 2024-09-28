@@ -37,6 +37,7 @@ void render_scene_render_renderable(void* data, struct render_batch* batch) {
     mtx[3][0] *= SCENE_SCALE;
     mtx[3][1] *= SCENE_SCALE;
     mtx[3][2] *= SCENE_SCALE;
+
     t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx);
 
     render_batch_add_t3dmodel(batch, renderable->model->block, mtxfp, &renderable->model->skeleton);
@@ -56,6 +57,7 @@ void render_scene_render_renderable_single_axis(void* data, struct render_batch*
     mtx[3][0] *= SCENE_SCALE;
     mtx[3][1] *= SCENE_SCALE;
     mtx[3][2] *= SCENE_SCALE;
+
     t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx);
 
     render_batch_add_t3dmodel(batch, renderable->model->block, mtxfp, &renderable->model->skeleton);
@@ -75,6 +77,7 @@ void render_scene_remove(void* data) {
 
 void render_scene_render(struct camera* camera, T3DViewport* viewport, struct frame_memory_pool* pool) {
     struct render_batch batch;
+    struct render_scene_fog_params default_fog_params = {false, 0, 0, {0, 0, 0, 0}};
 
     struct ClippingPlanes clipping_planes;
     mat4x4 view_proj_matrix;

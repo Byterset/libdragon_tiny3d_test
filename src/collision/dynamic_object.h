@@ -52,6 +52,7 @@ struct dynamic_object {
     struct Vector3 velocity;
     struct AABB bounding_box;
     float time_scalar;
+    float mass;
     uint16_t has_gravity: 1;
     uint16_t is_trigger: 1;
     uint16_t is_fixed: 1;
@@ -67,7 +68,8 @@ void dynamic_object_init(
     struct dynamic_object_type* type,
     uint16_t collision_layers,
     struct Vector3* position, 
-    struct Vector2* rotation
+    struct Vector2* rotation,
+    float mass
 );
 
 void dynamic_object_update(struct dynamic_object* object);

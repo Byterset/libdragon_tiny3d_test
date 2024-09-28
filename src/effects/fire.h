@@ -7,7 +7,7 @@
 #include "../render/material.h"
 #include "../resource/material_cache.h"
 
-#define MAX_FIRE_PARTICLE_COUNT     6
+#define MAX_FIRE_PARTICLE_COUNT     7
 
 struct fire {
     struct Vector3 particle_offset[MAX_FIRE_PARTICLE_COUNT];
@@ -17,7 +17,6 @@ struct fire {
     float total_time;
     float end_time;
     uint16_t index_offset;
-    T3DMat4FP *particle_matrices;
 };
 
 void fire_init(struct fire* fire);

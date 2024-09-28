@@ -2,6 +2,8 @@
 
 #include "../util/sort.h"
 #include "../time/time.h"
+#include "../math/mathf.h"
+#include "../math/math.h"
 #include "material.h"
 #include "defs.h"
 
@@ -62,16 +64,43 @@ void render_batch_add_callback(struct render_batch *batch, struct material *mate
     element->callback.data = data;
 }
 
-struct render_batch_billboard_element *render_batch_add_particles(struct render_batch *batch, struct material *material, int count, T3DMat4FP* sprite_mtx)
+struct render_batch_billboard_element *render_batch_add_particles(struct render_batch *batch, struct material *material, int count)
 {
     struct render_batch_element *result = render_batch_add_init(batch);
 
     result->type = RENDER_BATCH_BILLBOARD;
     result->material = material;
-    result->billboard.billboard = render_batch_get_sprites(batch, count);
-    result->billboard.sprite_mtx = sprite_mtx;
+    result->billboard = render_batch_get_sprites(batch, count);
 
-    return &result->billboard.billboard;
+    return &result->billboard;
+}
+
+void render_batch_add_equidistant(struct render_batch* batch, rspq_block_t* block){
+    struct render_batch_element* element = render_batch_add_init(batch);
+
+    if (!element)
+    {
+        return;
+    }
+    
+
+    element->type = RENDER_BATCH_EQUIDISTANT;
+    element->material = NULL;
+    element->model.block = block;
+    element->model.transform = NULL;
+}
+
+void render_batch_add_skybox_flat(struct render_batch* batch, surface_t* surface){
+    struct render_batch_element* element = render_batch_add_init(batch);
+
+    if (!element)
+    {
+        return;
+    }
+    
+    element->type = RENDER_BATCH_SKYBOX;
+    element->material = NULL;
+    element->skybox.surface = surface;
 }
 
 struct render_batch_billboard_element render_batch_get_sprites(struct render_batch *batch, int count)
@@ -94,6 +123,26 @@ T3DMat4FP *render_batch_get_transformfp(struct render_batch *batch)
     return UncachedAddr(frame_malloc(batch->pool, sizeof(T3DMat4FP)));
 }
 
+/**
+ * @brief Compares two elements in a render batch.
+ *
+ * This function compares two elements in a render batch based on their materials and types.
+ * It is used to determine the order of elements for rendering.
+ *
+ * @param batch Pointer to the render batch containing the elements.
+ * @param a_index Index of the first element to compare.
+ * @param b_index Index of the second element to compare.
+ * @return An integer less than, equal to, or greater than zero if the first element is considered
+ *         to be respectively less than, equal to, or greater than the second element.
+ *
+ * The comparison is performed as follows:
+ * - If both elements are the same, return 0.
+ * - If the first element has no material and the second element has a material, return the negative sort priority of the second element's material.
+ * - If the second element has no material and the first element has a material, return the sort priority of the first element's material.
+ * - If both elements have materials and their sort priorities differ, return the difference between their sort priorities.
+ * - If both elements have materials but they are different, return the difference between their material pointers.
+ * - If all previous checks are equal, return the difference between their types.
+ */
 int render_batch_compare_element(struct render_batch *batch, uint16_t a_index, uint16_t b_index)
 {
     struct render_batch_element *a = &batch->elements[a_index];
@@ -159,10 +208,12 @@ void render_batch_check_texture_scroll(int tile, struct material_tex *tex)
 }
 
 static bool element_type_2d[] = {
+    [RENDER_BATCH_SKYBOX] = true,
     [RENDER_BATCH_MODEL] = false,
     [RENDER_BATCH_BILLBOARD] = true,
-    [RENDER_BATCH_BILLBOARD_OLD] = true,
     [RENDER_BATCH_CALLBACK] = false,
+    [RENDER_BATCH_EQUIDISTANT] = false,
+    
 };
 
 void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T3DViewport *viewport)
@@ -175,26 +226,19 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
     }
 
     // used to scale billboard sprites
-    float scale_x = sqrtf(
+    float billboard_scale_x = sqrtf(
                         view_proj_matrix[0][0] * view_proj_matrix[0][0] +
                         view_proj_matrix[0][1] * view_proj_matrix[0][1] +
                         view_proj_matrix[0][2] * view_proj_matrix[0][2]) *
                     0.5f * 4;
 
-    float scale_y = sqrtf(
+    float billboard_scale_y = sqrtf(
                         view_proj_matrix[1][0] * view_proj_matrix[1][0] +
                         view_proj_matrix[1][1] * view_proj_matrix[1][1] +
                         view_proj_matrix[1][2] * view_proj_matrix[1][2]) *
                     0.5f * 4;
 
     sort_indices(order, batch->element_count, batch, (sort_compare)render_batch_compare_element);
-
-    struct material *current_mat = 0;
-
-    // rdpq_set_mode_standard();
-    rdpq_mode_persp(true);
-    rdpq_mode_zbuf(true, true);
-    t3d_state_set_drawflags(T3D_FLAG_DEPTH | T3D_FLAG_SHADED | T3D_FLAG_TEXTURED);
 
     bool is_sprite_mode = false;
     bool z_write = true;
@@ -205,45 +249,23 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
         int index = order[i];
         struct render_batch_element *element = &batch->elements[index];
 
-        if (!element->material && current_mat != 0)
-        {
-            current_mat = 0;
-            rdpq_mode_zbuf(true, true);
-        }
-        else if (current_mat != element->material)
-        {
-            if (element->material->block)
-            {
-
-                rspq_block_run(element->material->block);
-            }
-
-            render_batch_check_texture_scroll(TILE0, &element->material->tex0);
-            render_batch_check_texture_scroll(TILE1, &element->material->tex1);
-
-            bool need_z_write = (element->material->flags & MATERIAL_FLAGS_Z_WRITE) != 0;
-            bool need_z_read = (element->material->flags & MATERIAL_FLAGS_Z_READ) != 0;
-
-            if (need_z_write != z_write || need_z_read != z_read)
-            {
-                rdpq_mode_zbuf(need_z_read, need_z_write);
-                z_write = need_z_write;
-                z_read = need_z_read;
-            }
-
-            current_mat = element->material;
-        }
-
         bool should_sprite_mode = element_type_2d[element->type];
 
         if (should_sprite_mode != is_sprite_mode)
         {
             if (should_sprite_mode)
             {
+                rdpq_set_mode_standard();
                 rdpq_mode_persp(false);
             }
             else
             {
+                //TODO: make the fog configurable via the renderer as a params struct
+                // rdpq_mode_fog(RDPQ_FOG_STANDARD);
+                // rdpq_set_fog_color(RGBA32(255, 255, 255, 0));
+                // t3d_fog_set_enabled(true);
+                // t3d_fog_set_range(2.0f * SCENE_SCALE, 40.0f * SCENE_SCALE);
+
                 rdpq_mode_zoverride(false, 0, 0);
                 rdpq_mode_persp(true);
             }
@@ -253,6 +275,9 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
         // -------- Model Element ----------
         if (element->type == RENDER_BATCH_MODEL)
         {
+            rdpq_mode_persp(true);
+            rdpq_mode_zbuf(true, true);
+            t3d_state_set_drawflags(T3D_FLAG_DEPTH | T3D_FLAG_SHADED | T3D_FLAG_TEXTURED);
             // Skip if no rspq block
             if (!element->model.block)
             {
@@ -274,20 +299,37 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 t3d_matrix_pop(1);
             }
         } // -------- Billboard Element ----------
-        else if (element->type == RENDER_BATCH_BILLBOARD_OLD)
+        else if (element->type == RENDER_BATCH_BILLBOARD)
         {
+
 
             if (!element->material)
             {
-                continue; // Skip if no material
+                continue; // Skip if no material since that indicates there is also no texture to be rendered
             }
-            // rdpq_mode_fog(0);
-            // t3d_fog_set_enabled(false);
+
+            if (element->material->block)
+            {
+                rspq_block_run(element->material->block);
+            }
+
+            render_batch_check_texture_scroll(TILE0, &element->material->tex0);
+            render_batch_check_texture_scroll(TILE1, &element->material->tex1);
+
+            bool need_z_write = (element->material->flags & MATERIAL_FLAGS_Z_WRITE) != 0;
+            bool need_z_read = (element->material->flags & MATERIAL_FLAGS_Z_READ) != 0;
+
+            if (need_z_write != z_write || need_z_read != z_read)
+            {
+                rdpq_mode_zbuf(need_z_read, need_z_write);
+                z_write = need_z_write;
+                z_read = need_z_read;
+            }
 
             // Loop through each sprite in the billboard
-            for (int sprite_index = 0; sprite_index < element->billboard.billboard.sprite_count; ++sprite_index)
+            for (int sprite_index = 0; sprite_index < element->billboard.sprite_count; ++sprite_index)
             {
-                struct render_billboard_sprite sprite = element->billboard.billboard.sprites[sprite_index];
+                struct render_billboard_sprite sprite = element->billboard.sprites[sprite_index];
 
                 // Transform sprite position to view projection space
                 struct Vector4 transformed;
@@ -295,19 +337,21 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 vector3Scale(&sprite.position, &scaled, SCENE_SCALE);
                 matrixVec3Mul(view_proj_matrix, &scaled, &transformed);
 
+                // w is the homogeneous coordinate, if it is less than 0 the point is behind the camera
+                
                 if (transformed.w < 0.0f)
                 {
                     continue; // Skip if behind the camera
                 }
 
+                // the inverse of the homogeneous coordinate is used to calculate the screen space coordinates
                 float wInv = 1.0f / transformed.w;
 
-                // Calculate screen coordinates
+                // Calculate screen space coordinates
                 float x = (transformed.x * wInv + 1.0f) * 0.5f * 4.0f;
                 float y = (-transformed.y * wInv + 1.0f) * 0.5f * 4.0f;
-                float z = transformed.z * wInv * 0.5f + 0.5f;
-
-                float size = sprite.radius * wInv * SCENE_SCALE;
+                float z = (transformed.z * wInv + 1.0f) * 0.5f; // Corrected z calculation
+                float billboard_size = sprite.radius * wInv * SCENE_SCALE;
 
                 if (z < 0.0f || z > 1.0f)
                 {
@@ -322,8 +366,8 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 int screen_y = (int)(y * (viewport->size[1])) + viewport->offset[1] * 4;
 
                 // Calculate half dimensions of the sprite on screen
-                int half_screen_width = (int)(size * scale_x * viewport->size[0]);
-                int half_screen_height = (int)(size * scale_y * viewport->size[1]);
+                int half_screen_width = (int)(billboard_size * billboard_scale_x * viewport->size[0]);
+                int half_screen_height = (int)(billboard_size * billboard_scale_y * viewport->size[1]);
 
                 // Default image dimensions
                 int image_w = 32;
@@ -352,97 +396,131 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                     image_h);
             }
         }
-        else if (element->type == RENDER_BATCH_BILLBOARD)
-        {
+        // skybox rendered as a physical object
+        else if (element->type == RENDER_BATCH_EQUIDISTANT){
+            if(!element->model.block){
+                continue;
+            }
+            rdpq_mode_persp(true);
+            rdpq_mode_zbuf(true, true);
+            t3d_state_set_drawflags(T3D_FLAG_DEPTH | T3D_FLAG_SHADED | T3D_FLAG_TEXTURED);
+            rdpq_mode_zoverride(true, 1, 0);
+            T3DMat4FP *mtxfp = render_batch_get_transformfp(batch);
 
-            if (!element->material)
+            if (!mtxfp)
             {
-                continue; // Skip if no material
+                return;
             }
 
-            t3d_state_set_drawflags(T3D_FLAG_TEXTURED | T3D_FLAG_SHADED | T3D_FLAG_DEPTH);
- 
-
-            T3DMat4 billboardMat;
-
-            // Loop through each sprite in the billboard
-            for (int sprite_index = 0; sprite_index < element->billboard.billboard.sprite_count; ++sprite_index)
+            T3DMat4 mtx;
+            for (int i = 0; i < 4; i++)
             {
-                struct render_billboard_sprite sprite = element->billboard.billboard.sprites[sprite_index];
-
-                // Transform sprite position to view projection space
-                struct Vector4 transformed;
-                struct Vector3 scaled;
-                vector3Scale(&sprite.position, &scaled, SCENE_SCALE);
-                matrixVec3Mul(view_proj_matrix, &scaled, &transformed);
-
-                if (transformed.w < 0.0f)
+                for (int j = 0; j < 4; j++)
                 {
-                    continue; // Skip if behind the camera
+                    mtx.m[i][j] = viewport->matCamera.m[i][j];
+                }
+            }
+
+            mtx.m[3][0] = 0;
+            mtx.m[3][1] = 0;
+            mtx.m[3][2] = 0;
+
+            t3d_mat4_scale(&mtx, SCENE_SCALE, SCENE_SCALE, SCENE_SCALE);
+
+            t3d_mat4_to_fixed_3x4(mtxfp, &mtx);
+            t3d_matrix_set(mtxfp, false);
+            rspq_block_run(element->model.block);
+        }
+        // -------- Skybox Flat Element ----------
+        else if (element->type == RENDER_BATCH_SKYBOX)
+        {
+            if (!element->skybox.surface)
+            {
+                continue;
+            }
+
+            // Calculate forward vector from camera matrix
+            struct Vector3 forward = {viewport->matCamera.m[0][2], viewport->matCamera.m[1][2], viewport->matCamera.m[2][2]};
+            // Calculate yaw and pitch from forward vector (negative to reverse the direction or rotation)
+            float inv_yaw = -atan2f(forward.x, forward.z);
+            float inv_pitch = -asinf(-forward.y);
+
+            if(inv_pitch >= -(0.0001) && inv_pitch <= 0.0001){
+                inv_pitch = 0; // Prevent floating point errors from making the skybox flicker up and down ever so slightly at rest
+            }
+            
+            //default width and height, if using HD need to change this and scale the blit accordingly
+            int width = 320;
+            int height = 240;
+
+            // Normalize yaw and pitch between 0 and 1
+            inv_yaw = ((inv_yaw + PI) / TWO_PI); // Normalize yaw from [-π, π] to [0, 1]
+            inv_pitch = (inv_pitch + HALF_PI) / PI; // Normalize pitch from [-π/2, π/2] to [0, 1]
+
+            assert(inv_yaw >= 0 && inv_yaw <= 1); // Ensure yaw is between 0 and 1
+            assert(inv_pitch >= 0 && inv_pitch <= 1); // Ensure pitch is between 0 and 1
+
+            int texOffsetX = inv_yaw * element->skybox.surface->width - (width / 2);
+            int texOffsetY = inv_pitch * element->skybox.surface->height - (height / 2);
+
+            texOffsetX = texOffsetX % element->skybox.surface->width;
+            texOffsetY = texOffsetY % element->skybox.surface->height;
+
+
+            texOffsetX = texOffsetX < 0 ? element->skybox.surface->width + texOffsetX : texOffsetX;
+            // since we are not wrapping the image in the vertical direction, we need to clamp the offset
+            texOffsetY = clampi(texOffsetY, 0, element->skybox.surface->height - 1 - height);
+
+            rdpq_set_mode_standard();
+            rdpq_mode_zoverride(true, 1, 0);
+            // rdpq_set_prim_color(RGBA32(255, 0, 0, 255));
+            // rdpq_mode_combiner(RDPQ_COMBINER_TEX_FLAT);
+
+            // if the window is within the bounds of the texture, just blit it
+            if (texOffsetX + width < element->skybox.surface->width)
+            {
+                
+                rdpq_tex_blit(element->skybox.surface, 0, 0, &(rdpq_blitparms_t){
+                                                                 .s0 = texOffsetX,
+                                                                 .t0 = texOffsetY,
+                                                                 .scale_x = 1,
+                                                                 .scale_y = 1,
+                                                                 .width = width,
+                                                                 .height = height,
+                                                             });
+            }
+            // Split the blit into two parts to achieve a wrap around if the window overlapts the edge of the texture
+            else
+            {
+                int first_width = element->skybox.surface->width - 1 - texOffsetX;
+                int second_width = width - first_width;
+
+                // First part
+                if(first_width > 0){
+                    rdpq_tex_blit(element->skybox.surface, 0, 0, &(rdpq_blitparms_t){
+                                                                    .s0 = texOffsetX,
+                                                                    .t0 = texOffsetY,
+                                                                    .scale_x = 1,
+                                                                    .scale_y = 1,
+                                                                    .width = first_width,
+                                                                    .height = height
+                                                                });
                 }
 
-                // Set sprite color
-                rdpq_set_prim_color(sprite.color);
-
-                float size = sprite.radius * SCENE_SCALE;
-
-                t3d_mat4_identity(&billboardMat);
-                for (int i = 0; i < 3; ++i)
-                {
-                    for (int j = 0; j < 3; ++j)
-                    {
-                        billboardMat.m[i][j] = view_proj_matrix[j][i]; // transpose rotation
-                    }
+                // Second part
+                if(second_width > 0){
+                    rdpq_tex_blit(element->skybox.surface, first_width, 0, &(rdpq_blitparms_t){
+                                                                    .s0 = 0,
+                                                                    .t0 = texOffsetY,
+                                                                    .scale_x = 1,
+                                                                    .scale_y = 1,
+                                                                    .width = second_width,
+                                                                    .height = height
+                                                                });
                 }
-                billboardMat.m[0][3] = 0.0f;
-                billboardMat.m[1][3] = 0.0f;
-                billboardMat.m[2][3] = 0.0f;
-                billboardMat.m[3][3] = 1.0f;
-
-                billboardMat.m[0][0] *= size;
-                billboardMat.m[0][1] *= size;
-                billboardMat.m[0][2] *= size;
-                billboardMat.m[1][0] *= size;
-                billboardMat.m[1][1] *= size;
-                billboardMat.m[1][2] *= size;
-                billboardMat.m[2][0] *= size;
-                billboardMat.m[2][1] *= size;
-                billboardMat.m[2][2] *= size;
-
-                billboardMat.m[3][0] = sprite.position.x * SCENE_SCALE;
-                billboardMat.m[3][1] = sprite.position.y * SCENE_SCALE;
-                billboardMat.m[3][2] = sprite.position.z * SCENE_SCALE;
-
-                t3d_mat4_to_fixed(&element->billboard.sprite_mtx[sprite_index], &billboardMat);
-
-                billboard_vertices[0] = (T3DVertPacked){
-                    .posA = {-1, -1, 0},
-                    .rgbaA = 0xFFFFFFFF,
-                    .stA = {0, 2048},
-                    .posB = {1, -1, 0},
-                    .rgbaB = 0xFFFFFFFF,
-                    .stB = {2048, 2028},
-                };
-                billboard_vertices[1] = (T3DVertPacked){
-                    .posA = {1, 1, 0},
-                    .rgbaA = 0xFFFFFFFF,
-                    .stA = {2048, 0},
-                    .posB = {-1, 1, 0},
-                    .rgbaB = 0xFFFFFFFF,
-                    .stB = {0, 0},
-                };
-                t3d_matrix_push(&element->billboard.sprite_mtx[sprite_index]);
-                t3d_vert_load(billboard_vertices, 0, 4);
-                t3d_matrix_pop(1);
-
-                t3d_tri_draw(0, 1, 2);
-                t3d_tri_draw(2, 3, 0);
-                t3d_tri_sync();
-
-                // free_uncached(vertices);
             }
         }
-         // -------- Callback Element ----------
+        // -------- Callback Element ----------
         else if (element->type == RENDER_BATCH_CALLBACK)
         {
             // Skip if no callback
@@ -453,4 +531,5 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             element->callback.callback(element->callback.data, batch);
         }
     }
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, 16, 75, "Batch size: %d", batch->element_count);
 }

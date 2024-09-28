@@ -16,9 +16,11 @@
 
 #define TIP_RISE            0.6f
 
+#define INITIAL_ALPHA       200
+
 
 void fire_apply_transform(struct fire* fire) {
-    fire->position = (struct Vector3){0.0f, 2.0f, 0.0f};
+    fire->position = (struct Vector3){-2.0f, 1.0f, 0.0f};
 
     fire->rotation = gZeroVec2;
 }
@@ -43,7 +45,7 @@ void fire_render(struct fire* fire, struct render_batch* batch) {
 
     struct material* material = material_cache_load("rom:/materials/spell/fire_particle.mat");
 
-    struct render_batch_billboard_element* element = render_batch_add_particles(batch, material, particle_count, fire->particle_matrices);
+    struct render_batch_billboard_element* element = render_batch_add_particles(batch, material, particle_count);
 
     float time_lerp = fire->cycle_time * (1.0f / CYCLE_TIME);
 
@@ -55,7 +57,7 @@ void fire_render(struct fire* fire, struct render_batch* batch) {
         sprite->color.r = 255;
         sprite->color.g = 255;
         sprite->color.b = 255;
-        sprite->color.a = 240;
+        sprite->color.a = INITIAL_ALPHA;
 
         sprite->radius = particle_time * MAX_RADIUS;
 
@@ -70,7 +72,7 @@ void fire_render(struct fire* fire, struct render_batch* batch) {
         if (particle_time > START_FADE) {
             float alpha =  1- (particle_time - START_FADE) * (1.0f / (1.0f - START_FADE));
             // sprite->color.a = (uint8_t)(randomInRange(0, 256));
-            sprite->color.a = (uint8_t)(alpha * 240);
+            sprite->color.a = (uint8_t)(alpha * INITIAL_ALPHA);
             sprite->position.y += TIP_RISE * (1.0f - alpha);
         }
     }
@@ -95,15 +97,12 @@ void fire_init(struct fire* fire) {
         offset->y = randomInRangef(-MAX_RANDOM_OFFSET, MAX_RANDOM_OFFSET);
         offset->z = randomInRangef(-MAX_RANDOM_OFFSET, MAX_RANDOM_OFFSET);
     }
-    fire->particle_matrices = malloc_uncached(sizeof(T3DMat4FP) * MAX_FIRE_PARTICLE_COUNT);
-
-    update_add(fire, (update_callback)fire_update, UPDATE_PRIORITY_SPELLS, UPDATE_LAYER_WORLD);
+    update_add(fire, (update_callback)fire_update, UPDATE_PRIORITY_EFFECTS, UPDATE_LAYER_WORLD);
 
 }
 
 void fire_destroy(struct fire* fire) {
     render_scene_remove(fire);
-    free_uncached(fire->particle_matrices);
 }
 
 void fire_update(struct fire* fire) {

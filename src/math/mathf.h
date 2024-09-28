@@ -7,6 +7,10 @@
 #ifndef _MATH_MATHF_H
 #define _MATH_MATHF_H
 
+#define PI 3.14159265358979323846f
+#define HALF_PI (PI / 2.0f)
+#define TWO_PI (2.0f * PI)
+
 int randomInt();
 int randomInRange(int min, int maxPlusOne);
 float randomInRangef(float min, float max);

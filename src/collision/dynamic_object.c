@@ -11,7 +11,8 @@ void dynamic_object_init(
     struct dynamic_object_type* type,
     uint16_t collision_layers,
     struct Vector3* position, 
-    struct Vector2* rotation
+    struct Vector2* rotation,
+    float mass
 ) {
     object->entity_id = entity_id;
     object->type = type;
@@ -21,6 +22,7 @@ void dynamic_object_init(
     object->velocity = gZeroVec;
     object->center = gZeroVec;
     object->time_scalar = 1.0f;
+    object->mass = mass;
     object->has_gravity = 1;
     object->is_trigger = 0;
     object->is_fixed = 0;

@@ -23,6 +23,13 @@ struct render_scene {
     struct callback_list callbacks;
 };
 
+struct render_scene_fog_params {
+    bool enabled;
+    float start;
+    float end;
+    color_t color;
+};
+
 void render_scene_reset();
 
 void render_scene_add(struct Vector3* center, float radius, render_scene_callback callback, void* data);

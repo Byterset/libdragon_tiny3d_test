@@ -6,6 +6,7 @@
 #include "../collision/collision_scene.h"
 #include "../collision/shapes/capsule.h"
 #include "../collision/shapes/cylinder.h"
+#include "../collision/shapes/sphere.h"
 #include "../collision/shapes/box.h"
 #include "../time/time.h"
 #include "../entity/entity_id.h"
@@ -28,12 +29,15 @@ rspq_block_t* player_dpl;
 // };
 
 static struct dynamic_object_type player_collision = {
-    .minkowsi_sum = box_minkowski_sum,
-    .bounding_box = box_bounding_box,
+    .minkowsi_sum = sphere_minkowski_sum,
+    .bounding_box = sphere_bounding_box,
     .data = {
-        .box = {
-            .half_size = {2.0f, 1.0f, 2.0f}
+        .sphere = {
+            .radius = 2.0f,
         }
+        // .box = {
+        //     .half_size = {2.0f, 1.0f, 2.0f}
+        // }
     }
 };
 
@@ -164,6 +168,9 @@ void player_update(struct player* player) {
         player->transform.position.y = 0;
         player->collision.velocity.y = player->collision.velocity.y <= 0 ? 0 : player->collision.velocity.y;    
     }
+    if(player->collision.velocity.y <= -100.0f){
+        player->collision.velocity.y = -100.0f;
+    }
 
     // struct contact* contact = player->collision.active_contacts;
 
@@ -200,7 +207,7 @@ void player_init(struct player* player, struct player_definition* definition, st
 
 
     
-    update_add(player, (update_callback)player_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
+    update_add(player, (update_callback)player_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_PLAYER);
 
     player->look_direction = definition->rotation;
 
@@ -212,7 +219,8 @@ void player_init(struct player* player, struct player_definition* definition, st
         &player_collision,
         COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_DAMAGE_PLAYER,
         &player->transform.position,
-        &player->look_direction
+        &player->look_direction,
+        20.0f
     );
 
     player->collision.collision_group = COLLISION_GROUP_PLAYER;
@@ -220,7 +228,8 @@ void player_init(struct player* player, struct player_definition* definition, st
     player->collision.has_gravity = true;
     
 
-    player->collision.center.y = player_collision.data.box.half_size.y + 1;
+    // player->collision.center.y = player_collision.data.box.half_size.y + 1;
+    player->collision.center.y = player_collision.data.sphere.radius;
 
     collision_scene_add(&player->collision);
 

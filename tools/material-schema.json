@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "title": "Schema for an N64 material",
+    "title": "Schema for a custom N64 material",
     "definitions": {
         "texture": {
             "oneOf": [
@@ -10,13 +10,14 @@
                 },
                 {
                     "type": "object",
-                    "description": "Texture definition including tex Params",
+                    "description": "Texture definition including optional texture Params",
                     "properties": {
                         "filename": {
                             "type": "string"
                         },
                         "s": {
                             "type": "object",
+                            "description": "Texture Params for the S axis",
                             "properties": {
                                 "mirror": {
                                     "type": "boolean"
@@ -40,6 +41,7 @@
                         },
                         "t": {
                             "type": "object",
+                            "description": "Texture Params for the T axis",
                             "properties": {
                                 "mirror": {
                                     "type": "boolean"
@@ -62,7 +64,8 @@
                             }
                         },
                         "tmem_addr": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "The address in TMEM to load the texture to"
                         },
                         "palette": {
                             "type": "integer"
@@ -87,9 +90,8 @@
                             "type": "integer"
                         }
                     },
-                    "required": [
-                        "filename"
-                    ]
+                    "required": [ "filename" ],
+                    "additionalProperties": false
                 }
             ]
         },
@@ -107,38 +109,42 @@
             "type": "array",
             "items": [
                 {
-                    "enum": [
-                        "IN",
-                        "MEMORY",
-                        "BLEND",
-                        "FOG"
+                    "enum": 
+                    [ 
+                        "IN", 
+                        "MEMORY", 
+                        "BLEND", 
+                        "FOG" 
                     ]
                 },
                 {
-                    "enum": [
-                        "IN_A",
-                        "FOG_A",
-                        "SHADE_A",
-                        "ZERO",
-                        "0"
+                    "enum": 
+                    [ 
+                        "IN_A", 
+                        "FOG_A", 
+                        "SHADE_A", 
+                        "ZERO", 
+                        "0" 
                     ]
                 },
                 {
-                    "enum": [
-                        "IN",
-                        "MEMORY",
-                        "BLEND",
-                        "FOG"
+                    "enum": 
+                    [ 
+                        "IN", 
+                        "MEMORY", 
+                        "BLEND", 
+                        "FOG" 
                     ]
                 },
                 {
-                    "enum": [
-                        "INV_MUX_A",
-                        "MEMORY_CVG",
-                        "ONE",
-                        "1",
-                        "ZERO",
-                        "0"
+                    "enum": 
+                    [ 
+                        "INV_MUX_A", 
+                        "MEMORY_CVG", 
+                        "ONE", 
+                        "1", 
+                        "ZERO", 
+                        "0" 
                     ]
                 }
             ]
@@ -269,6 +275,10 @@
     },
     "type": "object",
     "properties": {
+        "schema": {
+            "type": "string",
+            "default": "https://json-schema.org/draft-07/schema#"
+        },
         "combineMode": {
             "anyOf": [
                 {
