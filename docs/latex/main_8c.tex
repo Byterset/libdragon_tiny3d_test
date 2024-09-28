@@ -1,6 +1,7 @@
 \hypertarget{main_8c}{}\doxysection{src/main.c File Reference}
 \label{main_8c}\index{src/main.c@{src/main.c}}
 {\ttfamily \#include $<$libdragon.\+h$>$}\newline
+{\ttfamily \#include $<$rspq\+\_\+profile.\+h$>$}\newline
 {\ttfamily \#include $<$t3d/t3d.\+h$>$}\newline
 {\ttfamily \#include $<$t3d/t3dmath.\+h$>$}\newline
 {\ttfamily \#include $<$t3d/t3dmodel.\+h$>$}\newline
@@ -14,6 +15,9 @@
 {\ttfamily \#include \char`\"{}player/player.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}map/map.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}objects/box/box.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}effects/fire.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}skybox/skybox.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}skybox/skybox\+\_\+flat.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}math/transform.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}math/vector2.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}math/vector3.\+h\char`\"{}}\newline
@@ -21,6 +25,7 @@
 {\ttfamily \#include \char`\"{}scene/camera\+\_\+controller.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}resource/model\+\_\+cache.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}render/renderable.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}render/defs.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$malloc.\+h$>$}\newline
 Include dependency graph for main.\+c\+:
 \nopagebreak
@@ -58,7 +63,9 @@ struct \mbox{\hyperlink{structmap}{map}} \mbox{\hyperlink{main_8c_aceb1ca55c7458
 \item 
 struct \mbox{\hyperlink{structbox}{box}} \mbox{\hyperlink{main_8c_a3d260210eaac9f6583276fc83da3d80e}{box}}
 \item 
-struct \mbox{\hyperlink{structbox}{box}} \mbox{\hyperlink{main_8c_a325aca70de651368d5adad1dedd0c71b}{box2}}
+struct \mbox{\hyperlink{structfire}{fire}} \mbox{\hyperlink{main_8c_ac2679197f992bdfb30d7f958633bcd80}{fire}}
+\item 
+struct \mbox{\hyperlink{structskybox__flat}{skybox\+\_\+flat}} \mbox{\hyperlink{main_8c_adf941cd6d8904c80d533f5e3a4b148a2}{skybox\+\_\+flat}}
 \item 
 struct \mbox{\hyperlink{structcamera}{camera}} \mbox{\hyperlink{main_8c_a8738a254b347f9aa4a18f7b62dbe8b1c}{camera}}
 \item 
@@ -110,12 +117,6 @@ struct \mbox{\hyperlink{structplayer__definition}{player\+\_\+definition}} \mbox
 \doxysubsubsection{\texorpdfstring{box}{box}}
 {\footnotesize\ttfamily struct \mbox{\hyperlink{structbox}{box}} \mbox{\hyperlink{structbox}{box}}}
 
-\mbox{\Hypertarget{main_8c_a325aca70de651368d5adad1dedd0c71b}\label{main_8c_a325aca70de651368d5adad1dedd0c71b}} 
-\index{main.c@{main.c}!box2@{box2}}
-\index{box2@{box2}!main.c@{main.c}}
-\doxysubsubsection{\texorpdfstring{box2}{box2}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{structbox}{box}} box2}
-
 \mbox{\Hypertarget{main_8c_a8738a254b347f9aa4a18f7b62dbe8b1c}\label{main_8c_a8738a254b347f9aa4a18f7b62dbe8b1c}} 
 \index{main.c@{main.c}!camera@{camera}}
 \index{camera@{camera}!main.c@{main.c}}
@@ -139,6 +140,12 @@ struct \mbox{\hyperlink{structplayer__definition}{player\+\_\+definition}} \mbox
 \index{colorDir@{colorDir}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{colorDir}{colorDir}}
 {\footnotesize\ttfamily uint8\+\_\+t color\+Dir\mbox{[}4\mbox{]} = \{0x\+FF, 0x\+AA, 0x\+AA, 0x\+FF\}}
+
+\mbox{\Hypertarget{main_8c_ac2679197f992bdfb30d7f958633bcd80}\label{main_8c_ac2679197f992bdfb30d7f958633bcd80}} 
+\index{main.c@{main.c}!fire@{fire}}
+\index{fire@{fire}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{fire}{fire}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structfire}{fire}} \mbox{\hyperlink{structfire}{fire}}}
 
 \mbox{\Hypertarget{main_8c_acc006cc4014c8d46783d6e748027030b}\label{main_8c_acc006cc4014c8d46783d6e748027030b}} 
 \index{main.c@{main.c}!lightDirVec@{lightDirVec}}
@@ -168,10 +175,15 @@ struct \mbox{\hyperlink{structplayer__definition}{player\+\_\+definition}} \mbox
 \begin{DoxyCode}{0}
 \DoxyCodeLine{= \{}
 \DoxyCodeLine{    (\textcolor{keyword}{struct }\mbox{\hyperlink{structVector3}{Vector3}})\{0, 0.15f, 0\},}
-\DoxyCodeLine{    (\textcolor{keyword}{struct }\mbox{\hyperlink{structVector2}{Vector2}})\{1, 0\}}
-\DoxyCodeLine{\}}
+\DoxyCodeLine{    (\textcolor{keyword}{struct }\mbox{\hyperlink{structVector2}{Vector2}})\{1, 0\}\}}
 
 \end{DoxyCode}
+\mbox{\Hypertarget{main_8c_adf941cd6d8904c80d533f5e3a4b148a2}\label{main_8c_adf941cd6d8904c80d533f5e3a4b148a2}} 
+\index{main.c@{main.c}!skybox\_flat@{skybox\_flat}}
+\index{skybox\_flat@{skybox\_flat}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{skybox\_flat}{skybox\_flat}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structskybox__flat}{skybox\+\_\+flat}} \mbox{\hyperlink{structskybox__flat}{skybox\+\_\+flat}}}
+
 \mbox{\Hypertarget{main_8c_aae024bfd8b1b68fc1b2c12daf7e3e526}\label{main_8c_aae024bfd8b1b68fc1b2c12daf7e3e526}} 
 \index{main.c@{main.c}!waiting\_sec@{waiting\_sec}}
 \index{waiting\_sec@{waiting\_sec}!main.c@{main.c}}

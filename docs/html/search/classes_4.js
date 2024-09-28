@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['eparesult_839',['EpaResult',['../structEpaResult.html',1,'']]],
-  ['expandingsimplex_840',['ExpandingSimplex',['../structExpandingSimplex.html',1,'']]]
+  ['eparesult_872',['EpaResult',['../structEpaResult.html',1,'']]],
+  ['expandingsimplex_873',['ExpandingSimplex',['../structExpandingSimplex.html',1,'']]]
 ];

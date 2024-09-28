@@ -6,8 +6,7 @@ Implementation of mathematical functions.
 
 
 {\ttfamily \#include \char`\"{}mathf.\+h\char`\"{}}\newline
-Include dependency graph for mathf.\+c\+:
-\nopagebreak
+Include dependency graph for mathf.\+c\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -28,31 +27,31 @@ int \mbox{\hyperlink{mathf_8c_a35e72fcb02e12adb430b475cdbb7cc73}{random\+In\+Ran
 \begin{DoxyCompactList}\small\item\em Generates a pseudo-\/random integer within a specified range. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8c_a4dccb45a3730aed3c05191014adf7041}{random\+In\+Rangef}} (float min, float max)
 \begin{DoxyCompactList}\small\item\em Generates a pseudo-\/random floating-\/point number within a specified range. \end{DoxyCompactList}\item 
-float \mbox{\hyperlink{mathf_8c_a5b28029954a7badf3156846ee16eb6b1}{fabsf}} (float input)
-\begin{DoxyCompactList}\small\item\em Computes the absolute value of a floating-\/point number. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8c_a59f5831ae7483911eaac4ff7313ddaff}{mathf\+Lerp}} (float from, float to, float t)
 \begin{DoxyCompactList}\small\item\em Linearly interpolates between two float values. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8c_a89dea287e0ea1f6e31367657de890c18}{mathf\+Inv\+Lerp}} (float from, float to, float value)
 \begin{DoxyCompactList}\small\item\em Calculates the linear parameter that produces the interpolant value within the range \mbox{[}from, to\mbox{]}. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8c_a6af02a32aefd1b44da79dd77702a0f49}{mathf\+Move\+Towards}} (float from, float to, float max\+Move)
-\item 
+\begin{DoxyCompactList}\small\item\em Moves a value towards a target value by a maximum amount. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8c_a8b0fef6cb1a8e98b60a5fd02925a9479}{mathf\+Mod}} (float input, float divisor)
-\item 
+\begin{DoxyCompactList}\small\item\em Computes the modulo of a floating-\/point number. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{mathf_8c_a925f010f6d4cbb39fb7f72cb157a5aee}{mathf\+Bounce\+Back\+Lerp}} (float t)
+\begin{DoxyCompactList}\small\item\em Computes a bounce-\/back interpolation value. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{mathf_8c_a94be578985a62018db649fbb1798eff4}{mathf\+Random\+Float}} ()
+\begin{DoxyCompactList}\small\item\em Computes a pseudo-\/random floating-\/point number in the range \mbox{[}0, 1\mbox{]}. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{mathf_8c_aa7858054b72ec722a2fff626dde6c162}{clampf}} (float input, float min, float max)
+\begin{DoxyCompactList}\small\item\em Clamp a float value to a specified range. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{mathf_8c_a830616f72203d3f08af4fa4a04b97e1b}{signf}} (float input)
+\begin{DoxyCompactList}\small\item\em Returns the sign of a floating-\/point number. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{mathf_8c_a17975af688b8d89e588d17c7a6ccdbdb}{sign}} (int input)
+\begin{DoxyCompactList}\small\item\em Returns the sign of an integer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{mathf_8c_a1ff31894b892df2e0f53fac574ab8145}{abs}} (int input)
+\begin{DoxyCompactList}\small\item\em Computes the absolute value of an integer. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{mathf_8c_a5b28029954a7badf3156846ee16eb6b1}{fabsf}} (float input)
+\begin{DoxyCompactList}\small\item\em Computes the absolute value of a floating-\/point number. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8c_a73783dfb0311b74438234ad75b2fabaf}{floorf}} (float input)
 \item 
 float \mbox{\hyperlink{mathf_8c_ac5d42cdbfc9d1ff82f856c5404956a33}{ceilf}} (float input)
-\item 
-float \mbox{\hyperlink{mathf_8c_a925f010f6d4cbb39fb7f72cb157a5aee}{mathf\+Bounce\+Back\+Lerp}} (float t)
-\item 
-float \mbox{\hyperlink{mathf_8c_a94be578985a62018db649fbb1798eff4}{mathf\+Random\+Float}} ()
-\item 
-float \mbox{\hyperlink{mathf_8c_aa7858054b72ec722a2fff626dde6c162}{clampf}} (float input, float min, float max)
-\item 
-float \mbox{\hyperlink{mathf_8c_a830616f72203d3f08af4fa4a04b97e1b}{signf}} (float input)
-\item 
-int \mbox{\hyperlink{mathf_8c_a17975af688b8d89e588d17c7a6ccdbdb}{sign}} (int input)
-\item 
-int \mbox{\hyperlink{mathf_8c_a1ff31894b892df2e0f53fac574ab8145}{abs}} (int input)
 \item 
 float \mbox{\hyperlink{mathf_8c_a91cf7fd61cef0dfb2ced53179f5d2ffd}{minf}} (float a, float b)
 \item 
@@ -65,8 +64,8 @@ float \mbox{\hyperlink{mathf_8c_a34572ad9f1a303f44df699338281f3ef}{safe\+Invert}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-$\ast$brief This file contains the implementation of commonly used math functions $\ast$$\ast$unsigned int \mbox{\hyperlink{mathf_8c_ab14f55367cc0c442e09ad4199c402c7d}{g\+Random\+Seed}} = 1
-\begin{DoxyCompactList}\small\item\em Computes the absolute value of a floating-\/point number. $\ast$ This function takes a floating-\/point number as input and returns its absolute value. This function returns the absolute value of the given floating-\/point number. If the input is negative, it returns the negation of the input; otherwise, it returns the input itself. \end{DoxyCompactList}\end{DoxyCompactItemize}
+unsigned int \mbox{\hyperlink{mathf_8c_a19bf1e47868dce52223c41bee449462f}{g\+Random\+Seed}} = 1
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -90,6 +89,18 @@ Implementation of mathematical functions.
 \doxysubsubsection{\texorpdfstring{abs()}{abs()}}
 {\footnotesize\ttfamily int abs (\begin{DoxyParamCaption}\item[{int}]{input }\end{DoxyParamCaption})}
 
+
+
+Computes the absolute value of an integer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int absolute value of input 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8c_ac5d42cdbfc9d1ff82f856c5404956a33}\label{mathf_8c_ac5d42cdbfc9d1ff82f856c5404956a33}} 
 \index{mathf.c@{mathf.c}!ceilf@{ceilf}}
 \index{ceilf@{ceilf}!mathf.c@{mathf.c}}
@@ -102,6 +113,22 @@ Implementation of mathematical functions.
 \doxysubsubsection{\texorpdfstring{clampf()}{clampf()}}
 {\footnotesize\ttfamily float clampf (\begin{DoxyParamCaption}\item[{float}]{input,  }\item[{float}]{min,  }\item[{float}]{max }\end{DoxyParamCaption})}
 
+
+
+Clamp a float value to a specified range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & \\
+\hline
+{\em min} & \\
+\hline
+{\em max} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float clamped value 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8c_a5b28029954a7badf3156846ee16eb6b1}\label{mathf_8c_a5b28029954a7badf3156846ee16eb6b1}} 
 \index{mathf.c@{mathf.c}!fabsf@{fabsf}}
 \index{fabsf@{fabsf}!mathf.c@{mathf.c}}
@@ -138,6 +165,20 @@ float absolute value of the input
 \doxysubsubsection{\texorpdfstring{mathfBounceBackLerp()}{mathfBounceBackLerp()}}
 {\footnotesize\ttfamily float mathf\+Bounce\+Back\+Lerp (\begin{DoxyParamCaption}\item[{float}]{t }\end{DoxyParamCaption})}
 
+
+
+Computes a bounce-\/back interpolation value. 
+
+This function calculates a value that simulates a bounce-\/back effect based on the input parameter t. The result is derived from the equation -\/t + t$^\wedge$2, which creates a parabolic curve that starts at 0, rises to a peak, and then falls back to 0.
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & The input value, typically in the range \mbox{[}0, 1\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The interpolated bounce-\/back value. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8c_a89dea287e0ea1f6e31367657de890c18}\label{mathf_8c_a89dea287e0ea1f6e31367657de890c18}} 
 \index{mathf.c@{mathf.c}!mathfInvLerp@{mathfInvLerp}}
 \index{mathfInvLerp@{mathfInvLerp}!mathf.c@{mathf.c}}
@@ -192,18 +233,57 @@ The interpolated value.
 \doxysubsubsection{\texorpdfstring{mathfMod()}{mathfMod()}}
 {\footnotesize\ttfamily float mathf\+Mod (\begin{DoxyParamCaption}\item[{float}]{input,  }\item[{float}]{divisor }\end{DoxyParamCaption})}
 
+
+
+Computes the modulo of a floating-\/point number. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & \\
+\hline
+{\em divisor} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8c_a6af02a32aefd1b44da79dd77702a0f49}\label{mathf_8c_a6af02a32aefd1b44da79dd77702a0f49}} 
 \index{mathf.c@{mathf.c}!mathfMoveTowards@{mathfMoveTowards}}
 \index{mathfMoveTowards@{mathfMoveTowards}!mathf.c@{mathf.c}}
 \doxysubsubsection{\texorpdfstring{mathfMoveTowards()}{mathfMoveTowards()}}
 {\footnotesize\ttfamily float mathf\+Move\+Towards (\begin{DoxyParamCaption}\item[{float}]{from,  }\item[{float}]{to,  }\item[{float}]{max\+Move }\end{DoxyParamCaption})}
 
+
+
+Moves a value towards a target value by a maximum amount. 
+
+This function calculates a new value that is moved from the starting value ({\ttfamily from}) towards the target value ({\ttfamily to}) by a maximum amount ({\ttfamily max\+Move}). If the difference between {\ttfamily from} and {\ttfamily to} is less than or equal to {\ttfamily max\+Move}, the function returns the target value ({\ttfamily to}). Otherwise, it returns a value that is {\ttfamily max\+Move} units closer to the target value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em from} & The starting value. \\
+\hline
+{\em to} & The target value. \\
+\hline
+{\em max\+Move} & The maximum amount to move towards the target value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The new value moved towards the target value. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8c_a94be578985a62018db649fbb1798eff4}\label{mathf_8c_a94be578985a62018db649fbb1798eff4}} 
 \index{mathf.c@{mathf.c}!mathfRandomFloat@{mathfRandomFloat}}
 \index{mathfRandomFloat@{mathfRandomFloat}!mathf.c@{mathf.c}}
 \doxysubsubsection{\texorpdfstring{mathfRandomFloat()}{mathfRandomFloat()}}
 {\footnotesize\ttfamily float mathf\+Random\+Float (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+
+
+Computes a pseudo-\/random floating-\/point number in the range \mbox{[}0, 1\mbox{]}. 
+
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8c_a7ba1f6b16d865c77066a7aa05d51ca02}\label{mathf_8c_a7ba1f6b16d865c77066a7aa05d51ca02}} 
 \index{mathf.c@{mathf.c}!maxf@{maxf}}
 \index{maxf@{maxf}!mathf.c@{mathf.c}}
@@ -287,6 +367,18 @@ A pseudo-\/random integer.
 \doxysubsubsection{\texorpdfstring{sign()}{sign()}}
 {\footnotesize\ttfamily int sign (\begin{DoxyParamCaption}\item[{int}]{input }\end{DoxyParamCaption})}
 
+
+
+Returns the sign of an integer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Sign of input, 1 if input is positive, -\/1 if input is negative, 0 if input is zero 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8c_a830616f72203d3f08af4fa4a04b97e1b}\label{mathf_8c_a830616f72203d3f08af4fa4a04b97e1b}} 
 \index{mathf.c@{mathf.c}!signf@{signf}}
 \index{signf@{signf}!mathf.c@{mathf.c}}
@@ -295,22 +387,22 @@ A pseudo-\/random integer.
 
 
 
-\doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{mathf_8c_ab14f55367cc0c442e09ad4199c402c7d}\label{mathf_8c_ab14f55367cc0c442e09ad4199c402c7d}} 
-\index{mathf.c@{mathf.c}!gRandomSeed@{gRandomSeed}}
-\index{gRandomSeed@{gRandomSeed}!mathf.c@{mathf.c}}
-\doxysubsubsection{\texorpdfstring{gRandomSeed}{gRandomSeed}}
-{\footnotesize\ttfamily $\ast$ brief This file contains the implementation of commonly used math functions$\ast$ $\ast$ unsigned int g\+Random\+Seed = 1}
-
-
-
-Computes the absolute value of a floating-\/point number. $\ast$ This function takes a floating-\/point number as input and returns its absolute value. This function returns the absolute value of the given floating-\/point number. If the input is negative, it returns the negation of the input; otherwise, it returns the input itself. 
+Returns the sign of a floating-\/point number. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em input} & The floating-\/point number whose absolute value is to be computed. \\
+{\em input} & \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-The absolute value of the input. 
+float 
 \end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{mathf_8c_a19bf1e47868dce52223c41bee449462f}\label{mathf_8c_a19bf1e47868dce52223c41bee449462f}} 
+\index{mathf.c@{mathf.c}!gRandomSeed@{gRandomSeed}}
+\index{gRandomSeed@{gRandomSeed}!mathf.c@{mathf.c}}
+\doxysubsubsection{\texorpdfstring{gRandomSeed}{gRandomSeed}}
+{\footnotesize\ttfamily unsigned int g\+Random\+Seed = 1}
+

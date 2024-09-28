@@ -24,14 +24,17 @@ uint16\+\_\+t \mbox{\hyperlink{structrender__batch__element_ad08d3fa394d6a8c04bb
 xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
 union \{\\
 \>struct \{\\
+\>\>surface\_t $\ast$ \mbox{\hyperlink{structrender__batch__element_a690a62553fc8ba89d3186ad10c0401ab}{surface}}\\
+\>\} \mbox{\hyperlink{structrender__batch__element_aa49eb82772b9c89ad230ef937ca94d89}{skybox}}\\
+\>struct \{\\
 \>\>rspq\_block\_t $\ast$ \mbox{\hyperlink{structrender__batch__element_aa56fca3eb9270534657cb145de4679b0}{block}}\\
 \>\>T3DMat4FP $\ast$ \mbox{\hyperlink{structrender__batch__element_a6fb41e04b60cc480846b6b363a8a71d6}{transform}}\\
-\>\} \mbox{\hyperlink{structrender__batch__element_a9d9130eb9c4ebcb0c414beb6b7321f7e}{model}}\\
+\>\} \mbox{\hyperlink{structrender__batch__element_a137833537d7848057a27ab2f7d3cabbe}{model}}\\
 \>struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\_batch\_billboard\_element}} \mbox{\hyperlink{structrender__batch__element_aa49c839b0e6451fc8646739e97350fca}{billboard}}\\
 \>struct \{\\
 \>\>\mbox{\hyperlink{render__batch_8h_a7ad11d197fa06b737c2f891f755de0be}{RenderCallback}} \mbox{\hyperlink{structrender__batch__element_a2e5c2a5c46ed48a2182f77c443dfd674}{callback}}\\
 \>\>void $\ast$ \mbox{\hyperlink{structrender__batch__element_acef6d7e95aa97911df320c17e82c767c}{data}}\\
-\>\} \mbox{\hyperlink{structrender__batch__element_a59f5347eab80bcf4ac340486b574ac27}{callback}}\\
+\>\} \mbox{\hyperlink{structrender__batch__element_a647494ccdda5d3c037da3337294541e8}{callback}}\\
 \}; \\
 
 \end{tabbing}\end{DoxyCompactItemize}
@@ -60,7 +63,7 @@ union \{\\
 \doxysubsubsection{\texorpdfstring{callback}{callback}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily \mbox{\hyperlink{render__batch_8h_a7ad11d197fa06b737c2f891f755de0be}{Render\+Callback}} render\+\_\+batch\+\_\+element\+::callback}
 
-\mbox{\Hypertarget{structrender__batch__element_a59f5347eab80bcf4ac340486b574ac27}\label{structrender__batch__element_a59f5347eab80bcf4ac340486b574ac27}} 
+\mbox{\Hypertarget{structrender__batch__element_a647494ccdda5d3c037da3337294541e8}\label{structrender__batch__element_a647494ccdda5d3c037da3337294541e8}} 
 \index{render\_batch\_element@{render\_batch\_element}!callback@{callback}}
 \index{callback@{callback}!render\_batch\_element@{render\_batch\_element}}
 \doxysubsubsection{\texorpdfstring{}{}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
@@ -78,11 +81,23 @@ union \{\\
 \doxysubsubsection{\texorpdfstring{material}{material}}
 {\footnotesize\ttfamily struct \mbox{\hyperlink{structmaterial}{material}}$\ast$ render\+\_\+batch\+\_\+element\+::material}
 
-\mbox{\Hypertarget{structrender__batch__element_a9d9130eb9c4ebcb0c414beb6b7321f7e}\label{structrender__batch__element_a9d9130eb9c4ebcb0c414beb6b7321f7e}} 
+\mbox{\Hypertarget{structrender__batch__element_a137833537d7848057a27ab2f7d3cabbe}\label{structrender__batch__element_a137833537d7848057a27ab2f7d3cabbe}} 
 \index{render\_batch\_element@{render\_batch\_element}!model@{model}}
 \index{model@{model}!render\_batch\_element@{render\_batch\_element}}
 \doxysubsubsection{\texorpdfstring{}{}}
 {\footnotesize\ttfamily struct \{ ... \}  render\+\_\+batch\+\_\+element\+::model}
+
+\mbox{\Hypertarget{structrender__batch__element_aa49eb82772b9c89ad230ef937ca94d89}\label{structrender__batch__element_aa49eb82772b9c89ad230ef937ca94d89}} 
+\index{render\_batch\_element@{render\_batch\_element}!skybox@{skybox}}
+\index{skybox@{skybox}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{}{}}
+{\footnotesize\ttfamily struct \{ ... \}  render\+\_\+batch\+\_\+element\+::skybox}
+
+\mbox{\Hypertarget{structrender__batch__element_a690a62553fc8ba89d3186ad10c0401ab}\label{structrender__batch__element_a690a62553fc8ba89d3186ad10c0401ab}} 
+\index{render\_batch\_element@{render\_batch\_element}!surface@{surface}}
+\index{surface@{surface}!render\_batch\_element@{render\_batch\_element}}
+\doxysubsubsection{\texorpdfstring{surface}{surface}}
+{\footnotesize\ttfamily surface\+\_\+t$\ast$ render\+\_\+batch\+\_\+element\+::surface}
 
 \mbox{\Hypertarget{structrender__batch__element_a6fb41e04b60cc480846b6b363a8a71d6}\label{structrender__batch__element_a6fb41e04b60cc480846b6b363a8a71d6}} 
 \index{render\_batch\_element@{render\_batch\_element}!transform@{transform}}

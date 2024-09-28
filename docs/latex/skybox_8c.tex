@@ -1,0 +1,55 @@
+\hypertarget{skybox_8c}{}\doxysection{src/skybox/skybox.c File Reference}
+\label{skybox_8c}\index{src/skybox/skybox.c@{src/skybox/skybox.c}}
+{\ttfamily \#include \char`\"{}skybox.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$libdragon.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../math/vector2.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/render\+\_\+scene.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../time/time.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/defs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../resource/sprite\+\_\+cache.\+h\char`\"{}}\newline
+Include dependency graph for skybox.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{skybox_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{skybox_8c_a48aafc49d004178ea42542b398126916}{skybox\+\_\+update}} (void $\ast$data)
+\item 
+void \mbox{\hyperlink{skybox_8c_a629268bce883a9f2f0ea892bf6cc9b53}{skybox\+\_\+custom\+\_\+render}} (void $\ast$data, struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch)
+\item 
+void \mbox{\hyperlink{skybox_8c_aca9526d626c21362f941d0d3ced5b2de}{skybox\+\_\+init}} (struct \mbox{\hyperlink{structskybox}{skybox}} $\ast$\mbox{\hyperlink{structskybox}{skybox}})
+\item 
+void \mbox{\hyperlink{skybox_8c_a6235e8de0877bb0656149d629cc90654}{skybox\+\_\+destroy}} (struct \mbox{\hyperlink{structskybox}{skybox}} $\ast$\mbox{\hyperlink{structskybox}{skybox}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{skybox_8c_a629268bce883a9f2f0ea892bf6cc9b53}\label{skybox_8c_a629268bce883a9f2f0ea892bf6cc9b53}} 
+\index{skybox.c@{skybox.c}!skybox\_custom\_render@{skybox\_custom\_render}}
+\index{skybox\_custom\_render@{skybox\_custom\_render}!skybox.c@{skybox.c}}
+\doxysubsubsection{\texorpdfstring{skybox\_custom\_render()}{skybox\_custom\_render()}}
+{\footnotesize\ttfamily void skybox\+\_\+custom\+\_\+render (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{skybox_8c_a6235e8de0877bb0656149d629cc90654}\label{skybox_8c_a6235e8de0877bb0656149d629cc90654}} 
+\index{skybox.c@{skybox.c}!skybox\_destroy@{skybox\_destroy}}
+\index{skybox\_destroy@{skybox\_destroy}!skybox.c@{skybox.c}}
+\doxysubsubsection{\texorpdfstring{skybox\_destroy()}{skybox\_destroy()}}
+{\footnotesize\ttfamily void skybox\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structskybox}{skybox}} $\ast$}]{skybox }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{skybox_8c_aca9526d626c21362f941d0d3ced5b2de}\label{skybox_8c_aca9526d626c21362f941d0d3ced5b2de}} 
+\index{skybox.c@{skybox.c}!skybox\_init@{skybox\_init}}
+\index{skybox\_init@{skybox\_init}!skybox.c@{skybox.c}}
+\doxysubsubsection{\texorpdfstring{skybox\_init()}{skybox\_init()}}
+{\footnotesize\ttfamily void skybox\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structskybox}{skybox}} $\ast$}]{skybox }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{skybox_8c_a48aafc49d004178ea42542b398126916}\label{skybox_8c_a48aafc49d004178ea42542b398126916}} 
+\index{skybox.c@{skybox.c}!skybox\_update@{skybox\_update}}
+\index{skybox\_update@{skybox\_update}!skybox.c@{skybox.c}}
+\doxysubsubsection{\texorpdfstring{skybox\_update()}{skybox\_update()}}
+{\footnotesize\ttfamily void skybox\+\_\+update (\begin{DoxyParamCaption}\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+

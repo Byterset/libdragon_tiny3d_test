@@ -67,6 +67,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">mathf.h File Reference</div>  </div>
@@ -80,7 +81,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="mathf_8h__dep__incl.png" border="0" usemap="#asrc_2math_2mathf_8hdep" alt=""/></div>
 <map name="asrc_2math_2mathf_8hdep" id="asrc_2math_2mathf_8hdep">
-<area shape="rect" title="This file contains the declaration of commonly used math functions." alt="" coords="473,5,607,32"/>
+<area shape="rect" title="This file contains the declaration of commonly used math functions." alt="" coords="559,5,692,32"/>
 <area shape="rect" href="epa_8c.html" title=" " alt="" coords="5,80,144,107"/>
 <area shape="rect" href="fire_8c.html" title=" " alt="" coords="168,80,293,107"/>
 <area shape="rect" href="mathf_8c.html" title="Implementation of mathematical functions." alt="" coords="318,80,450,107"/>
@@ -88,11 +89,21 @@ This graph shows which files directly or indirectly include this file:</div>
 <area shape="rect" href="quaternion_8c.html" title=" " alt="" coords="630,80,794,107"/>
 <area shape="rect" href="vector2_8c.html" title=" " alt="" coords="818,80,961,107"/>
 <area shape="rect" href="vector3_8c.html" title=" " alt="" coords="985,80,1127,107"/>
+<area shape="rect" href="render__batch_8c.html" title=" " alt="" coords="1152,80,1339,107"/>
 </map>
 </div>
 </div>
 <p><a href="mathf_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a598a3330b3c21701223ee0ca14316eca"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#a598a3330b3c21701223ee0ca14316eca">PI</a>&#160;&#160;&#160;3.14159265358979323846f</td></tr>
+<tr class="separator:a598a3330b3c21701223ee0ca14316eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3ec3219e4eee3b0992bfd59c2e2bc42"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#ae3ec3219e4eee3b0992bfd59c2e2bc42">HALF_PI</a>&#160;&#160;&#160;(<a class="el" href="mathf_8h.html#a598a3330b3c21701223ee0ca14316eca">PI</a> / 2.0f)</td></tr>
+<tr class="separator:ae3ec3219e4eee3b0992bfd59c2e2bc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b947f4b635461030ff2d87833e5049e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#a3b947f4b635461030ff2d87833e5049e">TWO_PI</a>&#160;&#160;&#160;(2.0f * <a class="el" href="mathf_8h.html#a598a3330b3c21701223ee0ca14316eca">PI</a>)</td></tr>
+<tr class="separator:a3b947f4b635461030ff2d87833e5049e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:afa50c979e3e14c331326a12aa35c3e22"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#afa50c979e3e14c331326a12aa35c3e22">randomInt</a> ()</td></tr>
@@ -111,20 +122,28 @@ Functions</h2></td></tr>
 <tr class="memdesc:a89dea287e0ea1f6e31367657de890c18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the linear parameter that produces the interpolant value within the range [from, to].  <a href="mathf_8h.html#a89dea287e0ea1f6e31367657de890c18">More...</a><br /></td></tr>
 <tr class="separator:a89dea287e0ea1f6e31367657de890c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6af02a32aefd1b44da79dd77702a0f49"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#a6af02a32aefd1b44da79dd77702a0f49">mathfMoveTowards</a> (float from, float to, float maxMove)</td></tr>
+<tr class="memdesc:a6af02a32aefd1b44da79dd77702a0f49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves a value towards a target value by a maximum amount.  <a href="mathf_8h.html#a6af02a32aefd1b44da79dd77702a0f49">More...</a><br /></td></tr>
 <tr class="separator:a6af02a32aefd1b44da79dd77702a0f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a925f010f6d4cbb39fb7f72cb157a5aee"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#a925f010f6d4cbb39fb7f72cb157a5aee">mathfBounceBackLerp</a> (float t)</td></tr>
+<tr class="memdesc:a925f010f6d4cbb39fb7f72cb157a5aee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a bounce-back interpolation value.  <a href="mathf_8h.html#a925f010f6d4cbb39fb7f72cb157a5aee">More...</a><br /></td></tr>
 <tr class="separator:a925f010f6d4cbb39fb7f72cb157a5aee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94be578985a62018db649fbb1798eff4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#a94be578985a62018db649fbb1798eff4">mathfRandomFloat</a> ()</td></tr>
+<tr class="memdesc:a94be578985a62018db649fbb1798eff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a pseudo-random floating-point number in the range [0, 1].  <a href="mathf_8h.html#a94be578985a62018db649fbb1798eff4">More...</a><br /></td></tr>
 <tr class="separator:a94be578985a62018db649fbb1798eff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b0fef6cb1a8e98b60a5fd02925a9479"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#a8b0fef6cb1a8e98b60a5fd02925a9479">mathfMod</a> (float input, float divisor)</td></tr>
+<tr class="memdesc:a8b0fef6cb1a8e98b60a5fd02925a9479"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the modulo of a floating-point number.  <a href="mathf_8h.html#a8b0fef6cb1a8e98b60a5fd02925a9479">More...</a><br /></td></tr>
 <tr class="separator:a8b0fef6cb1a8e98b60a5fd02925a9479"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7858054b72ec722a2fff626dde6c162"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#aa7858054b72ec722a2fff626dde6c162">clampf</a> (float input, float min, float max)</td></tr>
+<tr class="memdesc:aa7858054b72ec722a2fff626dde6c162"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp a float value to a specified range.  <a href="mathf_8h.html#aa7858054b72ec722a2fff626dde6c162">More...</a><br /></td></tr>
 <tr class="separator:aa7858054b72ec722a2fff626dde6c162"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a830616f72203d3f08af4fa4a04b97e1b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#a830616f72203d3f08af4fa4a04b97e1b">signf</a> (float input)</td></tr>
+<tr class="memdesc:a830616f72203d3f08af4fa4a04b97e1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the sign of a floating-point number.  <a href="mathf_8h.html#a830616f72203d3f08af4fa4a04b97e1b">More...</a><br /></td></tr>
 <tr class="separator:a830616f72203d3f08af4fa4a04b97e1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17975af688b8d89e588d17c7a6ccdbdb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#a17975af688b8d89e588d17c7a6ccdbdb">sign</a> (int input)</td></tr>
+<tr class="memdesc:a17975af688b8d89e588d17c7a6ccdbdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the sign of an integer.  <a href="mathf_8h.html#a17975af688b8d89e588d17c7a6ccdbdb">More...</a><br /></td></tr>
 <tr class="separator:a17975af688b8d89e588d17c7a6ccdbdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ff31894b892df2e0f53fac574ab8145"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#a1ff31894b892df2e0f53fac574ab8145">abs</a> (int input)</td></tr>
+<tr class="memdesc:a1ff31894b892df2e0f53fac574ab8145"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the absolute value of an integer.  <a href="mathf_8h.html#a1ff31894b892df2e0f53fac574ab8145">More...</a><br /></td></tr>
 <tr class="separator:a1ff31894b892df2e0f53fac574ab8145"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd5a96cf9b26f8374579dfee9b8e0c42"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mathf_8h.html#abd5a96cf9b26f8374579dfee9b8e0c42">sqrtf</a> (float in)</td></tr>
 <tr class="separator:abd5a96cf9b26f8374579dfee9b8e0c42"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,7 +171,50 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file contains the declaration of commonly used math functions. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae3ec3219e4eee3b0992bfd59c2e2bc42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3ec3219e4eee3b0992bfd59c2e2bc42">&#9670;&nbsp;</a></span>HALF_PI</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define HALF_PI&#160;&#160;&#160;(<a class="el" href="mathf_8h.html#a598a3330b3c21701223ee0ca14316eca">PI</a> / 2.0f)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a598a3330b3c21701223ee0ca14316eca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a598a3330b3c21701223ee0ca14316eca">&#9670;&nbsp;</a></span>PI</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PI&#160;&#160;&#160;3.14159265358979323846f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3b947f4b635461030ff2d87833e5049e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b947f4b635461030ff2d87833e5049e">&#9670;&nbsp;</a></span>TWO_PI</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TWO_PI&#160;&#160;&#160;(2.0f * <a class="el" href="mathf_8h.html#a598a3330b3c21701223ee0ca14316eca">PI</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a1ff31894b892df2e0f53fac574ab8145"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1ff31894b892df2e0f53fac574ab8145">&#9670;&nbsp;</a></span>abs()</h2>
 
@@ -168,6 +230,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Computes the absolute value of an integer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int absolute value of input </dd></dl>
 
 </div>
 </div>
@@ -220,6 +291,17 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Clamp a float value to a specified range. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td></td></tr>
+    <tr><td class="paramname">min</td><td></td></tr>
+    <tr><td class="paramname">max</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>float clamped value </dd></dl>
 
 </div>
 </div>
@@ -319,6 +401,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Computes a bounce-back interpolation value. </p>
+<p>This function calculates a value that simulates a bounce-back effect based on the input parameter t. The result is derived from the equation -t + t^2, which creates a parabolic curve that starts at 0, rises to a peak, and then falls back to 0.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>The input value, typically in the range [0, 1]. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The interpolated bounce-back value. </dd></dl>
 
 </div>
 </div>
@@ -440,6 +532,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Computes the modulo of a floating-point number. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td></td></tr>
+    <tr><td class="paramname">divisor</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>float </dd></dl>
+
 </div>
 </div>
 <a id="a6af02a32aefd1b44da79dd77702a0f49"></a>
@@ -474,6 +576,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Moves a value towards a target value by a maximum amount. </p>
+<p>This function calculates a new value that is moved from the starting value (<code>from</code>) towards the target value (<code>to</code>) by a maximum amount (<code>maxMove</code>). If the difference between <code>from</code> and <code>to</code> is less than or equal to <code>maxMove</code>, the function returns the target value (<code>to</code>). Otherwise, it returns a value that is <code>maxMove</code> units closer to the target value.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">from</td><td>The starting value. </td></tr>
+    <tr><td class="paramname">to</td><td>The target value. </td></tr>
+    <tr><td class="paramname">maxMove</td><td>The maximum amount to move towards the target value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new value moved towards the target value. </dd></dl>
+
 </div>
 </div>
 <a id="a94be578985a62018db649fbb1798eff4"></a>
@@ -490,6 +604,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Computes a pseudo-random floating-point number in the range [0, 1]. </p>
+<dl class="section return"><dt>Returns</dt><dd>float </dd></dl>
 
 </div>
 </div>
@@ -710,6 +827,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Returns the sign of an integer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Sign of input, 1 if input is positive, -1 if input is negative, 0 if input is zero </dd></dl>
+
 </div>
 </div>
 <a id="a830616f72203d3f08af4fa4a04b97e1b"></a>
@@ -727,6 +853,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns the sign of a floating-point number. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>float </dd></dl>
 
 </div>
 </div>

@@ -13,6 +13,15 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{mathf_8h__dep__incl}
 \end{center}
 \end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{mathf_8h_a598a3330b3c21701223ee0ca14316eca}{PI}}~3.\+14159265358979323846f
+\item 
+\#define \mbox{\hyperlink{mathf_8h_ae3ec3219e4eee3b0992bfd59c2e2bc42}{HALF\+\_\+\+PI}}~(\mbox{\hyperlink{mathf_8h_a598a3330b3c21701223ee0ca14316eca}{PI}} / 2.\+0f)
+\item 
+\#define \mbox{\hyperlink{mathf_8h_a3b947f4b635461030ff2d87833e5049e}{TWO\+\_\+\+PI}}~(2.\+0f $\ast$ \mbox{\hyperlink{mathf_8h_a598a3330b3c21701223ee0ca14316eca}{PI}})
+\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -27,21 +36,21 @@ float \mbox{\hyperlink{mathf_8h_a59f5831ae7483911eaac4ff7313ddaff}{mathf\+Lerp}}
 float \mbox{\hyperlink{mathf_8h_a89dea287e0ea1f6e31367657de890c18}{mathf\+Inv\+Lerp}} (float from, float to, float value)
 \begin{DoxyCompactList}\small\item\em Calculates the linear parameter that produces the interpolant value within the range \mbox{[}from, to\mbox{]}. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8h_a6af02a32aefd1b44da79dd77702a0f49}{mathf\+Move\+Towards}} (float from, float to, float max\+Move)
-\item 
+\begin{DoxyCompactList}\small\item\em Moves a value towards a target value by a maximum amount. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8h_a925f010f6d4cbb39fb7f72cb157a5aee}{mathf\+Bounce\+Back\+Lerp}} (float t)
-\item 
+\begin{DoxyCompactList}\small\item\em Computes a bounce-\/back interpolation value. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8h_a94be578985a62018db649fbb1798eff4}{mathf\+Random\+Float}} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Computes a pseudo-\/random floating-\/point number in the range \mbox{[}0, 1\mbox{]}. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8h_a8b0fef6cb1a8e98b60a5fd02925a9479}{mathf\+Mod}} (float input, float divisor)
-\item 
+\begin{DoxyCompactList}\small\item\em Computes the modulo of a floating-\/point number. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8h_aa7858054b72ec722a2fff626dde6c162}{clampf}} (float input, float min, float max)
-\item 
+\begin{DoxyCompactList}\small\item\em Clamp a float value to a specified range. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8h_a830616f72203d3f08af4fa4a04b97e1b}{signf}} (float input)
-\item 
+\begin{DoxyCompactList}\small\item\em Returns the sign of a floating-\/point number. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{mathf_8h_a17975af688b8d89e588d17c7a6ccdbdb}{sign}} (int input)
-\item 
+\begin{DoxyCompactList}\small\item\em Returns the sign of an integer. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{mathf_8h_a1ff31894b892df2e0f53fac574ab8145}{abs}} (int input)
-\item 
+\begin{DoxyCompactList}\small\item\em Computes the absolute value of an integer. \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{mathf_8h_abd5a96cf9b26f8374579dfee9b8e0c42}{sqrtf}} (float in)
 \item 
 float \mbox{\hyperlink{mathf_8h_a03f6d8cf8c48e1ee7b02eecf14e859d2}{powf}} (float base, float exp)
@@ -71,6 +80,27 @@ This file contains the declaration of commonly used math functions.
 
 
 
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{mathf_8h_ae3ec3219e4eee3b0992bfd59c2e2bc42}\label{mathf_8h_ae3ec3219e4eee3b0992bfd59c2e2bc42}} 
+\index{mathf.h@{mathf.h}!HALF\_PI@{HALF\_PI}}
+\index{HALF\_PI@{HALF\_PI}!mathf.h@{mathf.h}}
+\doxysubsubsection{\texorpdfstring{HALF\_PI}{HALF\_PI}}
+{\footnotesize\ttfamily \#define HALF\+\_\+\+PI~(\mbox{\hyperlink{mathf_8h_a598a3330b3c21701223ee0ca14316eca}{PI}} / 2.\+0f)}
+
+\mbox{\Hypertarget{mathf_8h_a598a3330b3c21701223ee0ca14316eca}\label{mathf_8h_a598a3330b3c21701223ee0ca14316eca}} 
+\index{mathf.h@{mathf.h}!PI@{PI}}
+\index{PI@{PI}!mathf.h@{mathf.h}}
+\doxysubsubsection{\texorpdfstring{PI}{PI}}
+{\footnotesize\ttfamily \#define PI~3.\+14159265358979323846f}
+
+\mbox{\Hypertarget{mathf_8h_a3b947f4b635461030ff2d87833e5049e}\label{mathf_8h_a3b947f4b635461030ff2d87833e5049e}} 
+\index{mathf.h@{mathf.h}!TWO\_PI@{TWO\_PI}}
+\index{TWO\_PI@{TWO\_PI}!mathf.h@{mathf.h}}
+\doxysubsubsection{\texorpdfstring{TWO\_PI}{TWO\_PI}}
+{\footnotesize\ttfamily \#define TWO\+\_\+\+PI~(2.\+0f $\ast$ \mbox{\hyperlink{mathf_8h_a598a3330b3c21701223ee0ca14316eca}{PI}})}
+
+
+
 \doxysubsection{Function Documentation}
 \mbox{\Hypertarget{mathf_8h_a1ff31894b892df2e0f53fac574ab8145}\label{mathf_8h_a1ff31894b892df2e0f53fac574ab8145}} 
 \index{mathf.h@{mathf.h}!abs@{abs}}
@@ -78,6 +108,18 @@ This file contains the declaration of commonly used math functions.
 \doxysubsubsection{\texorpdfstring{abs()}{abs()}}
 {\footnotesize\ttfamily int abs (\begin{DoxyParamCaption}\item[{int}]{input }\end{DoxyParamCaption})}
 
+
+
+Computes the absolute value of an integer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int absolute value of input 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8h_aa9f4f419ccc1f13398b3c0aa7330cec7}\label{mathf_8h_aa9f4f419ccc1f13398b3c0aa7330cec7}} 
 \index{mathf.h@{mathf.h}!ceilf@{ceilf}}
 \index{ceilf@{ceilf}!mathf.h@{mathf.h}}
@@ -90,6 +132,22 @@ This file contains the declaration of commonly used math functions.
 \doxysubsubsection{\texorpdfstring{clampf()}{clampf()}}
 {\footnotesize\ttfamily float clampf (\begin{DoxyParamCaption}\item[{float}]{input,  }\item[{float}]{min,  }\item[{float}]{max }\end{DoxyParamCaption})}
 
+
+
+Clamp a float value to a specified range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & \\
+\hline
+{\em min} & \\
+\hline
+{\em max} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float clamped value 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8h_aaf8f74b31bea0f391c633dd681120237}\label{mathf_8h_aaf8f74b31bea0f391c633dd681120237}} 
 \index{mathf.h@{mathf.h}!cosf@{cosf}}
 \index{cosf@{cosf}!mathf.h@{mathf.h}}
@@ -132,6 +190,20 @@ float absolute value of the input
 \doxysubsubsection{\texorpdfstring{mathfBounceBackLerp()}{mathfBounceBackLerp()}}
 {\footnotesize\ttfamily float mathf\+Bounce\+Back\+Lerp (\begin{DoxyParamCaption}\item[{float}]{t }\end{DoxyParamCaption})}
 
+
+
+Computes a bounce-\/back interpolation value. 
+
+This function calculates a value that simulates a bounce-\/back effect based on the input parameter t. The result is derived from the equation -\/t + t$^\wedge$2, which creates a parabolic curve that starts at 0, rises to a peak, and then falls back to 0.
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & The input value, typically in the range \mbox{[}0, 1\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The interpolated bounce-\/back value. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8h_a89dea287e0ea1f6e31367657de890c18}\label{mathf_8h_a89dea287e0ea1f6e31367657de890c18}} 
 \index{mathf.h@{mathf.h}!mathfInvLerp@{mathfInvLerp}}
 \index{mathfInvLerp@{mathfInvLerp}!mathf.h@{mathf.h}}
@@ -186,18 +258,57 @@ The interpolated value.
 \doxysubsubsection{\texorpdfstring{mathfMod()}{mathfMod()}}
 {\footnotesize\ttfamily float mathf\+Mod (\begin{DoxyParamCaption}\item[{float}]{input,  }\item[{float}]{divisor }\end{DoxyParamCaption})}
 
+
+
+Computes the modulo of a floating-\/point number. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & \\
+\hline
+{\em divisor} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8h_a6af02a32aefd1b44da79dd77702a0f49}\label{mathf_8h_a6af02a32aefd1b44da79dd77702a0f49}} 
 \index{mathf.h@{mathf.h}!mathfMoveTowards@{mathfMoveTowards}}
 \index{mathfMoveTowards@{mathfMoveTowards}!mathf.h@{mathf.h}}
 \doxysubsubsection{\texorpdfstring{mathfMoveTowards()}{mathfMoveTowards()}}
 {\footnotesize\ttfamily float mathf\+Move\+Towards (\begin{DoxyParamCaption}\item[{float}]{from,  }\item[{float}]{to,  }\item[{float}]{max\+Move }\end{DoxyParamCaption})}
 
+
+
+Moves a value towards a target value by a maximum amount. 
+
+This function calculates a new value that is moved from the starting value ({\ttfamily from}) towards the target value ({\ttfamily to}) by a maximum amount ({\ttfamily max\+Move}). If the difference between {\ttfamily from} and {\ttfamily to} is less than or equal to {\ttfamily max\+Move}, the function returns the target value ({\ttfamily to}). Otherwise, it returns a value that is {\ttfamily max\+Move} units closer to the target value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em from} & The starting value. \\
+\hline
+{\em to} & The target value. \\
+\hline
+{\em max\+Move} & The maximum amount to move towards the target value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The new value moved towards the target value. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8h_a94be578985a62018db649fbb1798eff4}\label{mathf_8h_a94be578985a62018db649fbb1798eff4}} 
 \index{mathf.h@{mathf.h}!mathfRandomFloat@{mathfRandomFloat}}
 \index{mathfRandomFloat@{mathfRandomFloat}!mathf.h@{mathf.h}}
 \doxysubsubsection{\texorpdfstring{mathfRandomFloat()}{mathfRandomFloat()}}
 {\footnotesize\ttfamily float mathf\+Random\+Float (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+
+
+Computes a pseudo-\/random floating-\/point number in the range \mbox{[}0, 1\mbox{]}. 
+
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8h_a7ba1f6b16d865c77066a7aa05d51ca02}\label{mathf_8h_a7ba1f6b16d865c77066a7aa05d51ca02}} 
 \index{mathf.h@{mathf.h}!maxf@{maxf}}
 \index{maxf@{maxf}!mathf.h@{mathf.h}}
@@ -287,12 +398,36 @@ A pseudo-\/random integer.
 \doxysubsubsection{\texorpdfstring{sign()}{sign()}}
 {\footnotesize\ttfamily int sign (\begin{DoxyParamCaption}\item[{int}]{input }\end{DoxyParamCaption})}
 
+
+
+Returns the sign of an integer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Sign of input, 1 if input is positive, -\/1 if input is negative, 0 if input is zero 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8h_a830616f72203d3f08af4fa4a04b97e1b}\label{mathf_8h_a830616f72203d3f08af4fa4a04b97e1b}} 
 \index{mathf.h@{mathf.h}!signf@{signf}}
 \index{signf@{signf}!mathf.h@{mathf.h}}
 \doxysubsubsection{\texorpdfstring{signf()}{signf()}}
 {\footnotesize\ttfamily float signf (\begin{DoxyParamCaption}\item[{float}]{input }\end{DoxyParamCaption})}
 
+
+
+Returns the sign of a floating-\/point number. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
 \mbox{\Hypertarget{mathf_8h_a9bc62a320ad480d2081e3943b63525b7}\label{mathf_8h_a9bc62a320ad480d2081e3943b63525b7}} 
 \index{mathf.h@{mathf.h}!sinf@{sinf}}
 \index{sinf@{sinf}!mathf.h@{mathf.h}}

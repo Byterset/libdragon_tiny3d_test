@@ -3,6 +3,8 @@
 {\ttfamily \#include \char`\"{}render\+\_\+batch.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../util/sort.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../time/time.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/mathf.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/math.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}material.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}defs.\+h\char`\"{}}\newline
 Include dependency graph for render\+\_\+batch.\+c\+:
@@ -24,6 +26,10 @@ void \mbox{\hyperlink{render__batch_8c_a1cb12ebab2df550ab2126f46d7d760f0}{render
 \item 
 struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\+\_\+batch\+\_\+billboard\+\_\+element}} $\ast$ \mbox{\hyperlink{render__batch_8c_a4a71dbf397749d82c0903534075f9d1e}{render\+\_\+batch\+\_\+add\+\_\+particles}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, struct \mbox{\hyperlink{structmaterial}{material}} $\ast$\mbox{\hyperlink{structmaterial}{material}}, int count)
 \item 
+void \mbox{\hyperlink{render__batch_8c_a9204805d52908c06c8f1f798169efd52}{render\+\_\+batch\+\_\+add\+\_\+skybox}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, rspq\+\_\+block\+\_\+t $\ast$block)
+\item 
+void \mbox{\hyperlink{render__batch_8c_ae6f4c10a0b7964c542a8663a5c9323a9}{render\+\_\+batch\+\_\+add\+\_\+skybox\+\_\+flat}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, surface\+\_\+t $\ast$surface)
+\item 
 struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\+\_\+batch\+\_\+billboard\+\_\+element}} \mbox{\hyperlink{render__batch_8c_a6e3e5bb3e6cc975f2e67d0f43e78c5a7}{render\+\_\+batch\+\_\+get\+\_\+sprites}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, int count)
 \item 
 \mbox{\hyperlink{matrix_8h_ab4cd89c0952222b325c5c9c0165587b9}{mat4x4}} $\ast$ \mbox{\hyperlink{render__batch_8c_a7ff0d62fc47dc394d099a7025da1390b}{render\+\_\+batch\+\_\+get\+\_\+transform}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch)
@@ -31,10 +37,15 @@ struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\+\_\+bat
 T3\+DMat4\+FP $\ast$ \mbox{\hyperlink{render__batch_8c_ac35b23ca80adbed9059186287fc68793}{render\+\_\+batch\+\_\+get\+\_\+transformfp}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch)
 \item 
 int \mbox{\hyperlink{render__batch_8c_aa0859c05f29794595f61c0ceaaacbb1b}{render\+\_\+batch\+\_\+compare\+\_\+element}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, uint16\+\_\+t a\+\_\+index, uint16\+\_\+t b\+\_\+index)
-\item 
+\begin{DoxyCompactList}\small\item\em Compares two elements in a render batch. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{render__batch_8c_ab004df8e789fb0c6d32ff1c0d50a8f70}{render\+\_\+batch\+\_\+check\+\_\+texture\+\_\+scroll}} (int tile, struct \mbox{\hyperlink{structmaterial__tex}{material\+\_\+tex}} $\ast$tex)
 \item 
 void \mbox{\hyperlink{render__batch_8c_af2628ee0ba5b6ef1781c92b1db189846}{render\+\_\+batch\+\_\+execute}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, \mbox{\hyperlink{matrix_8h_ab4cd89c0952222b325c5c9c0165587b9}{mat4x4}} view\+\_\+proj\+\_\+matrix, T3\+DViewport $\ast$viewport)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+T3\+DVert\+Packed \mbox{\hyperlink{render__batch_8c_afa625cb13a719519d1934376de8502ad}{billboard\+\_\+vertices}} \mbox{[}2\mbox{]}
 \end{DoxyCompactItemize}
 
 
@@ -50,6 +61,18 @@ void \mbox{\hyperlink{render__batch_8c_af2628ee0ba5b6ef1781c92b1db189846}{render
 \index{render\_batch\_add\_particles@{render\_batch\_add\_particles}!render\_batch.c@{render\_batch.c}}
 \doxysubsubsection{\texorpdfstring{render\_batch\_add\_particles()}{render\_batch\_add\_particles()}}
 {\footnotesize\ttfamily struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\+\_\+batch\+\_\+billboard\+\_\+element}}$\ast$ render\+\_\+batch\+\_\+add\+\_\+particles (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{material,  }\item[{int}]{count }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{render__batch_8c_a9204805d52908c06c8f1f798169efd52}\label{render__batch_8c_a9204805d52908c06c8f1f798169efd52}} 
+\index{render\_batch.c@{render\_batch.c}!render\_batch\_add\_skybox@{render\_batch\_add\_skybox}}
+\index{render\_batch\_add\_skybox@{render\_batch\_add\_skybox}!render\_batch.c@{render\_batch.c}}
+\doxysubsubsection{\texorpdfstring{render\_batch\_add\_skybox()}{render\_batch\_add\_skybox()}}
+{\footnotesize\ttfamily void render\+\_\+batch\+\_\+add\+\_\+skybox (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{rspq\+\_\+block\+\_\+t $\ast$}]{block }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{render__batch_8c_ae6f4c10a0b7964c542a8663a5c9323a9}\label{render__batch_8c_ae6f4c10a0b7964c542a8663a5c9323a9}} 
+\index{render\_batch.c@{render\_batch.c}!render\_batch\_add\_skybox\_flat@{render\_batch\_add\_skybox\_flat}}
+\index{render\_batch\_add\_skybox\_flat@{render\_batch\_add\_skybox\_flat}!render\_batch.c@{render\_batch.c}}
+\doxysubsubsection{\texorpdfstring{render\_batch\_add\_skybox\_flat()}{render\_batch\_add\_skybox\_flat()}}
+{\footnotesize\ttfamily void render\+\_\+batch\+\_\+add\+\_\+skybox\+\_\+flat (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{surface\+\_\+t $\ast$}]{surface }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{render__batch_8c_a08446c01a19cf562efcc0094aae64b0e}\label{render__batch_8c_a08446c01a19cf562efcc0094aae64b0e}} 
 \index{render\_batch.c@{render\_batch.c}!render\_batch\_add\_t3dmodel@{render\_batch\_add\_t3dmodel}}
@@ -69,7 +92,33 @@ void \mbox{\hyperlink{render__batch_8c_af2628ee0ba5b6ef1781c92b1db189846}{render
 \doxysubsubsection{\texorpdfstring{render\_batch\_compare\_element()}{render\_batch\_compare\_element()}}
 {\footnotesize\ttfamily int render\+\_\+batch\+\_\+compare\+\_\+element (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{uint16\+\_\+t}]{a\+\_\+index,  }\item[{uint16\+\_\+t}]{b\+\_\+index }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{render__batch_8c_af2628ee0ba5b6ef1781c92b1db189846}\label{render__batch_8c_af2628ee0ba5b6ef1781c92b1db189846}} 
+
+
+Compares two elements in a render batch. 
+
+This function compares two elements in a render batch based on their materials and types. It is used to determine the order of elements for rendering.
+
+
+\begin{DoxyParams}{Parameters}
+{\em batch} & Pointer to the render batch containing the elements. \\
+\hline
+{\em a\+\_\+index} & Index of the first element to compare. \\
+\hline
+{\em b\+\_\+index} & Index of the second element to compare. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An integer less than, equal to, or greater than zero if the first element is considered to be respectively less than, equal to, or greater than the second element.
+\end{DoxyReturn}
+The comparison is performed as follows\+:
+\begin{DoxyItemize}
+\item If both elements are the same, return 0.
+\item If the first element has no material and the second element has a material, return the negative sort priority of the second element\textquotesingle{}s material.
+\item If the second element has no material and the first element has a material, return the sort priority of the first element\textquotesingle{}s material.
+\item If both elements have materials and their sort priorities differ, return the difference between their sort priorities.
+\item If both elements have materials but they are different, return the difference between their material pointers.
+\item If all previous checks are equal, return the difference between their types. 
+\end{DoxyItemize}\mbox{\Hypertarget{render__batch_8c_af2628ee0ba5b6ef1781c92b1db189846}\label{render__batch_8c_af2628ee0ba5b6ef1781c92b1db189846}} 
 \index{render\_batch.c@{render\_batch.c}!render\_batch\_execute@{render\_batch\_execute}}
 \index{render\_batch\_execute@{render\_batch\_execute}!render\_batch.c@{render\_batch.c}}
 \doxysubsubsection{\texorpdfstring{render\_batch\_execute()}{render\_batch\_execute()}}
@@ -98,4 +147,13 @@ void \mbox{\hyperlink{render__batch_8c_af2628ee0ba5b6ef1781c92b1db189846}{render
 \index{render\_batch\_init@{render\_batch\_init}!render\_batch.c@{render\_batch.c}}
 \doxysubsubsection{\texorpdfstring{render\_batch\_init()}{render\_batch\_init()}}
 {\footnotesize\ttfamily void render\+\_\+batch\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$}]{camera\+\_\+transform,  }\item[{struct \mbox{\hyperlink{structframe__memory__pool}{frame\+\_\+memory\+\_\+pool}} $\ast$}]{pool }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{render__batch_8c_afa625cb13a719519d1934376de8502ad}\label{render__batch_8c_afa625cb13a719519d1934376de8502ad}} 
+\index{render\_batch.c@{render\_batch.c}!billboard\_vertices@{billboard\_vertices}}
+\index{billboard\_vertices@{billboard\_vertices}!render\_batch.c@{render\_batch.c}}
+\doxysubsubsection{\texorpdfstring{billboard\_vertices}{billboard\_vertices}}
+{\footnotesize\ttfamily T3\+DVert\+Packed billboard\+\_\+vertices\mbox{[}2\mbox{]}}
 

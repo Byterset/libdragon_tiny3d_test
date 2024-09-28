@@ -15,17 +15,19 @@ Include dependency graph for fire.\+c\+:
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{fire_8c_a5d70e9efaeba022b3c72fa3cb7acf734}{CYCLE\+\_\+\+TIME}}~0.\+08f
+\#define \mbox{\hyperlink{fire_8c_a5d70e9efaeba022b3c72fa3cb7acf734}{CYCLE\+\_\+\+TIME}}~0.\+32f
 \item 
-\#define \mbox{\hyperlink{fire_8c_ad00688c86af32bdbd47b6b89b9be296c}{FIRE\+\_\+\+LENGTH}}~4.\+0f
+\#define \mbox{\hyperlink{fire_8c_ad00688c86af32bdbd47b6b89b9be296c}{FIRE\+\_\+\+LENGTH}}~2.\+5f
 \item 
-\#define \mbox{\hyperlink{fire_8c_a7b18b821e397ef6bf1502bc41462d630}{MAX\+\_\+\+RADIUS}}~0.\+5f
+\#define \mbox{\hyperlink{fire_8c_a7b18b821e397ef6bf1502bc41462d630}{MAX\+\_\+\+RADIUS}}~0.\+8f
 \item 
 \#define \mbox{\hyperlink{fire_8c_a1576d08c63ddf3123de1d1343e3d95b7}{MAX\+\_\+\+RANDOM\+\_\+\+OFFSET}}~0.\+3f
 \item 
-\#define \mbox{\hyperlink{fire_8c_aea02e6f54f55014b11bfb9b7c94c57e2}{START\+\_\+\+FADE}}~0.\+75f
+\#define \mbox{\hyperlink{fire_8c_aea02e6f54f55014b11bfb9b7c94c57e2}{START\+\_\+\+FADE}}~0.\+7f
 \item 
-\#define \mbox{\hyperlink{fire_8c_a0d9429ae752126e19b78f97617f2a058}{TIP\+\_\+\+RISE}}~0.\+5f
+\#define \mbox{\hyperlink{fire_8c_a0d9429ae752126e19b78f97617f2a058}{TIP\+\_\+\+RISE}}~0.\+6f
+\item 
+\#define \mbox{\hyperlink{fire_8c_a749d77a5f429c6f0458667f05bbdafb2}{INITIAL\+\_\+\+ALPHA}}~200
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -47,19 +49,25 @@ void \mbox{\hyperlink{fire_8c_aa808063323dfee15d8bfd471f61b3cc1}{fire\+\_\+updat
 \index{fire.c@{fire.c}!CYCLE\_TIME@{CYCLE\_TIME}}
 \index{CYCLE\_TIME@{CYCLE\_TIME}!fire.c@{fire.c}}
 \doxysubsubsection{\texorpdfstring{CYCLE\_TIME}{CYCLE\_TIME}}
-{\footnotesize\ttfamily \#define CYCLE\+\_\+\+TIME~0.\+08f}
+{\footnotesize\ttfamily \#define CYCLE\+\_\+\+TIME~0.\+32f}
 
 \mbox{\Hypertarget{fire_8c_ad00688c86af32bdbd47b6b89b9be296c}\label{fire_8c_ad00688c86af32bdbd47b6b89b9be296c}} 
 \index{fire.c@{fire.c}!FIRE\_LENGTH@{FIRE\_LENGTH}}
 \index{FIRE\_LENGTH@{FIRE\_LENGTH}!fire.c@{fire.c}}
 \doxysubsubsection{\texorpdfstring{FIRE\_LENGTH}{FIRE\_LENGTH}}
-{\footnotesize\ttfamily \#define FIRE\+\_\+\+LENGTH~4.\+0f}
+{\footnotesize\ttfamily \#define FIRE\+\_\+\+LENGTH~2.\+5f}
+
+\mbox{\Hypertarget{fire_8c_a749d77a5f429c6f0458667f05bbdafb2}\label{fire_8c_a749d77a5f429c6f0458667f05bbdafb2}} 
+\index{fire.c@{fire.c}!INITIAL\_ALPHA@{INITIAL\_ALPHA}}
+\index{INITIAL\_ALPHA@{INITIAL\_ALPHA}!fire.c@{fire.c}}
+\doxysubsubsection{\texorpdfstring{INITIAL\_ALPHA}{INITIAL\_ALPHA}}
+{\footnotesize\ttfamily \#define INITIAL\+\_\+\+ALPHA~200}
 
 \mbox{\Hypertarget{fire_8c_a7b18b821e397ef6bf1502bc41462d630}\label{fire_8c_a7b18b821e397ef6bf1502bc41462d630}} 
 \index{fire.c@{fire.c}!MAX\_RADIUS@{MAX\_RADIUS}}
 \index{MAX\_RADIUS@{MAX\_RADIUS}!fire.c@{fire.c}}
 \doxysubsubsection{\texorpdfstring{MAX\_RADIUS}{MAX\_RADIUS}}
-{\footnotesize\ttfamily \#define MAX\+\_\+\+RADIUS~0.\+5f}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+RADIUS~0.\+8f}
 
 \mbox{\Hypertarget{fire_8c_a1576d08c63ddf3123de1d1343e3d95b7}\label{fire_8c_a1576d08c63ddf3123de1d1343e3d95b7}} 
 \index{fire.c@{fire.c}!MAX\_RANDOM\_OFFSET@{MAX\_RANDOM\_OFFSET}}
@@ -71,13 +79,13 @@ void \mbox{\hyperlink{fire_8c_aa808063323dfee15d8bfd471f61b3cc1}{fire\+\_\+updat
 \index{fire.c@{fire.c}!START\_FADE@{START\_FADE}}
 \index{START\_FADE@{START\_FADE}!fire.c@{fire.c}}
 \doxysubsubsection{\texorpdfstring{START\_FADE}{START\_FADE}}
-{\footnotesize\ttfamily \#define START\+\_\+\+FADE~0.\+75f}
+{\footnotesize\ttfamily \#define START\+\_\+\+FADE~0.\+7f}
 
 \mbox{\Hypertarget{fire_8c_a0d9429ae752126e19b78f97617f2a058}\label{fire_8c_a0d9429ae752126e19b78f97617f2a058}} 
 \index{fire.c@{fire.c}!TIP\_RISE@{TIP\_RISE}}
 \index{TIP\_RISE@{TIP\_RISE}!fire.c@{fire.c}}
 \doxysubsubsection{\texorpdfstring{TIP\_RISE}{TIP\_RISE}}
-{\footnotesize\ttfamily \#define TIP\+\_\+\+RISE~0.\+5f}
+{\footnotesize\ttfamily \#define TIP\+\_\+\+RISE~0.\+6f}
 
 
 
