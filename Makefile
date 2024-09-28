@@ -55,11 +55,12 @@ MESH_SOURCES := $(shell find assets/models -type f -name '*.glb' | sort)
 
 T3DMESHES := $(MESH_SOURCES:assets/models/%.glb=filesystem/models/%.t3dm)
 
+#base-scale option should be the same as SCENE_SCALE in the defs.h file. Default is 64, here we use 16 because of matrix conversion limitations
 filesystem/models/%.t3dm: assets/models/%.glb
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(@:filesystem/models/%.t3dm=build/assets/models/%.t3dm))
 	@echo "    [T3DMODEL] $@"
-	$(T3D_GLTF_TO_3D) "$<" $@
+	$(T3D_GLTF_TO_3D) "$<" $@ --base-scale=16 
 	$(N64_BINDIR)/mkasset -o $(dir $@) -w 256
 
 
