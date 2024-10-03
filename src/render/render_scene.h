@@ -23,13 +23,6 @@ struct render_scene {
     struct callback_list callbacks;
 };
 
-struct render_scene_fog_params {
-    bool enabled;
-    float start;
-    float end;
-    color_t color;
-};
-
 void render_scene_reset();
 
 void render_scene_add(struct Vector3* center, float radius, render_scene_callback callback, void* data);
@@ -37,6 +30,6 @@ void render_scene_add_renderable(struct renderable* renderable, float radius);
 void render_scene_add_renderable_single_axis(struct renderable_single_axis* renderable, float radius);
 void render_scene_remove(void* data);
 
-void render_scene_render(struct camera* camera, T3DViewport* viewport, struct frame_memory_pool* pool);
+void render_scene_render(struct camera* camera, T3DViewport* viewport, struct frame_memory_pool* pool, struct render_fog_params* fog);
 
 #endif

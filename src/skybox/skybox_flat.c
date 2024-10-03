@@ -9,7 +9,7 @@
 #include "../render/defs.h"
 #include "../resource/sprite_cache.h"
 
-
+// TODO: build an update callback to maybe dynamically change the skybox texture, e.g. day/night cycle etc
 void skybox_flat_update(void* data){
 
 }
@@ -19,9 +19,9 @@ void skybox_flat_custom_render(void* data, struct render_batch* batch) {
     render_batch_add_skybox_flat(batch, &skybox->surface);
 }
 
+
 void skybox_flat_init(struct skybox_flat* skybox) {
-
-
+    // TODO: make the texture a parameter and load it from the scene
     skybox->texture = sprite_cache_load("rom:/images/skybox/sky_seamless.sprite");
     // graphics_draw_sprite_trans
     //sprite_get_pixels -> gets the sprite pixels as a surface_t

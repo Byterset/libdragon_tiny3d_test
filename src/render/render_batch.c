@@ -216,7 +216,7 @@ static bool element_type_2d[] = {
     
 };
 
-void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T3DViewport *viewport)
+void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T3DViewport *viewport, struct render_fog_params *fog)
 {
     uint16_t order[RENDER_BATCH_MAX_SIZE];
 
@@ -260,11 +260,14 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             }
             else
             {
-                //TODO: make the fog configurable via the renderer as a params struct
-                // rdpq_mode_fog(RDPQ_FOG_STANDARD);
-                // rdpq_set_fog_color(RGBA32(255, 255, 255, 0));
-                // t3d_fog_set_enabled(true);
-                // t3d_fog_set_range(2.0f * SCENE_SCALE, 40.0f * SCENE_SCALE);
+                if(fog && fog->enabled){
+                    rdpq_mode_fog(RDPQ_FOG_STANDARD);
+                    rdpq_set_fog_color(fog->color);
+                    t3d_fog_set_enabled(true);
+                    t3d_fog_set_range(fog->start, fog->end);
+                } else {
+                    t3d_fog_set_enabled(false);
+                }
 
                 rdpq_mode_zoverride(false, 0, 0);
                 rdpq_mode_persp(true);
@@ -302,16 +305,12 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
         else if (element->type == RENDER_BATCH_BILLBOARD)
         {
 
-
-            if (!element->material)
+            if (!element->material || !element->material->block)
             {
                 continue; // Skip if no material since that indicates there is also no texture to be rendered
             }
 
-            if (element->material->block)
-            {
-                rspq_block_run(element->material->block);
-            }
+            rspq_block_run(element->material->block);
 
             render_batch_check_texture_scroll(TILE0, &element->material->tex0);
             render_batch_check_texture_scroll(TILE1, &element->material->tex1);
@@ -434,7 +433,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
         // -------- Skybox Flat Element ----------
         else if (element->type == RENDER_BATCH_SKYBOX)
         {
-            if (!element->skybox.surface)
+            if (!element->skybox.surface || fog->enabled)
             {
                 continue;
             }
@@ -473,8 +472,16 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
 
             rdpq_set_mode_standard();
             rdpq_mode_zoverride(true, 1, 0);
-            // rdpq_set_prim_color(RGBA32(255, 0, 0, 255));
-            // rdpq_mode_combiner(RDPQ_COMBINER_TEX_FLAT);
+            // color_t tint = RGBA32(255, 255, 255, 128);
+            // float brightness = 1.0f;
+            // tint.r = (uint8_t)(tint.r * brightness);
+            // tint.g = (uint8_t)(tint.g * brightness);
+            // tint.b = (uint8_t)(tint.b * brightness);
+            // rdpq_set_prim_color(tint);
+            // rdpq_combiner_t cc = RDPQ_COMBINER1((PRIM,0,TEX0,0),    (PRIM,0,TEX0,0));
+            // rdpq_blender_t blend = RDPQ_BLENDER((IN_RGB, IN_ALPHA, MEMORY_RGB, INV_MUX_ALPHA));
+            // rdpq_mode_blender(blend);
+            // rdpq_mode_combiner(cc);
 
             // if the window is within the bounds of the texture, just blit it
             if (texOffsetX + width < element->skybox.surface->width)

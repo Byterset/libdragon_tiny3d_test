@@ -29,15 +29,15 @@ rspq_block_t* player_dpl;
 // };
 
 static struct dynamic_object_type player_collision = {
-    .minkowsi_sum = sphere_minkowski_sum,
-    .bounding_box = sphere_bounding_box,
+    .minkowsi_sum = box_minkowski_sum,
+    .bounding_box = box_bounding_box,
     .data = {
-        .sphere = {
-            .radius = 2.0f,
-        }
-        // .box = {
-        //     .half_size = {2.0f, 1.0f, 2.0f}
+        // .sphere = {
+        //     .radius = 2.0f,
         // }
+        .box = {
+            .half_size = {2.0f, 1.0f, 2.0f}
+        }
     }
 };
 
@@ -159,7 +159,7 @@ void player_update(struct player* player) {
     // player->transform.position.x += moveDir.x * currSpeed;
     // player->transform.position.z += moveDir.z * currSpeed;
     // ...and limit position inside the box
-    const float BOX_SIZE = 40.0f;
+    const float BOX_SIZE = 60.0f;
     if(player->transform.position.x < -BOX_SIZE)player->transform.position.x = -BOX_SIZE;
     if(player->transform.position.x >  BOX_SIZE)player->transform.position.x =  BOX_SIZE;
     if(player->transform.position.z < -BOX_SIZE)player->transform.position.z = -BOX_SIZE;
@@ -228,8 +228,8 @@ void player_init(struct player* player, struct player_definition* definition, st
     player->collision.has_gravity = true;
     
 
-    // player->collision.center.y = player_collision.data.box.half_size.y + 1;
-    player->collision.center.y = player_collision.data.sphere.radius;
+    player->collision.center.y = player_collision.data.box.half_size.y;
+    // player->collision.center.y = player_collision.data.sphere.radius;
 
     collision_scene_add(&player->collision);
 

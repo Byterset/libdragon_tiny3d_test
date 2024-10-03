@@ -22,6 +22,13 @@ struct render_billboard_sprite {
     color_t color;
 };
 
+struct render_fog_params {
+    bool enabled;
+    float start;
+    float end;
+    color_t color;
+};
+
 enum render_batch_type {
     RENDER_BATCH_SKYBOX, // Skybox consisting of a sub-texture that is blit to the framebuffer
     RENDER_BATCH_MODEL, // Tiny3D model
@@ -83,6 +90,6 @@ struct render_batch_billboard_element render_batch_get_sprites(struct render_bat
 mat4x4* render_batch_get_transform(struct render_batch* batch);
 T3DMat4FP* render_batch_get_transformfp(struct render_batch* batch);
 
-void render_batch_execute(struct render_batch* batch, mat4x4 view_proj, T3DViewport* viewport);
+void render_batch_execute(struct render_batch* batch, mat4x4 view_proj, T3DViewport* viewport, struct render_fog_params* fog);
 
 #endif

@@ -85,7 +85,14 @@ void render3d()
     // ======== Draw (3D) ======== //
     t3d_frame_start();
 
-    t3d_screen_clear_color(RGBA32(0, 0, 0, 0xFF));
+    // TODO: maybe move this into scene structure later so levels can have their own fog settings
+    struct render_fog_params fog = {
+        .enabled = true,
+        .start = 2.0f * SCENE_SCALE,
+        .end = 40.0f * SCENE_SCALE,
+        .color = RGBA32(150, 150, 120, 0xFF)};
+
+    t3d_screen_clear_color(fog.enabled? fog.color : RGBA32(0, 0, 0, 0xFF));
     t3d_screen_clear_depth();
 
     t3d_light_set_ambient(colorAmbient);
@@ -99,12 +106,8 @@ void render3d()
     *viewport = t3d_viewport_create();
 
     rdpq_set_mode_standard();
-    rdpq_mode_fog(RDPQ_FOG_STANDARD);
-    rdpq_set_fog_color((color_t){255, 255, 255, 0xFF});
-    t3d_fog_set_enabled(true);
-    t3d_fog_set_range(2.0f * SCENE_SCALE, 40.0f * SCENE_SCALE);
 
-    render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool]);
+    render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool], &fog);
 }
 
 void render(surface_t *zbuffer)
@@ -132,7 +135,6 @@ int main()
 {
     debug_init_isviewer();
     debug_init_usblog();
-
     dfs_init(DFS_DEFAULT_LOCATION);
 
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS);
@@ -143,13 +145,15 @@ int main()
 
     t3d_init((T3DInitParams){});
     rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
-
+    
     setup();
 
     register_VI_handler(on_vi_interrupt);
 
     t3d_vec3_norm(&lightDirVec);
     const int64_t l_dt = TICKS_FROM_US(SEC_TO_USEC(FIXED_DELTATIME));
+
+    debugf("Completed Initialization!\n");
 
     // ======== GAME LOOP ======== //
     for (;;)
