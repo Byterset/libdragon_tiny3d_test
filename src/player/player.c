@@ -5,38 +5,22 @@
 #include "../render/render_scene.h"
 #include "../collision/collision_scene.h"
 #include "../collision/shapes/capsule.h"
-#include "../collision/shapes/cylinder.h"
-#include "../collision/shapes/sphere.h"
-#include "../collision/shapes/box.h"
 #include "../time/time.h"
 #include "../entity/entity_id.h"
 #include "../render/defs.h"
 
 #define PLAYER_MAX_SPEED    4.2f
+#define PLAYER_JUMP_HEIGHT  2.5f
 
 static struct Vector2 player_max_rotation;
-rspq_block_t* player_dpl;
-
-// static struct dynamic_object_type player_collision = {
-//     .minkowsi_sum = capsule_minkowski_sum,
-//     .bounding_box = capsule_bounding_box,
-//     .data = {
-//         .capsule = {
-//             .radius = 2.0f,
-//             .inner_half_height = 0.1f,
-//         }
-//     }
-// };
 
 static struct dynamic_object_type player_collision = {
-    .minkowsi_sum = box_minkowski_sum,
-    .bounding_box = box_bounding_box,
+    .minkowsi_sum = capsule_minkowski_sum,
+    .bounding_box = capsule_bounding_box,
     .data = {
-        // .sphere = {
-        //     .radius = 2.0f,
-        // }
-        .box = {
-            .half_size = {2.0f, 1.0f, 2.0f}
+        .capsule = {
+            .radius = 1.0f,
+            .inner_half_height = 0.75f,
         }
     }
 };
@@ -84,7 +68,10 @@ void player_update(struct player* player) {
         player->is_jumping = true;
     }
     if (pressed.b){
-        player->collision.velocity.y = 5.0f;
+        float jumpVelocity = sqrtf(2.0f * 9.8 * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
+        // dynamic_object_set_velocity(&player->collision, &(struct Vector3){0, jumpVelocity * FIXED_DELTATIME, 0});
+        dynamic_object_accelerate(&player->collision, &(struct Vector3){0, jumpVelocity * 1 / FIXED_DELTATIME, 0});
+
     }
 
     // Update the animation and modify the skeleton, this will however NOT recalculate the matrices
@@ -125,12 +112,10 @@ void player_update(struct player* player) {
     vector3Scale(&right, &directionWorld, direction.x);
     vector3AddScaled(&directionWorld, &forward, direction.y, &directionWorld);
 
-    float prev_y = player->collision.velocity.y;
-    vector3Scale(&directionWorld, &player->collision.velocity, PLAYER_MOVE_SPEED);
-    player->collision.velocity.y = prev_y;
+    struct Vector3 translation;
+    vector3Scale(&directionWorld, &translation, frametime_sec * PLAYER_MOVE_SPEED);
 
-    player->transform.position.x += directionWorld.x * frametime_sec * PLAYER_MOVE_SPEED;
-    player->transform.position.z += directionWorld.z * frametime_sec * PLAYER_MOVE_SPEED;
+    dynamic_object_translate_no_force(&player->collision, &translation);
 
     if (magSqrd > 0.01f) {
         struct Vector2 directionUnit;
@@ -151,38 +136,24 @@ void player_update(struct player* player) {
 
     quatAxisComplex(&gUp, &player->look_direction, &player->transform.rotation);
 
-    // // use blend based on speed for smooth transitions
-    // animBlend = currSpeed / 0.51f;
-    // if(animBlend > 1.0f)animBlend = 1.0f;
-
-    // move player...
-    // player->transform.position.x += moveDir.x * currSpeed;
-    // player->transform.position.z += moveDir.z * currSpeed;
     // ...and limit position inside the box
     const float BOX_SIZE = 60.0f;
     if(player->transform.position.x < -BOX_SIZE)player->transform.position.x = -BOX_SIZE;
     if(player->transform.position.x >  BOX_SIZE)player->transform.position.x =  BOX_SIZE;
     if(player->transform.position.z < -BOX_SIZE)player->transform.position.z = -BOX_SIZE;
     if(player->transform.position.z >  BOX_SIZE)player->transform.position.z =  BOX_SIZE;
-    if(player->transform.position.y <= 0){
-        player->transform.position.y = 0;
-        player->collision.velocity.y = player->collision.velocity.y <= 0 ? 0 : player->collision.velocity.y;    
+
+    struct contact* contact = player->collision.active_contacts;
+
+    while (contact) {
+        // struct collectable* collectable = collectable_get(contact->other_object);
+        debugf("Collision with %d\n", contact->other_object);
+        // if (collectable) {
+        //     collectable_collected(collectable);
+        // }
+
+        contact = contact->next;
     }
-    if(player->collision.velocity.y <= -100.0f){
-        player->collision.velocity.y = -100.0f;
-    }
-
-    // struct contact* contact = player->collision.active_contacts;
-
-    // while (contact) {
-    //     struct collectable* collectable = collectable_get(contact->other_object);
-
-    //     if (collectable) {
-    //         collectable_collected(collectable);
-    //     }
-
-    //     contact = contact->next;
-    // }
 }
 
 
@@ -220,7 +191,7 @@ void player_init(struct player* player, struct player_definition* definition, st
         COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_DAMAGE_PLAYER,
         &player->transform.position,
         &player->look_direction,
-        20.0f
+        50.0f
     );
 
     player->collision.collision_group = COLLISION_GROUP_PLAYER;
@@ -228,8 +199,7 @@ void player_init(struct player* player, struct player_definition* definition, st
     player->collision.has_gravity = true;
     
 
-    player->collision.center.y = player_collision.data.box.half_size.y;
-    // player->collision.center.y = player_collision.data.sphere.radius;
+    player->collision.center.y = player_collision.data.capsule.inner_half_height + player_collision.data.capsule.radius +1;
 
     collision_scene_add(&player->collision);
 

@@ -46,16 +46,20 @@ struct dynamic_object {
     entity_id entity_id;
     struct dynamic_object_type* type;
     struct Vector3* position;
+    struct Vector3 prev_position;
     struct Vector2* rotation;
     struct Vector2* pitch;
     struct Vector3 center;
     struct Vector3 velocity;
+    struct Vector3 acceleration;
     struct AABB bounding_box;
     float time_scalar;
     float mass;
+    float mass_inv;
     uint16_t has_gravity: 1;
     uint16_t is_trigger: 1;
     uint16_t is_fixed: 1;
+    uint16_t is_grounded: 1;
     uint16_t is_out_of_bounds: 1;
     uint16_t collision_layers;
     uint16_t collision_group;
@@ -76,6 +80,15 @@ void dynamic_object_update(struct dynamic_object* object);
 
 struct contact* dynamic_object_nearest_contact(struct dynamic_object* object);
 bool dynamic_object_is_touching(struct dynamic_object* object, entity_id id);
+
+void dynamic_object_accelerate(struct dynamic_object* object, struct Vector3* acceleration);
+void dynamic_object_translate_no_force(struct dynamic_object* object, struct Vector3* translation);
+void dynamic_object_position_no_force(struct dynamic_object* object, struct Vector3* position);
+struct Vector3 dynamic_object_get_velocity(struct dynamic_object* object);
+void dynamic_object_set_velocity(struct dynamic_object* object, struct Vector3* velocity);
+void dynamic_object_apply_impulse(struct dynamic_object* object, struct Vector3* impulse);
+
+void dynamic_object_apply_constraints(struct dynamic_object* object);
 
 void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
 void dynamic_object_recalc_bb(struct dynamic_object* object);

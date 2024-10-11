@@ -538,5 +538,4 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             element->callback.callback(element->callback.data, batch);
         }
     }
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, 16, 75, "Batch size: %d", batch->element_count);
 }

@@ -8,8 +8,9 @@ typedef void (*update_callback)(void* data);
 
 typedef int update_id;
 
-#define TICKRATE 50.0f
-#define FIXED_DELTATIME (1.0f/TICKRATE)
+#define PHYSICS_TICKRATE 60.0f
+#define FIXED_DELTATIME (1.0f/PHYSICS_TICKRATE)
+#define FIXED_DELTATIME_SQUARED (FIXED_DELTATIME * FIXED_DELTATIME)
 
 #define SEC_TO_USEC(a) (((double)a) * 1000000.0f)
 

@@ -24,6 +24,7 @@ extern struct Vector3 gOneVec;
 #define VECTOR3U8_AS_ARRRAY(vector) ((unsigned char*)(vector))
 #define VECTOR3_AS_ARRAY(vector) ((float*)(vector))
 
+void vector3Copy(struct Vector3* source, struct Vector3* target);
 void vector3Abs(struct Vector3* in, struct Vector3* out);
 void vector3Negate(struct Vector3* in, struct Vector3* out);
 void vector3Scale(struct Vector3* in, struct Vector3* out, float scale);

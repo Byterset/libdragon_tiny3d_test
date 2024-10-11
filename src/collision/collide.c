@@ -5,6 +5,7 @@
 #include "collision_scene.h"
 #include "../util/flags.h"
 #include <stdio.h>
+#include <math.h>
 
 
 void correct_velocity(struct dynamic_object* object, struct EpaResult* result, float ratio, float friction, float bounce) {
@@ -16,7 +17,8 @@ void correct_velocity(struct dynamic_object* object, struct EpaResult* result, f
         vector3AddScaled(&object->velocity, &result->normal, -velocityDot, &tangentVelocity);
         vector3Scale(&tangentVelocity, &tangentVelocity, 1.0f - friction);
 
-        vector3AddScaled(&tangentVelocity, &result->normal, velocityDot * -bounce, &object->velocity);
+        vector3AddScaled(&tangentVelocity, &result->normal, velocityDot * -bounce, &tangentVelocity);
+        dynamic_object_set_velocity(object, &tangentVelocity);
     }
 }
 
@@ -24,8 +26,19 @@ void correct_overlap(struct dynamic_object* object, struct EpaResult* result, fl
     if (object->is_fixed) {
         return;
     }
+    struct Vector3 correction;
+    vector3Scale(&result->normal, &correction, result->penetration * ratio);
+    dynamic_object_translate_no_force(object, &correction);
+    
+    float angle = acosf(vector3Dot(&gUp, &result->normal));
+    if (angle < 0.3f) {
+        struct Vector3 vel = dynamic_object_get_velocity(object);
+        vel.y = 0.0f;
+        dynamic_object_set_velocity(object, &vel);
+        object->is_grounded = 1;
+    }
 
-    vector3AddScaled(object->position, &result->normal, result->penetration * ratio, object->position);
+    // vector3AddScaled(object->position, &result->normal, result->penetration * ratio, object->position);
 
     correct_velocity(object, result, ratio, friction, bounce);
 }
@@ -127,9 +140,9 @@ void collide_object_to_object(struct dynamic_object* a, struct dynamic_object* b
 
     float massRatio = a->mass / (a->mass + b->mass);
 
-    // TODO determine push 
-    correct_overlap(b, &result, -(1.0f - massRatio), friction, bounce);
-    correct_overlap(a, &result, massRatio, friction, bounce);
+    float epsilon = 0.001f;
+    correct_overlap(b, &result, -massRatio - epsilon, friction, bounce);
+    correct_overlap(a, &result, (1.0f - massRatio) + epsilon , friction, bounce);
 
     struct contact* contact = collision_scene_new_contact();
 

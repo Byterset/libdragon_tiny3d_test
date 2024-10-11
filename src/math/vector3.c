@@ -9,6 +9,12 @@ struct Vector3 gForward = {0.0f, 0.0f, 1.0f};
 struct Vector3 gZeroVec = {0.0f, 0.0f, 0.0f};
 struct Vector3 gOneVec = {1.0f, 1.0f, 1.0f};
 
+void vector3Copy(struct Vector3* source, struct Vector3* target){
+    target->x = source->x;
+    target->y = source->y;
+    target->z = source->z;
+}
+
 void vector3Abs(struct Vector3* in, struct Vector3* out) {
     out->x = fabsf(in->x);
     out->y = fabsf(in->y);

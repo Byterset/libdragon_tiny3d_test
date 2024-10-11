@@ -10,6 +10,7 @@
 #include "render/frame_alloc.h"
 #include "render/render_scene.h"
 #include "collision/collision_scene.h"
+#include "collision/mesh_collider.h"
 
 #include "player/player.h"
 #include "map/map.h"
@@ -42,8 +43,11 @@ T3DVec3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 struct player player;
 struct map map;
 struct box box;
+struct box box1;
+struct box box2;
 struct fire fire;
 struct skybox_flat skybox_flat;
+struct mesh_collider test_mesh_collider;
 
 struct camera camera;
 struct camera_controller camera_controller;
@@ -52,7 +56,9 @@ float waiting_sec = 0.0f;
 
 struct player_definition playerDef = {
     (struct Vector3){0, 0.15f, 0},
-    (struct Vector2){1, 0}};
+    (struct Vector2){1, 0}
+};
+
 
 void on_vi_interrupt()
 {
@@ -68,16 +74,22 @@ void setup()
     camera_init(&camera, 70.0f, 1.0f, 150.0f);
     skybox_flat_init(&skybox_flat);
     map_init(&map);
-    box_init(&box, (struct Vector3){4, 18.0f, 4});
+    box_init(&box);
+    box_init(&box1);
+    box_init(&box2);
+    dynamic_object_position_no_force(&box.collision, &(struct Vector3){0, 20, 0});
+    dynamic_object_position_no_force(&box1.collision, &(struct Vector3){0, 25, 0});
+    dynamic_object_position_no_force(&box2.collision, &(struct Vector3){0, 30, 0});
     fire_init(&fire);
 
     player_init(&player, &playerDef, &camera.transform);
 
     camera_controller_init(&camera_controller, &camera, &player);
+    
 
     // TODO: implement mesh collision new
     //  mesh_collider_load(&world->mesh_collider, file);
-    //  collision_scene_use_static_collision(&world->mesh_collider);
+    // collision_scene_use_static_collision(&world->mesh_collider);
 }
 
 void render3d()
@@ -87,7 +99,7 @@ void render3d()
 
     // TODO: maybe move this into scene structure later so levels can have their own fog settings
     struct render_fog_params fog = {
-        .enabled = true,
+        .enabled = false,
         .start = 2.0f * SCENE_SCALE,
         .end = 40.0f * SCENE_SCALE,
         .color = RGBA32(150, 150, 120, 0xFF)};
@@ -98,6 +110,7 @@ void render3d()
     t3d_light_set_ambient(colorAmbient);
     t3d_light_set_directional(0, colorDir, &lightDirVec);
     t3d_light_set_count(1);
+    
 
     struct frame_memory_pool *pool = &frame_memory_pools[next_frame_memoy_pool];
     frame_pool_reset(pool);
@@ -129,6 +142,7 @@ void render(surface_t *zbuffer)
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "Vel: %.2f, %.2f, %.2f", player.collision.velocity.x, player.collision.velocity.y, player.collision.velocity.z);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Grounded: %d",  player.collision.is_grounded);
 }
 
 int main()
@@ -179,6 +193,9 @@ int main()
         // ======== Update Joypad ======== //
         joypad_poll();
 
+        // ======== Run the Update Callbacks ======== //
+        update_dispatch();
+
         // ======== Run the Physics in a fixed Deltatime Loop ======== //
         while (accumulator_ticks >= l_dt)
         {
@@ -189,9 +206,6 @@ int main()
             }
             accumulator_ticks -= l_dt;
         }
-
-        // ======== Run the Update Callbacks ======== //
-        update_dispatch();
 
         // ======== Render the Game ======== //
         surface_t *fb = display_try_get();

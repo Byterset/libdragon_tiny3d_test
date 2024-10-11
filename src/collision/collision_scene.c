@@ -253,6 +253,8 @@ void collision_scene_collide() {
 
         dynamic_object_update(element->object);
 
+        dynamic_object_apply_constraints(element->object);
+
         dynamic_object_recalc_bb(element->object);
     }
 

@@ -15,7 +15,7 @@ struct box {
     struct Vector2 look_direction;
 };
 
-void box_init(struct box* box, struct Vector3 position);
+void box_init(struct box* box);
 
 void box_destroy(struct box* box);
 
