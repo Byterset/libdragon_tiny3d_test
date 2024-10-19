@@ -22,7 +22,8 @@ static struct dynamic_object_type player_collision = {
             .radius = 1.0f,
             .inner_half_height = 0.75f,
         }
-    }
+    },
+    // .friction = 1.0f
 };
 
 void player_get_move_basis(struct Transform* transform, struct Vector3* forward, struct Vector3* right) {
@@ -147,7 +148,7 @@ void player_update(struct player* player) {
 
     while (contact) {
         // struct collectable* collectable = collectable_get(contact->other_object);
-        debugf("Collision with %d\n", contact->other_object);
+        // debugf("Collision with %d\n", contact->other_object);
         // if (collectable) {
         //     collectable_collected(collectable);
         // }

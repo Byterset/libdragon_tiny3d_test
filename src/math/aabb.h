@@ -20,10 +20,15 @@ struct AABB {
 
 int AABBContainsPoint(struct AABB* box, struct Vector3* point);
 
-int AABBHasOverlap(struct AABB* a, struct AABB* b);
-void AABBUnion(struct AABB* a, struct AABB* b, struct AABB* out);
+int AABBContainsAABB(struct AABB* a, struct AABB* b);
 
-void AABBUnionPoint(struct AABB* a, struct Vector3* point, struct AABB* out);
+int AABBHasOverlap(struct AABB* a, struct AABB* b);
+
+float AABBGetArea(struct AABB aabb);
+
+struct AABB AABBUnion(struct AABB* a, struct AABB* b);
+
+struct AABB AABBUnionPoint(struct AABB* a, struct Vector3* point);
 
 void AABBExtendDirection(struct AABB* a, struct Vector3* direction, struct AABB* out);
 

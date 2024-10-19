@@ -22,7 +22,7 @@ void skybox_flat_custom_render(void* data, struct render_batch* batch) {
 
 void skybox_flat_init(struct skybox_flat* skybox) {
     // TODO: make the texture a parameter and load it from the scene
-    skybox->texture = sprite_cache_load("rom:/images/skybox/sky_seamless.sprite");
+    skybox->texture = sprite_cache_load("rom:/images/skybox/sky_seamless.rgba16.sprite");
     // graphics_draw_sprite_trans
     //sprite_get_pixels -> gets the sprite pixels as a surface_t
     skybox->surface = sprite_get_pixels(skybox->texture);

@@ -27,10 +27,11 @@ void box_update(struct box* box){
     }
 }
 
-void box_init(struct box* box){
+void box_init(struct box* box, struct box_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&box->transform);
     box->transform.scale = (struct Vector3){1.0f, 1.0f, 1.0f};
+    box->transform.position = def->position;
 
     renderable_init(&box->renderable, &box->transform, "rom:/models/box/box.t3dm");
 

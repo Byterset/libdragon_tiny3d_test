@@ -219,6 +219,7 @@ static bool element_type_2d[] = {
 void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T3DViewport *viewport, struct render_fog_params *fog)
 {
     uint16_t order[RENDER_BATCH_MAX_SIZE];
+    int frustum_cull_count = 0;
 
     for (int i = 0; i < batch->element_count; ++i)
     {
@@ -286,6 +287,22 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             {
                 continue;
             }
+
+
+            //TODO: replace test aabb with model aabb
+            // T3DVec3 aabbmin, aabbmax;
+            // aabbmin.v[0] = -1.0f * SCENE_SCALE;
+            // aabbmin.v[1] = -1.0f * SCENE_SCALE;
+            // aabbmin.v[2] = -1.0f * SCENE_SCALE;
+            // aabbmax.v[0] = 1.0f * SCENE_SCALE;
+            // aabbmax.v[1] = 1.0f * SCENE_SCALE;
+            // aabbmax.v[2] = 1.0f * SCENE_SCALE;
+
+            // if (!t3d_frustum_vs_aabb(&viewport->viewFrustum, &aabbmin, &aabbmax))
+            // {
+            //     frustum_cull_count++;
+            //     continue;
+            // }
 
             // Push transform if it exists
             if (element->model.transform)
@@ -538,4 +555,5 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             element->callback.callback(element->callback.data, batch);
         }
     }
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, 20, 80, "culled: %d", frustum_cull_count);
 }

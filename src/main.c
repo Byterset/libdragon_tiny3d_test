@@ -45,6 +45,11 @@ struct map map;
 struct box box;
 struct box box1;
 struct box box2;
+struct box box3;
+struct box box4;
+struct box box5;
+struct box box6;
+struct box box7;
 struct fire fire;
 struct skybox_flat skybox_flat;
 struct mesh_collider test_mesh_collider;
@@ -59,6 +64,15 @@ struct player_definition playerDef = {
     (struct Vector2){1, 0}
 };
 
+struct box_definition box_def = {
+    (struct Vector3){0, 10, 0}
+};
+struct box_definition box1_def = {
+    (struct Vector3){0, 20, 0}
+};
+struct box_definition box2_def = {
+    (struct Vector3){0, 30, 0}
+};
 
 void on_vi_interrupt()
 {
@@ -74,12 +88,21 @@ void setup()
     camera_init(&camera, 70.0f, 1.0f, 150.0f);
     skybox_flat_init(&skybox_flat);
     map_init(&map);
-    box_init(&box);
-    box_init(&box1);
-    box_init(&box2);
-    dynamic_object_position_no_force(&box.collision, &(struct Vector3){0, 20, 0});
-    dynamic_object_position_no_force(&box1.collision, &(struct Vector3){0, 25, 0});
-    dynamic_object_position_no_force(&box2.collision, &(struct Vector3){0, 30, 0});
+    box_init(&box, &box_def);
+    box_def.position.y += 5;
+    box_init(&box1, &box_def);
+    box_def.position.y += 5;
+    box_init(&box2, &box_def);
+    box_def.position.y += 5;
+    box_init(&box3, &box_def);
+    box_def.position.y += 5;
+    box_init(&box4, &box_def);
+    box_def.position.y += 5;
+    box_init(&box5, &box_def);
+    box_def.position.y += 5;
+    box_init(&box6, &box_def);
+    box_def.position.y += 5;
+    box_init(&box7, &box_def);
     fire_init(&fire);
 
     player_init(&player, &playerDef, &camera.transform);
@@ -120,10 +143,24 @@ void render3d()
 
     rdpq_set_mode_standard();
 
+    t3d_viewport_set_projection(viewport, T3D_DEG_TO_RAD(camera.fov), camera.near * SCENE_SCALE, camera.far * SCENE_SCALE);
+    T3DVec3 camPos, camTarget;
+    camPos.v[0] = camera.transform.position.x * SCENE_SCALE;
+    camPos.v[1] = (camera.transform.position.y) * SCENE_SCALE;
+    camPos.v[2] = camera.transform.position.z * SCENE_SCALE;
+    struct Vector3 camera_target;
+    quatMultVector(&camera.transform.rotation, &gForward, &camera_target);
+    vector3Add(&camera.transform.position, &camera_target, &camera_target);
+
+    camTarget.v[0] = camera_controller.target.x * SCENE_SCALE;
+    camTarget.v[1] = (camera_controller.target.y + CAMERA_FOLLOW_HEIGHT) * SCENE_SCALE;
+    camTarget.v[2] = camera_controller.target.z * SCENE_SCALE;
+    t3d_viewport_look_at(viewport, &camPos, &camTarget, &(T3DVec3){{0,1,0}});
+
     render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool], &fog);
 }
 
-void render(surface_t *zbuffer)
+void render()
 {
     // ======== Draw (3D) ======== //
     render3d();
@@ -134,10 +171,16 @@ void render(surface_t *zbuffer)
     float posY = 24;
     float fps = display_get_fps();
 
+    struct mallinfo mall_inf = mallinfo();
+    int ram_used = mall_inf.uordblks + ((uint32_t)HEAP_START_ADDR) - 0x80000000 - 0x10000;
+    struct collision_scene *collision_scene = collision_scene_get();
+    int aabbtree_mem = sizeof(AABBTree) + (sizeof(AABBTreeNode) - sizeof(void*)) * collision_scene->object_aabbtree.nodeCount;
+
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", player.is_attacking);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "fps: %.1f", fps);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "idle time: %.5f", waiting_sec);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "mem: %d", ram_used);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "bvh_nodes: %d, mem: %d", collision_scene->object_aabbtree.nodeCount, aabbtree_mem);
 
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
@@ -152,7 +195,6 @@ int main()
     dfs_init(DFS_DEFAULT_LOCATION);
 
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS);
-    surface_t zbuffer = surface_alloc(FMT_RGBA16, display_get_width(), display_get_height());
 
     rdpq_init();
     joypad_init();
@@ -161,6 +203,7 @@ int main()
     rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
     
     setup();
+    
 
     register_VI_handler(on_vi_interrupt);
 
@@ -208,16 +251,12 @@ int main()
         }
 
         // ======== Render the Game ======== //
-        surface_t *fb = display_try_get();
 
-        if (fb)
-        {
-            rdpq_attach(fb, &zbuffer);
+        rdpq_attach(display_get(), display_get_zbuf());
 
-            render(&zbuffer);
+        render();
 
-            rdpq_detach_show();
-        }
+        rdpq_detach_show();
     }
 
     t3d_destroy();

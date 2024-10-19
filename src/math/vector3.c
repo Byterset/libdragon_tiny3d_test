@@ -39,6 +39,12 @@ void vector3Add(struct Vector3* a, struct Vector3* b, struct Vector3* out) {
     out->z = a->z + b->z;   
 }
 
+void vector3AddToSelf(struct Vector3* a, struct Vector3* b) {
+    a->x += b->x;
+    a->y += b->y;
+    a->z += b->z;
+}
+
 void vector3AddScaled(struct Vector3* a, struct Vector3* normal, float scale, struct Vector3* out) {
     out->x = a->x + normal->x * scale;
     out->y = a->y + normal->y * scale;
@@ -49,6 +55,12 @@ void vector3Sub(struct Vector3* a, struct Vector3* b, struct Vector3* out) {
     out->x = a->x - b->x;
     out->y = a->y - b->y;
     out->z = a->z - b->z;
+}
+
+void vector3SubFromSelf(struct Vector3* a, struct Vector3* b) {
+    a->x -= b->x;
+    a->y -= b->y;
+    a->z -= b->z;
 }
 
 void vector3Multiply(struct Vector3* a, struct Vector3* b, struct Vector3* out) {

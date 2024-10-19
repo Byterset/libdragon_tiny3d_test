@@ -4,6 +4,7 @@
 #include "dynamic_object.h"
 #include "../collision/mesh_collider.h"
 #include "../util/hash_map.h"
+#include "../collision/aabbtree.h"
 #include "contact.h"
 
 typedef int collision_id;
@@ -22,11 +23,12 @@ struct collision_scene {
     struct hash_map entity_mapping;
     uint16_t count;
     uint16_t capacity;
-
+    AABBTree object_aabbtree;
     struct mesh_collider* mesh_collider;
 };
 
 void collision_scene_reset();
+struct collision_scene* collision_scene_get();
 void collision_scene_add(struct dynamic_object* object);
 void collision_scene_remove(struct dynamic_object* object);
 

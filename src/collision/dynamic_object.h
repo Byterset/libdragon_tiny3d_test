@@ -5,6 +5,7 @@
 #include "../math/vector3.h"
 #include "../math/vector2.h"
 #include "../math/aabb.h"
+#include "../collision/aabbtree.h"
 #include "contact.h"
 #include "gjk.h"
 #include <stdint.h>
@@ -64,6 +65,7 @@ struct dynamic_object {
     uint16_t collision_layers;
     uint16_t collision_group;
     struct contact* active_contacts;
+    NodeProxy aabb_tree_node;
 };
 
 void dynamic_object_init(

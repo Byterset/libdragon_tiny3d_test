@@ -81,7 +81,9 @@ void render_scene_render(struct camera* camera, T3DViewport* viewport, struct fr
     struct ClippingPlanes clipping_planes;
     mat4x4 view_proj_matrix;
 
-    camera_apply(camera, viewport, &clipping_planes, view_proj_matrix);
+    // camera_apply(camera, viewport, &clipping_planes, view_proj_matrix);
+
+    matrixMul(viewport->matProj.m, viewport->matCamera.m, view_proj_matrix);
 
     t3d_viewport_attach(viewport);
 

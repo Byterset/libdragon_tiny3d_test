@@ -29,6 +29,19 @@ int AABBContainsPoint(struct AABB* box, struct Vector3* point) {
 }
 
 /**
+ * @brief Checks if an Axis-Aligned Bounding Box (AABB) contains another AABB.
+ * 
+ * @param a 
+ * @param b 
+ * @return int 
+ */
+int AABBContainsAABB(struct AABB *a, struct AABB *b)
+{
+    return (a->min.x <= b->min.x && a->min.y <= b->min.y && a->min.z <= b->min.z &&
+            a->max.x >= b->max.x && a->max.y >= b->max.y && a->max.z >= b->max.z);
+}
+
+/**
  * @brief Checks if two Axis-Aligned Bounding Boxes (AABB) overlap.
  *
  * This function determines whether two AABBs intersect by comparing their
@@ -53,11 +66,20 @@ int AABBHasOverlap(struct AABB* a, struct AABB* b) {
  *
  * @param a Pointer to the first AABB.
  * @param b Pointer to the second AABB.
- * @param out Pointer to the output AABB where the result will be stored.
  */
-void AABBUnion(struct AABB* a, struct AABB* b, struct AABB* out) {
-    vector3Max(&a->max, &b->max, &out->max);
-    vector3Min(&a->min, &b->min, &out->min);
+struct AABB AABBUnion(struct AABB* a, struct AABB* b) {
+    struct AABB out;
+    vector3Max(&a->max, &b->max, &out.max);
+    vector3Min(&a->min, &b->min, &out.min);
+    return out;
+}
+
+float AABBGetArea(struct AABB aabb){
+    float x = aabb.max.x - aabb.min.x;
+    float y = aabb.max.y - aabb.min.y;
+    float z = aabb.max.z - aabb.min.z;
+    // Surface area of a rectangular prism: 2(w*h + h*d + d*w)
+    return 2 * (x * y + x * z + y * z);
 }
 
 /**
@@ -68,11 +90,12 @@ void AABBUnion(struct AABB* a, struct AABB* b, struct AABB* out) {
  *
  * @param a Pointer to the AABB.
  * @param point Pointer to the point.
- * @param out Pointer to the output AABB where the result will be stored.
  */
-void AABBUnionPoint(struct AABB* a, struct Vector3* point, struct AABB* out) {
-    vector3Max(&a->max, point, &out->max);
-    vector3Min(&a->min, point, &out->min);
+struct AABB AABBUnionPoint(struct AABB* a, struct Vector3* point) {
+    struct AABB out;
+    vector3Max(&a->max, point, &out.max);
+    vector3Min(&a->min, point, &out.min);
+    return out;
 }
 
 /**

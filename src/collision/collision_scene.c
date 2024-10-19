@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <math.h>
+#include <libdragon.h>
 
 #include "mesh_collider.h"
 #include "collide.h"
@@ -16,10 +17,11 @@ struct collision_scene g_scene;
 void collision_scene_reset() {
     free(g_scene.elements);
     free(g_scene.all_contacts);
+    AABBTree_free(&g_scene.object_aabbtree);
     hash_map_destroy(&g_scene.entity_mapping);
 
     hash_map_init(&g_scene.entity_mapping, MIN_DYNAMIC_OBJECTS);
-
+    AABBTree_create(&g_scene.object_aabbtree, MIN_DYNAMIC_OBJECTS);
     g_scene.elements = malloc(sizeof(struct collision_scene_element) * MIN_DYNAMIC_OBJECTS);
     g_scene.capacity = MIN_DYNAMIC_OBJECTS;
     g_scene.count = 0;
@@ -31,6 +33,10 @@ void collision_scene_reset() {
     }
 
     g_scene.all_contacts[MAX_ACTIVE_CONTACTS - 1].next = NULL;
+}
+
+struct collision_scene* collision_scene_get() {
+    return &g_scene;
 }
 
 void collision_scene_add(struct dynamic_object* object) {
@@ -46,6 +52,7 @@ void collision_scene_add(struct dynamic_object* object) {
     g_scene.count += 1;
 
     hash_map_set(&g_scene.entity_mapping, object->entity_id, object);
+    object->aabb_tree_node = AABBTreeNode_createNode(&g_scene.object_aabbtree, object->bounding_box, object);
 }
 
 
@@ -147,7 +154,7 @@ void collide_edge_sort(struct collide_edge* edges, struct collide_edge* tmp, int
     }
 }
 
-void collision_scene_collide_dynamic() {
+void collision_scene_collide_dynamic_sweep_and_prune() {
     int edge_count = g_scene.count * 2;
 
     struct collide_edge collide_edges[edge_count];
@@ -212,6 +219,33 @@ void collision_scene_collide_dynamic() {
     }
 }
 
+void collision_scene_collide_dynamic_aabbtree() {
+
+    for (int i = 0; i < g_scene.count; ++i) {
+        struct collision_scene_element* element = &g_scene.elements[i];
+        int result_count = 0;
+        int aabbCheck_count = 0;
+        int max_results = 20;
+        NodeProxy results[max_results];
+
+        AABBTree_queryBounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, &aabbCheck_count, max_results, true);
+        for (size_t j = 0; j < result_count; j++)
+        {
+            struct dynamic_object* other = (struct dynamic_object*)AABBTreeNode_getData(&g_scene.object_aabbtree, results[j]);
+            // skip narrow phase if there is no dynamic object associated with the result node 
+            // or if it is the same object as the one queried
+            if (!other || other == element->object) {
+                continue;
+            }
+            // only do detailed collision calculation if the bounding boxes overlap
+            if(AABBHasOverlap(&element->object->bounding_box, &other->bounding_box))
+                collide_object_to_object(element->object, other);
+
+        }
+        
+    }
+}
+
 #define MAX_SWEPT_ITERATIONS    5
 
 void collision_scene_collide_single(struct dynamic_object* object, struct Vector3* prev_pos) {
@@ -243,11 +277,11 @@ void collision_scene_collide_single(struct dynamic_object* object, struct Vector
 }
 
 void collision_scene_collide() {
-    struct Vector3 prev_pos[g_scene.count];
+    // struct Vector3 prev_pos[g_scene.count];
 
     for (int i = 0; i < g_scene.count; ++i) {
         struct collision_scene_element* element = &g_scene.elements[i];
-        prev_pos[i] = *element->object->position;
+        // prev_pos[i] = *element->object->position;
 
         collision_scene_return_contacts(element->object);
 
@@ -256,6 +290,11 @@ void collision_scene_collide() {
         dynamic_object_apply_constraints(element->object);
 
         dynamic_object_recalc_bb(element->object);
+
+        struct Vector3 displacement;
+        vector3Sub(element->object->position, &element->object->prev_position, &displacement);
+        AABBTree_moveNode(&g_scene.object_aabbtree, element->object->aabb_tree_node, element->object->bounding_box, &displacement);
+
     }
 
     for (int i = 0; i < g_scene.count; ++i) {
@@ -265,12 +304,12 @@ void collision_scene_collide() {
             continue;
         }
 
-        collision_scene_collide_single(element->object, &prev_pos[i]);
+        collision_scene_collide_single(element->object, &element->object->prev_position);
 
         element->object->is_out_of_bounds = mesh_index_is_contained(&g_scene.mesh_collider->index, element->object->position);
     }
-
-    collision_scene_collide_dynamic();
+    collision_scene_collide_dynamic_aabbtree();
+    // collision_scene_collide_dynamic_sweep_and_prune();
 }
 
 struct contact* collision_scene_new_contact() {

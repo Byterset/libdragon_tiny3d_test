@@ -63,23 +63,23 @@ void dynamic_object_update(struct dynamic_object* object) {
 }
 
 void dynamic_object_apply_constraints(struct dynamic_object* object){
-    if (object->position->y < 0){
+    if (object->position->y <= 0){
         dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, 0, object->position->z});
         object->is_grounded = 1;
     }
-    if (object->position->y > 2000){
+    if (object->position->y >= 2000){
         dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, 2000, object->position->z});
     }
-    if (object->position->x < -2000){
+    if (object->position->x <= -2000){
         dynamic_object_position_no_force(object, &(struct Vector3){-2000, object->position->y, object->position->z});
     }
-    if (object->position->x > 2000){
+    if (object->position->x >= 2000){
         dynamic_object_position_no_force(object, &(struct Vector3){2000, object->position->y, object->position->z});
     }
-    if (object->position->z < -2000){
+    if (object->position->z <= -2000){
         dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, object->position->y, -2000});
     }
-    if (object->position->z > 2000){
+    if (object->position->z >= 2000){
         dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, object->position->y, 2000});
     }
 }

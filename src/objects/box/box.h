@@ -7,6 +7,7 @@
 #include "../../render/renderable.h"
 #include "../../render/model.h"
 #include "../../collision/dynamic_object.h"
+#include "../../scene/scene_definition.h"
 
 struct box {
     struct Transform transform;
@@ -15,7 +16,7 @@ struct box {
     struct Vector2 look_direction;
 };
 
-void box_init(struct box* box);
+void box_init(struct box* box, struct box_definition* def);
 
 void box_destroy(struct box* box);
 

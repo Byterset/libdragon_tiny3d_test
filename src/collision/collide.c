@@ -30,17 +30,22 @@ void correct_overlap(struct dynamic_object* object, struct EpaResult* result, fl
     vector3Scale(&result->normal, &correction, result->penetration * ratio);
     dynamic_object_translate_no_force(object, &correction);
     
-    float angle = acosf(vector3Dot(&gUp, &result->normal));
-    if (angle < 0.3f) {
+    float angle = acosf(vector3Dot(&gUp, &result->normal)); // gives the angle between the normal and the up vector in radians
+    struct collision_scene* scene = collision_scene_get();
+    dynamic_object_recalc_bb(object);
+    AABBTree_moveNode(&scene->object_aabbtree, object->aabb_tree_node, object->bounding_box, &correction);
+    
+    if (correction.y > 0.0f && result->normal.y > 0.7f) {
         struct Vector3 vel = dynamic_object_get_velocity(object);
-        vel.y = 0.0f;
-        dynamic_object_set_velocity(object, &vel);
+        if(vel.y < 0.0f){
+            vel.y = 0.0f;
+            dynamic_object_set_velocity(object, &vel);
+        }
+        
         object->is_grounded = 1;
     }
+    // correct_velocity(object, result, ratio, friction, bounce);
 
-    // vector3AddScaled(object->position, &result->normal, result->penetration * ratio, object->position);
-
-    correct_velocity(object, result, ratio, friction, bounce);
 }
 
 struct object_mesh_collide_data {
@@ -140,9 +145,8 @@ void collide_object_to_object(struct dynamic_object* a, struct dynamic_object* b
 
     float massRatio = a->mass / (a->mass + b->mass);
 
-    float epsilon = 0.001f;
-    correct_overlap(b, &result, -massRatio - epsilon, friction, bounce);
-    correct_overlap(a, &result, (1.0f - massRatio) + epsilon , friction, bounce);
+    correct_overlap(b, &result, -massRatio, friction, bounce);
+    correct_overlap(a, &result, (1.0f - massRatio) , friction, bounce);
 
     struct contact* contact = collision_scene_new_contact();
 

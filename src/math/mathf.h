@@ -7,6 +7,7 @@
 #ifndef _MATH_MATHF_H
 #define _MATH_MATHF_H
 
+#define FLT_MAX 3.402823e+38
 #define PI 3.14159265358979323846f
 #define HALF_PI (PI / 2.0f)
 #define TWO_PI (2.0f * PI)
