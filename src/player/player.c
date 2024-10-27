@@ -130,7 +130,7 @@ void player_update(struct player* player) {
         directionUnit.x = directionUnit.y;
         directionUnit.y = tmp;
 
-        vector2ComplexFromAngle(frametime_sec * PLAYER_TURN_SPEED, &player_max_rotation);
+        vector2ComplexFromAngleRad(frametime_sec * PLAYER_TURN_SPEED, &player_max_rotation);
 
         vector2RotateTowards(&player->look_direction, &directionUnit, &player_max_rotation, &player->look_direction);
     }

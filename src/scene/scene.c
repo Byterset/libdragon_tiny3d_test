@@ -11,8 +11,7 @@ void scene_render(void* data, struct render_batch* batch) {
     struct scene* scene = (struct scene*)data;
 
     for (int i = 0; i < scene->static_entity_count; ++i) {
-        render_batch_add_t3dmodel(batch, scene->static_entities[i].model.block, NULL, NULL);
-        // render_batch_add_tmesh(batch, &scene->static_entities[i].tmesh, NULL, 0, NULL, NULL);
+        render_batch_add_t3dmodel(batch, &scene->static_entities[i].model, NULL);
     }
 }
 

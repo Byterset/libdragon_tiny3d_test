@@ -8,7 +8,6 @@
 
 
 struct model {
-    rspq_block_t* block;
     T3DModel* t3d_model;
     T3DSkeleton skeleton;
     bool has_skeleton;

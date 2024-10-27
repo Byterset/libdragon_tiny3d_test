@@ -56,8 +56,6 @@ dkms.conf
 build/
 filesystem/
 archive/
-libdragon/
-.libdragon/
 **/__pycache__/**
 
 *.blend1

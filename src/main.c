@@ -15,6 +15,7 @@
 #include "player/player.h"
 #include "map/map.h"
 #include "objects/box/box.h"
+#include "objects/platform/platform.h"
 #include "effects/fire.h"
 #include "skybox/skybox_flat.h"
 #include "math/transform.h"
@@ -50,6 +51,7 @@ struct box box4;
 struct box box5;
 struct box box6;
 struct box box7;
+struct platform plat;
 struct fire fire;
 struct skybox_flat skybox_flat;
 struct mesh_collider test_mesh_collider;
@@ -67,12 +69,10 @@ struct player_definition playerDef = {
 struct box_definition box_def = {
     (struct Vector3){0, 10, 0}
 };
-struct box_definition box1_def = {
-    (struct Vector3){0, 20, 0}
+struct platform_definition plat_def = {
+    (struct Vector3){6, 4, 4}
 };
-struct box_definition box2_def = {
-    (struct Vector3){0, 30, 0}
-};
+
 
 void on_vi_interrupt()
 {
@@ -103,6 +103,7 @@ void setup()
     box_init(&box6, &box_def);
     box_def.position.y += 5;
     box_init(&box7, &box_def);
+    platform_init(&plat, &plat_def);
     fire_init(&fire);
 
     player_init(&player, &playerDef, &camera.transform);

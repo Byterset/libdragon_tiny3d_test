@@ -51,6 +51,10 @@ struct box_definition {
     struct Vector3 position;
 };
 
+struct platform_definition {
+    struct Vector3 position;
+};
+
 
 enum npc_type {
     NPC_TYPE_NONE,

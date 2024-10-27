@@ -40,7 +40,7 @@ void render_scene_render_renderable(void* data, struct render_batch* batch) {
 
     t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx);
 
-    render_batch_add_t3dmodel(batch, renderable->model->block, mtxfp, &renderable->model->skeleton);
+    render_batch_add_t3dmodel(batch, renderable->model, mtxfp);
 }
 
 void render_scene_render_renderable_single_axis(void* data, struct render_batch* batch) {
@@ -60,7 +60,7 @@ void render_scene_render_renderable_single_axis(void* data, struct render_batch*
 
     t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx);
 
-    render_batch_add_t3dmodel(batch, renderable->model->block, mtxfp, &renderable->model->skeleton);
+    render_batch_add_t3dmodel(batch, renderable->model, mtxfp);
 }
 
 void render_scene_add_renderable(struct renderable* renderable, float radius) {

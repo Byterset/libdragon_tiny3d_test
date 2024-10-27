@@ -270,6 +270,17 @@ void quatApplyAngularVelocity(struct Quaternion* input, struct Vector3* w, float
 }
 
 
+/**
+ * Decomposes a quaternion into an axis and an angle.
+ *
+ * @param input Pointer to the input quaternion to be decomposed.
+ * @param axis Pointer to the vector that will store the axis of rotation.
+ * @param angle Pointer to the float that will store the angle of rotation in radians.
+ *
+ * The function calculates the magnitude of the quaternion's vector part and normalizes it to obtain the axis of rotation.
+ * If the magnitude is very small (less than 0.0001), it sets the axis to a default up vector and the angle to 0.
+ * Otherwise, it normalizes the axis and calculates the angle using the sine of the magnitude.
+ */
 void quatDecompose(struct Quaternion* input, struct Vector3* axis, float* angle) {
     float axisMag = sqrtf(input->x * input->x + input->y * input->y + input->z * input->z);
 

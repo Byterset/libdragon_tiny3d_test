@@ -8,7 +8,6 @@
 #include "../../entity/entity_id.h"
 #include "../../render/defs.h"
 
-
 static struct dynamic_object_type box_collision = {
     .minkowsi_sum = box_minkowski_sum,
     .bounding_box = box_bounding_box,
@@ -25,13 +24,18 @@ void box_update(struct box* box){
         box->transform.position.y = 1;
         box->collision.prev_position.y = 1;
     }
+    // float rot_deg = 45.0f;
+    // vector2ComplexFromAngleDeg(rot_deg, &box->look_direction);
+
 }
 
 void box_init(struct box* box, struct box_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&box->transform);
+
     box->transform.scale = (struct Vector3){1.0f, 1.0f, 1.0f};
     box->transform.position = def->position;
+    box->look_direction = (struct Vector2){1.0f, 0.0f};
 
     renderable_init(&box->renderable, &box->transform, "rom:/models/box/box.t3dm");
 
@@ -44,7 +48,7 @@ void box_init(struct box* box, struct box_definition* def){
         &box_collision,
         COLLISION_LAYER_TANGIBLE,
         &box->transform.position,
-        NULL,
+        &box->look_direction,
         10.0f
     );
 

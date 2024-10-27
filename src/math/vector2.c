@@ -19,7 +19,7 @@ void vector2ComplexConj(struct Vector2* a, struct Vector2* out) {
     out->y = -a->y;
 }
 
-void vector2ComplexFromAngle(float radians, struct Vector2* out) {
+void vector2ComplexFromAngleRad(float radians, struct Vector2* out) {
     out->x = cosf(radians);
     out->y = sinf(radians);
 }
@@ -43,6 +43,10 @@ int vector2RotateTowards(struct Vector2* from, struct Vector2* towards, struct V
 
         return 0;
     }
+}
+
+void vector2ComplexFromAngleDeg(float degrees, struct Vector2* out){
+    vector2ComplexFromAngleRad(degrees * PI / 180.0f, out);
 }
 
 void vector2Rotate90(struct Vector2* input, struct Vector2* out) {

@@ -35,7 +35,7 @@ static struct render_batch_element *render_batch_add_init(struct render_batch *b
     return result;
 }
 
-void render_batch_add_t3dmodel(struct render_batch *batch, rspq_block_t *block, T3DMat4FP *transform, T3DSkeleton *skeleton)
+void render_batch_add_t3dmodel(struct render_batch *batch, struct model *model, T3DMat4FP *transform)
 {
     struct render_batch_element *element = render_batch_add_init(batch);
 
@@ -44,7 +44,7 @@ void render_batch_add_t3dmodel(struct render_batch *batch, rspq_block_t *block, 
         return;
     }
 
-    element->model.block = block;
+    element->model.block = model->t3d_model->userBlock;
     element->material = NULL; // T3DModels have their own materials
     element->model.transform = transform;
 }

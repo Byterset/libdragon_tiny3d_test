@@ -26,7 +26,7 @@ void model_load(struct model* into, const char* model_filename) {
         else{
             t3d_model_draw(into->t3d_model);
         }
-    into->block = rspq_block_end();
+    into->t3d_model->userBlock = rspq_block_end();
 }
 
 /// @brief Free the memory associated with the model struct. 
@@ -39,7 +39,5 @@ void model_release(struct model* model) {
         t3d_skeleton_destroy(&model->skeleton);
         model->has_skeleton = false;
     }
-    rspq_block_free(model->block);
-    model->block = NULL;
     free(model);
 }

@@ -6,6 +6,7 @@
 #include <t3d/t3dmodel.h>
 #include <t3d/t3dskeleton.h>
 
+#include "model.h"
 #include "material.h"
 #include "frame_alloc.h"
 
@@ -75,7 +76,7 @@ struct render_batch {
 
 void render_batch_init(struct render_batch* batch, struct Transform* camera_transform, struct frame_memory_pool* pool);
 
-void render_batch_add_t3dmodel(struct render_batch* batch, rspq_block_t* block, T3DMat4FP* transform, T3DSkeleton* skeleton);
+void render_batch_add_t3dmodel(struct render_batch* batch, struct model* model, T3DMat4FP* transform);
 
 void render_batch_add_callback(struct render_batch* batch, struct material* material, RenderCallback callback, void* data);
 // caller is responsible for populating sprite list
