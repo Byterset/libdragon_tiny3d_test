@@ -5,6 +5,7 @@
 #include "../math/vector3.h"
 #include "../math/vector2.h"
 #include "../math/aabb.h"
+#include "../math/quaternion.h"
 #include "../collision/aabbtree.h"
 #include "contact.h"
 #include "gjk.h"
@@ -23,20 +24,20 @@ enum collision_group {
     COLLISION_GROUP_PLAYER = 1,
 };
 
-typedef void (*bounding_box_calculator)(void* data, struct Vector2* rotation, struct AABB* box);
+typedef void (*bounding_box_calculator)(void* data, struct Quaternion* rotation, struct AABB* box);
 
 union dynamic_object_type_data
 {
     struct { float radius; } sphere;
     struct { float radius; float inner_half_height; } capsule;
     struct { struct Vector3 half_size; } box;
-    struct { struct Vector3 size; } cone;
+    struct { float radius; float height; } cone;
     struct { float radius; float half_height; } cylinder;
     struct { struct Vector2 range; float radius; float half_height; } sweep;
 };
 
 struct dynamic_object_type {
-    MinkowsiSum minkowsi_sum;
+    MinkowskiSum minkowski_sum;
     bounding_box_calculator bounding_box;
     union dynamic_object_type_data data;
     float bounce;
@@ -48,8 +49,7 @@ struct dynamic_object {
     struct dynamic_object_type* type;
     struct Vector3* position;
     struct Vector3 prev_position;
-    struct Vector2* rotation;
-    struct Vector2* pitch;
+    struct Quaternion* rotation_quat;
     struct Vector3 center;
     struct Vector3 velocity;
     struct Vector3 acceleration;
@@ -74,7 +74,7 @@ void dynamic_object_init(
     struct dynamic_object_type* type,
     uint16_t collision_layers,
     struct Vector3* position, 
-    struct Vector2* rotation,
+    struct Quaternion* rotation,
     float mass
 );
 

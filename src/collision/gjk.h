@@ -2,8 +2,9 @@
 #define __GJK_H___
 
 #include "../math/vector3.h"
+#include "../math/quaternion.h"
 
-typedef void (*MinkowsiSum)(void* data, struct Vector3* direction, struct Vector3* output);
+typedef void (*MinkowskiSum)(void* data, struct Vector3* direction, struct Vector3* output);
 
 #define MAX_SIMPLEX_SIZE    4
 
@@ -16,6 +17,6 @@ struct Simplex {
 void simplexInit(struct Simplex* simplex);
 int simplexCheck(struct Simplex* simplex, struct Vector3* nextDirection);
 
-int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, MinkowsiSum objectASum, void* objectB, MinkowsiSum objectBSum, struct Vector3* firstDirection);
+int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, MinkowskiSum objectASum, void* objectB, MinkowskiSum objectBSum, struct Vector3* firstDirection);
 
 #endif

@@ -429,7 +429,21 @@ void epaCalculateContact(struct ExpandingSimplex* simplex, struct SimplexTriangl
     vector3AddScaled(&result->contactA, &result->normal, result->penetration, &result->contactB);
 }
 
-bool epaSolve(struct Simplex* startingSimplex, void* objectA, MinkowsiSum objectASum, void* objectB, MinkowsiSum objectBSum, struct EpaResult* result) {
+/**
+ * @brief Solves the Expanding Polytope Algorithm (EPA) to find the penetration depth and contact normal between two objects.
+ *
+ * This function takes an initial simplex from the GJK algorithm and iteratively expands it to find the closest face to the origin.
+ * It then calculates the penetration depth and contact normal between the two objects.
+ *
+ * @param startingSimplex A pointer to the initial simplex obtained from the GJK algorithm.
+ * @param objectA A pointer to the first object involved in the collision.
+ * @param objectASum A function pointer to the Minkowski sum function for the first object.
+ * @param objectB A pointer to the second object involved in the collision.
+ * @param objectBSum A function pointer to the Minkowski sum function for the second object.
+ * @param result A pointer to an EpaResult structure where the result will be stored.
+ * @return true if the EPA algorithm successfully finds a penetration depth and contact normal, false otherwise.
+ */
+bool epaSolve(struct Simplex* startingSimplex, void* objectA, MinkowskiSum objectASum, void* objectB, MinkowskiSum objectBSum, struct EpaResult* result) {
     struct ExpandingSimplex simplex;
     expandingSimplexInit(&simplex, startingSimplex, 0);
     struct SimplexTriangle* closestFace = 0;
@@ -507,7 +521,7 @@ void epaSweptFindFace(struct ExpandingSimplex* simplex, struct Vector3* directio
     }
 }
 
-int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, MinkowsiSum objectASum, void* objectB, MinkowsiSum objectBSum, struct Vector3* bStart, struct Vector3* bEnd, struct EpaResult* result) {
+int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, MinkowskiSum objectASum, void* objectB, MinkowskiSum objectBSum, struct Vector3* bStart, struct Vector3* bEnd, struct EpaResult* result) {
     struct ExpandingSimplex simplex;
     expandingSimplexInit(&simplex, startingSimplex, SimplexFlagsSkipDistance);
     struct SimplexTriangle* closestFace = 0;

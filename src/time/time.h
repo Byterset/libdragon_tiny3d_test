@@ -25,6 +25,13 @@ typedef int update_id;
 #define UPDATE_PRIORITY_EFFECTS  1
 #define UPDATE_PRIORITY_CAMERA  2
 
+extern uint64_t oldtime_ticks;
+extern uint32_t accumulator_ticks;
+extern uint64_t currtime_ticks;
+extern uint32_t frametime_ticks;
+extern float currtime_sec;
+extern float frametime_sec;
+
 void update_reset();
 void update_time();
 void update_add(void* data, update_callback callback, int priority, int mask);
@@ -38,11 +45,6 @@ bool update_has_layer(int mask);
 void update_dispatch();
 
 
-extern uint64_t oldtime_ticks;
-extern uint32_t accumulator_ticks;
-extern uint64_t currtime_ticks;
-extern uint32_t frametime_ticks;
-extern float currtime_sec;
-extern float frametime_sec;
+
 
 #endif

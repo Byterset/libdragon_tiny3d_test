@@ -9,7 +9,7 @@
 #include "../../render/defs.h"
 
 static struct dynamic_object_type box_collision = {
-    .minkowsi_sum = box_minkowski_sum,
+    .minkowski_sum = box_minkowski_sum,
     .bounding_box = box_bounding_box,
     .data = {
         .box = {
@@ -24,8 +24,6 @@ void box_update(struct box* box){
         box->transform.position.y = 1;
         box->collision.prev_position.y = 1;
     }
-    // float rot_deg = 45.0f;
-    // vector2ComplexFromAngleDeg(rot_deg, &box->look_direction);
 
 }
 
@@ -35,6 +33,7 @@ void box_init(struct box* box, struct box_definition* def){
 
     box->transform.scale = (struct Vector3){1.0f, 1.0f, 1.0f};
     box->transform.position = def->position;
+    quatRotateAxisEuler(&box->transform.rotation, &gUp, 45.0f, &box->transform.rotation);
     box->look_direction = (struct Vector2){1.0f, 0.0f};
 
     renderable_init(&box->renderable, &box->transform, "rom:/models/box/box.t3dm");
@@ -48,13 +47,13 @@ void box_init(struct box* box, struct box_definition* def){
         &box_collision,
         COLLISION_LAYER_TANGIBLE,
         &box->transform.position,
-        &box->look_direction,
+        &box->transform.rotation,
         10.0f
     );
 
     box->collision.center.y = box_collision.data.box.half_size.y;
 
-    box->collision.has_gravity = true;
+    box->collision.has_gravity = 1;
 
     update_add(box, (update_callback)box_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
     collision_scene_add(&box->collision);

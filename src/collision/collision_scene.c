@@ -219,30 +219,26 @@ void collision_scene_collide_dynamic_sweep_and_prune() {
     }
 }
 
-void collision_scene_collide_dynamic_aabbtree() {
+void collision_scene_collide_dynamic_aabbtree(struct collision_scene_element* element) {
 
-    for (int i = 0; i < g_scene.count; ++i) {
-        struct collision_scene_element* element = &g_scene.elements[i];
-        int result_count = 0;
-        int aabbCheck_count = 0;
-        int max_results = 20;
-        NodeProxy results[max_results];
+    int result_count = 0;
+    int aabbCheck_count = 0;
+    int max_results = 20;
+    NodeProxy results[max_results];
 
-        AABBTree_queryBounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, &aabbCheck_count, max_results, true);
-        for (size_t j = 0; j < result_count; j++)
+    AABBTree_queryBounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, &aabbCheck_count, max_results, true);
+    for (size_t j = 0; j < result_count; j++)
+    {
+        struct dynamic_object *other = (struct dynamic_object *)AABBTreeNode_getData(&g_scene.object_aabbtree, results[j]);
+        // skip narrow phase if there is no dynamic object associated with the result node
+        // or if it is the same object as the one queried
+        if (!other || other == element->object)
         {
-            struct dynamic_object* other = (struct dynamic_object*)AABBTreeNode_getData(&g_scene.object_aabbtree, results[j]);
-            // skip narrow phase if there is no dynamic object associated with the result node 
-            // or if it is the same object as the one queried
-            if (!other || other == element->object) {
-                continue;
-            }
-            // only do detailed collision calculation if the bounding boxes overlap
-            if(AABBHasOverlap(&element->object->bounding_box, &other->bounding_box))
-                collide_object_to_object(element->object, other);
-
+            continue;
         }
-        
+        // only do detailed collision calculation if the bounding boxes overlap
+        if (AABBHasOverlap(&element->object->bounding_box, &other->bounding_box))
+            collide_object_to_object(element->object, other);
     }
 }
 
@@ -279,15 +275,16 @@ void collision_scene_collide_single(struct dynamic_object* object, struct Vector
 void collision_scene_collide() {
     // struct Vector3 prev_pos[g_scene.count];
 
+    struct collision_scene_element* element;
+
     for (int i = 0; i < g_scene.count; ++i) {
-        struct collision_scene_element* element = &g_scene.elements[i];
+        element = &g_scene.elements[i];
         // prev_pos[i] = *element->object->position;
 
         collision_scene_return_contacts(element->object);
 
         dynamic_object_update(element->object);
 
-        dynamic_object_apply_constraints(element->object);
 
         dynamic_object_recalc_bb(element->object);
 
@@ -295,21 +292,29 @@ void collision_scene_collide() {
         vector3Sub(element->object->position, &element->object->prev_position, &displacement);
         AABBTree_moveNode(&g_scene.object_aabbtree, element->object->aabb_tree_node, element->object->bounding_box, &displacement);
 
-    }
+        if (g_scene.mesh_collider)
+        {
 
-    for (int i = 0; i < g_scene.count; ++i) {
-        struct collision_scene_element* element = &g_scene.elements[i];
+            collision_scene_collide_single(element->object, &element->object->prev_position);
 
-        if (!g_scene.mesh_collider) {
-            continue;
+            element->object->is_out_of_bounds = mesh_index_is_contained(&g_scene.mesh_collider->index, element->object->position);
         }
-
-        collision_scene_collide_single(element->object, &element->object->prev_position);
-
-        element->object->is_out_of_bounds = mesh_index_is_contained(&g_scene.mesh_collider->index, element->object->position);
     }
-    collision_scene_collide_dynamic_aabbtree();
+
     // collision_scene_collide_dynamic_sweep_and_prune();
+    for (int i = 0; i < g_scene.count; ++i)
+    {
+        element = &g_scene.elements[i];
+
+        collision_scene_collide_dynamic_aabbtree(element);
+        
+    }
+    for (int i = 0; i < g_scene.count; ++i)
+    {
+        element = &g_scene.elements[i];
+
+        dynamic_object_apply_constraints(element->object);
+    }
 }
 
 struct contact* collision_scene_new_contact() {
@@ -329,7 +334,7 @@ struct positioned_shape {
 
 void positioned_shape_mink_sum(void* data, struct Vector3* direction, struct Vector3* output) {
     struct positioned_shape* shape = (struct positioned_shape*)data;
-    shape->type->minkowsi_sum(&shape->type->data, direction, output);
+    shape->type->minkowski_sum(&shape->type->data, direction, output);
     vector3Add(output, shape->center, output);
 }
 

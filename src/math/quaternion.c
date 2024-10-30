@@ -75,6 +75,16 @@ void quatNegate(struct Quaternion* in, struct Quaternion* out) {
     out->w = -in->w;
 }
 
+/**
+ * Multiplies a quaternion by a vector.
+ *
+ * This function takes a quaternion `q` and a vector `a`, and performs the
+ * quaternion-vector multiplication. The result is stored in the output vector `out`.
+ *
+ * @param q Pointer to the quaternion to be multiplied.
+ * @param a Pointer to the vector to be multiplied.
+ * @param out Pointer to the vector where the result will be stored.
+ */
 void quatMultVector(struct Quaternion* q, struct Vector3* a, struct Vector3* out) {
     struct Quaternion tmp;
     struct Quaternion asQuat;

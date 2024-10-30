@@ -35,7 +35,7 @@ void correct_overlap(struct dynamic_object* object, struct EpaResult* result, fl
     dynamic_object_recalc_bb(object);
     AABBTree_moveNode(&scene->object_aabbtree, object->aabb_tree_node, object->bounding_box, &correction);
     
-    if (correction.y > 0.0f && result->normal.y > 0.7f) {
+    if (correction.y > 0.0f && result->normal.y > 0.5f) {
         struct Vector3 vel = dynamic_object_get_velocity(object);
         if(vel.y < 0.0f){
             vel.y = 0.0f;
@@ -66,12 +66,13 @@ bool collide_object_to_triangle(struct mesh_index* index, void* data, int triang
     struct EpaResult result;
 
     if (epaSolve(
-        &simplex, 
-        &collide_data->triangle, 
-        mesh_triangle_minkowski_sum, 
-        collide_data->object, 
-        dynamic_object_minkowski_sum, 
-        &result)) {
+            &simplex,
+            &collide_data->triangle,
+            mesh_triangle_minkowski_sum,
+            collide_data->object,
+            dynamic_object_minkowski_sum,
+            &result))
+    {
         correct_overlap(collide_data->object, &result, -1.0f, collide_data->object->type->friction, collide_data->object->type->bounce);
         collide_add_contact(collide_data->object, &result);
         return true;
@@ -106,7 +107,7 @@ void collide_object_to_object(struct dynamic_object* a, struct dynamic_object* b
     }
 
     struct Simplex simplex;
-    if (!gjkCheckForOverlap(&simplex, a, dynamic_object_minkowski_sum, b, dynamic_object_minkowski_sum, &gRight)) {
+    if (!gjkCheckForOverlap(&simplex, a, dynamic_object_minkowski_sum, b, dynamic_object_minkowski_sum, &gForward)) {
         return;
     }
 
@@ -144,9 +145,16 @@ void collide_object_to_object(struct dynamic_object* a, struct dynamic_object* b
     float bounce = a->type->friction > b->type->friction ? a->type->friction : b->type->friction;
 
     float massRatio = a->mass / (a->mass + b->mass);
+    if(a->is_fixed){
+        correct_overlap(b, &result, -1.0f, friction, bounce);
+    } else if(b->is_fixed){
+        correct_overlap(a, &result, 1.0f, friction, bounce);
+    }
+    else {
+        correct_overlap(b, &result, -massRatio, friction, bounce);
+        correct_overlap(a, &result, (1.0f - massRatio), friction, bounce);
+    }
 
-    correct_overlap(b, &result, -massRatio, friction, bounce);
-    correct_overlap(a, &result, (1.0f - massRatio) , friction, bounce);
 
     struct contact* contact = collision_scene_new_contact();
 

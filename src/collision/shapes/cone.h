@@ -4,8 +4,9 @@
 #include "../../math/vector2.h"
 #include "../../math/vector3.h"
 #include "../../math/aabb.h"
+#include "../../math/quaternion.h"
 
 void cone_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
-void cone_bounding_box(void* data, struct Vector2* rotation, struct Box3D* box);
+void cone_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box);
 
 #endif

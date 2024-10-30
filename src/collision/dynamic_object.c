@@ -11,7 +11,7 @@ void dynamic_object_init(
     struct dynamic_object_type* type,
     uint16_t collision_layers,
     struct Vector3* position, 
-    struct Vector2* rotation,
+    struct Quaternion* rotation,
     float mass
 ) {
     assert(mass > 0.0f);
@@ -19,8 +19,7 @@ void dynamic_object_init(
     object->type = type;
     object->position = position;
     object->prev_position = *position;
-    object->rotation = rotation;
-    object->pitch = 0;
+    object->rotation_quat = rotation;
     object->velocity = gZeroVec;
     object->center = gZeroVec;
     object->time_scalar = 1.0f;
@@ -157,54 +156,33 @@ bool dynamic_object_is_touching(struct dynamic_object* object, entity_id id) {
 void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output) {
     struct dynamic_object* object = (struct dynamic_object*)data;
 
-    struct Vector3 rotated_dir;
-
-    if (!object->rotation && !object->pitch) {
-        object->type->minkowsi_sum(&object->type->data, direction, output);
-        vector3Add(output, object->position, output);
-        vector3Add(output, &object->center, output);
-        return;
-    }
-
-    struct Vector3 pitched_dir;
-
-    if (object->pitch) {
-        pitched_dir.x = direction->x;
-        pitched_dir.y = direction->y * object->pitch->x - direction->z * object->pitch->y;
-        pitched_dir.z = direction->z * object->pitch->x + direction->y * object->pitch->y;
-    } else {
-        pitched_dir = *direction;
-    }
-
-    rotated_dir.x = pitched_dir.x * object->rotation->x + pitched_dir.z * object->rotation->y;
-    rotated_dir.y = pitched_dir.y;
-    rotated_dir.z = pitched_dir.z * object->rotation->x - pitched_dir.x * object->rotation->y;
-
-    struct Vector3 unrotated_out;
     
-    object->type->minkowsi_sum(&object->type->data, &rotated_dir, &unrotated_out);
+    struct Vector3 localDir;
+    if(object->rotation_quat){
+        struct Quaternion inv_rotation;
+        quatConjugate(object->rotation_quat, &inv_rotation);
+        quatMultVector(&inv_rotation, direction, &localDir);
+    }
+    else{
+        vector3Copy(direction, &localDir);
+    }
+    vector3Normalize(&localDir, &localDir);
 
-    struct Vector3 unpitched_out;
+    object->type->minkowski_sum(object, &localDir, output);
 
-    unpitched_out.x = unrotated_out.x * object->rotation->x - unrotated_out.z * object->rotation->y + object->position->x;
-    unpitched_out.y = unrotated_out.y + object->position->y;
-    unpitched_out.z = unrotated_out.z * object->rotation->x + unrotated_out.x * object->rotation->y + object->position->z;
-
-    if (object->pitch) {
-        output->x = unpitched_out.x;
-        output->y = unpitched_out.y * object->pitch->x + unpitched_out.z * object->pitch->y;
-        output->z = unpitched_out.z * object->pitch->x - unpitched_out.y * object->pitch->y;
-    } else {
-        *output = unpitched_out;
+    if(object->rotation_quat){
+        quatMultVector(object->rotation_quat, output, output);
     }
 
+    vector3Add(output, object->position, output);
     vector3Add(output, &object->center, output);
 }
+
 
 /// @brief re-caluclates the bounding box of the object using the collision type's bounding box function
 /// @param object 
 void dynamic_object_recalc_bb(struct dynamic_object* object) {
-    object->type->bounding_box(&object->type->data, object->rotation, &object->bounding_box);
+    object->type->bounding_box(&object->type->data, object->rotation_quat, &object->bounding_box);
     struct Vector3 offset;
     vector3Add(&object->center, object->position, &offset);
     vector3Add(&object->bounding_box.min, &offset, &object->bounding_box.min);

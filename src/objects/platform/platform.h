@@ -10,6 +10,7 @@
 #include "../../scene/scene_definition.h"
 
 struct platform {
+    float rot_x;
     struct Transform transform;
     struct renderable renderable;
     struct dynamic_object collision;

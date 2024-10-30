@@ -162,9 +162,9 @@ int simplexCheck(struct Simplex* simplex, struct Vector3* nextDirection) {
     return 0;
 }
 
-#define MAX_GJK_ITERATIONS  10
+#define MAX_GJK_ITERATIONS  12
 
-int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, MinkowsiSum objectASum, void* objectB, MinkowsiSum objectBSum, struct Vector3* firstDirection) {
+int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, MinkowskiSum objectASum, void* objectB, MinkowskiSum objectBSum, struct Vector3* firstDirection) {
     struct Vector3 aPoint;
     struct Vector3 bPoint;
     struct Vector3 nextDirection;

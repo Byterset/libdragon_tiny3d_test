@@ -70,7 +70,7 @@ struct box_definition box_def = {
     (struct Vector3){0, 10, 0}
 };
 struct platform_definition plat_def = {
-    (struct Vector3){6, 4, 4}
+    (struct Vector3){9, 4, 7}
 };
 
 
@@ -99,10 +99,10 @@ void setup()
     box_init(&box4, &box_def);
     box_def.position.y += 5;
     box_init(&box5, &box_def);
-    box_def.position.y += 5;
-    box_init(&box6, &box_def);
-    box_def.position.y += 5;
-    box_init(&box7, &box_def);
+    // box_def.position.y += 5;
+    // box_init(&box6, &box_def);
+    // box_def.position.y += 5;
+    // box_init(&box7, &box_def);
     platform_init(&plat, &plat_def);
     fire_init(&fire);
 
