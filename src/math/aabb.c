@@ -7,6 +7,8 @@
  */
 
 #include "aabb.h"
+#include <math.h>
+
 
 
 /**
@@ -55,6 +57,62 @@ int AABBHasOverlap(struct AABB* a, struct AABB* b) {
     return a->min.x <= b->max.x && a->max.x >= b->min.x &&
         a->min.y <= b->max.y && a->max.y >= b->min.y &&
         a->min.z <= b->max.z && a->max.z >= b->min.z;
+}
+
+/// @brief Checks if an Axis-Aligned Bounding Box (AABB) intersects with a ray.
+/// @param box Pointer to the AABB structure.
+/// @param origin Origin of the ray.
+/// @param direction Direction of the ray.
+/// @param max_distance Maximum distance of the ray after which intersections should not be considered.
+/// @return 
+int AABBIntersectsRay(struct AABB* box, struct RayCast* ray){
+    float tmin = -__FLT_MAX__;
+    float tmax = __FLT_MAX__;
+    float t1, t2;
+    float epsilon = __FLT_EPSILON__;
+    if (fabsf(ray->dir.x) < epsilon)
+    {
+        if (ray->origin.x < box->min.x || ray->origin.x > box->max.x)
+            return 0;
+    }
+    else
+    {
+        t1 = (box->min.x - ray->origin.x) / ray->dir.x;
+        t2 = (box->max.x - ray->origin.x) / ray->dir.x;
+        tmin = fmaxf(tmin, fminf(t1, t2));
+        tmax = fminf(tmax, fmaxf(t1, t2));
+    }
+    if (tmin > tmax)
+        return 0;
+    if (fabsf(ray->dir.y) < epsilon)
+    {
+        if (ray->origin.y < box->min.y || ray->origin.y > box->max.y)
+            return 0;
+    }
+    else
+    {
+        t1 = (box->min.y - ray->origin.y) / ray->dir.y;
+        t2 = (box->max.y - ray->origin.y) / ray->dir.y;
+        tmin = fmaxf(tmin, fminf(t1, t2));
+        tmax = fminf(tmax, fmaxf(t1, t2));
+    }
+    if (tmin > tmax)
+        return 0;
+    if (fabsf(ray->dir.z) < epsilon)
+    {
+        if (ray->origin.z < box->min.z || ray->origin.z > box->max.z)
+            return 0;
+    }
+    else
+    {
+        t1 = (box->min.z - ray->origin.z) / ray->dir.z;
+        t2 = (box->max.z - ray->origin.z) / ray->dir.z;
+        tmin = fmaxf(tmin, fminf(t1, t2));
+        tmax = fminf(tmax, fmaxf(t1, t2));
+    }
+    if (tmin > tmax)
+        return 0;
+    return (tmin >= 0 && tmin < ray->maxDistance);
 }
 
 /**

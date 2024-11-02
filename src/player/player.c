@@ -6,8 +6,6 @@
 #include "../collision/collision_scene.h"
 #include "../collision/shapes/capsule.h"
 #include "../collision/shapes/cylinder.h"
-#include "../collision/shapes/sphere.h"
-#include "../collision/shapes/cone.h"
 #include "../time/time.h"
 #include "../entity/entity_id.h"
 #include "../render/defs.h"
@@ -25,27 +23,19 @@ static struct dynamic_object_type player_collision = {
             .radius = 1.0f,
             .inner_half_height = 0.75f,
         }},
-    // .data = {.cone = {
-    //              .radius = 1.0f,
-    //              .height = 2.0f,
-    //          }},
-    // .minkowski_sum = cylinder_minkowski_sum,
-    // .bounding_box = cylinder_bounding_box,
-    // .data = {
-    //     .cylinder = {
-    //         .radius = 0.6f,
-    //         .half_height = 1.0f,
-    //     }
-    // },
-    // .minkowski_sum = sphere_minkowski_sum,
-    // .bounding_box = sphere_bounding_box,
-    // .data = {
-    //     .sphere = {
-    //         .radius = 1.0f
-    //     }
-    // },
-
+    .type = DYNAMIC_OBJECT_TYPE_CAPSULE,
 };
+
+// static struct dynamic_object_type player_collision = {
+//     .minkowski_sum = cylinder_minkowski_sum,
+//     .bounding_box = cylinder_bounding_box,
+//     .data = {
+//         .cylinder = {
+//             .radius = 1.0f,
+//             .half_height = 1.75f,
+//         }},
+//     .type = DYNAMIC_OBJECT_TYPE_CYLINDER,
+// };
 
 void player_get_move_basis(struct Transform* transform, struct Vector3* forward, struct Vector3* right) {
     quatMultVector(&transform->rotation, &gForward, forward);
@@ -221,9 +211,8 @@ void player_init(struct player* player, struct player_definition* definition, st
     player->collision.has_gravity = 1;
     
 
-    player->collision.center.y = 1 + player_collision.data.capsule.inner_half_height + player_collision.data.capsule.radius;
-    // player->collision.center.y = 1 + player_collision.data.cylinder.half_height;
-    // player->collision.center.y = 1 + (player_collision.data.cone.height / 2.0f);
+    player->collision.center.y = player_collision.data.capsule.inner_half_height + player_collision.data.capsule.radius;
+    // player->collision.center.y = player_collision.data.cylinder.half_height;
 
     collision_scene_add(&player->collision);
 

@@ -8,6 +8,7 @@
 #define _MATH_BOX3D_H
 
 #include "vector3.h"
+#include "ray.h"
 
 /**
  * @brief The Axis Aligned Bounding Box (AABB) structure.
@@ -23,6 +24,8 @@ int AABBContainsPoint(struct AABB* box, struct Vector3* point);
 int AABBContainsAABB(struct AABB* a, struct AABB* b);
 
 int AABBHasOverlap(struct AABB* a, struct AABB* b);
+
+int AABBIntersectsRay(struct AABB* box, struct RayCast* ray);
 
 float AABBGetArea(struct AABB aabb);
 

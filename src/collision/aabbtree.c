@@ -586,7 +586,7 @@ void* AABBTreeNode_getData(AABBTree *tree, NodeProxy node)
 /// @param aabbChecks the amount of AABB checks performed
 /// @param max_results the maximum amount of results to find
 /// @param skipRootCheck if the root node should be checked
-void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *results, int *result_count, int *aabbChecks, int max_results, int skipRootCheck)
+void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *results, int *result_count, int *aabbChecks, int max_results)
 {
     // return if the tree is empty
     if (tree->root == NULL_NODE)
@@ -595,20 +595,14 @@ void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *res
     }
 
     // initialize the stack with the root node
-    NodeProxy stack[512];
-    int stackIndex = 0;
-    if(!skipRootCheck)
-        stack[stackIndex++] = tree->root;
-    else
-    {
-        stack[stackIndex++] = tree->nodes[tree->root].left;
-        stack[stackIndex++] = tree->nodes[tree->root].right;
-    }
+    vec_t *stack = vec_with_capacity(256, sizeof(int));
+    vec_push(stack, &tree->root);
 
-    while (stackIndex > 0)
-    {
-        NodeProxy current = stack[--stackIndex];
+    NodeProxy current;
 
+    while (stack->len != 0)
+    {
+        vec_pop(stack, &current);
         if (current == NULL_NODE)
             continue;
 
@@ -632,74 +626,14 @@ void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *res
         }
         else
         {
-            if(tree->nodes[current].left != NULL_NODE)
-                stack[stackIndex++] = tree->nodes[current].left;
-            if(tree->nodes[current].right != NULL_NODE)
-                stack[stackIndex++] = tree->nodes[current].right;
+            vec_push(stack, &tree->nodes[current].left);
+            vec_push(stack, &tree->nodes[current].right);
         }
     }
+    // free the stack
+    vec_drop(stack);
 
 }
-
-// void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *results, int *result_count, int *aabbChecks, int max_results, int skipRootCheck)
-// {
-//     // return if the tree is empty
-//     if (tree->root == NULL_NODE)
-//     {
-//         return;
-//     }
-
-//     // initialize the stack with the root node
-//     vec_t *stack = vec_with_capacity(256, sizeof(int));
-
-//     if(!skipRootCheck)
-//         vec_push(stack, &tree->root);
-//     else
-//     {
-//         vec_push(stack, &tree->nodes[tree->root].left);
-//         vec_push(stack, &tree->nodes[tree->root].right);
-
-//     }
-
-//     while (stack->len != 0)
-//     {
-//         NodeProxy current;
-//         vec_pop(stack, &current);
-
-//         if (current == NULL_NODE)
-//             continue;
-
-//         *aabbChecks += 1;
-
-//         // if the given AABB does not overlap the bounds of the current node, continue and thus discard all child nodes
-//         if (!AABBHasOverlap(&tree->nodes[current].bounds, query_box))
-//             continue;
-
-//         // if the given AABB overlaps current node and it is a leaf, add it to the results
-//         if (AABBTreeNode_isLeaf(&tree->nodes[current]))
-//         {
-//             results[*result_count] = current;
-//             (*result_count)++;
-//             // if the maximum of allowed results is reached, break
-//             if (*result_count >= max_results)
-//             {
-//                 break;
-//             }
-//             // if the AABB overlaps the current node and it is not a leaf, add the children to the stack
-//         }
-//         else
-//         {
-//             if(tree->nodes[current].left != NULL_NODE)
-//                 vec_push(stack, &tree->nodes[current].left);
-//             if(tree->nodes[current].right != NULL_NODE)
-//                 vec_push(stack, &tree->nodes[current].right);
-            
-            
-//         }
-//     }
-//     // free the stack
-//     vec_drop(stack);
-// }
 
 /// @brief Query the AABBTree for (leaf) nodes that contain a point
 /// @param tree BVH tree
@@ -709,6 +643,7 @@ void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *res
 /// @param max_results the maximum amount of results to find
 void AABBTree_queryPoint(AABBTree *tree, struct Vector3 point, NodeProxy *results, int *result_count, int max_results)
 {
+
     // return if the tree is empty
     if (tree->root == NULL_NODE)
     {
@@ -718,11 +653,9 @@ void AABBTree_queryPoint(AABBTree *tree, struct Vector3 point, NodeProxy *result
     // initialize the stack with the root node
     vec_t *stack = vec_with_capacity(256, sizeof(int));
     vec_push(stack, &tree->root);
-
+    NodeProxy current;
     while (stack->len != 0)
     {
-
-        NodeProxy current;
         vec_pop(stack, &current);
         if (current == NULL_NODE)
             continue;
@@ -750,5 +683,47 @@ void AABBTree_queryPoint(AABBTree *tree, struct Vector3 point, NodeProxy *result
         }
     }
     // free the stack
+    vec_drop(stack);
+}
+
+void AABBTree_queryRay(AABBTree *tree, struct RayCast* ray, NodeProxy *results, int *result_count, int max_results){
+    // return if the tree is empty
+    if (tree->root == NULL_NODE)
+    {
+        return;
+    }
+
+    // initialize the stack with the root node
+    vec_t *stack = vec_with_capacity(256, sizeof(int));
+    vec_push(stack, &tree->root);
+    NodeProxy current;
+    while (stack->len != 0)
+    {
+        vec_pop(stack, &current);
+        if (current == NULL_NODE)
+            continue;
+
+        // if the ray does not intersect the bounds of the current node, continue and thus discard all child nodes
+        if (!AABBIntersectsRay(&tree->nodes[current].bounds, ray))
+            continue;
+
+        // if the ray intersects the current node and it is a leaf, add it to the results
+        if (AABBTreeNode_isLeaf(&tree->nodes[current]))
+        {
+            results[*result_count] = current;
+            (*result_count)++;
+            // if the maximum of allowed results is reached, break
+            if (*result_count >= max_results)
+            {
+                break;
+            }
+        }
+        // if the ray intersects the current node and it is not a leaf, add the children to the stack
+        else
+        {
+            vec_push(stack, &tree->nodes[current].left);
+            vec_push(stack, &tree->nodes[current].right);
+        }
+    }
     vec_drop(stack);
 }

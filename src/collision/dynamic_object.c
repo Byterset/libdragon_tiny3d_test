@@ -64,7 +64,7 @@ void dynamic_object_update(struct dynamic_object* object) {
 void dynamic_object_apply_constraints(struct dynamic_object* object){
     if (object->position->y <= 0){
         dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, 0, object->position->z});
-        object->is_grounded = 1;
+        // object->is_grounded = 1;
     }
     if (object->position->y >= 2000){
         dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, 2000, object->position->z});
@@ -155,16 +155,17 @@ bool dynamic_object_is_touching(struct dynamic_object* object, entity_id id) {
 
 void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output) {
     struct dynamic_object* object = (struct dynamic_object*)data;
-
-    
+    struct Vector3 world_center;
     struct Vector3 localDir;
     if(object->rotation_quat){
         struct Quaternion inv_rotation;
         quatConjugate(object->rotation_quat, &inv_rotation);
         quatMultVector(&inv_rotation, direction, &localDir);
+        quatMultVector(object->rotation_quat, &object->center, &world_center);
     }
     else{
         vector3Copy(direction, &localDir);
+        vector3Copy(&object->center, &world_center);
     }
     vector3Normalize(&localDir, &localDir);
 
@@ -175,16 +176,22 @@ void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct 
     }
 
     vector3Add(output, object->position, output);
-    vector3Add(output, &object->center, output);
+    vector3Add(output, &world_center, output);
 }
 
 
 /// @brief re-caluclates the bounding box of the object using the collision type's bounding box function
 /// @param object 
 void dynamic_object_recalc_bb(struct dynamic_object* object) {
-    object->type->bounding_box(&object->type->data, object->rotation_quat, &object->bounding_box);
+    object->type->bounding_box(object, object->rotation_quat, &object->bounding_box);
     struct Vector3 offset;
-    vector3Add(&object->center, object->position, &offset);
+    if(object->rotation_quat){
+        quatMultVector(object->rotation_quat, &object->center, &offset);
+    }
+    else{
+        vector3Copy(&object->center, &offset);
+    }
+    vector3Add(&offset, object->position, &offset);
     vector3Add(&object->bounding_box.min, &offset, &object->bounding_box.min);
     vector3Add(&object->bounding_box.max, &offset, &object->bounding_box.max);
 }

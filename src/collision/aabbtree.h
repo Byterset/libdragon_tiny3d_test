@@ -75,8 +75,10 @@ int AABBTreeNode_wasMoved(AABBTree *tree, NodeProxy node);
 
 void* AABBTreeNode_getData(AABBTree *tree, NodeProxy node);
 
-void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *results, int* result_count, int* aabbChecks, int max_results, int skipRootCheck);
+void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *results, int* result_count, int* aabbChecks, int max_results);
 
-void AABBTree_queryPoint(AABBTree *tree, struct Vector3 point, NodeProxy *results, int* result_count, int max_results);
+void AABBTree_queryPoint(AABBTree *tree, struct Vector3 point, NodeProxy *results, int *result_count, int max_results);
+
+void AABBTree_queryRay(AABBTree *tree, struct RayCast *ray, NodeProxy *results, int *result_count, int max_results);
 
 #endif // _AABBTREE_H_

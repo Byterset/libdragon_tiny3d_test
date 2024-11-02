@@ -4,6 +4,7 @@
 #include "../../render/render_scene.h"
 #include "../../collision/collision_scene.h"
 #include "../../collision/shapes/box.h"
+#include "../../collision/shapes/capsule.h"
 #include "../../time/time.h"
 #include "../../entity/entity_id.h"
 #include "../../render/defs.h"
@@ -14,17 +15,25 @@ static struct dynamic_object_type platform_collision = {
     .bounding_box = box_bounding_box,
     .data = {
         .box = {
-            .half_size = {6.0f, 0.75f, 3.0f}
+            .half_size = {6.0f, 0.5f, 3.0f}
         }
-    }
+    },
+    .type = DYNAMIC_OBJECT_TYPE_BOX,
 };
 
+// static struct dynamic_object_type platform_collision = {
+//     .minkowski_sum = capsule_minkowski_sum,
+//     .bounding_box = capsule_bounding_box,
+//     .data = {
+//         .capsule = {
+//             .inner_half_height = 3.0f,
+//             .radius = 2.0f
+//         }
+//     },
+//     .type = DYNAMIC_OBJECT_TYPE_CAPSULE,
+// };
+
 void platform_update(struct platform* platform){
-    if (platform->transform.position.y <= 1)
-    {
-        platform->transform.position.y = 1;
-        platform->collision.prev_position.y = 1;
-    }
     platform->rot_x = 0.8f * frametime_sec;
     if(platform->rot_x > 360.0f) platform->rot_x -= 360.0f;
     quatRotateAxisEuler(&platform->transform.rotation, &gForward, platform->rot_x, &platform->transform.rotation);
@@ -33,7 +42,7 @@ void platform_update(struct platform* platform){
 void platform_init(struct platform* platform, struct platform_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&platform->transform);
-    platform->transform.scale = (struct Vector3){6.0f, 0.5f, 3.0f};
+    platform->transform.scale = (struct Vector3){12.0f, 1.0f, 6.0f};
     platform->transform.position = def->position;
     platform->rot_x = 0.0f;
 
@@ -46,13 +55,14 @@ void platform_init(struct platform* platform, struct platform_definition* def){
         entity_id,
         &platform->collision,
         &platform_collision,
-        COLLISION_LAYER_TANGIBLE,
+        COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_PLATFORM,
         &platform->transform.position,
         &platform->transform.rotation,
         10.0f
     );
 
     platform->collision.center.y = platform_collision.data.box.half_size.y;
+    // platform->collision.center.y = platform_collision.data.capsule.inner_half_height + platform_collision.data.capsule.radius;
 
     platform->collision.has_gravity = 0;
     platform->collision.is_fixed = 1;

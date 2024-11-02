@@ -45,4 +45,6 @@ typedef void (*collision_scene_query_callback)(void* data, struct dynamic_object
 
 void collision_scene_query(struct dynamic_object_type* shape, struct Vector3* center, int collision_layers, collision_scene_query_callback callback, void* callback_data);
 
+void collision_scene_render_debug_raylib();
+
 #endif

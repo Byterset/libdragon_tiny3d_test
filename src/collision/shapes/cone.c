@@ -28,7 +28,8 @@ void cone_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* o
 }
 
 void cone_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {
-    union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)data;
+    struct dynamic_object* object = (struct dynamic_object*)data;
+    union dynamic_object_type_data* shape_data = &object->type->data;
     
     // Get cone dimensions
     float half_height = shape_data->cone.height / 2.0f;

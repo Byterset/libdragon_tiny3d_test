@@ -32,6 +32,10 @@
 
 #include <malloc.h>
 
+#include <raylib.h>
+#include <rlgl.h>
+#include <raymath.h>
+
 volatile static int frame_happened = 0;
 
 static struct frame_memory_pool frame_memory_pools[2];
@@ -48,13 +52,11 @@ struct box box1;
 struct box box2;
 struct box box3;
 struct box box4;
-struct box box5;
-struct box box6;
-struct box box7;
 struct platform plat;
 struct fire fire;
 struct skybox_flat skybox_flat;
 struct mesh_collider test_mesh_collider;
+int render_collision = 1;
 
 struct camera camera;
 struct camera_controller camera_controller;
@@ -97,12 +99,7 @@ void setup()
     box_init(&box3, &box_def);
     box_def.position.y += 5;
     box_init(&box4, &box_def);
-    box_def.position.y += 5;
-    box_init(&box5, &box_def);
-    // box_def.position.y += 5;
-    // box_init(&box6, &box_def);
-    // box_def.position.y += 5;
-    // box_init(&box7, &box_def);
+
     platform_init(&plat, &plat_def);
     fire_init(&fire);
 
@@ -118,47 +115,71 @@ void setup()
 
 void render3d()
 {
-    // ======== Draw (3D) ======== //
-    t3d_frame_start();
+    #if DEBUG
+    if(render_collision){
+        Camera3D raylib_cam = {0};
+        raylib_cam.position = (Raylib_Vector3){camera.transform.position.x * SCENE_SCALE, camera.transform.position.y * SCENE_SCALE, camera.transform.position.z * SCENE_SCALE};
+        raylib_cam.target = (Raylib_Vector3){
+            camera_controller.target.x * SCENE_SCALE, 
+            (camera_controller.target.y + CAMERA_FOLLOW_HEIGHT) * SCENE_SCALE, 
+            camera_controller.target.z * SCENE_SCALE};
+        raylib_cam.up = (Raylib_Vector3){0.0f, 1.0f, 0.0f};
+        raylib_cam.fovy = camera.fov;
+        raylib_cam.projection = CAMERA_PERSPECTIVE;
+        BeginDrawing();
+        BeginMode3D(raylib_cam);
+        ClearBackground(BLACK);
+        collision_scene_render_debug_raylib();
+        EndMode3D();
 
-    // TODO: maybe move this into scene structure later so levels can have their own fog settings
-    struct render_fog_params fog = {
-        .enabled = false,
-        .start = 2.0f * SCENE_SCALE,
-        .end = 40.0f * SCENE_SCALE,
-        .color = RGBA32(150, 150, 120, 0xFF)};
+        EndDrawing();
+    }
+    else{
+    #endif
+        // ======== Draw (3D) ======== //
+        t3d_frame_start();
 
-    t3d_screen_clear_color(fog.enabled? fog.color : RGBA32(0, 0, 0, 0xFF));
-    t3d_screen_clear_depth();
+        // TODO: maybe move this into scene structure later so levels can have their own fog settings
+        struct render_fog_params fog = {
+            .enabled = false,
+            .start = 2.0f * SCENE_SCALE,
+            .end = 40.0f * SCENE_SCALE,
+            .color = RGBA32(150, 150, 120, 0xFF)};
 
-    t3d_light_set_ambient(colorAmbient);
-    t3d_light_set_directional(0, colorDir, &lightDirVec);
-    t3d_light_set_count(1);
+        t3d_screen_clear_color(fog.enabled ? fog.color : RGBA32(0, 0, 0, 0xFF));
+        t3d_screen_clear_depth();
+
+        t3d_light_set_ambient(colorAmbient);
+        t3d_light_set_directional(0, colorDir, &lightDirVec);
+        t3d_light_set_count(1);
+
+        struct frame_memory_pool *pool = &frame_memory_pools[next_frame_memoy_pool];
+        frame_pool_reset(pool);
+
+        T3DViewport *viewport = frame_malloc(pool, sizeof(T3DViewport));
+        *viewport = t3d_viewport_create();
+
+        rdpq_set_mode_standard();
+
+        t3d_viewport_set_projection(viewport, T3D_DEG_TO_RAD(camera.fov), camera.near * SCENE_SCALE, camera.far * SCENE_SCALE);
+        T3DVec3 camPos, camTarget;
+        camPos.v[0] = camera.transform.position.x * SCENE_SCALE;
+        camPos.v[1] = (camera.transform.position.y) * SCENE_SCALE;
+        camPos.v[2] = camera.transform.position.z * SCENE_SCALE;
+        struct Vector3 camera_target;
+        quatMultVector(&camera.transform.rotation, &gForward, &camera_target);
+        vector3Add(&camera.transform.position, &camera_target, &camera_target);
+
+        camTarget.v[0] = camera_controller.target.x * SCENE_SCALE;
+        camTarget.v[1] = (camera_controller.target.y + CAMERA_FOLLOW_HEIGHT) * SCENE_SCALE;
+        camTarget.v[2] = camera_controller.target.z * SCENE_SCALE;
+        t3d_viewport_look_at(viewport, &camPos, &camTarget, &(T3DVec3){{0, 1, 0}});
+
+        render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool], &fog);
+    #if DEBUG
+    }
+    #endif
     
-
-    struct frame_memory_pool *pool = &frame_memory_pools[next_frame_memoy_pool];
-    frame_pool_reset(pool);
-
-    T3DViewport *viewport = frame_malloc(pool, sizeof(T3DViewport));
-    *viewport = t3d_viewport_create();
-
-    rdpq_set_mode_standard();
-
-    t3d_viewport_set_projection(viewport, T3D_DEG_TO_RAD(camera.fov), camera.near * SCENE_SCALE, camera.far * SCENE_SCALE);
-    T3DVec3 camPos, camTarget;
-    camPos.v[0] = camera.transform.position.x * SCENE_SCALE;
-    camPos.v[1] = (camera.transform.position.y) * SCENE_SCALE;
-    camPos.v[2] = camera.transform.position.z * SCENE_SCALE;
-    struct Vector3 camera_target;
-    quatMultVector(&camera.transform.rotation, &gForward, &camera_target);
-    vector3Add(&camera.transform.position, &camera_target, &camera_target);
-
-    camTarget.v[0] = camera_controller.target.x * SCENE_SCALE;
-    camTarget.v[1] = (camera_controller.target.y + CAMERA_FOLLOW_HEIGHT) * SCENE_SCALE;
-    camTarget.v[2] = camera_controller.target.z * SCENE_SCALE;
-    t3d_viewport_look_at(viewport, &camPos, &camTarget, &(T3DVec3){{0,1,0}});
-
-    render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool], &fog);
 }
 
 void render()
@@ -167,7 +188,7 @@ void render()
     render3d();
 
     // ======== Draw (UI) ======== //
-    // TODO: Pack UI in its own function and register UI update callbacks
+    //TODO: Pack UI in its own function and register UI update callbacks
     float posX = 16;
     float posY = 24;
     float fps = display_get_fps();
@@ -195,7 +216,14 @@ int main()
     debug_init_usblog();
     dfs_init(DFS_DEFAULT_LOCATION);
 
+    #if DEBUG //set up raylib window
+    InitWindow(320, 240, "raylib test");
+    SetTargetFPS(60);
+    #endif
+
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS);
+
+ 
 
     rdpq_init();
     joypad_init();
@@ -237,6 +265,10 @@ int main()
         // ======== Update Joypad ======== //
         joypad_poll();
 
+        if(joypad_get_buttons_pressed(0).start){
+            render_collision = !render_collision;
+        }
+
         // ======== Run the Update Callbacks ======== //
         update_dispatch();
 
@@ -253,11 +285,11 @@ int main()
 
         // ======== Render the Game ======== //
 
+        
         rdpq_attach(display_get(), display_get_zbuf());
-
         render();
-
         rdpq_detach_show();
+        
     }
 
     t3d_destroy();

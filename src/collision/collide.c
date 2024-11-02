@@ -42,7 +42,7 @@ void correct_overlap(struct dynamic_object* object, struct EpaResult* result, fl
             dynamic_object_set_velocity(object, &vel);
         }
         
-        object->is_grounded = 1;
+        // object->is_grounded = 1;
     }
     // correct_velocity(object, result, ratio, friction, bounce);
 

@@ -14,7 +14,8 @@ void box_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* ou
 }
 
 void box_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {
-    union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)data;
+    struct dynamic_object* object = (struct dynamic_object*)data;
+    union dynamic_object_type_data* shape_data = &object->type->data;
     struct Vector3* half_size = &shape_data->box.half_size;
 
     // Define the local basis vectors for the oriented box

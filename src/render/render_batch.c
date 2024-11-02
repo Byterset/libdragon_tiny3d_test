@@ -555,5 +555,5 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             element->callback.callback(element->callback.data, batch);
         }
     }
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, 20, 80, "culled: %d", frustum_cull_count);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, 20, 85, "culled: %d", frustum_cull_count);
 }

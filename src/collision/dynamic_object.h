@@ -18,6 +18,7 @@ enum collision_layers {
     COLLISION_LAYER_TANGIBLE = (1 << 0),
     COLLISION_LAYER_DAMAGE_PLAYER = (1 << 1),
     COLLISION_LAYER_DAMAGE_ENEMY = (1 << 2),
+    COLLISION_LAYER_PLATFORM = (1 << 3),
 };
 
 enum collision_group {
@@ -25,6 +26,15 @@ enum collision_group {
 };
 
 typedef void (*bounding_box_calculator)(void* data, struct Quaternion* rotation, struct AABB* box);
+
+typedef enum dynamic_object_type_id {
+    DYNAMIC_OBJECT_TYPE_SPHERE,
+    DYNAMIC_OBJECT_TYPE_CAPSULE,
+    DYNAMIC_OBJECT_TYPE_BOX,
+    DYNAMIC_OBJECT_TYPE_CONE,
+    DYNAMIC_OBJECT_TYPE_CYLINDER,
+    DYNAMIC_OBJECT_TYPE_SWEEP,
+} dynamic_object_type_id;
 
 union dynamic_object_type_data
 {
@@ -40,6 +50,7 @@ struct dynamic_object_type {
     MinkowskiSum minkowski_sum;
     bounding_box_calculator bounding_box;
     union dynamic_object_type_data data;
+    dynamic_object_type_id type;
     float bounce;
     float friction;
 };

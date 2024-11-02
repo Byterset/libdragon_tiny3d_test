@@ -7,12 +7,14 @@ include $(T3D_INST)/t3d.mk
 
 MK_ASSET=$(N64_INST)/bin/mkasset
 
-N64_CFLAGS += -std=gnu2x -Og
+N64_CFLAGS += -std=gnu2x -Og -DDEBUG=1
 # N64_ASSET_FLAGS += -c 2 -w 256
 
 PROJECT_NAME=t3d_test
 
 src = src/main.c
+
+LDFLAGS += -lraylib
 
 all: $(PROJECT_NAME).z64
 
