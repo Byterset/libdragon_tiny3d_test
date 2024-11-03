@@ -11,6 +11,7 @@
 #define PI 3.14159265358979323846f
 #define HALF_PI (PI / 2.0f)
 #define TWO_PI (2.0f * PI)
+#define EPSILON 0.00001f
 
 int randomInt();
 int randomInRange(int min, int maxPlusOne);

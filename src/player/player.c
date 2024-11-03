@@ -17,13 +17,13 @@ static struct Vector2 player_max_rotation;
 
 static struct dynamic_object_type player_collision = {
     .minkowski_sum = capsule_minkowski_sum,
-    .bounding_box = capsule_bounding_box,
+    .bounding_box_calculator = capsule_bounding_box,
     .data = {
         .capsule = {
             .radius = 1.0f,
             .inner_half_height = 0.75f,
         }},
-    .type = DYNAMIC_OBJECT_TYPE_CAPSULE,
+    .type_id = DYNAMIC_OBJECT_TYPE_CAPSULE,
 };
 
 // static struct dynamic_object_type player_collision = {
@@ -211,7 +211,7 @@ void player_init(struct player* player, struct player_definition* definition, st
     player->collision.has_gravity = 1;
     
 
-    player->collision.center.y = player_collision.data.capsule.inner_half_height + player_collision.data.capsule.radius;
+    player->collision.center_offset.y = player_collision.data.capsule.inner_half_height + player_collision.data.capsule.radius;
     // player->collision.center.y = player_collision.data.cylinder.half_height;
 
     collision_scene_add(&player->collision);

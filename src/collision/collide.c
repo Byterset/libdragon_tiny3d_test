@@ -32,7 +32,7 @@ void correct_overlap(struct dynamic_object* object, struct EpaResult* result, fl
     
     float angle = acosf(vector3Dot(&gUp, &result->normal)); // gives the angle between the normal and the up vector in radians
     struct collision_scene* scene = collision_scene_get();
-    dynamic_object_recalc_bb(object);
+    dynamic_object_recalculate_aabb(object);
     AABBTree_moveNode(&scene->object_aabbtree, object->aabb_tree_node, object->bounding_box, &correction);
     
     if (correction.y > 0.0f && result->normal.y > 0.5f) {
@@ -42,7 +42,6 @@ void correct_overlap(struct dynamic_object* object, struct EpaResult* result, fl
             dynamic_object_set_velocity(object, &vel);
         }
         
-        // object->is_grounded = 1;
     }
     // correct_velocity(object, result, ratio, friction, bounce);
 

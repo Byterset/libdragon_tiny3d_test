@@ -19,9 +19,9 @@ void dynamic_object_init(
     object->type = type;
     object->position = position;
     object->prev_position = *position;
-    object->rotation_quat = rotation;
+    object->rotation = rotation;
     object->velocity = gZeroVec;
-    object->center = gZeroVec;
+    object->center_offset = gZeroVec;
     object->time_scalar = 1.0f;
     object->mass = mass;
     object->mass_inv = 1.0f / mass;
@@ -33,7 +33,7 @@ void dynamic_object_init(
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
-    dynamic_object_recalc_bb(object);
+    dynamic_object_recalculate_aabb(object);
 }
 
 /// @brief Applies gravity and performs verlet integration on the object.
@@ -64,7 +64,6 @@ void dynamic_object_update(struct dynamic_object* object) {
 void dynamic_object_apply_constraints(struct dynamic_object* object){
     if (object->position->y <= 0){
         dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, 0, object->position->z});
-        // object->is_grounded = 1;
     }
     if (object->position->y >= 2000){
         dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, 2000, object->position->z});
@@ -157,22 +156,22 @@ void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct 
     struct dynamic_object* object = (struct dynamic_object*)data;
     struct Vector3 world_center;
     struct Vector3 localDir;
-    if(object->rotation_quat){
+    if(object->rotation){
         struct Quaternion inv_rotation;
-        quatConjugate(object->rotation_quat, &inv_rotation);
+        quatConjugate(object->rotation, &inv_rotation);
         quatMultVector(&inv_rotation, direction, &localDir);
-        quatMultVector(object->rotation_quat, &object->center, &world_center);
+        quatMultVector(object->rotation, &object->center_offset, &world_center);
     }
     else{
         vector3Copy(direction, &localDir);
-        vector3Copy(&object->center, &world_center);
+        vector3Copy(&object->center_offset, &world_center);
     }
     vector3Normalize(&localDir, &localDir);
 
     object->type->minkowski_sum(object, &localDir, output);
 
-    if(object->rotation_quat){
-        quatMultVector(object->rotation_quat, output, output);
+    if(object->rotation){
+        quatMultVector(object->rotation, output, output);
     }
 
     vector3Add(output, object->position, output);
@@ -182,15 +181,20 @@ void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct 
 
 /// @brief re-caluclates the bounding box of the object using the collision type's bounding box function
 /// @param object 
-void dynamic_object_recalc_bb(struct dynamic_object* object) {
-    object->type->bounding_box(object, object->rotation_quat, &object->bounding_box);
+void dynamic_object_recalculate_aabb(struct dynamic_object* object) {
+    //calculate bounding box for object in local space
+    object->type->bounding_box_calculator(object, object->rotation, &object->bounding_box);
     struct Vector3 offset;
-    if(object->rotation_quat){
-        quatMultVector(object->rotation_quat, &object->center, &offset);
+
+    //calculate the rotated center offset if the object has a rotation
+    if(object->rotation){
+        quatMultVector(object->rotation, &object->center_offset, &offset);
     }
     else{
-        vector3Copy(&object->center, &offset);
+        vector3Copy(&object->center_offset, &offset);
     }
+
+    //calculate world space bounding box limits
     vector3Add(&offset, object->position, &offset);
     vector3Add(&object->bounding_box.min, &offset, &object->bounding_box.min);
     vector3Add(&object->bounding_box.max, &offset, &object->bounding_box.max);

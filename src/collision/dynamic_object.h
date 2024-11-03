@@ -48,23 +48,23 @@ union dynamic_object_type_data
 
 struct dynamic_object_type {
     MinkowskiSum minkowski_sum;
-    bounding_box_calculator bounding_box;
+    bounding_box_calculator bounding_box_calculator;
     union dynamic_object_type_data data;
-    dynamic_object_type_id type;
+    dynamic_object_type_id type_id;
     float bounce;
     float friction;
 };
 
 struct dynamic_object {
     entity_id entity_id;
-    struct dynamic_object_type* type;
+    struct dynamic_object_type* type; // information about the collision shape
     struct Vector3* position;
     struct Vector3 prev_position;
-    struct Quaternion* rotation_quat;
-    struct Vector3 center;
+    struct Quaternion* rotation;
+    struct Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
     struct Vector3 velocity;
     struct Vector3 acceleration;
-    struct AABB bounding_box;
+    struct AABB bounding_box; // the bounding box fitting the object collider, used for broad phase collision detection
     float time_scalar;
     float mass;
     float mass_inv;
@@ -104,6 +104,6 @@ void dynamic_object_apply_impulse(struct dynamic_object* object, struct Vector3*
 void dynamic_object_apply_constraints(struct dynamic_object* object);
 
 void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
-void dynamic_object_recalc_bb(struct dynamic_object* object);
+void dynamic_object_recalculate_aabb(struct dynamic_object* object);
 
 #endif

@@ -56,7 +56,7 @@ struct platform plat;
 struct fire fire;
 struct skybox_flat skybox_flat;
 struct mesh_collider test_mesh_collider;
-int render_collision = 1;
+int render_collision = 0;
 
 struct camera camera;
 struct camera_controller camera_controller;
@@ -207,7 +207,7 @@ void render()
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "Vel: %.2f, %.2f, %.2f", player.collision.velocity.x, player.collision.velocity.y, player.collision.velocity.z);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Grounded: %d",  player.collision.is_grounded);
+    // rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Grounded: %d",  player.collision.is_grounded);
 }
 
 int main()
@@ -237,7 +237,7 @@ int main()
     register_VI_handler(on_vi_interrupt);
 
     t3d_vec3_norm(&lightDirVec);
-    const int64_t l_dt = TICKS_FROM_US(SEC_TO_USEC(FIXED_DELTATIME));
+    const int64_t l_fixed_dt_ticks = TICKS_FROM_US(SEC_TO_USEC(FIXED_DELTATIME));
 
     debugf("Completed Initialization!\n");
 
@@ -267,20 +267,21 @@ int main()
 
         if(joypad_get_buttons_pressed(0).start){
             render_collision = !render_collision;
+            // render_collision ? update_pause_layers(UPDATE_LAYER_WORLD) : update_unpause_layers(UPDATE_LAYER_WORLD);
         }
 
         // ======== Run the Update Callbacks ======== //
         update_dispatch();
 
         // ======== Run the Physics in a fixed Deltatime Loop ======== //
-        while (accumulator_ticks >= l_dt)
+        while (accumulator_ticks >= l_fixed_dt_ticks)
         {
 
             if (update_has_layer(UPDATE_LAYER_WORLD))
             {
                 collision_scene_collide();
             }
-            accumulator_ticks -= l_dt;
+            accumulator_ticks -= l_fixed_dt_ticks;
         }
 
         // ======== Render the Game ======== //

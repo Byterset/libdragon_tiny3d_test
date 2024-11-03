@@ -4,32 +4,20 @@
 #include "../../render/render_scene.h"
 #include "../../collision/collision_scene.h"
 #include "../../collision/shapes/box.h"
-#include "../../collision/shapes/sphere.h"
 #include "../../time/time.h"
 #include "../../entity/entity_id.h"
 #include "../../render/defs.h"
 
 static struct dynamic_object_type box_collision = {
     .minkowski_sum = box_minkowski_sum,
-    .bounding_box = box_bounding_box,
+    .bounding_box_calculator = box_bounding_box,
     .data = {
         .box = {
             .half_size = {1.0f, 1.0f, 1.0f}
         }
     },
-    .type = DYNAMIC_OBJECT_TYPE_BOX,
+    .type_id = DYNAMIC_OBJECT_TYPE_BOX,
 };
-
-// static struct dynamic_object_type box_collision = {
-//     .minkowski_sum = sphere_minkowski_sum,
-//     .bounding_box = sphere_bounding_box,
-//     .data = {
-//         .sphere = {
-//             .radius = 1.0f
-//         }
-//     },
-//     .type = DYNAMIC_OBJECT_TYPE_SPHERE,
-// };
 
 void box_update(struct box* box){
     if (box->transform.position.y <= 0)
@@ -64,8 +52,7 @@ void box_init(struct box* box, struct box_definition* def){
         10.0f
     );
 
-    box->collision.center.y = box_collision.data.box.half_size.y;
-    // box->collision.center.y = box_collision.data.sphere.radius;
+    box->collision.center_offset.y = box_collision.data.box.half_size.y;
 
 
     box->collision.has_gravity = 1;

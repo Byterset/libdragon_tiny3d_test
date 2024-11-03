@@ -8,6 +8,7 @@
 
 #include "aabb.h"
 #include <math.h>
+#include "mathf.h"
 
 
 
@@ -66,12 +67,14 @@ int AABBHasOverlap(struct AABB* a, struct AABB* b) {
 /// @param max_distance Maximum distance of the ray after which intersections should not be considered.
 /// @return 
 int AABBIntersectsRay(struct AABB* box, struct RayCast* ray){
-    float tmin = -__FLT_MAX__;
-    float tmax = __FLT_MAX__;
+    float t_near = -FLT_MAX;
+    float t_far = FLT_MAX;
     float t1, t2;
-    float epsilon = __FLT_EPSILON__;
-    if (fabsf(ray->dir.x) < epsilon)
+
+    // check if ray is parallel to X plane
+    if (fabsf(ray->dir.x) < EPSILON)
     {
+        // if ray is not between the two x planes of the aabb there can be no intersection
         if (ray->origin.x < box->min.x || ray->origin.x > box->max.x)
             return 0;
     }
@@ -79,12 +82,15 @@ int AABBIntersectsRay(struct AABB* box, struct RayCast* ray){
     {
         t1 = (box->min.x - ray->origin.x) / ray->dir.x;
         t2 = (box->max.x - ray->origin.x) / ray->dir.x;
-        tmin = fmaxf(tmin, fminf(t1, t2));
-        tmax = fminf(tmax, fmaxf(t1, t2));
+        t_near = fmaxf(t_near, fminf(t1, t2));
+        t_far = fminf(t_far, fmaxf(t1, t2));
     }
-    if (tmin > tmax)
+    // if the near intersection is further than the far intersection there is no intersection
+    if (t_near > t_far)
         return 0;
-    if (fabsf(ray->dir.y) < epsilon)
+
+    // repeat for y and z planes
+    if (fabsf(ray->dir.y) < EPSILON)
     {
         if (ray->origin.y < box->min.y || ray->origin.y > box->max.y)
             return 0;
@@ -93,12 +99,12 @@ int AABBIntersectsRay(struct AABB* box, struct RayCast* ray){
     {
         t1 = (box->min.y - ray->origin.y) / ray->dir.y;
         t2 = (box->max.y - ray->origin.y) / ray->dir.y;
-        tmin = fmaxf(tmin, fminf(t1, t2));
-        tmax = fminf(tmax, fmaxf(t1, t2));
+        t_near = fmaxf(t_near, fminf(t1, t2));
+        t_far = fminf(t_far, fmaxf(t1, t2));
     }
-    if (tmin > tmax)
+    if (t_near > t_far)
         return 0;
-    if (fabsf(ray->dir.z) < epsilon)
+    if (fabsf(ray->dir.z) < EPSILON)
     {
         if (ray->origin.z < box->min.z || ray->origin.z > box->max.z)
             return 0;
@@ -107,12 +113,14 @@ int AABBIntersectsRay(struct AABB* box, struct RayCast* ray){
     {
         t1 = (box->min.z - ray->origin.z) / ray->dir.z;
         t2 = (box->max.z - ray->origin.z) / ray->dir.z;
-        tmin = fmaxf(tmin, fminf(t1, t2));
-        tmax = fminf(tmax, fmaxf(t1, t2));
+        t_near = fmaxf(t_near, fminf(t1, t2));
+        t_far = fminf(t_far, fmaxf(t1, t2));
     }
-    if (tmin > tmax)
+    if (t_near > t_far)
         return 0;
-    return (tmin >= 0 && tmin < ray->maxDistance);
+
+    // make sure the intersection is within the bounds of the ray
+    return (t_near >= 0 && t_near < ray->maxDistance);
 }
 
 /**

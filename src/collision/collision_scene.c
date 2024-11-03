@@ -293,7 +293,7 @@ void collision_scene_collide() {
         dynamic_object_update(element->object);
 
 
-        dynamic_object_recalc_bb(element->object);
+        dynamic_object_recalculate_aabb(element->object);
 
         struct Vector3 displacement;
         vector3Sub(element->object->position, &element->object->prev_position, &displacement);
@@ -347,7 +347,7 @@ void positioned_shape_mink_sum(void* data, struct Vector3* direction, struct Vec
 
 void collision_scene_query(struct dynamic_object_type* shape, struct Vector3* center, int collision_layers, collision_scene_query_callback callback, void* callback_data) {
     struct AABB bounding_box;
-    shape->bounding_box(&shape->data, NULL, &bounding_box);
+    shape->bounding_box_calculator(&shape->data, NULL, &bounding_box);
     vector3Add(&bounding_box.min, center, &bounding_box.min);
     vector3Add(&bounding_box.max, center, &bounding_box.max);
 
@@ -385,14 +385,14 @@ void collision_scene_render_debug_raylib(){
         struct collision_scene_element* element = &g_scene.elements[i];
         struct dynamic_object* object = element->object;
 
-        struct Vector3 world_center;
+        struct Vector3 center_offset_rotated;
 
-        if (object->rotation_quat)
-            quatMultVector(object->rotation_quat, &object->center, &world_center);
+        if (object->rotation)
+            quatMultVector(object->rotation, &object->center_offset, &center_offset_rotated);
         else
-            vector3Copy(&object->center, &world_center);
+            vector3Copy(&object->center_offset, &center_offset_rotated);
 
-        if(object->type->type == DYNAMIC_OBJECT_TYPE_CAPSULE){
+        if(object->type->type_id == DYNAMIC_OBJECT_TYPE_CAPSULE){
             // Get capsule dimensions
             float half_height = object->type->data.capsule.inner_half_height;
             float radius = object->type->data.capsule.radius;
@@ -403,8 +403,8 @@ void collision_scene_render_debug_raylib(){
             // Rotate the central axis by the given rotation to get its orientation in world space
             struct Vector3 world_axis;
             
-            if (object->rotation_quat)
-                quatMultVector(object->rotation_quat, &local_axis, &world_axis);
+            if (object->rotation)
+                quatMultVector(object->rotation, &local_axis, &world_axis);
             else
                 vector3Copy(&local_axis, &world_axis);
 
@@ -415,8 +415,8 @@ void collision_scene_render_debug_raylib(){
             vector3Scale(&end, &end, -1.0f);
             vector3Add(&start, object->position, &start);
             vector3Add(&end, object->position, &end);
-            vector3Add(&end, &world_center, &end);
-            vector3Add(&start, &world_center, &start);
+            vector3Add(&end, &center_offset_rotated, &end);
+            vector3Add(&start, &center_offset_rotated, &start);
 
             DrawCapsuleWires(
                 (Raylib_Vector3){start.x * SCENE_SCALE, start.y * SCENE_SCALE, start.z * SCENE_SCALE},
@@ -427,7 +427,7 @@ void collision_scene_render_debug_raylib(){
                 RED
             );
         }
-        else if(object->type->type == DYNAMIC_OBJECT_TYPE_BOX){
+        else if(object->type->type_id == DYNAMIC_OBJECT_TYPE_BOX){
             // Get capsule dimensions
             struct Vector3 half_size = object->type->data.box.half_size;
             struct Vector3 worldPos;
@@ -436,24 +436,24 @@ void collision_scene_render_debug_raylib(){
 
             Raylib_Model cubeModel = LoadModelFromMesh(cubeMesh);
 
-            Raylib_Quaternion q = {.x = object->rotation_quat->x, .y = object->rotation_quat->y, .z = object->rotation_quat->z, .w = object->rotation_quat->w};
+            Raylib_Quaternion q = {.x = object->rotation->x, .y = object->rotation->y, .z = object->rotation->z, .w = object->rotation->w};
             Matrix m = QuaternionToMatrix(q);
             cubeModel.transform = MatrixMultiply(m, cubeModel.transform); // something like that
-            vector3Add(object->position, &world_center, &worldPos);
+            vector3Add(object->position, &center_offset_rotated, &worldPos);
             
             Raylib_Vector3 pos = {worldPos.x * SCENE_SCALE, worldPos.y * SCENE_SCALE, worldPos.z * SCENE_SCALE};
 
             DrawModelWires(cubeModel, pos, SCENE_SCALE, GREEN);
             UnloadModel(cubeModel);
         }        
-        else if(object->type->type == DYNAMIC_OBJECT_TYPE_SPHERE){
+        else if(object->type->type_id == DYNAMIC_OBJECT_TYPE_SPHERE){
             float radius = object->type->data.sphere.radius;
             struct Vector3 worldPos;
-            vector3Add(object->position, &world_center, &worldPos);
+            vector3Add(object->position, &center_offset_rotated, &worldPos);
             Raylib_Vector3 pos = {worldPos.x * SCENE_SCALE, worldPos.y * SCENE_SCALE, worldPos.z * SCENE_SCALE};
             DrawSphereWires(pos, radius * SCENE_SCALE, 3, 3, YELLOW);
         }
-        else if(object->type->type == DYNAMIC_OBJECT_TYPE_CYLINDER){
+        else if(object->type->type_id == DYNAMIC_OBJECT_TYPE_CYLINDER){
             // Get capsule dimensions
             float half_height = object->type->data.cylinder.half_height;
             float radius = object->type->data.cylinder.radius;
@@ -464,8 +464,8 @@ void collision_scene_render_debug_raylib(){
             // Rotate the central axis by the given rotation to get its orientation in world space
             struct Vector3 world_axis;
             
-            if (object->rotation_quat)
-                quatMultVector(object->rotation_quat, &local_axis, &world_axis);
+            if (object->rotation)
+                quatMultVector(object->rotation, &local_axis, &world_axis);
             else
                 vector3Copy(&local_axis, &world_axis);
 
@@ -476,8 +476,8 @@ void collision_scene_render_debug_raylib(){
             vector3Scale(&end, &end, -1.0f);
             vector3Add(&start, object->position, &start);
             vector3Add(&end, object->position, &end);
-            vector3Add(&end, &world_center, &end);
-            vector3Add(&start, &world_center, &start);
+            vector3Add(&end, &center_offset_rotated, &end);
+            vector3Add(&start, &center_offset_rotated, &start);
 
             DrawCylinderWiresEx(
                 (Raylib_Vector3){start.x * SCENE_SCALE, start.y * SCENE_SCALE, start.z * SCENE_SCALE},

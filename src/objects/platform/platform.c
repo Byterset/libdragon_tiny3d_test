@@ -4,7 +4,6 @@
 #include "../../render/render_scene.h"
 #include "../../collision/collision_scene.h"
 #include "../../collision/shapes/box.h"
-#include "../../collision/shapes/capsule.h"
 #include "../../time/time.h"
 #include "../../entity/entity_id.h"
 #include "../../render/defs.h"
@@ -12,26 +11,14 @@
 
 static struct dynamic_object_type platform_collision = {
     .minkowski_sum = box_minkowski_sum,
-    .bounding_box = box_bounding_box,
+    .bounding_box_calculator = box_bounding_box,
     .data = {
         .box = {
             .half_size = {6.0f, 0.5f, 3.0f}
         }
     },
-    .type = DYNAMIC_OBJECT_TYPE_BOX,
+    .type_id = DYNAMIC_OBJECT_TYPE_BOX,
 };
-
-// static struct dynamic_object_type platform_collision = {
-//     .minkowski_sum = capsule_minkowski_sum,
-//     .bounding_box = capsule_bounding_box,
-//     .data = {
-//         .capsule = {
-//             .inner_half_height = 3.0f,
-//             .radius = 2.0f
-//         }
-//     },
-//     .type = DYNAMIC_OBJECT_TYPE_CAPSULE,
-// };
 
 void platform_update(struct platform* platform){
     platform->rot_x = 0.8f * frametime_sec;
@@ -61,8 +48,7 @@ void platform_init(struct platform* platform, struct platform_definition* def){
         10.0f
     );
 
-    platform->collision.center.y = platform_collision.data.box.half_size.y;
-    // platform->collision.center.y = platform_collision.data.capsule.inner_half_height + platform_collision.data.capsule.radius;
+    platform->collision.center_offset.y = platform_collision.data.box.half_size.y;
 
     platform->collision.has_gravity = 0;
     platform->collision.is_fixed = 1;
