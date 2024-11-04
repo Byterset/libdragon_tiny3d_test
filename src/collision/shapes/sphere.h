@@ -6,7 +6,7 @@
 #include "../../math/aabb.h"
 #include "../../math/quaternion.h"
 
-void sphere_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
+void sphere_support_function(void* data, struct Vector3* direction, struct Vector3* output);
 void sphere_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box);
 
 #endif

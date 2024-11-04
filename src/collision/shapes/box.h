@@ -6,7 +6,7 @@
 #include "../../math/quaternion.h"
 #include "../../math/aabb.h"
 
-void box_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
+void box_support_function(void* data, struct Vector3* direction, struct Vector3* output);
 void box_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box);
 
 #endif

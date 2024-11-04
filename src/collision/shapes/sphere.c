@@ -1,13 +1,13 @@
 #include "sphere.h"
 
-#include "../dynamic_object.h"
+#include "../physics_object.h"
 #include <math.h>
 
 #define SQRT_1_3  0.577350269f
 
-void sphere_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output) {
-    struct dynamic_object* object = (struct dynamic_object*)data;
-    union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)&object->type->data;
+void sphere_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)&object->collision->shape_data;
 
     float radius = shape_data->sphere.radius;
 
@@ -16,8 +16,8 @@ void sphere_minkowski_sum(void* data, struct Vector3* direction, struct Vector3*
 }
 
 void sphere_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {
-    struct dynamic_object* object = (struct dynamic_object*)data;
-    union dynamic_object_type_data* shape_data = &object->type->data;
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
 
     vector3Scale(&gOneVec, &box->max, shape_data->sphere.radius);
     vector3Scale(&gOneVec, &box->min, -shape_data->sphere.radius);

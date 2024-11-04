@@ -8,15 +8,15 @@
 #include "../../entity/entity_id.h"
 #include "../../render/defs.h"
 
-static struct dynamic_object_type box_collision = {
-    .minkowski_sum = box_minkowski_sum,
+static struct physics_object_collision_data box_collision = {
+    .gjk_support_function = box_support_function,
     .bounding_box_calculator = box_bounding_box,
-    .data = {
+    .shape_data = {
         .box = {
             .half_size = {1.0f, 1.0f, 1.0f}
         }
     },
-    .type_id = DYNAMIC_OBJECT_TYPE_BOX,
+    .shape_type = COLLISION_SHAPE_BOX,
 };
 
 void box_update(struct box* box){
@@ -42,7 +42,7 @@ void box_init(struct box* box, struct box_definition* def){
     render_scene_add_renderable(&box->renderable, 1.0f);
 
 
-    dynamic_object_init(
+    physics_object_init(
         entity_id,
         &box->collision,
         &box_collision,
@@ -52,7 +52,7 @@ void box_init(struct box* box, struct box_definition* def){
         10.0f
     );
 
-    box->collision.center_offset.y = box_collision.data.box.half_size.y;
+    box->collision.center_offset.y = box_collision.shape_data.box.half_size.y;
 
 
     box->collision.has_gravity = 1;

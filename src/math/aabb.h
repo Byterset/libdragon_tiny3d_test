@@ -33,6 +33,8 @@ struct AABB AABBUnion(struct AABB* a, struct AABB* b);
 
 struct AABB AABBUnionPoint(struct AABB* a, struct Vector3* point);
 
+struct AABB AABBFromTriangle(struct Vector3* a, struct Vector3* b, struct Vector3* c);
+
 void AABBExtendDirection(struct AABB* a, struct Vector3* direction, struct AABB* out);
 
 void AABBSupportFunction(struct AABB* box, struct Vector3* input, struct Vector3* output);

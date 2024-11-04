@@ -13,8 +13,8 @@ struct EpaResult {
     float penetration;
 };
 
-bool epaSolve(struct Simplex* startingSimplex, void* objectA, MinkowskiSum objectASum, void* objectB, MinkowskiSum objectBSum, struct EpaResult* result);
-int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, MinkowskiSum objectASum, void* objectB, MinkowskiSum objectBSum, struct Vector3* bStart, struct Vector3* bEnd, struct EpaResult* result);
+bool epaSolve(struct Simplex* startingSimplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSum, struct EpaResult* result);
+int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSum, struct Vector3* bStart, struct Vector3* bEnd, struct EpaResult* result);
 void epaSwapResult(struct EpaResult* result);
 
 #endif

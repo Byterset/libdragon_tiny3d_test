@@ -7,13 +7,13 @@
 #include "../../render/render_batch.h"
 #include "../../render/renderable.h"
 #include "../../render/model.h"
-#include "../../collision/dynamic_object.h"
+#include "../../collision/physics_object.h"
 #include "../../scene/scene_definition.h"
 
 struct box {
     struct Transform transform;
     struct renderable renderable;
-    struct dynamic_object collision;
+    struct physics_object collision;
     struct Vector2 look_direction;
 };
 

@@ -164,7 +164,7 @@ int simplexCheck(struct Simplex* simplex, struct Vector3* nextDirection) {
 
 #define MAX_GJK_ITERATIONS  12
 
-int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, MinkowskiSum objectASum, void* objectB, MinkowskiSum objectBSum, struct Vector3* firstDirection) {
+int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSupport, struct Vector3* firstDirection) {
     struct Vector3 aPoint;
     struct Vector3 bPoint;
     struct Vector3 nextDirection;
@@ -172,24 +172,24 @@ int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, MinkowskiSum obje
     simplexInit(simplex);
 
     if (vector3IsZero(firstDirection)) {
-        objectASum(objectA, &gRight, &aPoint);
+        objectASupport(objectA, &gRight, &aPoint);
         vector3Negate(&gRight, &nextDirection);
 
-        objectBSum(objectB, &nextDirection, &bPoint);
+        objectBSupport(objectB, &nextDirection, &bPoint);
         simplexAddPoint(simplex, &aPoint, &bPoint);
     } else {
-        objectASum(objectA, firstDirection, &aPoint);
+        objectASupport(objectA, firstDirection, &aPoint);
         vector3Negate(firstDirection, &nextDirection);
 
-        objectBSum(objectB, &nextDirection, &bPoint);
+        objectBSupport(objectB, &nextDirection, &bPoint);
         simplexAddPoint(simplex, &aPoint, &bPoint);
     }
 
     for (int iteration = 0; iteration < MAX_GJK_ITERATIONS; ++iteration) {
         struct Vector3 reverseDirection;
         vector3Negate(&nextDirection, &reverseDirection);
-        objectASum(objectA, &nextDirection, &aPoint);
-        objectBSum(objectB, &reverseDirection, &bPoint);
+        objectASupport(objectA, &nextDirection, &aPoint);
+        objectBSupport(objectB, &reverseDirection, &bPoint);
 
         struct Vector3* addedPoint = simplexAddPoint(simplex, &aPoint, &bPoint);
 

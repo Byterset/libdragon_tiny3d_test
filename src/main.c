@@ -26,6 +26,7 @@
 #include "scene/camera_controller.h"
 
 #include "resource/model_cache.h"
+#include "resource/mesh_collider.h"
 #include "render/renderable.h"
 
 #include "render/defs.h"
@@ -107,10 +108,12 @@ void setup()
 
     camera_controller_init(&camera_controller, &camera, &player);
     
-
+    
     // TODO: implement mesh collision new
-    //  mesh_collider_load(&world->mesh_collider, file);
-    // collision_scene_use_static_collision(&world->mesh_collider);
+
+    mesh_collider_load_test(&test_mesh_collider);
+    collision_scene_use_static_collision(&test_mesh_collider);
+    
 }
 
 void render3d()
@@ -223,8 +226,6 @@ int main()
 
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS);
 
- 
-
     rdpq_init();
     joypad_init();
 
@@ -279,7 +280,7 @@ int main()
 
             if (update_has_layer(UPDATE_LAYER_WORLD))
             {
-                collision_scene_collide();
+                collision_scene_step();
             }
             accumulator_ticks -= l_fixed_dt_ticks;
         }

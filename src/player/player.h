@@ -6,10 +6,10 @@
 #include "../render/render_batch.h"
 #include "../render/renderable.h"
 #include "../render/model.h"
-#include "../collision/dynamic_object.h"
+#include "../collision/physics_object.h"
 #include <t3d/t3danim.h>
 
-#define PLAYER_MOVE_SPEED 5.0f
+#define PLAYER_MOVE_SPEED 8.0f
 #define PLAYER_TURN_SPEED 20.0f
 
 
@@ -32,7 +32,7 @@ struct player {
     struct Vector2 look_direction;
     bool is_attacking;
     bool is_jumping;
-    struct dynamic_object collision;
+    struct physics_object collision;
     T3DSkeleton skelBlend;
     struct player_animations animations;
 };

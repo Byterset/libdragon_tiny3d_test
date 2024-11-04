@@ -15,27 +15,16 @@
 
 static struct Vector2 player_max_rotation;
 
-static struct dynamic_object_type player_collision = {
-    .minkowski_sum = capsule_minkowski_sum,
+static struct physics_object_collision_data player_collision = {
+    .gjk_support_function = capsule_support_function,
     .bounding_box_calculator = capsule_bounding_box,
-    .data = {
+    .shape_data = {
         .capsule = {
             .radius = 1.0f,
             .inner_half_height = 0.75f,
         }},
-    .type_id = DYNAMIC_OBJECT_TYPE_CAPSULE,
+    .shape_type = COLLISION_SHAPE_CAPSULE,
 };
-
-// static struct dynamic_object_type player_collision = {
-//     .minkowski_sum = cylinder_minkowski_sum,
-//     .bounding_box = cylinder_bounding_box,
-//     .data = {
-//         .cylinder = {
-//             .radius = 1.0f,
-//             .half_height = 1.75f,
-//         }},
-//     .type = DYNAMIC_OBJECT_TYPE_CYLINDER,
-// };
 
 void player_get_move_basis(struct Transform* transform, struct Vector3* forward, struct Vector3* right) {
     quatMultVector(&transform->rotation, &gForward, forward);
@@ -63,6 +52,7 @@ void player_update(struct player* player) {
 
     joypad_inputs_t input = joypad_get_inputs(0);
     joypad_buttons_t pressed = joypad_get_buttons_pressed(0);
+    joypad_buttons_t held = joypad_get_buttons_held(0);
 
     player_get_move_basis(player->camera_transform, &forward, &right);
 
@@ -81,8 +71,8 @@ void player_update(struct player* player) {
     }
     if (pressed.b){
         float jumpVelocity = sqrtf(2.0f * 9.8 * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
-        // dynamic_object_set_velocity(&player->collision, &(struct Vector3){0, jumpVelocity * FIXED_DELTATIME, 0});
-        dynamic_object_accelerate(&player->collision, &(struct Vector3){0, jumpVelocity * 1 / FIXED_DELTATIME, 0});
+        // physics_object_set_velocity(&player->collision, &(struct Vector3){0, jumpVelocity * FIXED_DELTATIME, 0});
+        physics_object_accelerate(&player->collision, &(struct Vector3){0, jumpVelocity * 1 / FIXED_DELTATIME, 0});
 
     }
 
@@ -125,9 +115,14 @@ void player_update(struct player* player) {
     vector3AddScaled(&directionWorld, &forward, direction.y, &directionWorld);
 
     struct Vector3 translation;
-    vector3Scale(&directionWorld, &translation, frametime_sec * PLAYER_MOVE_SPEED);
+    if(held.r){
+        vector3Scale(&directionWorld, &translation, frametime_sec * PLAYER_MOVE_SPEED * 10);
+    }
+    else{
+        vector3Scale(&directionWorld, &translation, frametime_sec * PLAYER_MOVE_SPEED );
+    }   
 
-    dynamic_object_translate_no_force(&player->collision, &translation);
+    physics_object_translate_no_force(&player->collision, &translation);
 
     if (magSqrd > 0.01f) {
         struct Vector2 directionUnit;
@@ -159,7 +154,7 @@ void player_update(struct player* player) {
 
     while (contact) {
         // struct collectable* collectable = collectable_get(contact->other_object);
-        // debugf("Collision with %d\n", contact->other_object);
+        debugf("Collision with %d\n", contact->other_object);
         // if (collectable) {
         //     collectable_collected(collectable);
         // }
@@ -196,7 +191,7 @@ void player_init(struct player* player, struct player_definition* definition, st
 
     
 
-    dynamic_object_init(
+    physics_object_init(
         entity_id,
         &player->collision,
         &player_collision,
@@ -211,7 +206,7 @@ void player_init(struct player* player, struct player_definition* definition, st
     player->collision.has_gravity = 1;
     
 
-    player->collision.center_offset.y = player_collision.data.capsule.inner_half_height + player_collision.data.capsule.radius;
+    player->collision.center_offset.y = player_collision.shape_data.capsule.inner_half_height + player_collision.shape_data.capsule.radius;
     // player->collision.center.y = player_collision.data.cylinder.half_height;
 
     collision_scene_add(&player->collision);

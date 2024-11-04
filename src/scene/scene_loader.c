@@ -326,7 +326,7 @@ void scene_release(struct scene *scene)
 
     // inventory_destroy();
 
-    collision_scene_remove_static_collision(&scene->mesh_collider);
+    collision_scene_remove_static_collision();
     mesh_collider_release(&scene->mesh_collider);
 
     for (int i = 0; i < scene->entity_data_count; i += 1)

@@ -1,12 +1,12 @@
 #include "cylinder.h"
 
-#include "../dynamic_object.h"
+#include "../physics_object.h"
 #include "../../math/minmax.h"
 #include <math.h>
 
-void cone_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output) {
-    struct dynamic_object *object = (struct dynamic_object *)data;
-    union dynamic_object_type_data *shape_data = (union dynamic_object_type_data *)&object->type->data;
+void cone_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
+    struct physics_object *object = (struct physics_object *)data;
+    union physics_object_collision_shape_data *shape_data = (union physics_object_collision_shape_data *)&object->collision->shape_data;
 
     float projected_length = fabsf(direction->y);
     struct Vector3 support_point_local;
@@ -28,8 +28,8 @@ void cone_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* o
 }
 
 void cone_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {
-    struct dynamic_object* object = (struct dynamic_object*)data;
-    union dynamic_object_type_data* shape_data = &object->type->data;
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
     
     // Get cone dimensions
     float half_height = shape_data->cone.height / 2.0f;

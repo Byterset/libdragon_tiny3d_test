@@ -85,6 +85,9 @@ void calculateBarycentricCoords(struct Vector3* a, struct Vector3* b, struct Vec
 
 void evaluateBarycentricCoords(struct Vector3* a, struct Vector3* b, struct Vector3* c, struct Vector3* bary, struct Vector3* output) {
     vector3Scale(a, output, bary->x);
-    vector3AddScaled(output, b, bary->y, output);
-    vector3AddScaled(output, c, bary->z, output);
+    if(bary->y > EPSILON){
+        vector3AddScaled(output, b, bary->y, output);
+        vector3AddScaled(output, c, bary->z, output);
+    }
+
 }

@@ -1,14 +1,14 @@
-#include "dynamic_object.h"
+#include "physics_object.h"
 #include <assert.h>
 #include "../time/time.h"
 #include "../math/minmax.h"
 #include <math.h>
 #include <stddef.h>
 
-void dynamic_object_init(
+void physics_object_init(
     entity_id entity_id,
-    struct dynamic_object* object, 
-    struct dynamic_object_type* type,
+    struct physics_object* object, 
+    struct physics_object_collision_data* type,
     uint16_t collision_layers,
     struct Vector3* position, 
     struct Quaternion* rotation,
@@ -16,9 +16,10 @@ void dynamic_object_init(
 ) {
     assert(mass > 0.0f);
     object->entity_id = entity_id;
-    object->type = type;
+    object->collision = type;
     object->position = position;
     object->prev_position = *position;
+    object->prev_step_pos = *position;
     object->rotation = rotation;
     object->velocity = gZeroVec;
     object->center_offset = gZeroVec;
@@ -33,13 +34,13 @@ void dynamic_object_init(
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
-    dynamic_object_recalculate_aabb(object);
+    physics_object_recalculate_aabb(object);
 }
 
 /// @brief Applies gravity and performs verlet integration on the object.
 /// Will not do so if the object is a trigger or fixed
 /// @param object 
-void dynamic_object_update(struct dynamic_object* object) {
+void physics_object_update(struct physics_object* object) {
     if (object->is_trigger | object->is_fixed) {
         return;
     }
@@ -57,28 +58,28 @@ void dynamic_object_update(struct dynamic_object* object) {
     vector3Add(&displacement, &object->acceleration, &displacement); // current_pos − previous_pos + a * (Δt^2)
     vector3Copy(object->position, &object->prev_position);
     vector3Add(object->position, &displacement, object->position); // add to current position
-    object->velocity = dynamic_object_get_velocity(object); // update the inferred velocity
+    object->velocity = physics_object_get_velocity(object); // update the inferred velocity
     object->acceleration = gZeroVec; // reset forces
 }
 
-void dynamic_object_apply_constraints(struct dynamic_object* object){
-    if (object->position->y <= 0){
-        dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, 0, object->position->z});
+void physics_object_apply_constraints(struct physics_object* object){
+    if (object->position->y <= -20){
+        physics_object_position_no_force(object, &(struct Vector3){object->position->x, -20, object->position->z});
     }
     if (object->position->y >= 2000){
-        dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, 2000, object->position->z});
+        physics_object_position_no_force(object, &(struct Vector3){object->position->x, 2000, object->position->z});
     }
     if (object->position->x <= -2000){
-        dynamic_object_position_no_force(object, &(struct Vector3){-2000, object->position->y, object->position->z});
+        physics_object_position_no_force(object, &(struct Vector3){-2000, object->position->y, object->position->z});
     }
     if (object->position->x >= 2000){
-        dynamic_object_position_no_force(object, &(struct Vector3){2000, object->position->y, object->position->z});
+        physics_object_position_no_force(object, &(struct Vector3){2000, object->position->y, object->position->z});
     }
     if (object->position->z <= -2000){
-        dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, object->position->y, -2000});
+        physics_object_position_no_force(object, &(struct Vector3){object->position->x, object->position->y, -2000});
     }
     if (object->position->z >= 2000){
-        dynamic_object_position_no_force(object, &(struct Vector3){object->position->x, object->position->y, 2000});
+        physics_object_position_no_force(object, &(struct Vector3){object->position->x, object->position->y, 2000});
     }
 }
 
@@ -88,39 +89,39 @@ void dynamic_object_apply_constraints(struct dynamic_object* object){
 /// PHYSICS_TICKRATE so it scales to one second instead.
 /// @param object 
 /// @param acceleration 
-void dynamic_object_accelerate(struct dynamic_object* object, struct Vector3* acceleration) {
+void physics_object_accelerate(struct physics_object* object, struct Vector3* acceleration) {
     vector3Add(&object->acceleration, acceleration, &object->acceleration);
 }
 
-void dynamic_object_translate_no_force(struct dynamic_object* object, struct Vector3* translation) {
+void physics_object_translate_no_force(struct physics_object* object, struct Vector3* translation) {
     vector3Add(object->position, translation, object->position);
     vector3Add(&object->prev_position, translation, &object->prev_position);
 }
 
-void dynamic_object_position_no_force(struct dynamic_object* object, struct Vector3* position) {
+void physics_object_position_no_force(struct physics_object* object, struct Vector3* position) {
     vector3Copy(position, object->position);
     vector3Copy(position, &object->prev_position);
 }
 
-struct Vector3 dynamic_object_get_velocity(struct dynamic_object* object){
+struct Vector3 physics_object_get_velocity(struct physics_object* object){
 	struct Vector3 vel;
 	vector3Copy(object->position, &vel);
     vector3Sub(&vel, &object->prev_position, &vel);
     return vel;
 }
 
-void dynamic_object_set_velocity(struct dynamic_object* object, struct Vector3* velocity){
+void physics_object_set_velocity(struct physics_object* object, struct Vector3* velocity){
     vector3Copy(object->position, &object->prev_position);
     vector3Sub(&object->prev_position, velocity, &object->prev_position);
 }
 
-void dynamic_object_apply_impulse(struct dynamic_object* object, struct Vector3* impulse) {
+void physics_object_apply_impulse(struct physics_object* object, struct Vector3* impulse) {
     vector3Sub(&object->prev_position, impulse, &object->prev_position);
 }
 
 
 
-struct contact* dynamic_object_nearest_contact(struct dynamic_object* object) {
+struct contact* physics_object_nearest_contact(struct physics_object* object) {
     struct contact* nearest_target = NULL;
     struct contact* current = object->active_contacts;
     float distance = 0.0f;
@@ -138,7 +139,7 @@ struct contact* dynamic_object_nearest_contact(struct dynamic_object* object) {
     return nearest_target;
 }
 
-bool dynamic_object_is_touching(struct dynamic_object* object, entity_id id) {
+bool physics_object_is_touching(struct physics_object* object, entity_id id) {
     struct contact* current = object->active_contacts;
 
     while (current) {
@@ -152,8 +153,8 @@ bool dynamic_object_is_touching(struct dynamic_object* object, entity_id id) {
     return false;
 }
 
-void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output) {
-    struct dynamic_object* object = (struct dynamic_object*)data;
+void physics_object_gjk_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
+    struct physics_object* object = (struct physics_object*)data;
     struct Vector3 world_center;
     struct Vector3 localDir;
     if(object->rotation){
@@ -168,7 +169,7 @@ void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct 
     }
     vector3Normalize(&localDir, &localDir);
 
-    object->type->minkowski_sum(object, &localDir, output);
+    object->collision->gjk_support_function(object, &localDir, output);
 
     if(object->rotation){
         quatMultVector(object->rotation, output, output);
@@ -181,9 +182,9 @@ void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct 
 
 /// @brief re-caluclates the bounding box of the object using the collision type's bounding box function
 /// @param object 
-void dynamic_object_recalculate_aabb(struct dynamic_object* object) {
+void physics_object_recalculate_aabb(struct physics_object* object) {
     //calculate bounding box for object in local space
-    object->type->bounding_box_calculator(object, object->rotation, &object->bounding_box);
+    object->collision->bounding_box_calculator(object, object->rotation, &object->bounding_box);
     struct Vector3 offset;
 
     //calculate the rotated center offset if the object has a rotation

@@ -437,13 +437,13 @@ void epaCalculateContact(struct ExpandingSimplex* simplex, struct SimplexTriangl
  *
  * @param startingSimplex A pointer to the initial simplex obtained from the GJK algorithm.
  * @param objectA A pointer to the first object involved in the collision.
- * @param objectASum A function pointer to the Minkowski sum function for the first object.
+ * @param objectASupport A function pointer to the GJK Support function for the first object.
  * @param objectB A pointer to the second object involved in the collision.
- * @param objectBSum A function pointer to the Minkowski sum function for the second object.
+ * @param objectBSupport A function pointer to the GJK Support function for the second object.
  * @param result A pointer to an EpaResult structure where the result will be stored.
  * @return true if the EPA algorithm successfully finds a penetration depth and contact normal, false otherwise.
  */
-bool epaSolve(struct Simplex* startingSimplex, void* objectA, MinkowskiSum objectASum, void* objectB, MinkowskiSum objectBSum, struct EpaResult* result) {
+bool epaSolve(struct Simplex* startingSimplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSum, struct EpaResult* result) {
     struct ExpandingSimplex simplex;
     expandingSimplexInit(&simplex, startingSimplex, 0);
     struct SimplexTriangle* closestFace = 0;
@@ -459,7 +459,7 @@ bool epaSolve(struct Simplex* startingSimplex, void* objectA, MinkowskiSum objec
         struct Vector3* aPoint = &simplex.aPoints[nextIndex];
         struct Vector3 bPoint;
 
-        objectASum(objectA, &closestFace->normal, aPoint);
+        objectASupport(objectA, &closestFace->normal, aPoint);
         vector3Negate(&closestFace->normal, &reverseNormal);
         objectBSum(objectB, &reverseNormal, &bPoint);
 
@@ -521,7 +521,7 @@ void epaSweptFindFace(struct ExpandingSimplex* simplex, struct Vector3* directio
     }
 }
 
-int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, MinkowskiSum objectASum, void* objectB, MinkowskiSum objectBSum, struct Vector3* bStart, struct Vector3* bEnd, struct EpaResult* result) {
+int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSum, struct Vector3* bStart, struct Vector3* bEnd, struct EpaResult* result) {
     struct ExpandingSimplex simplex;
     expandingSimplexInit(&simplex, startingSimplex, SimplexFlagsSkipDistance);
     struct SimplexTriangle* closestFace = 0;
@@ -542,7 +542,7 @@ int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, MinkowskiSum o
         struct Vector3* aPoint = &simplex.aPoints[nextIndex];
         struct Vector3 bPoint;
 
-        objectASum(objectA, &closestFace->normal, aPoint);
+        objectASupport(objectA, &closestFace->normal, aPoint);
         vector3Negate(&closestFace->normal, &reverseNormal);
         objectBSum(objectB, &reverseNormal, &bPoint);
 

@@ -1,10 +1,10 @@
 #include "sweep.h"
 
 #include "../../math/minmax.h"
-#include "../dynamic_object.h"
+#include "../physics_object.h"
 
-void sweep_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output) {
-    union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)data;
+void sweep_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
+    union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)data;
 
     struct Vector2 dir_2d;
     dir_2d.x = direction->x;
@@ -36,8 +36,8 @@ void sweep_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* 
 }
 
 void sweep_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {
-    struct dynamic_object* object = (struct dynamic_object*)data;
-    union dynamic_object_type_data* shape_data = &object->type->data;
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
 
     // box->min = (struct Vector3){0.0f, -shape_data->sweep.half_height, 0.0f};
     // box->max = (struct Vector3){0.0f, shape_data->sweep.half_height, 1.0f};

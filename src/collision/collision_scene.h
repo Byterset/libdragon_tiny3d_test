@@ -1,7 +1,7 @@
 #ifndef __COLLISION_COLLISION_SCENE_H__
 #define __COLLISION_COLLISION_SCENE_H__
 
-#include "dynamic_object.h"
+#include "physics_object.h"
 #include "../collision/mesh_collider.h"
 #include "../util/hash_map.h"
 #include "../collision/aabbtree.h"
@@ -9,11 +9,11 @@
 
 typedef int collision_id;
 
-#define MIN_DYNAMIC_OBJECTS 64
+#define MIN_PHYSICS_OBJECTS 64
 #define MAX_ACTIVE_CONTACTS 128
 
 struct collision_scene_element {
-    struct dynamic_object* object;
+    struct physics_object* object;
 };
 
 struct collision_scene {
@@ -29,21 +29,17 @@ struct collision_scene {
 
 void collision_scene_reset();
 struct collision_scene* collision_scene_get();
-void collision_scene_add(struct dynamic_object* object);
-void collision_scene_remove(struct dynamic_object* object);
+void collision_scene_add(struct physics_object* object);
+void collision_scene_remove(struct physics_object* object);
 
-struct dynamic_object* collision_scene_find_object(entity_id id);
+struct physics_object* collision_scene_find_object(entity_id id);
 
-void collision_scene_use_static_collision(struct mesh_collider* collider);
-void collision_scene_remove_static_collision(struct mesh_collider* collider);
+void collision_scene_use_static_collision(struct mesh_collider* mesh_collider);
+void collision_scene_remove_static_collision();
 
-void collision_scene_collide();
+void collision_scene_step();
 
 struct contact* collision_scene_new_contact();
-
-typedef void (*collision_scene_query_callback)(void* data, struct dynamic_object* overlaps);
-
-void collision_scene_query(struct dynamic_object_type* shape, struct Vector3* center, int collision_layers, collision_scene_query_callback callback, void* callback_data);
 
 void collision_scene_render_debug_raylib();
 

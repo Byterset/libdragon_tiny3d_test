@@ -6,6 +6,12 @@
 
 #include "../math/vector3.h"
 #include "../math/aabb.h"
+#include "aabbtree.h"
+
+// #if DEBUG == 1
+#include <raylib.h>
+#include <rlgl.h>
+// #endif
 
 struct mesh_triangle_indices {
     uint16_t indices[3];
@@ -26,11 +32,12 @@ struct mesh_index {
 };
 
 struct mesh_collider {
+    struct AABBTree aabbtree;
     struct Vector3* vertices;
     struct mesh_triangle_indices* triangles;
     uint16_t triangle_count;
-
-    struct mesh_index index;
+    uint16_t vertex_count;
+    Raylib_Model raylib_mesh_model;
 };
 
 struct mesh_triangle {
@@ -40,10 +47,6 @@ struct mesh_triangle {
 
 typedef bool (*triangle_callback)(struct mesh_index* index, void* data, int triangle_index);
 
-void mesh_triangle_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
-
-void mesh_index_lookup_triangle_indices(struct mesh_index* index, struct AABB* box, triangle_callback callback, void* data);
-bool mesh_index_swept_lookup(struct mesh_index* index, struct AABB* end_position, struct Vector3* move_amount, triangle_callback callback, void* data);
-bool mesh_index_is_contained(struct mesh_index* index, struct Vector3* point);
+void mesh_triangle_gjk_support_function(void* data, struct Vector3* direction, struct Vector3* output);
 
 #endif

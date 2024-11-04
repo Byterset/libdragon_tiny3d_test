@@ -164,6 +164,15 @@ struct AABB AABBUnionPoint(struct AABB* a, struct Vector3* point) {
     return out;
 }
 
+struct AABB AABBFromTriangle(struct Vector3* a, struct Vector3* b, struct Vector3* c){
+    struct AABB out;
+    vector3Min(a, b, &out.min);
+    vector3Min(&out.min, c, &out.min);
+    vector3Max(a, b, &out.max);
+    vector3Max(&out.max, c, &out.max);
+    return out;
+}
+
 /**
  * @brief Extends an axis-aligned bounding box (AABB) in a specified direction.
  *

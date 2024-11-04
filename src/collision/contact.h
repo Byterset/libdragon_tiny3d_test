@@ -4,7 +4,7 @@
 #include "../math/vector3.h"
 #include "../entity/entity_id.h"
 
-struct dynamic_object;
+struct physics_object;
 
 struct contact {
     struct contact* next;

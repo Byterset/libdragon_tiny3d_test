@@ -1,5 +1,5 @@
-#ifndef __COLLISION_DYNAMIC_OBJECT_H__
-#define __COLLISION_DYNAMIC_OBJECT_H__
+#ifndef __COLLISION_PHYSICS_OBJECT_H__
+#define __COLLISION_PHYSICS_OBJECT_H__
 
 #include "../entity/entity_id.h"
 #include "../math/vector3.h"
@@ -27,16 +27,16 @@ enum collision_group {
 
 typedef void (*bounding_box_calculator)(void* data, struct Quaternion* rotation, struct AABB* box);
 
-typedef enum dynamic_object_type_id {
-    DYNAMIC_OBJECT_TYPE_SPHERE,
-    DYNAMIC_OBJECT_TYPE_CAPSULE,
-    DYNAMIC_OBJECT_TYPE_BOX,
-    DYNAMIC_OBJECT_TYPE_CONE,
-    DYNAMIC_OBJECT_TYPE_CYLINDER,
-    DYNAMIC_OBJECT_TYPE_SWEEP,
-} dynamic_object_type_id;
+typedef enum physics_object_collision_shape_type {
+    COLLISION_SHAPE_SPHERE,
+    COLLISION_SHAPE_CAPSULE,
+    COLLISION_SHAPE_BOX,
+    COLLISION_SHAPE_CONE,
+    COLLISION_SHAPE_CYLINDER,
+    COLLISION_SHAPE_SWEEP,
+} physics_object_collision_shape_type;
 
-union dynamic_object_type_data
+union physics_object_collision_shape_data
 {
     struct { float radius; } sphere;
     struct { float radius; float inner_half_height; } capsule;
@@ -46,20 +46,21 @@ union dynamic_object_type_data
     struct { struct Vector2 range; float radius; float half_height; } sweep;
 };
 
-struct dynamic_object_type {
-    MinkowskiSum minkowski_sum;
+struct physics_object_collision_data {
+    gjk_support_function gjk_support_function;
     bounding_box_calculator bounding_box_calculator;
-    union dynamic_object_type_data data;
-    dynamic_object_type_id type_id;
+    union physics_object_collision_shape_data shape_data;
+    physics_object_collision_shape_type shape_type;
     float bounce;
     float friction;
 };
 
-struct dynamic_object {
+struct physics_object {
     entity_id entity_id;
-    struct dynamic_object_type* type; // information about the collision shape
+    struct physics_object_collision_data* collision; // information about the collision shape
     struct Vector3* position;
     struct Vector3 prev_position;
+    struct Vector3 prev_step_pos;
     struct Quaternion* rotation;
     struct Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
     struct Vector3 velocity;
@@ -79,31 +80,31 @@ struct dynamic_object {
     NodeProxy aabb_tree_node;
 };
 
-void dynamic_object_init(
+void physics_object_init(
     entity_id entity_id,
-    struct dynamic_object* object, 
-    struct dynamic_object_type* type,
+    struct physics_object* object, 
+    struct physics_object_collision_data* type,
     uint16_t collision_layers,
     struct Vector3* position, 
     struct Quaternion* rotation,
     float mass
 );
 
-void dynamic_object_update(struct dynamic_object* object);
+void physics_object_update(struct physics_object* object);
 
-struct contact* dynamic_object_nearest_contact(struct dynamic_object* object);
-bool dynamic_object_is_touching(struct dynamic_object* object, entity_id id);
+struct contact* physics_object_nearest_contact(struct physics_object* object);
+bool physics_object_is_touching(struct physics_object* object, entity_id id);
 
-void dynamic_object_accelerate(struct dynamic_object* object, struct Vector3* acceleration);
-void dynamic_object_translate_no_force(struct dynamic_object* object, struct Vector3* translation);
-void dynamic_object_position_no_force(struct dynamic_object* object, struct Vector3* position);
-struct Vector3 dynamic_object_get_velocity(struct dynamic_object* object);
-void dynamic_object_set_velocity(struct dynamic_object* object, struct Vector3* velocity);
-void dynamic_object_apply_impulse(struct dynamic_object* object, struct Vector3* impulse);
+void physics_object_accelerate(struct physics_object* object, struct Vector3* acceleration);
+void physics_object_translate_no_force(struct physics_object* object, struct Vector3* translation);
+void physics_object_position_no_force(struct physics_object* object, struct Vector3* position);
+struct Vector3 physics_object_get_velocity(struct physics_object* object);
+void physics_object_set_velocity(struct physics_object* object, struct Vector3* velocity);
+void physics_object_apply_impulse(struct physics_object* object, struct Vector3* impulse);
 
-void dynamic_object_apply_constraints(struct dynamic_object* object);
+void physics_object_apply_constraints(struct physics_object* object);
 
-void dynamic_object_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output);
-void dynamic_object_recalculate_aabb(struct dynamic_object* object);
+void physics_object_gjk_support_function(void* data, struct Vector3* direction, struct Vector3* output);
+void physics_object_recalculate_aabb(struct physics_object* object);
 
 #endif

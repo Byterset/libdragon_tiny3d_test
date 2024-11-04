@@ -1,12 +1,12 @@
 #include "cylinder.h"
 
-#include "../dynamic_object.h"
+#include "../physics_object.h"
 #include <math.h>
 #include "sphere.h"
 
-void capsule_minkowski_sum(void* data, struct Vector3* direction, struct Vector3* output) {
-    struct dynamic_object* object = (struct dynamic_object*)data;
-    union dynamic_object_type_data* shape_data = (union dynamic_object_type_data*)&object->type->data;
+void capsule_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)&object->collision->shape_data;
 
 
     // Step 2: Determine the point along the capsule's central axis (local y-axis) that is furthest in `dir_local` direction
@@ -31,8 +31,8 @@ void capsule_minkowski_sum(void* data, struct Vector3* direction, struct Vector3
 
 
 void capsule_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {
-    struct dynamic_object* object = (struct dynamic_object*)data;
-    union dynamic_object_type_data* shape_data = &object->type->data;
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
     
     // Get capsule dimensions
     float half_height = shape_data->capsule.inner_half_height;

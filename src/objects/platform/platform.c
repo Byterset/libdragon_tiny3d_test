@@ -9,15 +9,15 @@
 #include "../../render/defs.h"
 
 
-static struct dynamic_object_type platform_collision = {
-    .minkowski_sum = box_minkowski_sum,
+static struct physics_object_collision_data platform_collision = {
+    .gjk_support_function = box_support_function,
     .bounding_box_calculator = box_bounding_box,
-    .data = {
+    .shape_data = {
         .box = {
             .half_size = {6.0f, 0.5f, 3.0f}
         }
     },
-    .type_id = DYNAMIC_OBJECT_TYPE_BOX,
+    .shape_type = COLLISION_SHAPE_BOX,
 };
 
 void platform_update(struct platform* platform){
@@ -38,7 +38,7 @@ void platform_init(struct platform* platform, struct platform_definition* def){
     render_scene_add_renderable(&platform->renderable, 1.0f);
 
 
-    dynamic_object_init(
+    physics_object_init(
         entity_id,
         &platform->collision,
         &platform_collision,
@@ -48,7 +48,7 @@ void platform_init(struct platform* platform, struct platform_definition* def){
         10.0f
     );
 
-    platform->collision.center_offset.y = platform_collision.data.box.half_size.y;
+    platform->collision.center_offset.y = platform_collision.shape_data.box.half_size.y;
 
     platform->collision.has_gravity = 0;
     platform->collision.is_fixed = 1;
