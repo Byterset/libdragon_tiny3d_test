@@ -35,14 +35,20 @@ extern float frametime_sec;
 void update_reset();
 void update_time();
 void update_add(void* data, update_callback callback, int priority, int mask);
+void fixed_update_add(void* data, update_callback callback, int priority, int mask);
 void update_remove(void* data);
+void fixed_update_remove(void* data);
 void update_remove_with_data(void* data, update_callback callback);
+void fixed_update_remove_with_data(void* data, update_callback callback);
 
 void update_pause_layers(int mask);
 void update_unpause_layers(int mask);
 bool update_has_layer(int mask);
 
 void update_dispatch();
+
+
+void fixed_update_dispatch();
 
 
 

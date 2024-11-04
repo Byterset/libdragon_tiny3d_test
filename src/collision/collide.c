@@ -9,12 +9,14 @@
 
 
 void correct_velocity(struct physics_object* object, struct EpaResult* result, float ratio, float friction, float bounce) {
-    float velocityDot = vector3Dot(&object->velocity, &result->normal);
+    struct Vector3 vel;
+    vector3Sub(object->position, &object->prev_step_pos, &vel);
+    float velocityDot = vector3Dot(&vel, &result->normal);
 
     if ((velocityDot < 0) == (ratio < 0)) {
         struct Vector3 tangentVelocity;
-
-        vector3AddScaled(&object->velocity, &result->normal, -velocityDot, &tangentVelocity);
+        
+        vector3AddScaled(&vel, &result->normal, -velocityDot, &tangentVelocity);
         vector3Scale(&tangentVelocity, &tangentVelocity, 1.0f - friction);
 
         vector3AddScaled(&tangentVelocity, &result->normal, velocityDot * -bounce, &tangentVelocity);
@@ -56,6 +58,7 @@ struct object_mesh_collide_data {
 bool collide_object_to_triangle(struct physics_object* object, struct mesh_collider* mesh, int triangle_index){
     struct mesh_triangle triangle;
     triangle.triangle = mesh->triangles[triangle_index];
+    triangle.normal = mesh->normals[triangle_index];
     triangle.vertices = mesh->vertices;
 
     struct Simplex simplex;
@@ -72,7 +75,14 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
             physics_object_gjk_support_function,
             &result))
     {
-        correct_overlap(object, &result, -1.0f, object->collision->friction, object->collision->bounce);
+        // float behind_triangle = mesh_triangle_comparePoint(&triangle, &object->collision->collider_world_center);
+        if(mesh_triangle_comparePoint(&triangle, &object->collision->collider_world_center) >= 0){
+            correct_overlap(object, &result, -1.0f, object->collision->friction, object->collision->bounce);
+        }
+        else{
+            correct_overlap(object, &result, 1.0f, object->collision->friction, object->collision->bounce);
+        }
+        
         collide_add_contact(object, &result);
         return true;
     }

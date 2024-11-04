@@ -18,7 +18,7 @@ void physics_object_init(
     object->entity_id = entity_id;
     object->collision = type;
     object->position = position;
-    object->prev_position = *position;
+    object->verlet_prev_position = *position;
     object->prev_step_pos = *position;
     object->rotation = rotation;
     object->velocity = gZeroVec;
@@ -52,11 +52,11 @@ void physics_object_update(struct physics_object* object) {
 
     //new_pos = current_pos + (current_pos − previous_pos) + a * (Δt^2)
     struct Vector3 displacement;
-    vector3Sub(object->position, &object->prev_position, &displacement); // current_pos − previous_pos
+    vector3Sub(object->position, &object->verlet_prev_position, &displacement); // current_pos − previous_pos
     vector3Scale(&object->acceleration, &object->acceleration, FIXED_DELTATIME_SQUARED); // a * (Δt^2)
     vector3Scale(&displacement, &displacement, 0.995f); // introduce damping
     vector3Add(&displacement, &object->acceleration, &displacement); // current_pos − previous_pos + a * (Δt^2)
-    vector3Copy(object->position, &object->prev_position);
+    vector3Copy(object->position, &object->verlet_prev_position);
     vector3Add(object->position, &displacement, object->position); // add to current position
     object->velocity = physics_object_get_velocity(object); // update the inferred velocity
     object->acceleration = gZeroVec; // reset forces
@@ -95,28 +95,28 @@ void physics_object_accelerate(struct physics_object* object, struct Vector3* ac
 
 void physics_object_translate_no_force(struct physics_object* object, struct Vector3* translation) {
     vector3Add(object->position, translation, object->position);
-    vector3Add(&object->prev_position, translation, &object->prev_position);
+    vector3Add(&object->verlet_prev_position, translation, &object->verlet_prev_position);
 }
 
 void physics_object_position_no_force(struct physics_object* object, struct Vector3* position) {
     vector3Copy(position, object->position);
-    vector3Copy(position, &object->prev_position);
+    vector3Copy(position, &object->verlet_prev_position);
 }
 
 struct Vector3 physics_object_get_velocity(struct physics_object* object){
 	struct Vector3 vel;
 	vector3Copy(object->position, &vel);
-    vector3Sub(&vel, &object->prev_position, &vel);
+    vector3Sub(&vel, &object->verlet_prev_position, &vel);
     return vel;
 }
 
 void physics_object_set_velocity(struct physics_object* object, struct Vector3* velocity){
-    vector3Copy(object->position, &object->prev_position);
-    vector3Sub(&object->prev_position, velocity, &object->prev_position);
+    vector3Copy(object->position, &object->verlet_prev_position);
+    vector3Sub(&object->verlet_prev_position, velocity, &object->verlet_prev_position);
 }
 
 void physics_object_apply_impulse(struct physics_object* object, struct Vector3* impulse) {
-    vector3Sub(&object->prev_position, impulse, &object->prev_position);
+    vector3Sub(&object->verlet_prev_position, impulse, &object->verlet_prev_position);
 }
 
 
@@ -199,4 +199,5 @@ void physics_object_recalculate_aabb(struct physics_object* object) {
     vector3Add(&offset, object->position, &offset);
     vector3Add(&object->bounding_box.min, &offset, &object->bounding_box.min);
     vector3Add(&object->bounding_box.max, &offset, &object->bounding_box.max);
+    object->collision->collider_world_center = offset;
 }

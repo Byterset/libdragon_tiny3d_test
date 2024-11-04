@@ -255,22 +255,9 @@ struct contact* collision_scene_new_contact() {
     return result;
 }
 
-// Utility function to convert Mesh vertices to a Vector3 array
-Raylib_Vector3* MeshToVertices(Raylib_Mesh mesh) {
-    Raylib_Vector3 *vertices = (Raylib_Vector3 *)malloc(sizeof(Raylib_Vector3) * mesh.triangleCount * 3);
-
-    for (int i = 0; i < mesh.triangleCount * 3; i++) {
-        vertices[i] = ((Raylib_Vector3 *)mesh.vertices)[i];
-    }
-
-    return vertices;
-}
-
-
 /// @brief Renders the collision scene colliders in debug mode using raylib.
 void collision_scene_render_debug_raylib(){
-    if(g_scene.mesh_collider){
-
+    if(g_scene.mesh_collider){ 
         DrawModelWires(g_scene.mesh_collider->raylib_mesh_model, (Raylib_Vector3){0, 0, 0}, SCENE_SCALE, YELLOW);   
     }
     for (int i = 0; i < g_scene.count; ++i) {

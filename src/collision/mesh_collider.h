@@ -7,11 +7,12 @@
 #include "../math/vector3.h"
 #include "../math/aabb.h"
 #include "aabbtree.h"
+#include "../render/defs.h"
 
-// #if DEBUG == 1
+#ifdef DEBUG_COLLIDERS_RAYLIB
 #include <raylib.h>
 #include <rlgl.h>
-// #endif
+#endif
 
 struct mesh_triangle_indices {
     uint16_t indices[3];
@@ -35,6 +36,7 @@ struct mesh_collider {
     struct AABBTree aabbtree;
     struct Vector3* vertices;
     struct mesh_triangle_indices* triangles;
+    struct Vector3* normals;
     uint16_t triangle_count;
     uint16_t vertex_count;
     Raylib_Model raylib_mesh_model;
@@ -42,11 +44,13 @@ struct mesh_collider {
 
 struct mesh_triangle {
     struct Vector3* vertices;
+    struct Vector3 normal;
     struct mesh_triangle_indices triangle;
 };
 
 typedef bool (*triangle_callback)(struct mesh_index* index, void* data, int triangle_index);
 
 void mesh_triangle_gjk_support_function(void* data, struct Vector3* direction, struct Vector3* output);
+float mesh_triangle_comparePoint(struct mesh_triangle *triangle, struct Vector3 *point);
 
 #endif

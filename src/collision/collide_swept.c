@@ -31,6 +31,7 @@ void object_mesh_collide_data_init(
     data->prev_pos = prev_pos;
     data->mesh = mesh;
     data->object = object;
+    data->in_front_of_triangle = 1;
 }
 
 bool collide_object_swept_to_triangle(void* data, int triangle_index) {
@@ -42,6 +43,7 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
     struct mesh_triangle triangle;
     triangle.vertices = collide_data->mesh->vertices;
     triangle.triangle = collide_data->mesh->triangles[triangle_index];
+    triangle.normal = collide_data->mesh->normals[triangle_index];
 
     struct Simplex simplex;
     if (!gjkCheckForOverlap(&simplex, &triangle, mesh_triangle_gjk_support_function, &swept, swept_physics_object_gjk_support_function, &gRight)) {
@@ -65,7 +67,6 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
 
     struct Vector3 final_pos = *collide_data->object->position;
     *collide_data->object->position = *collide_data->prev_pos;
-    collide_data->object->prev_position = *collide_data->prev_pos;
 
     if (epaSolve(
             &simplex,
@@ -76,15 +77,24 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
             &result))
     {
         collide_data->hit_result = result;
+        collide_data->in_front_of_triangle = mesh_triangle_comparePoint(&triangle, &collide_data->object->collision->collider_world_center) >= 0;
         return true;
     }
-
     *collide_data->object->position = final_pos;
-    collide_data->object->prev_position = final_pos;
 
     return false;
 }
 
+/**
+ * @brief Handles the collision response for a physics object with a swept bounce.
+ *
+ * This function updates the position and velocity of a physics object when it collides
+ * with another object, taking into account the bounce factor of the collision.
+ *
+ * @param object Pointer to the physics object that is colliding.
+ * @param collide_data Pointer to the collision data containing information about the collision.
+ * @param start_pos Pointer to the position of the object before the collision applies (after mover/phys update, before collision resolution).
+ */
 void collide_object_swept_bounce(
     struct physics_object* object, 
     struct object_mesh_collide_data* collide_data,
@@ -97,23 +107,32 @@ void collide_object_swept_bounce(
     struct Vector3 move_amount;
     vector3Sub(start_pos, object->position, &move_amount);
 
+    // split the move amount due to the collision into normal and tangent components
     struct Vector3 move_amount_normal;
     vector3Project(&move_amount, &collide_data->hit_result.normal, &move_amount_normal);
     struct Vector3 move_amount_tangent;
     vector3Sub(&move_amount, &move_amount_normal, &move_amount_tangent);
 
     vector3Scale(&move_amount_normal, &move_amount_normal, -object->collision->bounce);
-    
+
+
     vector3Add(object->position, &move_amount_normal, object->position);
     vector3Add(object->position, &move_amount_tangent, object->position);
-    vector3Copy(object->position, &object->prev_position);
+    vector3Copy(object->position, &object->verlet_prev_position);
 
     // don't include friction on a bounce
-    correct_velocity(object, &collide_data->hit_result, -1.0f, 0.0f, object->collision->bounce);
+    if(collide_data->in_front_of_triangle){
+        correct_velocity(object, &collide_data->hit_result, -1.0f, 0.0f, object->collision->bounce);
+        // correct_overlap(object, &collide_data->hit_result, 1.0f, 0.0f, object->collision->bounce);
+    }
+    else{
+        correct_velocity(object, &collide_data->hit_result, 1.0f, 0.0f, object->collision->bounce);
+        // correct_overlap(object, &collide_data->hit_result, -1.0f, 0.0f, object->collision->bounce);
+    }
 
-    vector3Sub(object->position, start_pos, &move_amount);
-    vector3Add(&move_amount, &object->bounding_box.min, &object->bounding_box.min);
-    vector3Add(&move_amount, &object->bounding_box.max, &object->bounding_box.max);
+    // vector3Sub(object->position, start_pos, &move_amount);
+    // vector3Add(&move_amount, &object->bounding_box.min, &object->bounding_box.min);
+    // vector3Add(&move_amount, &object->bounding_box.max, &object->bounding_box.max);
 
     collide_add_contact(object, &collide_data->hit_result);
 }
@@ -165,8 +184,6 @@ bool collide_object_to_mesh_swept(struct physics_object* object, struct mesh_col
     {
         return false;
     }
-    
-
 
     collide_object_swept_bounce(object, &collide_data, &start_pos);
 

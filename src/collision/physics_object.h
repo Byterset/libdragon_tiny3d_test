@@ -50,6 +50,7 @@ struct physics_object_collision_data {
     gjk_support_function gjk_support_function;
     bounding_box_calculator bounding_box_calculator;
     union physics_object_collision_shape_data shape_data;
+    struct Vector3 collider_world_center;
     physics_object_collision_shape_type shape_type;
     float bounce;
     float friction;
@@ -59,7 +60,7 @@ struct physics_object {
     entity_id entity_id;
     struct physics_object_collision_data* collision; // information about the collision shape
     struct Vector3* position;
-    struct Vector3 prev_position;
+    struct Vector3 verlet_prev_position;
     struct Vector3 prev_step_pos;
     struct Quaternion* rotation;
     struct Vector3 center_offset; // offset from the origin of the object to the center of the collision shape

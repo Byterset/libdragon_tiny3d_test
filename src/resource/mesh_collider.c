@@ -8,7 +8,7 @@
 // CMSH
 #define EXPECTED_HEADER 0x434D5348
 
-#if DEBUG == 1
+#ifdef DEBUG_COLLIDERS_RAYLIB
 Raylib_Mesh mesh_collider_generate_raylib_mesh(struct mesh_collider* mesh, int vertex_count, int triangle_count) {
     Raylib_Mesh raylib_mesh = {0};
 
@@ -53,10 +53,10 @@ void mesh_collider_load_test(struct mesh_collider* into){
         {40.0f, 0.0f, -40.0f},
         {-40.0f, 0.0f, 40.0f},
         {40.0f, 0.0f, 40.0f},
-        {-40.0f, 5.0f, -40.0f},
-        {40.0f, 5.0f, -40.0f},
-        {-40.0f, 5.0f, 40.0f},
-        {40.0f, 5.0f, 40.0f},
+        {-40.0f, 6.0f, -40.0f},
+        {40.0f, 6.0f, -40.0f},
+        {-40.0f, 6.0f, 40.0f},
+        {40.0f, 6.0f, 40.0f},
 
     };
 
@@ -64,47 +64,61 @@ void mesh_collider_load_test(struct mesh_collider* into){
     memcpy(into->vertices, vertices, sizeof(struct Vector3) * vertex_count);
 
     struct mesh_triangle_indices triangles[triangle_count];
+    struct Vector3 normals[triangle_count];
     triangles[0].indices[0] = 0;
     triangles[0].indices[1] = 1;
     triangles[0].indices[2] = 2;
+    normals[0] = (struct Vector3){0, 1, 0};
 
     triangles[1].indices[0] = 1;
     triangles[1].indices[1] = 3;
     triangles[1].indices[2] = 2;
+    normals[1] = (struct Vector3){0, 1, 0};
 
     triangles[2].indices[0] = 2;
     triangles[2].indices[1] = 4;
     triangles[2].indices[2] = 0;
+    normals[2] = (struct Vector3){1, 0, 0};
 
     triangles[3].indices[0] = 2;
     triangles[3].indices[1] = 6;
     triangles[3].indices[2] = 4;
+    normals[3] = (struct Vector3){1, 0, 0};
 
     triangles[4].indices[0] = 2;
     triangles[4].indices[1] = 7;
     triangles[4].indices[2] = 6;
+    normals[4] = (struct Vector3){0, 0, -1};
 
-    triangles[5].indices[0] = 3;
-    triangles[5].indices[1] = 7;
-    triangles[5].indices[2] = 2;
+    triangles[5].indices[0] = 2;
+    triangles[5].indices[1] = 3;
+    triangles[5].indices[2] = 7;
+    normals[5] = (struct Vector3){0, 0, -1};
 
     triangles[6].indices[0] = 3;
     triangles[6].indices[1] = 5;
     triangles[6].indices[2] = 7;
+    normals[6] = (struct Vector3){-1, 0, 0};
 
     triangles[7].indices[0] = 1;
-    triangles[7].indices[1] = 3;
-    triangles[7].indices[2] = 5;
+    triangles[7].indices[1] = 5;
+    triangles[7].indices[2] = 3;
+    normals[7] = (struct Vector3){-1, 0, 0};
 
     triangles[8].indices[0] = 1;
-    triangles[8].indices[1] = 5;
-    triangles[8].indices[2] = 4;
+    triangles[8].indices[1] = 4;
+    triangles[8].indices[2] = 5;
+    normals[8] = (struct Vector3){0, 0, 1};
 
     triangles[9].indices[0] = 0;
-    triangles[9].indices[1] = 1;
-    triangles[9].indices[2] = 4;
+    triangles[9].indices[1] = 4;
+    triangles[9].indices[2] = 1;
+    normals[9] = (struct Vector3){0, 0, 1};
     into->triangles = malloc(sizeof(struct mesh_triangle_indices) * triangle_count);
     memcpy(into->triangles, triangles, sizeof(struct mesh_triangle_indices) * triangle_count);
+
+    into->normals = malloc(sizeof(struct Vector3) * triangle_count);
+    memcpy(into->normals, normals, sizeof(struct Vector3) * triangle_count);
 
     into->triangle_count = triangle_count;
 
@@ -121,7 +135,7 @@ void mesh_collider_load_test(struct mesh_collider* into){
 
         AABBTreeNode_createNode(&into->aabbtree, triangleAABB, (void *)i);
     }
-    #if DEBUG == 1
+#ifdef DEBUG_COLLIDERS_RAYLIB
     into->raylib_mesh_model = LoadModelFromMesh(mesh_collider_generate_raylib_mesh((struct mesh_collider*)into, vertex_count, triangle_count));
     Image white = GenImageColor(1, 1, WHITE);
     Texture2D texture = LoadTextureFromImage(white);
@@ -145,11 +159,13 @@ void mesh_collider_load(struct mesh_collider* into, FILE* file) {
 
     uint16_t triangle_count;
     fread(&triangle_count, 2, 1, file);
+    into->triangle_count = triangle_count;
 
     into->triangles = malloc(sizeof(struct mesh_triangle_indices) * triangle_count);
     fread(into->triangles, sizeof(struct mesh_triangle_indices), triangle_count, file);
 
-    into->triangle_count = triangle_count;
+    into->normals = malloc(sizeof(struct Vector3) * triangle_count);
+    fread(into->normals, sizeof(struct Vector3), triangle_count, file);
 
     AABBTree_create(&into->aabbtree, triangle_count);
     struct AABB triangleAABB;
@@ -164,7 +180,7 @@ void mesh_collider_load(struct mesh_collider* into, FILE* file) {
 
         AABBTreeNode_createNode(&into->aabbtree, triangleAABB, (void *)i);
     }
-    #if DEBUG == 1
+    #ifdef DEBUG_COLLIDERS_RAYLIB
     into->raylib_mesh_model = LoadModelFromMesh(mesh_collider_generate_raylib_mesh((struct mesh_collider*)into, vertex_count, triangle_count));
     Image white = GenImageColor(1, 1, WHITE);
     Texture2D texture = LoadTextureFromImage(white);
@@ -178,7 +194,7 @@ void mesh_collider_release(struct mesh_collider* mesh){
     free(mesh->vertices);
     free(mesh->triangles);
     AABBTree_free(&mesh->aabbtree);
-    #if DEBUG == 1
+#ifdef DEBUG_COLLIDERS_RAYLIB
     UnloadTexture(mesh->raylib_mesh_model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture);
     UnloadModel(mesh->raylib_mesh_model);
     #endif

@@ -28,6 +28,27 @@ void mesh_triangle_gjk_support_function(void* data, struct Vector3* direction, s
     *output = triangle->vertices[triangle->triangle.indices[idx]];
 }
 
+/// @brief Check if a point is in front of or behind a triangle
+///
+/// if result > 0: point is in front of triangle
+///
+/// if result = 0: point is coplanar with triangle
+///
+/// if result < 0: point is behind triangle
+/// @param triangle 
+/// @param point 
+/// @return 
+float mesh_triangle_comparePoint(struct mesh_triangle *triangle, struct Vector3* point){
+    struct Vector3 normal, toPoint, vertexA;
+    normal = triangle->normal;
+
+    // normal . (point - triangleVert)
+    // Triangle_getNormal(triangle, &normal);
+    toPoint = *point;
+    vector3SubFromSelf(&toPoint, &triangle->vertices[triangle->triangle.indices[0]]);
+    return vector3Dot(&triangle->normal, &toPoint);
+}
+
 bool is_inf(float value) {
     return value == infinityf() || value == -infinityf();
 }

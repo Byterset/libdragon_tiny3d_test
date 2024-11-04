@@ -16,6 +16,7 @@ struct update_element {
 
 struct update_state {
     struct callback_list callbacks;
+    struct callback_list fixed_callbacks;
     int enabled_layers;
 };
 
@@ -53,6 +54,7 @@ int update_compare_elements(void* a, void* b) {
 
 void update_reset() {
     callback_list_reset(&g_update_state.callbacks, sizeof(struct update_element), MIN_UPDATE_CAPACITY, update_compare_elements);
+    callback_list_reset(&g_update_state.fixed_callbacks, sizeof(struct update_element), MIN_UPDATE_CAPACITY, update_compare_elements);
     g_update_state.enabled_layers = ~0;
 }
 
@@ -66,8 +68,22 @@ void update_add(void* data, update_callback callback, int priority, int mask) {
     callback_list_insert_with_id(&g_update_state.callbacks, callback, &element, (callback_id)data);
 }
 
+void fixed_update_add(void* data, update_callback callback, int priority, int mask) {
+    struct update_element element;
+
+    element.data = data;
+    element.priority = priority;
+    element.mask = mask;
+
+    callback_list_insert_with_id(&g_update_state.fixed_callbacks, callback, &element, (callback_id)data);
+}
+
 void update_remove(void* data) {
     callback_list_remove(&g_update_state.callbacks, (callback_id)data);
+}
+
+void fixed_update_remove(void* data) {
+    callback_list_remove(&g_update_state.fixed_callbacks, (callback_id)data);
 }
 
 void update_pause_layers(int mask) {
@@ -99,4 +115,22 @@ void update_dispatch() {
     }
 
     callback_list_end(&g_update_state.callbacks);
+}
+
+void fixed_update_dispatch() {
+    callback_list_begin(&g_update_state.fixed_callbacks);
+
+    struct callback_element* current = callback_list_get(&g_update_state.fixed_callbacks, 0);
+
+    for (int i = 0; i < g_update_state.fixed_callbacks.count; ++i) {
+        struct update_element* element = callback_element_get_data(current);
+
+        if (element->mask & g_update_state.enabled_layers) {
+            ((update_callback)current->callback)(element->data);
+        }
+        
+        current = callback_list_next(&g_update_state.fixed_callbacks, current);
+    }
+
+    callback_list_end(&g_update_state.fixed_callbacks);
 }

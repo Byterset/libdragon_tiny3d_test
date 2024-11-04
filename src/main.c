@@ -73,9 +73,8 @@ struct box_definition box_def = {
     (struct Vector3){0, 10, 0}
 };
 struct platform_definition plat_def = {
-    (struct Vector3){9, 4, 7}
+    (struct Vector3){9, 6, 7}
 };
-
 
 void on_vi_interrupt()
 {
@@ -108,9 +107,7 @@ void setup()
 
     camera_controller_init(&camera_controller, &camera, &player);
     
-    
-    // TODO: implement mesh collision new
-
+    //TODO: write scene file format & collision file format
     mesh_collider_load_test(&test_mesh_collider);
     collision_scene_use_static_collision(&test_mesh_collider);
     
@@ -118,8 +115,9 @@ void setup()
 
 void render3d()
 {
-    #if DEBUG
+    #ifdef DEBUG_COLLIDERS_RAYLIB
     if(render_collision){
+        
         Camera3D raylib_cam = {0};
         raylib_cam.position = (Raylib_Vector3){camera.transform.position.x * SCENE_SCALE, camera.transform.position.y * SCENE_SCALE, camera.transform.position.z * SCENE_SCALE};
         raylib_cam.target = (Raylib_Vector3){
@@ -129,6 +127,8 @@ void render3d()
         raylib_cam.up = (Raylib_Vector3){0.0f, 1.0f, 0.0f};
         raylib_cam.fovy = camera.fov;
         raylib_cam.projection = CAMERA_PERSPECTIVE;
+        rlSetClipPlanes(camera.near * SCENE_SCALE, camera.far * SCENE_SCALE);
+        
         BeginDrawing();
         BeginMode3D(raylib_cam);
         ClearBackground(BLACK);
@@ -179,7 +179,7 @@ void render3d()
         t3d_viewport_look_at(viewport, &camPos, &camTarget, &(T3DVec3){{0, 1, 0}});
 
         render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool], &fog);
-    #if DEBUG
+    #ifdef DEBUG_COLLIDERS_RAYLIB
     }
     #endif
     
@@ -199,17 +199,20 @@ void render()
     struct mallinfo mall_inf = mallinfo();
     int ram_used = mall_inf.uordblks + ((uint32_t)HEAP_START_ADDR) - 0x80000000 - 0x10000;
     struct collision_scene *collision_scene = collision_scene_get();
-    int aabbtree_mem = sizeof(AABBTree) + (sizeof(AABBTreeNode) - sizeof(void*)) * collision_scene->object_aabbtree.nodeCount;
+    int aabbtree_objects_mem = sizeof(AABBTree) + (sizeof(AABBTreeNode) - sizeof(void*)) * collision_scene->object_aabbtree.nodeCount;
+    int aabb_tree_mesh_mem = sizeof(AABBTree) + (sizeof(AABBTreeNode) - sizeof(void*)) * collision_scene->mesh_collider->aabbtree.nodeCount;
 
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", player.is_attacking);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "fps: %.1f", fps);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "mem: %d", ram_used);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "bvh_nodes: %d, mem: %d", collision_scene->object_aabbtree.nodeCount, aabbtree_mem);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "BVH dyn , nodes: %d, mem: %d", collision_scene->object_aabbtree.nodeCount, aabbtree_objects_mem);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "BVH mesh, nodes: %d, mem: %d", collision_scene->mesh_collider->aabbtree.nodeCount, aabb_tree_mesh_mem);
 
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "Vel: %.2f, %.2f, %.2f", player.collision.velocity.x, player.collision.velocity.y, player.collision.velocity.z);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "PrevPos: %.2f, %.2f, %.2f", player.collision.verlet_prev_position.x, player.collision.verlet_prev_position.y, player.collision.verlet_prev_position.z);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Vel: %.2f, %.2f, %.2f", player.collision.velocity.x, player.collision.velocity.y, player.collision.velocity.z);
     // rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Grounded: %d",  player.collision.is_grounded);
 }
 
@@ -219,7 +222,7 @@ int main()
     debug_init_usblog();
     dfs_init(DFS_DEFAULT_LOCATION);
 
-    #if DEBUG //set up raylib window
+    #ifdef DEBUG_COLLIDERS_RAYLIB
     InitWindow(320, 240, "raylib test");
     SetTargetFPS(60);
     #endif
@@ -274,10 +277,10 @@ int main()
         // ======== Run the Update Callbacks ======== //
         update_dispatch();
 
-        // ======== Run the Physics in a fixed Deltatime Loop ======== //
+        // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //
         while (accumulator_ticks >= l_fixed_dt_ticks)
         {
-
+            fixed_update_dispatch();
             if (update_has_layer(UPDATE_LAYER_WORLD))
             {
                 collision_scene_step();

@@ -20,12 +20,6 @@ static struct physics_object_collision_data box_collision = {
 };
 
 void box_update(struct box* box){
-    if (box->transform.position.y <= 0)
-    {
-        box->transform.position.y = 0;
-        box->collision.prev_position.y = 0;
-    }
-
 }
 
 void box_init(struct box* box, struct box_definition* def){
