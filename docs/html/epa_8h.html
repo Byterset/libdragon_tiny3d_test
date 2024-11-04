@@ -80,10 +80,12 @@ Include dependency graph for epa.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="epa_8h__incl.png" border="0" usemap="#asrc_2collision_2epa_8h" alt=""/></div>
 <map name="asrc_2collision_2epa_8h" id="asrc_2collision_2epa_8h">
-<area shape="rect" title=" " alt="" coords="49,5,188,32"/>
-<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="45,80,99,107"/>
-<area shape="rect" title=" " alt="" coords="124,80,207,107"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="5,155,139,181"/>
+<area shape="rect" title=" " alt="" coords="107,5,245,32"/>
+<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="102,80,157,107"/>
+<area shape="rect" title=" " alt="" coords="181,80,264,107"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="5,229,139,256"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="109,155,264,181"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="163,229,245,256"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -110,16 +112,17 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9bf03e911146642afdf82e2f56acbafa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8h.html#a9bf03e911146642afdf82e2f56acbafa">epaSolve</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#adafd414fd7bc4c928fa9877ccc917703">MinkowsiSum</a> objectASum, void *objectB, <a class="el" href="gjk_8h.html#adafd414fd7bc4c928fa9877ccc917703">MinkowsiSum</a> objectBSum, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
-<tr class="separator:a9bf03e911146642afdf82e2f56acbafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a445dad10a777de78e72c811d32d56cdc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8h.html#a445dad10a777de78e72c811d32d56cdc">epaSolveSwept</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#adafd414fd7bc4c928fa9877ccc917703">MinkowsiSum</a> objectASum, void *objectB, <a class="el" href="gjk_8h.html#adafd414fd7bc4c928fa9877ccc917703">MinkowsiSum</a> objectBSum, struct <a class="el" href="structVector3.html">Vector3</a> *bStart, struct <a class="el" href="structVector3.html">Vector3</a> *bEnd, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
-<tr class="separator:a445dad10a777de78e72c811d32d56cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d915fe1547382b06cee6ebae14c66b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8h.html#a2d915fe1547382b06cee6ebae14c66b3">epaSolve</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#afdc0b435d45dc4f56bf7fa595fc5b8f8">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#afdc0b435d45dc4f56bf7fa595fc5b8f8">gjk_support_function</a> objectBSum, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="memdesc:a2d915fe1547382b06cee6ebae14c66b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the Expanding Polytope Algorithm (EPA) to find the penetration depth and contact normal between two objects.  <a href="epa_8h.html#a2d915fe1547382b06cee6ebae14c66b3">More...</a><br /></td></tr>
+<tr class="separator:a2d915fe1547382b06cee6ebae14c66b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab97b9a841d3c63e12afc019d46cfafee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8h.html#ab97b9a841d3c63e12afc019d46cfafee">epaSolveSwept</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#afdc0b435d45dc4f56bf7fa595fc5b8f8">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#afdc0b435d45dc4f56bf7fa595fc5b8f8">gjk_support_function</a> objectBSum, struct <a class="el" href="structVector3.html">Vector3</a> *bStart, struct <a class="el" href="structVector3.html">Vector3</a> *bEnd, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="separator:ab97b9a841d3c63e12afc019d46cfafee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf3e9b77a5cad2a29960a73b2b322d28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8h.html#adf3e9b77a5cad2a29960a73b2b322d28">epaSwapResult</a> (struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
 <tr class="separator:adf3e9b77a5cad2a29960a73b2b322d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a9bf03e911146642afdf82e2f56acbafa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bf03e911146642afdf82e2f56acbafa">&#9670;&nbsp;</a></span>epaSolve()</h2>
+<a id="a2d915fe1547382b06cee6ebae14c66b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d915fe1547382b06cee6ebae14c66b3">&#9670;&nbsp;</a></span>epaSolve()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,8 +142,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="gjk_8h.html#adafd414fd7bc4c928fa9877ccc917703">MinkowsiSum</a>&#160;</td>
-          <td class="paramname"><em>objectASum</em>, </td>
+          <td class="paramtype"><a class="el" href="gjk_8h.html#afdc0b435d45dc4f56bf7fa595fc5b8f8">gjk_support_function</a>&#160;</td>
+          <td class="paramname"><em>objectASupport</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -151,7 +154,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="gjk_8h.html#adafd414fd7bc4c928fa9877ccc917703">MinkowsiSum</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="gjk_8h.html#afdc0b435d45dc4f56bf7fa595fc5b8f8">gjk_support_function</a>&#160;</td>
           <td class="paramname"><em>objectBSum</em>, </td>
         </tr>
         <tr>
@@ -168,10 +171,25 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Solves the Expanding Polytope Algorithm (EPA) to find the penetration depth and contact normal between two objects. </p>
+<p>This function takes an initial simplex from the GJK algorithm and iteratively expands it to find the closest face to the origin. It then calculates the penetration depth and contact normal between the two objects.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startingSimplex</td><td>A pointer to the initial simplex obtained from the GJK algorithm. </td></tr>
+    <tr><td class="paramname">objectA</td><td>A pointer to the first object involved in the collision. </td></tr>
+    <tr><td class="paramname">objectASupport</td><td>A function pointer to the GJK Support function for the first object. </td></tr>
+    <tr><td class="paramname">objectB</td><td>A pointer to the second object involved in the collision. </td></tr>
+    <tr><td class="paramname">objectBSupport</td><td>A function pointer to the GJK Support function for the second object. </td></tr>
+    <tr><td class="paramname">result</td><td>A pointer to an <a class="el" href="structEpaResult.html">EpaResult</a> structure where the result will be stored. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the EPA algorithm successfully finds a penetration depth and contact normal, false otherwise. </dd></dl>
+
 </div>
 </div>
-<a id="a445dad10a777de78e72c811d32d56cdc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a445dad10a777de78e72c811d32d56cdc">&#9670;&nbsp;</a></span>epaSolveSwept()</h2>
+<a id="ab97b9a841d3c63e12afc019d46cfafee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab97b9a841d3c63e12afc019d46cfafee">&#9670;&nbsp;</a></span>epaSolveSwept()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -191,8 +209,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="gjk_8h.html#adafd414fd7bc4c928fa9877ccc917703">MinkowsiSum</a>&#160;</td>
-          <td class="paramname"><em>objectASum</em>, </td>
+          <td class="paramtype"><a class="el" href="gjk_8h.html#afdc0b435d45dc4f56bf7fa595fc5b8f8">gjk_support_function</a>&#160;</td>
+          <td class="paramname"><em>objectASupport</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -203,7 +221,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="gjk_8h.html#adafd414fd7bc4c928fa9877ccc917703">MinkowsiSum</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="gjk_8h.html#afdc0b435d45dc4f56bf7fa595fc5b8f8">gjk_support_function</a>&#160;</td>
           <td class="paramname"><em>objectBSum</em>, </td>
         </tr>
         <tr>

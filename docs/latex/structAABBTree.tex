@@ -1,0 +1,74 @@
+\hypertarget{structAABBTree}{}\doxysection{AABBTree Struct Reference}
+\label{structAABBTree}\index{AABBTree@{AABBTree}}
+
+
+The \mbox{\hyperlink{structAABBTree}{AABBTree}} holds the root node, the number of nodes in the tree, the capacity of the tree, a free list of nodes, and an array of nodes.  
+
+
+
+
+{\ttfamily \#include $<$aabbtree.\+h$>$}
+
+
+
+Collaboration diagram for AABBTree\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{structAABBTree__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} \mbox{\hyperlink{structAABBTree_a67461f37237f1809848f2c93cee26ff5}{root}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{structAABBTree_a919688250da0fc47de337a14020e65d2}{node\+Count}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{structAABBTree_a56978da3f6c69b4a2a5a06e79eefcf4c}{node\+Capacity}}
+\item 
+\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} \mbox{\hyperlink{structAABBTree_a788eb4851c9050a3b8ba9ad57c4c55c6}{free\+List}}
+\item 
+\mbox{\hyperlink{structAABBTreeNode}{AABBTree\+Node}} $\ast$ \mbox{\hyperlink{structAABBTree_a783876cebee182d37a71f0f47fb95b41}{nodes}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The \mbox{\hyperlink{structAABBTree}{AABBTree}} holds the root node, the number of nodes in the tree, the capacity of the tree, a free list of nodes, and an array of nodes. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structAABBTree_a788eb4851c9050a3b8ba9ad57c4c55c6}\label{structAABBTree_a788eb4851c9050a3b8ba9ad57c4c55c6}} 
+\index{AABBTree@{AABBTree}!freeList@{freeList}}
+\index{freeList@{freeList}!AABBTree@{AABBTree}}
+\doxysubsubsection{\texorpdfstring{freeList}{freeList}}
+{\footnotesize\ttfamily \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} AABBTree\+::free\+List}
+
+\mbox{\Hypertarget{structAABBTree_a56978da3f6c69b4a2a5a06e79eefcf4c}\label{structAABBTree_a56978da3f6c69b4a2a5a06e79eefcf4c}} 
+\index{AABBTree@{AABBTree}!nodeCapacity@{nodeCapacity}}
+\index{nodeCapacity@{nodeCapacity}!AABBTree@{AABBTree}}
+\doxysubsubsection{\texorpdfstring{nodeCapacity}{nodeCapacity}}
+{\footnotesize\ttfamily int16\+\_\+t AABBTree\+::node\+Capacity}
+
+\mbox{\Hypertarget{structAABBTree_a919688250da0fc47de337a14020e65d2}\label{structAABBTree_a919688250da0fc47de337a14020e65d2}} 
+\index{AABBTree@{AABBTree}!nodeCount@{nodeCount}}
+\index{nodeCount@{nodeCount}!AABBTree@{AABBTree}}
+\doxysubsubsection{\texorpdfstring{nodeCount}{nodeCount}}
+{\footnotesize\ttfamily int16\+\_\+t AABBTree\+::node\+Count}
+
+\mbox{\Hypertarget{structAABBTree_a783876cebee182d37a71f0f47fb95b41}\label{structAABBTree_a783876cebee182d37a71f0f47fb95b41}} 
+\index{AABBTree@{AABBTree}!nodes@{nodes}}
+\index{nodes@{nodes}!AABBTree@{AABBTree}}
+\doxysubsubsection{\texorpdfstring{nodes}{nodes}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structAABBTreeNode}{AABBTree\+Node}}$\ast$ AABBTree\+::nodes}
+
+\mbox{\Hypertarget{structAABBTree_a67461f37237f1809848f2c93cee26ff5}\label{structAABBTree_a67461f37237f1809848f2c93cee26ff5}} 
+\index{AABBTree@{AABBTree}!root@{root}}
+\index{root@{root}!AABBTree@{AABBTree}}
+\doxysubsubsection{\texorpdfstring{root}{root}}
+{\footnotesize\ttfamily \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} AABBTree\+::root}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/collision/\mbox{\hyperlink{aabbtree_8h}{aabbtree.\+h}}\end{DoxyCompactItemize}

@@ -72,26 +72,37 @@ $(function() {
 <div class="title">collide.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="mesh__collider_8h_source.html">mesh_collider.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="dynamic__object_8h_source.html">dynamic_object.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="collision_2mesh__collider_8h_source.html">mesh_collider.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="physics__object_8h_source.html">physics_object.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="epa_8h_source.html">epa.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for collide.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="collide_8h__incl.png" border="0" usemap="#asrc_2collision_2collide_8h" alt=""/></div>
 <map name="asrc_2collision_2collide_8h" id="asrc_2collision_2collide_8h">
-<area shape="rect" title=" " alt="" coords="197,5,356,32"/>
-<area shape="rect" href="mesh__collider_8h.html" title=" " alt="" coords="98,80,222,107"/>
-<area shape="rect" href="dynamic__object_8h.html" title=" " alt="" coords="330,80,468,107"/>
-<area shape="rect" href="epa_8h.html" title=" " alt="" coords="247,80,306,107"/>
-<area shape="rect" title=" " alt="" coords="26,155,97,181"/>
-<area shape="rect" title=" " alt="" coords="122,155,204,181"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="330,229,463,256"/>
-<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="229,155,345,181"/>
-<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="517,229,662,256"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="656,155,790,181"/>
-<area shape="rect" href="contact_8h.html" title=" " alt="" coords="499,155,582,181"/>
-<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="369,155,424,181"/>
+<area shape="rect" title=" " alt="" coords="403,5,561,32"/>
+<area shape="rect" href="collision_2mesh__collider_8h.html" title=" " alt="" coords="223,80,347,107"/>
+<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="657,80,787,107"/>
+<area shape="rect" href="epa_8h.html" title=" " alt="" coords="453,80,511,107"/>
+<area shape="rect" title=" " alt="" coords="152,229,223,256"/>
+<area shape="rect" title=" " alt="" coords="282,155,365,181"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="554,528,687,555"/>
+<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="517,229,633,256"/>
+<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="440,155,532,181"/>
+<area shape="rect" title=" " alt="" coords="5,155,76,181"/>
+<area shape="rect" title=" " alt="" coords="152,155,207,181"/>
+<area shape="rect" href="ray_8h.html" title=" " alt="" coords="565,304,618,331"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="571,379,670,405"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="795,453,899,480"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="930,528,1013,555"/>
+<area shape="rect" href="vec_8h.html" title=" " alt="" coords="299,229,393,256"/>
+<area shape="rect" title=" " alt="" coords="418,229,493,256"/>
+<area shape="rect" title=" " alt="" coords="229,304,303,331"/>
+<area shape="rect" title=" " alt="" coords="327,304,394,331"/>
+<area shape="rect" title=" " alt="" coords="419,304,489,331"/>
+<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="811,229,956,256"/>
+<area shape="rect" href="contact_8h.html" title=" " alt="" coords="861,155,943,181"/>
+<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="745,379,800,405"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -110,20 +121,20 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adc81ab90f3ef4ed13ba1f8409ef03486"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collide_8h.html#adc81ab90f3ef4ed13ba1f8409ef03486">collide_object_to_mesh</a> (struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *object, struct <a class="el" href="structmesh__collider.html">mesh_collider</a> *mesh)</td></tr>
-<tr class="separator:adc81ab90f3ef4ed13ba1f8409ef03486"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b20dc3a1c9166dcbeb4eae3ab82bd89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collide_8h.html#a3b20dc3a1c9166dcbeb4eae3ab82bd89">collide_object_to_object</a> (struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *a, struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *b)</td></tr>
-<tr class="separator:a3b20dc3a1c9166dcbeb4eae3ab82bd89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a174a8a47a5e13090fb197845e87a4391"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collide_8h.html#a174a8a47a5e13090fb197845e87a4391">correct_velocity</a> (struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *object, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result, float ratio, float friction, float bounce)</td></tr>
-<tr class="separator:a174a8a47a5e13090fb197845e87a4391"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa336e9813a70f1228c0bf9e3ef83c8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collide_8h.html#aaa336e9813a70f1228c0bf9e3ef83c8f">correct_overlap</a> (struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *object, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result, float ratio, float friction, float bounce)</td></tr>
-<tr class="separator:aaa336e9813a70f1228c0bf9e3ef83c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6425c2a5ddc038750ee7a70611f7bb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collide_8h.html#ae6425c2a5ddc038750ee7a70611f7bb6">collide_add_contact</a> (struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *object, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
-<tr class="separator:ae6425c2a5ddc038750ee7a70611f7bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1868f5084e79b05ef17f41a0a1fcbe35"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collide_8h.html#a1868f5084e79b05ef17f41a0a1fcbe35">collide_object_to_mesh</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, struct <a class="el" href="structmesh__collider.html">mesh_collider</a> *mesh)</td></tr>
+<tr class="separator:a1868f5084e79b05ef17f41a0a1fcbe35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d598462ef27e622da9e38f3601926fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collide_8h.html#a1d598462ef27e622da9e38f3601926fe">collide_object_to_object</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *a, struct <a class="el" href="structphysics__object.html">physics_object</a> *b)</td></tr>
+<tr class="separator:a1d598462ef27e622da9e38f3601926fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb4f9fbc744ceab3a858b4404a325f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collide_8h.html#aacb4f9fbc744ceab3a858b4404a325f4">correct_velocity</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result, float ratio, float friction, float bounce)</td></tr>
+<tr class="separator:aacb4f9fbc744ceab3a858b4404a325f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4078309bda276816c181c536b76cf95b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collide_8h.html#a4078309bda276816c181c536b76cf95b">correct_overlap</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result, float ratio, float friction, float bounce)</td></tr>
+<tr class="separator:a4078309bda276816c181c536b76cf95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afeebbdf5ccadbe2ec73b28e9ee4bdf4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collide_8h.html#afeebbdf5ccadbe2ec73b28e9ee4bdf4e">collide_add_contact</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="separator:afeebbdf5ccadbe2ec73b28e9ee4bdf4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ae6425c2a5ddc038750ee7a70611f7bb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6425c2a5ddc038750ee7a70611f7bb6">&#9670;&nbsp;</a></span>collide_add_contact()</h2>
+<a id="afeebbdf5ccadbe2ec73b28e9ee4bdf4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afeebbdf5ccadbe2ec73b28e9ee4bdf4e">&#9670;&nbsp;</a></span>collide_add_contact()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,7 +142,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void collide_add_contact </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -150,8 +161,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="adc81ab90f3ef4ed13ba1f8409ef03486"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc81ab90f3ef4ed13ba1f8409ef03486">&#9670;&nbsp;</a></span>collide_object_to_mesh()</h2>
+<a id="a1868f5084e79b05ef17f41a0a1fcbe35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1868f5084e79b05ef17f41a0a1fcbe35">&#9670;&nbsp;</a></span>collide_object_to_mesh()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,7 +170,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void collide_object_to_mesh </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -178,8 +189,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a3b20dc3a1c9166dcbeb4eae3ab82bd89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b20dc3a1c9166dcbeb4eae3ab82bd89">&#9670;&nbsp;</a></span>collide_object_to_object()</h2>
+<a id="a1d598462ef27e622da9e38f3601926fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d598462ef27e622da9e38f3601926fe">&#9670;&nbsp;</a></span>collide_object_to_object()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,13 +198,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void collide_object_to_object </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
@@ -206,8 +217,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aaa336e9813a70f1228c0bf9e3ef83c8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa336e9813a70f1228c0bf9e3ef83c8f">&#9670;&nbsp;</a></span>correct_overlap()</h2>
+<a id="a4078309bda276816c181c536b76cf95b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4078309bda276816c181c536b76cf95b">&#9670;&nbsp;</a></span>correct_overlap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,7 +226,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void correct_overlap </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -252,8 +263,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a174a8a47a5e13090fb197845e87a4391"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a174a8a47a5e13090fb197845e87a4391">&#9670;&nbsp;</a></span>correct_velocity()</h2>
+<a id="aacb4f9fbc744ceab3a858b4404a325f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacb4f9fbc744ceab3a858b4404a325f4">&#9670;&nbsp;</a></span>correct_velocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,7 +272,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void correct_velocity </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdynamic__object.html">dynamic_object</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>

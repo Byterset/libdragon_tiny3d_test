@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['render_5fbatch_5ftype_1617',['render_batch_type',['../render__batch_8h.html#ab18746cc9a67bcb0ac56a95f64c1af57',1,'render_batch.h']]]
+  ['npc_5ftype_2025',['npc_type',['../scene__definition_8h.html#a9f0ba5c728597af2d1e173931d82c333',1,'scene_definition.h']]]
 ];

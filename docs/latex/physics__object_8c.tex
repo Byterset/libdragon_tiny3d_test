@@ -1,0 +1,158 @@
+\hypertarget{physics__object_8c}{}\doxysection{src/collision/physics\+\_\+object.c File Reference}
+\label{physics__object_8c}\index{src/collision/physics\_object.c@{src/collision/physics\_object.c}}
+{\ttfamily \#include \char`\"{}physics\+\_\+object.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../time/time.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/minmax.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+Include dependency graph for physics\+\_\+object.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{physics__object_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{physics__object_8c_a849874415ae6cff8d5fe635970be662b}{physics\+\_\+object\+\_\+init}} (\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} \mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}, struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structphysics__object__collision__data}{physics\+\_\+object\+\_\+collision\+\_\+data}} $\ast$type, uint16\+\_\+t \mbox{\hyperlink{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2}{collision\+\_\+layers}}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$position, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$rotation, float mass)
+\item 
+void \mbox{\hyperlink{physics__object_8c_ac3ad45f93ba3188077463605e97337dc}{physics\+\_\+object\+\_\+update}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
+\begin{DoxyCompactList}\small\item\em Applies gravity and performs verlet integration on the object. Will not do so if the object is a trigger or fixed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{physics__object_8c_a361ca8b6bc848059b6f27f1d75ad7a59}{physics\+\_\+object\+\_\+apply\+\_\+constraints}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
+\item 
+void \mbox{\hyperlink{physics__object_8c_a0c5e8e021257cc28f4ca689ad7e6f5d0}{physics\+\_\+object\+\_\+accelerate}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$acceleration)
+\begin{DoxyCompactList}\small\item\em Accelerates the object by the given acceleration vector. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{physics__object_8c_a55a13d5317551b1e1167f81162621a3f}{physics\+\_\+object\+\_\+translate\+\_\+no\+\_\+force}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$translation)
+\item 
+void \mbox{\hyperlink{physics__object_8c_a628560ca48adba9321d2f47d3e446ab9}{physics\+\_\+object\+\_\+position\+\_\+no\+\_\+force}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$position)
+\item 
+struct \mbox{\hyperlink{structVector3}{Vector3}} \mbox{\hyperlink{physics__object_8c_a7523b7be8d05f64f6bcf611631551433}{physics\+\_\+object\+\_\+get\+\_\+velocity}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
+\item 
+void \mbox{\hyperlink{physics__object_8c_af4288fd2eacf9f2b9a0488a5f41a6538}{physics\+\_\+object\+\_\+set\+\_\+velocity}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$velocity)
+\item 
+void \mbox{\hyperlink{physics__object_8c_a6509ed06d4a0260f71a263152750ab47}{physics\+\_\+object\+\_\+apply\+\_\+impulse}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$impulse)
+\item 
+struct \mbox{\hyperlink{structcontact}{contact}} $\ast$ \mbox{\hyperlink{physics__object_8c_aa3e86c2136548098a7b35b8e3599fa8a}{physics\+\_\+object\+\_\+nearest\+\_\+contact}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
+\item 
+bool \mbox{\hyperlink{physics__object_8c_a7fcb557fd238f9bd365d891084edc57b}{physics\+\_\+object\+\_\+is\+\_\+touching}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, \mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} id)
+\item 
+void \mbox{\hyperlink{physics__object_8c_af15088a7f87bfc31b773355b5b587bba}{physics\+\_\+object\+\_\+gjk\+\_\+support\+\_\+function}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+void \mbox{\hyperlink{physics__object_8c_a95d6a697cf19ac847a3e97c1461a74bb}{physics\+\_\+object\+\_\+recalculate\+\_\+aabb}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
+\begin{DoxyCompactList}\small\item\em re-\/caluclates the bounding box of the object using the collision type\textquotesingle{}s bounding box function \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{physics__object_8c_a0c5e8e021257cc28f4ca689ad7e6f5d0}\label{physics__object_8c_a0c5e8e021257cc28f4ca689ad7e6f5d0}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_accelerate@{physics\_object\_accelerate}}
+\index{physics\_object\_accelerate@{physics\_object\_accelerate}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_accelerate()}{physics\_object\_accelerate()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+accelerate (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{acceleration }\end{DoxyParamCaption})}
+
+
+
+Accelerates the object by the given acceleration vector. 
+
+Keep in mind that the acceleration is applied for one Physics update cycle and should be scaled by the PHYSICS\+\_\+\+TICKRATE so it scales to one second instead. 
+\begin{DoxyParams}{Parameters}
+{\em object} & \\
+\hline
+{\em acceleration} & ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{physics__object_8c_a361ca8b6bc848059b6f27f1d75ad7a59}\label{physics__object_8c_a361ca8b6bc848059b6f27f1d75ad7a59}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_apply\_constraints@{physics\_object\_apply\_constraints}}
+\index{physics\_object\_apply\_constraints@{physics\_object\_apply\_constraints}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_apply\_constraints()}{physics\_object\_apply\_constraints()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+apply\+\_\+constraints (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8c_a6509ed06d4a0260f71a263152750ab47}\label{physics__object_8c_a6509ed06d4a0260f71a263152750ab47}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_apply\_impulse@{physics\_object\_apply\_impulse}}
+\index{physics\_object\_apply\_impulse@{physics\_object\_apply\_impulse}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_apply\_impulse()}{physics\_object\_apply\_impulse()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+apply\+\_\+impulse (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{impulse }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8c_a7523b7be8d05f64f6bcf611631551433}\label{physics__object_8c_a7523b7be8d05f64f6bcf611631551433}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_get\_velocity@{physics\_object\_get\_velocity}}
+\index{physics\_object\_get\_velocity@{physics\_object\_get\_velocity}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_get\_velocity()}{physics\_object\_get\_velocity()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structVector3}{Vector3}} physics\+\_\+object\+\_\+get\+\_\+velocity (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8c_af15088a7f87bfc31b773355b5b587bba}\label{physics__object_8c_af15088a7f87bfc31b773355b5b587bba}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_gjk\_support\_function@{physics\_object\_gjk\_support\_function}}
+\index{physics\_object\_gjk\_support\_function@{physics\_object\_gjk\_support\_function}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_gjk\_support\_function()}{physics\_object\_gjk\_support\_function()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+gjk\+\_\+support\+\_\+function (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8c_a849874415ae6cff8d5fe635970be662b}\label{physics__object_8c_a849874415ae6cff8d5fe635970be662b}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_init@{physics\_object\_init}}
+\index{physics\_object\_init@{physics\_object\_init}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_init()}{physics\_object\_init()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}}]{entity\+\_\+id,  }\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structphysics__object__collision__data}{physics\+\_\+object\+\_\+collision\+\_\+data}} $\ast$}]{type,  }\item[{uint16\+\_\+t}]{collision\+\_\+layers,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{position,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{rotation,  }\item[{float}]{mass }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8c_a7fcb557fd238f9bd365d891084edc57b}\label{physics__object_8c_a7fcb557fd238f9bd365d891084edc57b}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_is\_touching@{physics\_object\_is\_touching}}
+\index{physics\_object\_is\_touching@{physics\_object\_is\_touching}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_is\_touching()}{physics\_object\_is\_touching()}}
+{\footnotesize\ttfamily bool physics\+\_\+object\+\_\+is\+\_\+touching (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8c_aa3e86c2136548098a7b35b8e3599fa8a}\label{physics__object_8c_aa3e86c2136548098a7b35b8e3599fa8a}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_nearest\_contact@{physics\_object\_nearest\_contact}}
+\index{physics\_object\_nearest\_contact@{physics\_object\_nearest\_contact}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_nearest\_contact()}{physics\_object\_nearest\_contact()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structcontact}{contact}}$\ast$ physics\+\_\+object\+\_\+nearest\+\_\+contact (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8c_a628560ca48adba9321d2f47d3e446ab9}\label{physics__object_8c_a628560ca48adba9321d2f47d3e446ab9}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_position\_no\_force@{physics\_object\_position\_no\_force}}
+\index{physics\_object\_position\_no\_force@{physics\_object\_position\_no\_force}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_position\_no\_force()}{physics\_object\_position\_no\_force()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+position\+\_\+no\+\_\+force (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{position }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8c_a95d6a697cf19ac847a3e97c1461a74bb}\label{physics__object_8c_a95d6a697cf19ac847a3e97c1461a74bb}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_recalculate\_aabb@{physics\_object\_recalculate\_aabb}}
+\index{physics\_object\_recalculate\_aabb@{physics\_object\_recalculate\_aabb}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_recalculate\_aabb()}{physics\_object\_recalculate\_aabb()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+recalculate\+\_\+aabb (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+
+
+re-\/caluclates the bounding box of the object using the collision type\textquotesingle{}s bounding box function 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{physics__object_8c_af4288fd2eacf9f2b9a0488a5f41a6538}\label{physics__object_8c_af4288fd2eacf9f2b9a0488a5f41a6538}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_set\_velocity@{physics\_object\_set\_velocity}}
+\index{physics\_object\_set\_velocity@{physics\_object\_set\_velocity}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_set\_velocity()}{physics\_object\_set\_velocity()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+set\+\_\+velocity (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{velocity }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8c_a55a13d5317551b1e1167f81162621a3f}\label{physics__object_8c_a55a13d5317551b1e1167f81162621a3f}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_translate\_no\_force@{physics\_object\_translate\_no\_force}}
+\index{physics\_object\_translate\_no\_force@{physics\_object\_translate\_no\_force}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_translate\_no\_force()}{physics\_object\_translate\_no\_force()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+translate\+\_\+no\+\_\+force (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{translation }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8c_ac3ad45f93ba3188077463605e97337dc}\label{physics__object_8c_ac3ad45f93ba3188077463605e97337dc}} 
+\index{physics\_object.c@{physics\_object.c}!physics\_object\_update@{physics\_object\_update}}
+\index{physics\_object\_update@{physics\_object\_update}!physics\_object.c@{physics\_object.c}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_update()}{physics\_object\_update()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+
+
+Applies gravity and performs verlet integration on the object. Will not do so if the object is a trigger or fixed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & ~\newline
+ \\
+\hline
+\end{DoxyParams}

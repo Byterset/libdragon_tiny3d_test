@@ -1,0 +1,80 @@
+\hypertarget{countdown__timer_8c}{}\doxysection{src/time/countdown\+\_\+timer.c File Reference}
+\label{countdown__timer_8c}\index{src/time/countdown\_timer.c@{src/time/countdown\_timer.c}}
+{\ttfamily \#include \char`\"{}countdown\+\_\+timer.\+h\char`\"{}}\newline
+Include dependency graph for countdown\+\_\+timer.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{countdown__timer_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{countdown__timer_8c_a641d15ee8dda05558dc6532321516a47}{countdown\+\_\+timer\+\_\+init}} (struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$timer, float duration\+\_\+sec, \mbox{\hyperlink{countdown__timer_8h_a77ada74f9dc472c7507ea1e055b72019}{countdown\+\_\+timer\+\_\+callback}} on\+\_\+timer\+\_\+stop, \mbox{\hyperlink{countdown__timer_8h_a77ada74f9dc472c7507ea1e055b72019}{countdown\+\_\+timer\+\_\+callback}} on\+\_\+timer\+\_\+start, void $\ast$data)
+\item 
+void \mbox{\hyperlink{countdown__timer_8c_a8f7c507fb1f1a8638167745de8fc5796}{countdown\+\_\+timer\+\_\+start}} (struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$timer)
+\item 
+void \mbox{\hyperlink{countdown__timer_8c_a164769ab399cd96b33a8f934a4b0443d}{countdown\+\_\+timer\+\_\+pause}} (struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$timer)
+\item 
+void \mbox{\hyperlink{countdown__timer_8c_a74fe269224762f6de5fa4047b5328e67}{countdown\+\_\+timer\+\_\+resume}} (struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$timer)
+\item 
+void \mbox{\hyperlink{countdown__timer_8c_ad7c2d22bf9b593ed7a3b3868563c2173}{countdown\+\_\+timer\+\_\+stop}} (struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$timer)
+\item 
+void \mbox{\hyperlink{countdown__timer_8c_a5339b9b20bc48009eeec5f2f93f04442}{countdown\+\_\+timer\+\_\+update}} (struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$timer)
+\item 
+void \mbox{\hyperlink{countdown__timer_8c_a6674a76d68d5a24c2dbc831650d554d4}{countdown\+\_\+timer\+\_\+reset}} (struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$timer, bool is\+\_\+running)
+\item 
+float \mbox{\hyperlink{countdown__timer_8c_a2447ee22c8d8c7018699d71cbc2ac755}{countdown\+\_\+timer\+\_\+get\+\_\+progress}} (struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$timer)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{countdown__timer_8c_a2447ee22c8d8c7018699d71cbc2ac755}\label{countdown__timer_8c_a2447ee22c8d8c7018699d71cbc2ac755}} 
+\index{countdown\_timer.c@{countdown\_timer.c}!countdown\_timer\_get\_progress@{countdown\_timer\_get\_progress}}
+\index{countdown\_timer\_get\_progress@{countdown\_timer\_get\_progress}!countdown\_timer.c@{countdown\_timer.c}}
+\doxysubsubsection{\texorpdfstring{countdown\_timer\_get\_progress()}{countdown\_timer\_get\_progress()}}
+{\footnotesize\ttfamily float countdown\+\_\+timer\+\_\+get\+\_\+progress (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$}]{timer }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{countdown__timer_8c_a641d15ee8dda05558dc6532321516a47}\label{countdown__timer_8c_a641d15ee8dda05558dc6532321516a47}} 
+\index{countdown\_timer.c@{countdown\_timer.c}!countdown\_timer\_init@{countdown\_timer\_init}}
+\index{countdown\_timer\_init@{countdown\_timer\_init}!countdown\_timer.c@{countdown\_timer.c}}
+\doxysubsubsection{\texorpdfstring{countdown\_timer\_init()}{countdown\_timer\_init()}}
+{\footnotesize\ttfamily void countdown\+\_\+timer\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$}]{timer,  }\item[{float}]{duration\+\_\+sec,  }\item[{\mbox{\hyperlink{countdown__timer_8h_a77ada74f9dc472c7507ea1e055b72019}{countdown\+\_\+timer\+\_\+callback}}}]{on\+\_\+timer\+\_\+stop,  }\item[{\mbox{\hyperlink{countdown__timer_8h_a77ada74f9dc472c7507ea1e055b72019}{countdown\+\_\+timer\+\_\+callback}}}]{on\+\_\+timer\+\_\+start,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{countdown__timer_8c_a164769ab399cd96b33a8f934a4b0443d}\label{countdown__timer_8c_a164769ab399cd96b33a8f934a4b0443d}} 
+\index{countdown\_timer.c@{countdown\_timer.c}!countdown\_timer\_pause@{countdown\_timer\_pause}}
+\index{countdown\_timer\_pause@{countdown\_timer\_pause}!countdown\_timer.c@{countdown\_timer.c}}
+\doxysubsubsection{\texorpdfstring{countdown\_timer\_pause()}{countdown\_timer\_pause()}}
+{\footnotesize\ttfamily void countdown\+\_\+timer\+\_\+pause (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$}]{timer }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{countdown__timer_8c_a6674a76d68d5a24c2dbc831650d554d4}\label{countdown__timer_8c_a6674a76d68d5a24c2dbc831650d554d4}} 
+\index{countdown\_timer.c@{countdown\_timer.c}!countdown\_timer\_reset@{countdown\_timer\_reset}}
+\index{countdown\_timer\_reset@{countdown\_timer\_reset}!countdown\_timer.c@{countdown\_timer.c}}
+\doxysubsubsection{\texorpdfstring{countdown\_timer\_reset()}{countdown\_timer\_reset()}}
+{\footnotesize\ttfamily void countdown\+\_\+timer\+\_\+reset (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$}]{timer,  }\item[{bool}]{is\+\_\+running }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{countdown__timer_8c_a74fe269224762f6de5fa4047b5328e67}\label{countdown__timer_8c_a74fe269224762f6de5fa4047b5328e67}} 
+\index{countdown\_timer.c@{countdown\_timer.c}!countdown\_timer\_resume@{countdown\_timer\_resume}}
+\index{countdown\_timer\_resume@{countdown\_timer\_resume}!countdown\_timer.c@{countdown\_timer.c}}
+\doxysubsubsection{\texorpdfstring{countdown\_timer\_resume()}{countdown\_timer\_resume()}}
+{\footnotesize\ttfamily void countdown\+\_\+timer\+\_\+resume (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$}]{timer }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{countdown__timer_8c_a8f7c507fb1f1a8638167745de8fc5796}\label{countdown__timer_8c_a8f7c507fb1f1a8638167745de8fc5796}} 
+\index{countdown\_timer.c@{countdown\_timer.c}!countdown\_timer\_start@{countdown\_timer\_start}}
+\index{countdown\_timer\_start@{countdown\_timer\_start}!countdown\_timer.c@{countdown\_timer.c}}
+\doxysubsubsection{\texorpdfstring{countdown\_timer\_start()}{countdown\_timer\_start()}}
+{\footnotesize\ttfamily void countdown\+\_\+timer\+\_\+start (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$}]{timer }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{countdown__timer_8c_ad7c2d22bf9b593ed7a3b3868563c2173}\label{countdown__timer_8c_ad7c2d22bf9b593ed7a3b3868563c2173}} 
+\index{countdown\_timer.c@{countdown\_timer.c}!countdown\_timer\_stop@{countdown\_timer\_stop}}
+\index{countdown\_timer\_stop@{countdown\_timer\_stop}!countdown\_timer.c@{countdown\_timer.c}}
+\doxysubsubsection{\texorpdfstring{countdown\_timer\_stop()}{countdown\_timer\_stop()}}
+{\footnotesize\ttfamily void countdown\+\_\+timer\+\_\+stop (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$}]{timer }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{countdown__timer_8c_a5339b9b20bc48009eeec5f2f93f04442}\label{countdown__timer_8c_a5339b9b20bc48009eeec5f2f93f04442}} 
+\index{countdown\_timer.c@{countdown\_timer.c}!countdown\_timer\_update@{countdown\_timer\_update}}
+\index{countdown\_timer\_update@{countdown\_timer\_update}!countdown\_timer.c@{countdown\_timer.c}}
+\doxysubsubsection{\texorpdfstring{countdown\_timer\_update()}{countdown\_timer\_update()}}
+{\footnotesize\ttfamily void countdown\+\_\+timer\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structCountdownTimer}{Countdown\+Timer}} $\ast$}]{timer }\end{DoxyParamCaption})}
+

@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['basis_857',['Basis',['../structBasis.html',1,'']]],
-  ['box_858',['box',['../structbox.html',1,'']]]
+  ['basis_1087',['Basis',['../structBasis.html',1,'']]],
+  ['box_1088',['box',['../structbox.html',1,'']]],
+  ['box_5fdefinition_1089',['box_definition',['../structbox__definition.html',1,'']]]
 ];

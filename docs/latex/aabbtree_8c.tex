@@ -1,0 +1,305 @@
+\hypertarget{aabbtree_8c}{}\doxysection{src/collision/aabbtree.c File Reference}
+\label{aabbtree_8c}\index{src/collision/aabbtree.c@{src/collision/aabbtree.c}}
+{\ttfamily \#include \char`\"{}aabbtree.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$malloc.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../math/mathf.\+h\char`\"{}}\newline
+Include dependency graph for aabbtree.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{aabbtree_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{aabbtree_8c_a63601046bbd13464db2eb5866b5fc9f7}{AABBTree\+\_\+create}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, int node\+Capacity)
+\begin{DoxyCompactList}\small\item\em Allocate Memory for an \mbox{\hyperlink{structAABBTree}{AABBTree}} with an initial node capacity. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{aabbtree_8c_a8b10f35136c0dc67a46593de428d3f29}{AABBTree\+\_\+free}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree)
+\item 
+int \mbox{\hyperlink{aabbtree_8c_a0441cc6c1ba95dd14b99c70cc52769dd}{AABBTree\+Node\+\_\+is\+Leaf}} (\mbox{\hyperlink{structAABBTreeNode}{AABBTree\+Node}} $\ast$node)
+\item 
+\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} \mbox{\hyperlink{aabbtree_8c_aed4a34ec38b6af31748a1ba603cb88f0}{AABBTree\+\_\+allocate\+Node}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree)
+\item 
+void \mbox{\hyperlink{aabbtree_8c_a06aad19b08e1fcf28b3782f4a42c9826}{AABBTree\+Node\+\_\+free\+Node}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} node)
+\item 
+\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} \mbox{\hyperlink{aabbtree_8c_a0b6dcdc2800cbdeda37957e1b19c061c}{AABBTree\+Node\+\_\+create\+Node}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, struct \mbox{\hyperlink{structAABB}{AABB}} bounds, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em allocate \& create a new node in the \mbox{\hyperlink{structAABBTree}{AABBTree}} with the given Bounds and arbitrary data \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{aabbtree_8c_ae45ee3034cc6b601c2c8dada75952c37}{AABBTree\+\_\+move\+Node}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} node, struct \mbox{\hyperlink{structAABB}{AABB}} aabb, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$displacement)
+\begin{DoxyCompactList}\small\item\em Moves a node within an \mbox{\hyperlink{structAABB}{AABB}} tree and updates its \mbox{\hyperlink{structAABB}{AABB}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{aabbtree_8c_a2eecfe2bedcf228acc737f080a7b6162}{AABBTree\+Node\+\_\+rotate\+Node}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} node)
+\item 
+int \mbox{\hyperlink{aabbtree_8c_a687a9e373586deafd9b6f45137a6679d}{AABBTree\+Node\+\_\+test\+Overlap}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} a, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} b)
+\begin{DoxyCompactList}\small\item\em Tests if the bounds of two nodes of a Tree overlap. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$ \mbox{\hyperlink{aabbtree_8c_aeb7ac3354a0aa591f78258044e341c2e}{AABBTree\+Node\+\_\+get\+Bounds}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} node)
+\begin{DoxyCompactList}\small\item\em Returns the Bounds in World Space of a given Node. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{aabbtree_8c_a5a15af31beb689a7dcb7710ece219377}{AABBTree\+\_\+rebuild}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree)
+\item 
+\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} \mbox{\hyperlink{aabbtree_8c_a21f6b00decf408a1d9529577e9f1e4cd}{AABBTree\+\_\+insert\+Leaf}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} leaf)
+\item 
+void \mbox{\hyperlink{aabbtree_8c_aaffa4dc1a1cde718fa0a4eecc94c6395}{AABBTree\+\_\+remove\+Leaf}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} leaf)
+\item 
+struct \mbox{\hyperlink{structAABB}{AABB}} \mbox{\hyperlink{aabbtree_8c_a4fcc0eb5ad405bb6cf21a8374c4f18ed}{AABBTree\+\_\+get\+Node\+AABB}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} node)
+\item 
+void $\ast$ \mbox{\hyperlink{aabbtree_8c_ad53843e72138337d6e8f00a21404d3c4}{AABBTree\+Node\+\_\+get\+Data}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} node)
+\begin{DoxyCompactList}\small\item\em Check if the given node was moved. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{aabbtree_8c_a25cffbbfb7ba15c27131e5fd5d76f660}{AABBTree\+\_\+query\+Bounds}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$query\+\_\+box, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} $\ast$results, int $\ast$result\+\_\+count, int $\ast$aabb\+Checks, int max\+\_\+results)
+\begin{DoxyCompactList}\small\item\em Query the \mbox{\hyperlink{structAABBTree}{AABBTree}} for (leaf) nodes that overlap with a given \mbox{\hyperlink{structAABB}{AABB}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{aabbtree_8c_aeda866eecd9e869e199ae09576a13602}{AABBTree\+\_\+query\+Point}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, struct \mbox{\hyperlink{structVector3}{Vector3}} point, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} $\ast$results, int $\ast$result\+\_\+count, int max\+\_\+results)
+\begin{DoxyCompactList}\small\item\em Query the \mbox{\hyperlink{structAABBTree}{AABBTree}} for (leaf) nodes that contain a point. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{aabbtree_8c_a359b38f445a7fbdf335a4b4b5229678c}{AABBTree\+\_\+query\+Ray}} (\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$tree, struct \mbox{\hyperlink{structRayCast}{Ray\+Cast}} $\ast$ray, \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} $\ast$results, int $\ast$result\+\_\+count, int max\+\_\+results)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{aabbtree_8c_aed4a34ec38b6af31748a1ba603cb88f0}\label{aabbtree_8c_aed4a34ec38b6af31748a1ba603cb88f0}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_allocateNode@{AABBTree\_allocateNode}}
+\index{AABBTree\_allocateNode@{AABBTree\_allocateNode}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_allocateNode()}{AABBTree\_allocateNode()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} AABBTree\+\_\+allocate\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabbtree_8c_a63601046bbd13464db2eb5866b5fc9f7}\label{aabbtree_8c_a63601046bbd13464db2eb5866b5fc9f7}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_create@{AABBTree\_create}}
+\index{AABBTree\_create@{AABBTree\_create}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_create()}{AABBTree\_create()}}
+{\footnotesize\ttfamily void AABBTree\+\_\+create (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{int}]{node\+Capacity }\end{DoxyParamCaption})}
+
+
+
+Allocate Memory for an \mbox{\hyperlink{structAABBTree}{AABBTree}} with an initial node capacity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em node\+Capacity} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+~\newline
+ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{aabbtree_8c_a8b10f35136c0dc67a46593de428d3f29}\label{aabbtree_8c_a8b10f35136c0dc67a46593de428d3f29}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_free@{AABBTree\_free}}
+\index{AABBTree\_free@{AABBTree\_free}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_free()}{AABBTree\_free()}}
+{\footnotesize\ttfamily void AABBTree\+\_\+free (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabbtree_8c_a4fcc0eb5ad405bb6cf21a8374c4f18ed}\label{aabbtree_8c_a4fcc0eb5ad405bb6cf21a8374c4f18ed}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_getNodeAABB@{AABBTree\_getNodeAABB}}
+\index{AABBTree\_getNodeAABB@{AABBTree\_getNodeAABB}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_getNodeAABB()}{AABBTree\_getNodeAABB()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structAABB}{AABB}} AABBTree\+\_\+get\+Node\+AABB (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}}}]{node }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabbtree_8c_a21f6b00decf408a1d9529577e9f1e4cd}\label{aabbtree_8c_a21f6b00decf408a1d9529577e9f1e4cd}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_insertLeaf@{AABBTree\_insertLeaf}}
+\index{AABBTree\_insertLeaf@{AABBTree\_insertLeaf}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_insertLeaf()}{AABBTree\_insertLeaf()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} AABBTree\+\_\+insert\+Leaf (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}}}]{leaf }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabbtree_8c_ae45ee3034cc6b601c2c8dada75952c37}\label{aabbtree_8c_ae45ee3034cc6b601c2c8dada75952c37}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_moveNode@{AABBTree\_moveNode}}
+\index{AABBTree\_moveNode@{AABBTree\_moveNode}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_moveNode()}{AABBTree\_moveNode()}}
+{\footnotesize\ttfamily int AABBTree\+\_\+move\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}}}]{node,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}}}]{aabb,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{displacement }\end{DoxyParamCaption})}
+
+
+
+Moves a node within an \mbox{\hyperlink{structAABB}{AABB}} tree and updates its \mbox{\hyperlink{structAABB}{AABB}}. 
+
+The displacement vector is used to enlarge the node bounds by anticipated future movement and reduce the number of leaf insertions. To avoid unnecessary tree updates, the node is only moved if the new \mbox{\hyperlink{structAABB}{AABB}} does not fit within the old \mbox{\hyperlink{structAABB}{AABB}}. To disable the displacement feature, set the displacement vector to zero. 
+\begin{DoxyParams}{Parameters}
+{\em tree} & The \mbox{\hyperlink{structAABB}{AABB}} tree. \\
+\hline
+{\em node} & The index of the node to move. \\
+\hline
+{\em aabb} & The new \mbox{\hyperlink{structAABB}{AABB}} for the node. \\
+\hline
+{\em displacement} & The displacement vector to move the node. Difference between the old and new position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns TRUE if the node was moved, FALSE otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{aabbtree_8c_a25cffbbfb7ba15c27131e5fd5d76f660}\label{aabbtree_8c_a25cffbbfb7ba15c27131e5fd5d76f660}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_queryBounds@{AABBTree\_queryBounds}}
+\index{AABBTree\_queryBounds@{AABBTree\_queryBounds}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_queryBounds()}{AABBTree\_queryBounds()}}
+{\footnotesize\ttfamily void AABBTree\+\_\+query\+Bounds (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{query\+\_\+box,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} $\ast$}]{results,  }\item[{int $\ast$}]{result\+\_\+count,  }\item[{int $\ast$}]{aabb\+Checks,  }\item[{int}]{max\+\_\+results }\end{DoxyParamCaption})}
+
+
+
+Query the \mbox{\hyperlink{structAABBTree}{AABBTree}} for (leaf) nodes that overlap with a given \mbox{\hyperlink{structAABB}{AABB}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tree} & BVH tree \\
+\hline
+{\em query\+\_\+box} & the \mbox{\hyperlink{structAABB}{AABB}} to query for \\
+\hline
+{\em results} & the pre-\/initialized array of Node\+Proxies to store the results \\
+\hline
+{\em result\+\_\+count} & the amount of results found \\
+\hline
+{\em aabb\+Checks} & the amount of \mbox{\hyperlink{structAABB}{AABB}} checks performed \\
+\hline
+{\em max\+\_\+results} & the maximum amount of results to find \\
+\hline
+{\em skip\+Root\+Check} & if the root node should be checked \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{aabbtree_8c_aeda866eecd9e869e199ae09576a13602}\label{aabbtree_8c_aeda866eecd9e869e199ae09576a13602}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_queryPoint@{AABBTree\_queryPoint}}
+\index{AABBTree\_queryPoint@{AABBTree\_queryPoint}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_queryPoint()}{AABBTree\_queryPoint()}}
+{\footnotesize\ttfamily void AABBTree\+\_\+query\+Point (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}}}]{point,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} $\ast$}]{results,  }\item[{int $\ast$}]{result\+\_\+count,  }\item[{int}]{max\+\_\+results }\end{DoxyParamCaption})}
+
+
+
+Query the \mbox{\hyperlink{structAABBTree}{AABBTree}} for (leaf) nodes that contain a point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tree} & BVH tree \\
+\hline
+{\em point} & the point to query for \\
+\hline
+{\em results} & the pre-\/initialized array of Node\+Proxies to store the results \\
+\hline
+{\em result\+\_\+count} & the amount of results found \\
+\hline
+{\em max\+\_\+results} & the maximum amount of results to find \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{aabbtree_8c_a359b38f445a7fbdf335a4b4b5229678c}\label{aabbtree_8c_a359b38f445a7fbdf335a4b4b5229678c}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_queryRay@{AABBTree\_queryRay}}
+\index{AABBTree\_queryRay@{AABBTree\_queryRay}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_queryRay()}{AABBTree\_queryRay()}}
+{\footnotesize\ttfamily void AABBTree\+\_\+query\+Ray (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{struct \mbox{\hyperlink{structRayCast}{Ray\+Cast}} $\ast$}]{ray,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} $\ast$}]{results,  }\item[{int $\ast$}]{result\+\_\+count,  }\item[{int}]{max\+\_\+results }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabbtree_8c_a5a15af31beb689a7dcb7710ece219377}\label{aabbtree_8c_a5a15af31beb689a7dcb7710ece219377}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_rebuild@{AABBTree\_rebuild}}
+\index{AABBTree\_rebuild@{AABBTree\_rebuild}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_rebuild()}{AABBTree\_rebuild()}}
+{\footnotesize\ttfamily void AABBTree\+\_\+rebuild (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabbtree_8c_aaffa4dc1a1cde718fa0a4eecc94c6395}\label{aabbtree_8c_aaffa4dc1a1cde718fa0a4eecc94c6395}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTree\_removeLeaf@{AABBTree\_removeLeaf}}
+\index{AABBTree\_removeLeaf@{AABBTree\_removeLeaf}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTree\_removeLeaf()}{AABBTree\_removeLeaf()}}
+{\footnotesize\ttfamily void AABBTree\+\_\+remove\+Leaf (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}}}]{leaf }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabbtree_8c_a0b6dcdc2800cbdeda37957e1b19c061c}\label{aabbtree_8c_a0b6dcdc2800cbdeda37957e1b19c061c}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTreeNode\_createNode@{AABBTreeNode\_createNode}}
+\index{AABBTreeNode\_createNode@{AABBTreeNode\_createNode}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTreeNode\_createNode()}{AABBTreeNode\_createNode()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} AABBTree\+Node\+\_\+create\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}}}]{bounds,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+allocate \& create a new node in the \mbox{\hyperlink{structAABBTree}{AABBTree}} with the given Bounds and arbitrary data 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tree} & \\
+\hline
+{\em bounds} & \\
+\hline
+{\em data} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+~\newline
+ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{aabbtree_8c_a06aad19b08e1fcf28b3782f4a42c9826}\label{aabbtree_8c_a06aad19b08e1fcf28b3782f4a42c9826}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTreeNode\_freeNode@{AABBTreeNode\_freeNode}}
+\index{AABBTreeNode\_freeNode@{AABBTreeNode\_freeNode}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTreeNode\_freeNode()}{AABBTreeNode\_freeNode()}}
+{\footnotesize\ttfamily void AABBTree\+Node\+\_\+free\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}}}]{node }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabbtree_8c_aeb7ac3354a0aa591f78258044e341c2e}\label{aabbtree_8c_aeb7ac3354a0aa591f78258044e341c2e}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTreeNode\_getBounds@{AABBTreeNode\_getBounds}}
+\index{AABBTreeNode\_getBounds@{AABBTreeNode\_getBounds}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTreeNode\_getBounds()}{AABBTreeNode\_getBounds()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structAABB}{AABB}}$\ast$ AABBTree\+Node\+\_\+get\+Bounds (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}}}]{node }\end{DoxyParamCaption})}
+
+
+
+Returns the Bounds in World Space of a given Node. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tree} & \\
+\hline
+{\em node} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+~\newline
+ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{aabbtree_8c_ad53843e72138337d6e8f00a21404d3c4}\label{aabbtree_8c_ad53843e72138337d6e8f00a21404d3c4}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTreeNode\_getData@{AABBTreeNode\_getData}}
+\index{AABBTreeNode\_getData@{AABBTreeNode\_getData}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTreeNode\_getData()}{AABBTreeNode\_getData()}}
+{\footnotesize\ttfamily void$\ast$ AABBTree\+Node\+\_\+get\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}}}]{node }\end{DoxyParamCaption})}
+
+
+
+Check if the given node was moved. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tree} & \\
+\hline
+{\em node} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+Return the Collider Data associated with the given Node 
+\begin{DoxyParams}{Parameters}
+{\em tree} & \\
+\hline
+{\em node} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{aabbtree_8c_a0441cc6c1ba95dd14b99c70cc52769dd}\label{aabbtree_8c_a0441cc6c1ba95dd14b99c70cc52769dd}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTreeNode\_isLeaf@{AABBTreeNode\_isLeaf}}
+\index{AABBTreeNode\_isLeaf@{AABBTreeNode\_isLeaf}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTreeNode\_isLeaf()}{AABBTreeNode\_isLeaf()}}
+{\footnotesize\ttfamily int AABBTree\+Node\+\_\+is\+Leaf (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTreeNode}{AABBTree\+Node}} $\ast$}]{node }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabbtree_8c_a2eecfe2bedcf228acc737f080a7b6162}\label{aabbtree_8c_a2eecfe2bedcf228acc737f080a7b6162}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTreeNode\_rotateNode@{AABBTreeNode\_rotateNode}}
+\index{AABBTreeNode\_rotateNode@{AABBTreeNode\_rotateNode}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTreeNode\_rotateNode()}{AABBTreeNode\_rotateNode()}}
+{\footnotesize\ttfamily void AABBTree\+Node\+\_\+rotate\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}}}]{node }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabbtree_8c_a687a9e373586deafd9b6f45137a6679d}\label{aabbtree_8c_a687a9e373586deafd9b6f45137a6679d}} 
+\index{aabbtree.c@{aabbtree.c}!AABBTreeNode\_testOverlap@{AABBTreeNode\_testOverlap}}
+\index{AABBTreeNode\_testOverlap@{AABBTreeNode\_testOverlap}!aabbtree.c@{aabbtree.c}}
+\doxysubsubsection{\texorpdfstring{AABBTreeNode\_testOverlap()}{AABBTreeNode\_testOverlap()}}
+{\footnotesize\ttfamily int AABBTree\+Node\+\_\+test\+Overlap (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAABBTree}{AABBTree}} $\ast$}]{tree,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}}}]{a,  }\item[{\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}}}]{b }\end{DoxyParamCaption})}
+
+
+
+Tests if the bounds of two nodes of a Tree overlap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tree} & \\
+\hline
+{\em a} & first Node \\
+\hline
+{\em b} & second Node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+~\newline
+ 
+\end{DoxyReturn}

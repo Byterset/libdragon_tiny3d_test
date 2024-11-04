@@ -18,51 +18,51 @@ Include dependency graph for collide\+\_\+swept.\+c\+:
 \doxysubsection*{Data Structures}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{structswept__dynamic__object}{swept\+\_\+dynamic\+\_\+object}}
+struct \mbox{\hyperlink{structswept__physics__object}{swept\+\_\+physics\+\_\+object}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{collide__swept_8c_ae0060a9d9b9431dd983c4e8127623a4e}{swept\+\_\+dynamic\+\_\+object\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+void \mbox{\hyperlink{collide__swept_8c_aa8197160126fb636be51a8f61e77c379}{swept\+\_\+physics\+\_\+object\+\_\+gjk\+\_\+support\+\_\+function}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
 \item 
-void \mbox{\hyperlink{collide__swept_8c_ad3c516463056e2fedffab0c87e7e0df2}{object\+\_\+mesh\+\_\+collide\+\_\+data\+\_\+init}} (struct \mbox{\hyperlink{structobject__mesh__collide__data}{object\+\_\+mesh\+\_\+collide\+\_\+data}} $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$prev\+\_\+pos, struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$mesh, struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+void \mbox{\hyperlink{collide__swept_8c_a473fb40213b0a2bc099e789e0c809172}{object\+\_\+mesh\+\_\+collide\+\_\+data\+\_\+init}} (struct \mbox{\hyperlink{structobject__mesh__collide__data}{object\+\_\+mesh\+\_\+collide\+\_\+data}} $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$prev\+\_\+pos, struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$mesh, struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
 \item 
-bool \mbox{\hyperlink{collide__swept_8c_a8a1118d901529690b92a1b0484f72ace}{collide\+\_\+object\+\_\+swept\+\_\+to\+\_\+triangle}} (struct \mbox{\hyperlink{structmesh__index}{mesh\+\_\+index}} $\ast$index, void $\ast$data, int triangle\+\_\+index)
+bool \mbox{\hyperlink{collide__swept_8c_ae262f1c670882898a532e1f3a11d1e6f}{collide\+\_\+object\+\_\+swept\+\_\+to\+\_\+triangle}} (void $\ast$data, int triangle\+\_\+index)
 \item 
-void \mbox{\hyperlink{collide__swept_8c_abdca7fbecf4e8fa8648182d6894beb19}{collide\+\_\+object\+\_\+swept\+\_\+bounce}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structobject__mesh__collide__data}{object\+\_\+mesh\+\_\+collide\+\_\+data}} $\ast$collide\+\_\+data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$start\+\_\+pos)
+void \mbox{\hyperlink{collide__swept_8c_ad73bda46e177be9c369154940d594435}{collide\+\_\+object\+\_\+swept\+\_\+bounce}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structobject__mesh__collide__data}{object\+\_\+mesh\+\_\+collide\+\_\+data}} $\ast$collide\+\_\+data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$start\+\_\+pos)
 \item 
-bool \mbox{\hyperlink{collide__swept_8c_a161fe2e8a6e3adeb0d02edf3a9467161}{collide\+\_\+object\+\_\+to\+\_\+mesh\+\_\+swept}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$mesh, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$prev\+\_\+pos)
+bool \mbox{\hyperlink{collide__swept_8c_a72820f707e282f93fe6a1665d92b1e9e}{collide\+\_\+object\+\_\+to\+\_\+mesh\+\_\+swept}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$mesh, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$prev\+\_\+pos)
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{collide__swept_8c_abdca7fbecf4e8fa8648182d6894beb19}\label{collide__swept_8c_abdca7fbecf4e8fa8648182d6894beb19}} 
+\mbox{\Hypertarget{collide__swept_8c_ad73bda46e177be9c369154940d594435}\label{collide__swept_8c_ad73bda46e177be9c369154940d594435}} 
 \index{collide\_swept.c@{collide\_swept.c}!collide\_object\_swept\_bounce@{collide\_object\_swept\_bounce}}
 \index{collide\_object\_swept\_bounce@{collide\_object\_swept\_bounce}!collide\_swept.c@{collide\_swept.c}}
 \doxysubsubsection{\texorpdfstring{collide\_object\_swept\_bounce()}{collide\_object\_swept\_bounce()}}
-{\footnotesize\ttfamily void collide\+\_\+object\+\_\+swept\+\_\+bounce (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structobject__mesh__collide__data}{object\+\_\+mesh\+\_\+collide\+\_\+data}} $\ast$}]{collide\+\_\+data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{start\+\_\+pos }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void collide\+\_\+object\+\_\+swept\+\_\+bounce (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structobject__mesh__collide__data}{object\+\_\+mesh\+\_\+collide\+\_\+data}} $\ast$}]{collide\+\_\+data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{start\+\_\+pos }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{collide__swept_8c_a8a1118d901529690b92a1b0484f72ace}\label{collide__swept_8c_a8a1118d901529690b92a1b0484f72ace}} 
+\mbox{\Hypertarget{collide__swept_8c_ae262f1c670882898a532e1f3a11d1e6f}\label{collide__swept_8c_ae262f1c670882898a532e1f3a11d1e6f}} 
 \index{collide\_swept.c@{collide\_swept.c}!collide\_object\_swept\_to\_triangle@{collide\_object\_swept\_to\_triangle}}
 \index{collide\_object\_swept\_to\_triangle@{collide\_object\_swept\_to\_triangle}!collide\_swept.c@{collide\_swept.c}}
 \doxysubsubsection{\texorpdfstring{collide\_object\_swept\_to\_triangle()}{collide\_object\_swept\_to\_triangle()}}
-{\footnotesize\ttfamily bool collide\+\_\+object\+\_\+swept\+\_\+to\+\_\+triangle (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmesh__index}{mesh\+\_\+index}} $\ast$}]{index,  }\item[{void $\ast$}]{data,  }\item[{int}]{triangle\+\_\+index }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool collide\+\_\+object\+\_\+swept\+\_\+to\+\_\+triangle (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{int}]{triangle\+\_\+index }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{collide__swept_8c_a161fe2e8a6e3adeb0d02edf3a9467161}\label{collide__swept_8c_a161fe2e8a6e3adeb0d02edf3a9467161}} 
+\mbox{\Hypertarget{collide__swept_8c_a72820f707e282f93fe6a1665d92b1e9e}\label{collide__swept_8c_a72820f707e282f93fe6a1665d92b1e9e}} 
 \index{collide\_swept.c@{collide\_swept.c}!collide\_object\_to\_mesh\_swept@{collide\_object\_to\_mesh\_swept}}
 \index{collide\_object\_to\_mesh\_swept@{collide\_object\_to\_mesh\_swept}!collide\_swept.c@{collide\_swept.c}}
 \doxysubsubsection{\texorpdfstring{collide\_object\_to\_mesh\_swept()}{collide\_object\_to\_mesh\_swept()}}
-{\footnotesize\ttfamily bool collide\+\_\+object\+\_\+to\+\_\+mesh\+\_\+swept (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$}]{mesh,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{prev\+\_\+pos }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool collide\+\_\+object\+\_\+to\+\_\+mesh\+\_\+swept (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$}]{mesh,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{prev\+\_\+pos }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{collide__swept_8c_ad3c516463056e2fedffab0c87e7e0df2}\label{collide__swept_8c_ad3c516463056e2fedffab0c87e7e0df2}} 
+\mbox{\Hypertarget{collide__swept_8c_a473fb40213b0a2bc099e789e0c809172}\label{collide__swept_8c_a473fb40213b0a2bc099e789e0c809172}} 
 \index{collide\_swept.c@{collide\_swept.c}!object\_mesh\_collide\_data\_init@{object\_mesh\_collide\_data\_init}}
 \index{object\_mesh\_collide\_data\_init@{object\_mesh\_collide\_data\_init}!collide\_swept.c@{collide\_swept.c}}
 \doxysubsubsection{\texorpdfstring{object\_mesh\_collide\_data\_init()}{object\_mesh\_collide\_data\_init()}}
-{\footnotesize\ttfamily void object\+\_\+mesh\+\_\+collide\+\_\+data\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structobject__mesh__collide__data}{object\+\_\+mesh\+\_\+collide\+\_\+data}} $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{prev\+\_\+pos,  }\item[{struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$}]{mesh,  }\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void object\+\_\+mesh\+\_\+collide\+\_\+data\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structobject__mesh__collide__data}{object\+\_\+mesh\+\_\+collide\+\_\+data}} $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{prev\+\_\+pos,  }\item[{struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$}]{mesh,  }\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{collide__swept_8c_ae0060a9d9b9431dd983c4e8127623a4e}\label{collide__swept_8c_ae0060a9d9b9431dd983c4e8127623a4e}} 
-\index{collide\_swept.c@{collide\_swept.c}!swept\_dynamic\_object\_minkowski\_sum@{swept\_dynamic\_object\_minkowski\_sum}}
-\index{swept\_dynamic\_object\_minkowski\_sum@{swept\_dynamic\_object\_minkowski\_sum}!collide\_swept.c@{collide\_swept.c}}
-\doxysubsubsection{\texorpdfstring{swept\_dynamic\_object\_minkowski\_sum()}{swept\_dynamic\_object\_minkowski\_sum()}}
-{\footnotesize\ttfamily void swept\+\_\+dynamic\+\_\+object\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{collide__swept_8c_aa8197160126fb636be51a8f61e77c379}\label{collide__swept_8c_aa8197160126fb636be51a8f61e77c379}} 
+\index{collide\_swept.c@{collide\_swept.c}!swept\_physics\_object\_gjk\_support\_function@{swept\_physics\_object\_gjk\_support\_function}}
+\index{swept\_physics\_object\_gjk\_support\_function@{swept\_physics\_object\_gjk\_support\_function}!collide\_swept.c@{collide\_swept.c}}
+\doxysubsubsection{\texorpdfstring{swept\_physics\_object\_gjk\_support\_function()}{swept\_physics\_object\_gjk\_support\_function()}}
+{\footnotesize\ttfamily void swept\+\_\+physics\+\_\+object\+\_\+gjk\+\_\+support\+\_\+function (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
 

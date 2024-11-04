@@ -4,8 +4,7 @@
 {\ttfamily \#include $<$assert.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}mathf.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$math.\+h$>$}\newline
-Include dependency graph for quaternion.\+c\+:
-\nopagebreak
+Include dependency graph for quaternion.\+c\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -97,7 +96,18 @@ struct \mbox{\hyperlink{structQuaternion}{Quaternion}} \mbox{\hyperlink{quaterni
 \doxysubsubsection{\texorpdfstring{quatDecompose()}{quatDecompose()}}
 {\footnotesize\ttfamily void quat\+Decompose (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{input,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{axis,  }\item[{float $\ast$}]{angle }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{quaternion_8c_a0b6ef1f221bea1b1267ad0520c7e1007}\label{quaternion_8c_a0b6ef1f221bea1b1267ad0520c7e1007}} 
+Decomposes a quaternion into an axis and an angle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & Pointer to the input quaternion to be decomposed. \\
+\hline
+{\em axis} & Pointer to the vector that will store the axis of rotation. \\
+\hline
+{\em angle} & Pointer to the float that will store the angle of rotation in radians.\\
+\hline
+\end{DoxyParams}
+The function calculates the magnitude of the quaternion\textquotesingle{}s vector part and normalizes it to obtain the axis of rotation. If the magnitude is very small (less than 0.\+0001), it sets the axis to a default up vector and the angle to 0. Otherwise, it normalizes the axis and calculates the angle using the sine of the magnitude. \mbox{\Hypertarget{quaternion_8c_a0b6ef1f221bea1b1267ad0520c7e1007}\label{quaternion_8c_a0b6ef1f221bea1b1267ad0520c7e1007}} 
 \index{quaternion.c@{quaternion.c}!quatDot@{quatDot}}
 \index{quatDot@{quatDot}!quaternion.c@{quaternion.c}}
 \doxysubsubsection{\texorpdfstring{quatDot()}{quatDot()}}
@@ -139,6 +149,19 @@ struct \mbox{\hyperlink{structQuaternion}{Quaternion}} \mbox{\hyperlink{quaterni
 \doxysubsubsection{\texorpdfstring{quatMultVector()}{quatMultVector()}}
 {\footnotesize\ttfamily void quat\+Mult\+Vector (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{q,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{out }\end{DoxyParamCaption})}
 
+Multiplies a quaternion by a vector.
+
+This function takes a quaternion {\ttfamily q} and a vector {\ttfamily a}, and performs the quaternion-\/vector multiplication. The result is stored in the output vector {\ttfamily out}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em q} & Pointer to the quaternion to be multiplied. \\
+\hline
+{\em a} & Pointer to the vector to be multiplied. \\
+\hline
+{\em out} & Pointer to the vector where the result will be stored. \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{quaternion_8c_a88575333a1fcbe1cc9d8c0dcd19ddd98}\label{quaternion_8c_a88575333a1fcbe1cc9d8c0dcd19ddd98}} 
 \index{quaternion.c@{quaternion.c}!quatNegate@{quatNegate}}
 \index{quatNegate@{quatNegate}!quaternion.c@{quaternion.c}}

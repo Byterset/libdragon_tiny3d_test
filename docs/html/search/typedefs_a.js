@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['update_5fcallback_1610',['update_callback',['../time_8h.html#a75c4cc3bf2c23905b9fc6dc91fad9aeb',1,'time.h']]],
-  ['update_5fid_1611',['update_id',['../time_8h.html#a3c478a4d1bc6fe04afe945176a4132d9',1,'time.h']]]
+  ['render_5fid_2009',['render_id',['../render__scene_8h.html#a57cb00bc256e3ec7d505d7ce0b97f2d0',1,'render_scene.h']]],
+  ['render_5fscene_5fcallback_2010',['render_scene_callback',['../render__scene_8h.html#a56dcf0d46f88ba30bdfe9e0264208fb7',1,'render_scene.h']]],
+  ['rendercallback_2011',['RenderCallback',['../render__batch_8h.html#a7ad11d197fa06b737c2f891f755de0be',1,'render_batch.h']]]
 ];

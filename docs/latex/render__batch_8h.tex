@@ -4,6 +4,7 @@
 {\ttfamily \#include $<$t3d/t3d.\+h$>$}\newline
 {\ttfamily \#include $<$t3d/t3dmodel.\+h$>$}\newline
 {\ttfamily \#include $<$t3d/t3dskeleton.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}model.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}material.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}frame\+\_\+alloc.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../math/matrix.\+h\char`\"{}}\newline
@@ -15,8 +16,7 @@ Include dependency graph for render\+\_\+batch.\+h\+:\nopagebreak
 \includegraphics[width=350pt]{render__batch_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -27,6 +27,8 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{DoxyCompactItemize}
 \item 
 struct \mbox{\hyperlink{structrender__billboard__sprite}{render\+\_\+billboard\+\_\+sprite}}
+\item 
+struct \mbox{\hyperlink{structrender__fog__params}{render\+\_\+fog\+\_\+params}}
 \item 
 struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\+\_\+batch\+\_\+billboard\+\_\+element}}
 \item 
@@ -52,12 +54,12 @@ typedef void($\ast$ \mbox{\hyperlink{render__batch_8h_a7ad11d197fa06b737c2f891f7
 \begin{DoxyCompactItemize}
 \item 
 enum \mbox{\hyperlink{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57}{render\+\_\+batch\+\_\+type}} \{ \newline
-\mbox{\hyperlink{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a5b630e459daedfd03b53031434f9a711}{RENDER\+\_\+\+BATCH\+\_\+\+SKYBOX\+\_\+\+FLAT}}
+\mbox{\hyperlink{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a4136a460db25c67ad65c8dc7680140f4}{RENDER\+\_\+\+BATCH\+\_\+\+SKYBOX}}
 , \mbox{\hyperlink{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a1eed8a8482a47d808b0abab940627b92}{RENDER\+\_\+\+BATCH\+\_\+\+MODEL}}
 , \mbox{\hyperlink{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57ae8cbf5803c79ac3817fb2dac8b0454f2}{RENDER\+\_\+\+BATCH\+\_\+\+BILLBOARD}}
 , \mbox{\hyperlink{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a47e8e07e230c75c6ed9347f4f8f896a1}{RENDER\+\_\+\+BATCH\+\_\+\+CALLBACK}}
 , \newline
-\mbox{\hyperlink{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a4136a460db25c67ad65c8dc7680140f4}{RENDER\+\_\+\+BATCH\+\_\+\+SKYBOX}}
+\mbox{\hyperlink{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a141993cc03a0177a77ba9bcf7e1c36f0}{RENDER\+\_\+\+BATCH\+\_\+\+EQUIDISTANT}}
  \}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
@@ -65,13 +67,13 @@ enum \mbox{\hyperlink{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57}{render
 \item 
 void \mbox{\hyperlink{render__batch_8h_a71cdb0d4ea230f4738b116af6ece388a}{render\+\_\+batch\+\_\+init}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, struct \mbox{\hyperlink{structTransform}{Transform}} $\ast$camera\+\_\+transform, struct \mbox{\hyperlink{structframe__memory__pool}{frame\+\_\+memory\+\_\+pool}} $\ast$pool)
 \item 
-void \mbox{\hyperlink{render__batch_8h_a08446c01a19cf562efcc0094aae64b0e}{render\+\_\+batch\+\_\+add\+\_\+t3dmodel}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, rspq\+\_\+block\+\_\+t $\ast$block, T3\+DMat4\+FP $\ast$transform, T3\+DSkeleton $\ast$skeleton)
+void \mbox{\hyperlink{render__batch_8h_aa9e33c6a182100fa40c2c0454f38ac17}{render\+\_\+batch\+\_\+add\+\_\+t3dmodel}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, struct \mbox{\hyperlink{structmodel}{model}} $\ast$\mbox{\hyperlink{structmodel}{model}}, T3\+DMat4\+FP $\ast$transform)
 \item 
 void \mbox{\hyperlink{render__batch_8h_a1cb12ebab2df550ab2126f46d7d760f0}{render\+\_\+batch\+\_\+add\+\_\+callback}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, struct \mbox{\hyperlink{structmaterial}{material}} $\ast$\mbox{\hyperlink{structmaterial}{material}}, \mbox{\hyperlink{render__batch_8h_a7ad11d197fa06b737c2f891f755de0be}{Render\+Callback}} callback, void $\ast$data)
 \item 
 struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\+\_\+batch\+\_\+billboard\+\_\+element}} $\ast$ \mbox{\hyperlink{render__batch_8h_a4a71dbf397749d82c0903534075f9d1e}{render\+\_\+batch\+\_\+add\+\_\+particles}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, struct \mbox{\hyperlink{structmaterial}{material}} $\ast$\mbox{\hyperlink{structmaterial}{material}}, int count)
 \item 
-void \mbox{\hyperlink{render__batch_8h_a9204805d52908c06c8f1f798169efd52}{render\+\_\+batch\+\_\+add\+\_\+skybox}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, rspq\+\_\+block\+\_\+t $\ast$block)
+void \mbox{\hyperlink{render__batch_8h_afab078af5bd0f8bbded289f38beb2f09}{render\+\_\+batch\+\_\+add\+\_\+equidistant}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, rspq\+\_\+block\+\_\+t $\ast$block)
 \item 
 void \mbox{\hyperlink{render__batch_8h_ae6f4c10a0b7964c542a8663a5c9323a9}{render\+\_\+batch\+\_\+add\+\_\+skybox\+\_\+flat}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, surface\+\_\+t $\ast$surface)
 \item 
@@ -81,7 +83,7 @@ struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\+\_\+bat
 \item 
 T3\+DMat4\+FP $\ast$ \mbox{\hyperlink{render__batch_8h_ac35b23ca80adbed9059186287fc68793}{render\+\_\+batch\+\_\+get\+\_\+transformfp}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch)
 \item 
-void \mbox{\hyperlink{render__batch_8h_ae3edc1fb33ac748f240c73df010c9f98}{render\+\_\+batch\+\_\+execute}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, \mbox{\hyperlink{matrix_8h_ab4cd89c0952222b325c5c9c0165587b9}{mat4x4}} view\+\_\+proj, T3\+DViewport $\ast$viewport)
+void \mbox{\hyperlink{render__batch_8h_a300d253963a465ac7e78962eb5299a91}{render\+\_\+batch\+\_\+execute}} (struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch, \mbox{\hyperlink{matrix_8h_ab4cd89c0952222b325c5c9c0165587b9}{mat4x4}} view\+\_\+proj, T3\+DViewport $\ast$viewport, struct \mbox{\hyperlink{structrender__fog__params}{render\+\_\+fog\+\_\+params}} $\ast$fog)
 \end{DoxyCompactItemize}
 
 
@@ -123,8 +125,8 @@ void \mbox{\hyperlink{render__batch_8h_ae3edc1fb33ac748f240c73df010c9f98}{render
 {\footnotesize\ttfamily enum \mbox{\hyperlink{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57}{render\+\_\+batch\+\_\+type}}}
 
 \begin{DoxyEnumFields}{Enumerator}
-\raisebox{\heightof{T}}[0pt][0pt]{\index{RENDER\_BATCH\_SKYBOX\_FLAT@{RENDER\_BATCH\_SKYBOX\_FLAT}!render\_batch.h@{render\_batch.h}}\index{render\_batch.h@{render\_batch.h}!RENDER\_BATCH\_SKYBOX\_FLAT@{RENDER\_BATCH\_SKYBOX\_FLAT}}}\mbox{\Hypertarget{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a5b630e459daedfd03b53031434f9a711}\label{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a5b630e459daedfd03b53031434f9a711}} 
-RENDER\+\_\+\+BATCH\+\_\+\+SKYBOX\+\_\+\+FLAT&\\
+\raisebox{\heightof{T}}[0pt][0pt]{\index{RENDER\_BATCH\_SKYBOX@{RENDER\_BATCH\_SKYBOX}!render\_batch.h@{render\_batch.h}}\index{render\_batch.h@{render\_batch.h}!RENDER\_BATCH\_SKYBOX@{RENDER\_BATCH\_SKYBOX}}}\mbox{\Hypertarget{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a4136a460db25c67ad65c8dc7680140f4}\label{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a4136a460db25c67ad65c8dc7680140f4}} 
+RENDER\+\_\+\+BATCH\+\_\+\+SKYBOX&\\
 \hline
 
 \raisebox{\heightof{T}}[0pt][0pt]{\index{RENDER\_BATCH\_MODEL@{RENDER\_BATCH\_MODEL}!render\_batch.h@{render\_batch.h}}\index{render\_batch.h@{render\_batch.h}!RENDER\_BATCH\_MODEL@{RENDER\_BATCH\_MODEL}}}\mbox{\Hypertarget{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a1eed8a8482a47d808b0abab940627b92}\label{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a1eed8a8482a47d808b0abab940627b92}} 
@@ -139,8 +141,8 @@ RENDER\+\_\+\+BATCH\+\_\+\+BILLBOARD&\\
 RENDER\+\_\+\+BATCH\+\_\+\+CALLBACK&\\
 \hline
 
-\raisebox{\heightof{T}}[0pt][0pt]{\index{RENDER\_BATCH\_SKYBOX@{RENDER\_BATCH\_SKYBOX}!render\_batch.h@{render\_batch.h}}\index{render\_batch.h@{render\_batch.h}!RENDER\_BATCH\_SKYBOX@{RENDER\_BATCH\_SKYBOX}}}\mbox{\Hypertarget{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a4136a460db25c67ad65c8dc7680140f4}\label{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a4136a460db25c67ad65c8dc7680140f4}} 
-RENDER\+\_\+\+BATCH\+\_\+\+SKYBOX&\\
+\raisebox{\heightof{T}}[0pt][0pt]{\index{RENDER\_BATCH\_EQUIDISTANT@{RENDER\_BATCH\_EQUIDISTANT}!render\_batch.h@{render\_batch.h}}\index{render\_batch.h@{render\_batch.h}!RENDER\_BATCH\_EQUIDISTANT@{RENDER\_BATCH\_EQUIDISTANT}}}\mbox{\Hypertarget{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a141993cc03a0177a77ba9bcf7e1c36f0}\label{render__batch_8h_ab18746cc9a67bcb0ac56a95f64c1af57a141993cc03a0177a77ba9bcf7e1c36f0}} 
+RENDER\+\_\+\+BATCH\+\_\+\+EQUIDISTANT&\\
 \hline
 
 \end{DoxyEnumFields}
@@ -153,17 +155,17 @@ RENDER\+\_\+\+BATCH\+\_\+\+SKYBOX&\\
 \doxysubsubsection{\texorpdfstring{render\_batch\_add\_callback()}{render\_batch\_add\_callback()}}
 {\footnotesize\ttfamily void render\+\_\+batch\+\_\+add\+\_\+callback (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{material,  }\item[{\mbox{\hyperlink{render__batch_8h_a7ad11d197fa06b737c2f891f755de0be}{Render\+Callback}}}]{callback,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{render__batch_8h_afab078af5bd0f8bbded289f38beb2f09}\label{render__batch_8h_afab078af5bd0f8bbded289f38beb2f09}} 
+\index{render\_batch.h@{render\_batch.h}!render\_batch\_add\_equidistant@{render\_batch\_add\_equidistant}}
+\index{render\_batch\_add\_equidistant@{render\_batch\_add\_equidistant}!render\_batch.h@{render\_batch.h}}
+\doxysubsubsection{\texorpdfstring{render\_batch\_add\_equidistant()}{render\_batch\_add\_equidistant()}}
+{\footnotesize\ttfamily void render\+\_\+batch\+\_\+add\+\_\+equidistant (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{rspq\+\_\+block\+\_\+t $\ast$}]{block }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{render__batch_8h_a4a71dbf397749d82c0903534075f9d1e}\label{render__batch_8h_a4a71dbf397749d82c0903534075f9d1e}} 
 \index{render\_batch.h@{render\_batch.h}!render\_batch\_add\_particles@{render\_batch\_add\_particles}}
 \index{render\_batch\_add\_particles@{render\_batch\_add\_particles}!render\_batch.h@{render\_batch.h}}
 \doxysubsubsection{\texorpdfstring{render\_batch\_add\_particles()}{render\_batch\_add\_particles()}}
 {\footnotesize\ttfamily struct \mbox{\hyperlink{structrender__batch__billboard__element}{render\+\_\+batch\+\_\+billboard\+\_\+element}}$\ast$ render\+\_\+batch\+\_\+add\+\_\+particles (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{struct \mbox{\hyperlink{structmaterial}{material}} $\ast$}]{material,  }\item[{int}]{count }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{render__batch_8h_a9204805d52908c06c8f1f798169efd52}\label{render__batch_8h_a9204805d52908c06c8f1f798169efd52}} 
-\index{render\_batch.h@{render\_batch.h}!render\_batch\_add\_skybox@{render\_batch\_add\_skybox}}
-\index{render\_batch\_add\_skybox@{render\_batch\_add\_skybox}!render\_batch.h@{render\_batch.h}}
-\doxysubsubsection{\texorpdfstring{render\_batch\_add\_skybox()}{render\_batch\_add\_skybox()}}
-{\footnotesize\ttfamily void render\+\_\+batch\+\_\+add\+\_\+skybox (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{rspq\+\_\+block\+\_\+t $\ast$}]{block }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{render__batch_8h_ae6f4c10a0b7964c542a8663a5c9323a9}\label{render__batch_8h_ae6f4c10a0b7964c542a8663a5c9323a9}} 
 \index{render\_batch.h@{render\_batch.h}!render\_batch\_add\_skybox\_flat@{render\_batch\_add\_skybox\_flat}}
@@ -171,17 +173,17 @@ RENDER\+\_\+\+BATCH\+\_\+\+SKYBOX&\\
 \doxysubsubsection{\texorpdfstring{render\_batch\_add\_skybox\_flat()}{render\_batch\_add\_skybox\_flat()}}
 {\footnotesize\ttfamily void render\+\_\+batch\+\_\+add\+\_\+skybox\+\_\+flat (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{surface\+\_\+t $\ast$}]{surface }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{render__batch_8h_a08446c01a19cf562efcc0094aae64b0e}\label{render__batch_8h_a08446c01a19cf562efcc0094aae64b0e}} 
+\mbox{\Hypertarget{render__batch_8h_aa9e33c6a182100fa40c2c0454f38ac17}\label{render__batch_8h_aa9e33c6a182100fa40c2c0454f38ac17}} 
 \index{render\_batch.h@{render\_batch.h}!render\_batch\_add\_t3dmodel@{render\_batch\_add\_t3dmodel}}
 \index{render\_batch\_add\_t3dmodel@{render\_batch\_add\_t3dmodel}!render\_batch.h@{render\_batch.h}}
 \doxysubsubsection{\texorpdfstring{render\_batch\_add\_t3dmodel()}{render\_batch\_add\_t3dmodel()}}
-{\footnotesize\ttfamily void render\+\_\+batch\+\_\+add\+\_\+t3dmodel (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{rspq\+\_\+block\+\_\+t $\ast$}]{block,  }\item[{T3\+DMat4\+FP $\ast$}]{transform,  }\item[{T3\+DSkeleton $\ast$}]{skeleton }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void render\+\_\+batch\+\_\+add\+\_\+t3dmodel (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{struct \mbox{\hyperlink{structmodel}{model}} $\ast$}]{model,  }\item[{T3\+DMat4\+FP $\ast$}]{transform }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{render__batch_8h_ae3edc1fb33ac748f240c73df010c9f98}\label{render__batch_8h_ae3edc1fb33ac748f240c73df010c9f98}} 
+\mbox{\Hypertarget{render__batch_8h_a300d253963a465ac7e78962eb5299a91}\label{render__batch_8h_a300d253963a465ac7e78962eb5299a91}} 
 \index{render\_batch.h@{render\_batch.h}!render\_batch\_execute@{render\_batch\_execute}}
 \index{render\_batch\_execute@{render\_batch\_execute}!render\_batch.h@{render\_batch.h}}
 \doxysubsubsection{\texorpdfstring{render\_batch\_execute()}{render\_batch\_execute()}}
-{\footnotesize\ttfamily void render\+\_\+batch\+\_\+execute (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{\mbox{\hyperlink{matrix_8h_ab4cd89c0952222b325c5c9c0165587b9}{mat4x4}}}]{view\+\_\+proj,  }\item[{T3\+DViewport $\ast$}]{viewport }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void render\+\_\+batch\+\_\+execute (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch,  }\item[{\mbox{\hyperlink{matrix_8h_ab4cd89c0952222b325c5c9c0165587b9}{mat4x4}}}]{view\+\_\+proj,  }\item[{T3\+DViewport $\ast$}]{viewport,  }\item[{struct \mbox{\hyperlink{structrender__fog__params}{render\+\_\+fog\+\_\+params}} $\ast$}]{fog }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{render__batch_8h_a6e3e5bb3e6cc975f2e67d0f43e78c5a7}\label{render__batch_8h_a6e3e5bb3e6cc975f2e67d0f43e78c5a7}} 
 \index{render\_batch.h@{render\_batch.h}!render\_batch\_get\_sprites@{render\_batch\_get\_sprites}}

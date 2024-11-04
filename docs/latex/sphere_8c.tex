@@ -1,7 +1,7 @@
 \hypertarget{sphere_8c}{}\doxysection{src/collision/shapes/sphere.c File Reference}
 \label{sphere_8c}\index{src/collision/shapes/sphere.c@{src/collision/shapes/sphere.c}}
 {\ttfamily \#include \char`\"{}sphere.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../dynamic\+\_\+object.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../physics\+\_\+object.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$math.\+h$>$}\newline
 Include dependency graph for sphere.\+c\+:
 \nopagebreak
@@ -19,9 +19,9 @@ Include dependency graph for sphere.\+c\+:
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{sphere_8c_aefbe3a8c80f3cdbe94a998d0569d2551}{sphere\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+void \mbox{\hyperlink{sphere_8c_a7fd1ac4f2987e3d80f237cc2addacba6}{sphere\+\_\+support\+\_\+function}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
 \item 
-void \mbox{\hyperlink{sphere_8c_af345f4883018ba5b9fc48f60e33357c4}{sphere\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
+void \mbox{\hyperlink{sphere_8c_a0c7195e0e4490e74401efb9f399fbbdc}{sphere\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
 \end{DoxyCompactItemize}
 
 
@@ -35,15 +35,15 @@ void \mbox{\hyperlink{sphere_8c_af345f4883018ba5b9fc48f60e33357c4}{sphere\+\_\+b
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{sphere_8c_af345f4883018ba5b9fc48f60e33357c4}\label{sphere_8c_af345f4883018ba5b9fc48f60e33357c4}} 
+\mbox{\Hypertarget{sphere_8c_a0c7195e0e4490e74401efb9f399fbbdc}\label{sphere_8c_a0c7195e0e4490e74401efb9f399fbbdc}} 
 \index{sphere.c@{sphere.c}!sphere\_bounding\_box@{sphere\_bounding\_box}}
 \index{sphere\_bounding\_box@{sphere\_bounding\_box}!sphere.c@{sphere.c}}
 \doxysubsubsection{\texorpdfstring{sphere\_bounding\_box()}{sphere\_bounding\_box()}}
-{\footnotesize\ttfamily void sphere\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void sphere\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{sphere_8c_aefbe3a8c80f3cdbe94a998d0569d2551}\label{sphere_8c_aefbe3a8c80f3cdbe94a998d0569d2551}} 
-\index{sphere.c@{sphere.c}!sphere\_minkowski\_sum@{sphere\_minkowski\_sum}}
-\index{sphere\_minkowski\_sum@{sphere\_minkowski\_sum}!sphere.c@{sphere.c}}
-\doxysubsubsection{\texorpdfstring{sphere\_minkowski\_sum()}{sphere\_minkowski\_sum()}}
-{\footnotesize\ttfamily void sphere\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{sphere_8c_a7fd1ac4f2987e3d80f237cc2addacba6}\label{sphere_8c_a7fd1ac4f2987e3d80f237cc2addacba6}} 
+\index{sphere.c@{sphere.c}!sphere\_support\_function@{sphere\_support\_function}}
+\index{sphere\_support\_function@{sphere\_support\_function}!sphere.c@{sphere.c}}
+\doxysubsubsection{\texorpdfstring{sphere\_support\_function()}{sphere\_support\_function()}}
+{\footnotesize\ttfamily void sphere\+\_\+support\+\_\+function (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
 

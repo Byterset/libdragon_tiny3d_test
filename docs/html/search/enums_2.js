@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['mesh_5frange_5fresult_1616',['mesh_range_result',['../mesh__collider_8c.html#ae57109d1b7dc2c5f2013f544781137f0',1,'mesh_collider.c']]]
+  ['interaction_5ftype_2023',['interaction_type',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cd',1,'scene_definition.h']]],
+  ['inventory_5fitem_5ftype_2024',['inventory_item_type',['../scene__definition_8h.html#adf147b1fbd64700fd6084d08ba833433',1,'scene_definition.h']]]
 ];

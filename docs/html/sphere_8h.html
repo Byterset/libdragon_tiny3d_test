@@ -75,15 +75,19 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="vector2_8h_source.html">../../math/vector2.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="vector3_8h_source.html">../../math/vector3.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="aabb_8h_source.html">../../math/aabb.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="quaternion_8h_source.html">../../math/quaternion.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for sphere.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="sphere_8h__incl.png" border="0" usemap="#asrc_2collision_2shapes_2sphere_8h" alt=""/></div>
 <map name="asrc_2collision_2shapes_2sphere_8h" id="asrc_2collision_2shapes_2sphere_8h">
-<area shape="rect" title=" " alt="" coords="114,5,263,47"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="5,95,151,121"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="167,169,312,196"/>
-<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="226,95,354,121"/>
+<area shape="rect" title=" " alt="" coords="79,5,229,47"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="5,393,151,420"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="204,393,349,420"/>
+<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="170,95,298,121"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="85,319,189,345"/>
+<area shape="rect" href="ray_8h.html" title=" " alt="" coords="207,169,261,196"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="141,244,239,271"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -101,14 +105,14 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aefbe3a8c80f3cdbe94a998d0569d2551"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8h.html#aefbe3a8c80f3cdbe94a998d0569d2551">sphere_minkowski_sum</a> (void *data, struct <a class="el" href="structVector3.html">Vector3</a> *direction, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
-<tr class="separator:aefbe3a8c80f3cdbe94a998d0569d2551"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af345f4883018ba5b9fc48f60e33357c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8h.html#af345f4883018ba5b9fc48f60e33357c4">sphere_bounding_box</a> (void *data, struct <a class="el" href="structVector2.html">Vector2</a> *rotation, struct <a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>)</td></tr>
-<tr class="separator:af345f4883018ba5b9fc48f60e33357c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fd1ac4f2987e3d80f237cc2addacba6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8h.html#a7fd1ac4f2987e3d80f237cc2addacba6">sphere_support_function</a> (void *data, struct <a class="el" href="structVector3.html">Vector3</a> *direction, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
+<tr class="separator:a7fd1ac4f2987e3d80f237cc2addacba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c7195e0e4490e74401efb9f399fbbdc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8h.html#a0c7195e0e4490e74401efb9f399fbbdc">sphere_bounding_box</a> (void *data, struct <a class="el" href="structQuaternion.html">Quaternion</a> *rotation, struct <a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>)</td></tr>
+<tr class="separator:a0c7195e0e4490e74401efb9f399fbbdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="af345f4883018ba5b9fc48f60e33357c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af345f4883018ba5b9fc48f60e33357c4">&#9670;&nbsp;</a></span>sphere_bounding_box()</h2>
+<a id="a0c7195e0e4490e74401efb9f399fbbdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c7195e0e4490e74401efb9f399fbbdc">&#9670;&nbsp;</a></span>sphere_bounding_box()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -122,7 +126,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector2.html">Vector2</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>rotation</em>, </td>
         </tr>
         <tr>
@@ -141,14 +145,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aefbe3a8c80f3cdbe94a998d0569d2551"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aefbe3a8c80f3cdbe94a998d0569d2551">&#9670;&nbsp;</a></span>sphere_minkowski_sum()</h2>
+<a id="a7fd1ac4f2987e3d80f237cc2addacba6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fd1ac4f2987e3d80f237cc2addacba6">&#9670;&nbsp;</a></span>sphere_support_function()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void sphere_minkowski_sum </td>
+          <td class="memname">void sphere_support_function </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>

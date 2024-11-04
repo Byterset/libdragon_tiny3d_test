@@ -94,10 +94,12 @@ Functions</h2></td></tr>
 <tr class="separator:a4bd7907e19096d1f5dbb729165100b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20de09b922b38d2c17835be1919c572b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector2_8c.html#a20de09b922b38d2c17835be1919c572b">vector2ComplexConj</a> (struct <a class="el" href="structVector2.html">Vector2</a> *a, struct <a class="el" href="structVector2.html">Vector2</a> *out)</td></tr>
 <tr class="separator:a20de09b922b38d2c17835be1919c572b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad445fc4905d4cf334bbb22326bf62be2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector2_8c.html#ad445fc4905d4cf334bbb22326bf62be2">vector2ComplexFromAngle</a> (float radians, struct <a class="el" href="structVector2.html">Vector2</a> *out)</td></tr>
-<tr class="separator:ad445fc4905d4cf334bbb22326bf62be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a369c4ece696f38fd6f530a5977118e04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector2_8c.html#a369c4ece696f38fd6f530a5977118e04">vector2ComplexFromAngleRad</a> (float radians, struct <a class="el" href="structVector2.html">Vector2</a> *out)</td></tr>
+<tr class="separator:a369c4ece696f38fd6f530a5977118e04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56e9407c5af25a7b74a9845c24aca8d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector2_8c.html#a56e9407c5af25a7b74a9845c24aca8d1">vector2RotateTowards</a> (struct <a class="el" href="structVector2.html">Vector2</a> *from, struct <a class="el" href="structVector2.html">Vector2</a> *towards, struct <a class="el" href="structVector2.html">Vector2</a> *max, struct <a class="el" href="structVector2.html">Vector2</a> *out)</td></tr>
 <tr class="separator:a56e9407c5af25a7b74a9845c24aca8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a974232273218ac79f11153ae9ee1490e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector2_8c.html#a974232273218ac79f11153ae9ee1490e">vector2ComplexFromAngleDeg</a> (float degrees, struct <a class="el" href="structVector2.html">Vector2</a> *out)</td></tr>
+<tr class="separator:a974232273218ac79f11153ae9ee1490e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa4fc78d56d8c22920380d0e11463b4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector2_8c.html#aaa4fc78d56d8c22920380d0e11463b4b">vector2Rotate90</a> (struct <a class="el" href="structVector2.html">Vector2</a> *input, struct <a class="el" href="structVector2.html">Vector2</a> *out)</td></tr>
 <tr class="separator:aaa4fc78d56d8c22920380d0e11463b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb2800fb2d6c3abab1a452e569d87158"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector2_8c.html#abb2800fb2d6c3abab1a452e569d87158">vector2Cross</a> (struct <a class="el" href="structVector2.html">Vector2</a> *a, struct <a class="el" href="structVector2.html">Vector2</a> *b)</td></tr>
@@ -205,14 +207,42 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ad445fc4905d4cf334bbb22326bf62be2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad445fc4905d4cf334bbb22326bf62be2">&#9670;&nbsp;</a></span>vector2ComplexFromAngle()</h2>
+<a id="a974232273218ac79f11153ae9ee1490e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a974232273218ac79f11153ae9ee1490e">&#9670;&nbsp;</a></span>vector2ComplexFromAngleDeg()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void vector2ComplexFromAngle </td>
+          <td class="memname">void vector2ComplexFromAngleDeg </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>degrees</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structVector2.html">Vector2</a> *&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a369c4ece696f38fd6f530a5977118e04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a369c4ece696f38fd6f530a5977118e04">&#9670;&nbsp;</a></span>vector2ComplexFromAngleRad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void vector2ComplexFromAngleRad </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>radians</em>, </td>

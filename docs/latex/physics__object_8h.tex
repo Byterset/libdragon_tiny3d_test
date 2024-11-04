@@ -1,0 +1,308 @@
+\hypertarget{physics__object_8h}{}\doxysection{src/collision/physics\+\_\+object.h File Reference}
+\label{physics__object_8h}\index{src/collision/physics\_object.h@{src/collision/physics\_object.h}}
+{\ttfamily \#include \char`\"{}../entity/entity\+\_\+id.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/vector3.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/vector2.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/aabb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/quaternion.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../collision/aabbtree.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}contact.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}gjk.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+Include dependency graph for physics\+\_\+object.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{physics__object_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{physics__object_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+union \mbox{\hyperlink{unionphysics__object__collision__shape__data}{physics\+\_\+object\+\_\+collision\+\_\+shape\+\_\+data}}
+\item 
+struct \mbox{\hyperlink{structphysics__object__collision__data}{physics\+\_\+object\+\_\+collision\+\_\+data}}
+\item 
+struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{physics__object_8h_afbb98f526272c46369f405eee4e9d9aa}{GRAVITY\+\_\+\+CONSTANT}}~-\/9.\+8f
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef void($\ast$ \mbox{\hyperlink{physics__object_8h_a1cc9c559667e84c5314b17b20c2e49fe}{bounding\+\_\+box\+\_\+calculator}}) (void $\ast$data, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
+\item 
+typedef enum \mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68}{physics\+\_\+object\+\_\+collision\+\_\+shape\+\_\+type}} \mbox{\hyperlink{physics__object_8h_a2b2596f3bc6b9ec2aac53779a6b7927d}{physics\+\_\+object\+\_\+collision\+\_\+shape\+\_\+type}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2}{collision\+\_\+layers}} \{ \mbox{\hyperlink{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2af20faa47e6ff7689d64e139d8803b297}{COLLISION\+\_\+\+LAYER\+\_\+\+TANGIBLE}} = (1 $<$$<$ 0)
+, \mbox{\hyperlink{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2a75ea0765945bdd61942fbe00f98c5c74}{COLLISION\+\_\+\+LAYER\+\_\+\+DAMAGE\+\_\+\+PLAYER}} = (1 $<$$<$ 1)
+, \mbox{\hyperlink{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2aabfe4f1cc8db62d923dcafe3e0f60abe}{COLLISION\+\_\+\+LAYER\+\_\+\+DAMAGE\+\_\+\+ENEMY}} = (1 $<$$<$ 2)
+, \mbox{\hyperlink{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2ad8aa34de461f748309cf4213d764bf2f}{COLLISION\+\_\+\+LAYER\+\_\+\+PLATFORM}} = (1 $<$$<$ 3)
+ \}
+\item 
+enum \mbox{\hyperlink{physics__object_8h_ad015bc17d217387c011e973c01318bf4}{collision\+\_\+group}} \{ \mbox{\hyperlink{physics__object_8h_ad015bc17d217387c011e973c01318bf4a70bbc1411f094acca471775c6ec94d39}{COLLISION\+\_\+\+GROUP\+\_\+\+PLAYER}} = 1
+ \}
+\item 
+enum \mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68}{physics\+\_\+object\+\_\+collision\+\_\+shape\+\_\+type}} \{ \newline
+\mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68ae10016202e6305527d90461e6a908400}{COLLISION\+\_\+\+SHAPE\+\_\+\+SPHERE}}
+, \mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a299941b5955c3cb678d4fee96af20452}{COLLISION\+\_\+\+SHAPE\+\_\+\+CAPSULE}}
+, \mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a67e8c8eacf978084ffaa4a0e44989b1f}{COLLISION\+\_\+\+SHAPE\+\_\+\+BOX}}
+, \mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68ad8866c819de21a701bf9267341b960da}{COLLISION\+\_\+\+SHAPE\+\_\+\+CONE}}
+, \newline
+\mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a17a05cdd6f435913e451701326612c3e}{COLLISION\+\_\+\+SHAPE\+\_\+\+CYLINDER}}
+, \mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a9a87b15f489516c631fe678aba700900}{COLLISION\+\_\+\+SHAPE\+\_\+\+SWEEP}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{physics__object_8h_a849874415ae6cff8d5fe635970be662b}{physics\+\_\+object\+\_\+init}} (\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} \mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}, struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structphysics__object__collision__data}{physics\+\_\+object\+\_\+collision\+\_\+data}} $\ast$type, uint16\+\_\+t \mbox{\hyperlink{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2}{collision\+\_\+layers}}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$position, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$rotation, float mass)
+\item 
+void \mbox{\hyperlink{physics__object_8h_ac3ad45f93ba3188077463605e97337dc}{physics\+\_\+object\+\_\+update}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
+\begin{DoxyCompactList}\small\item\em Applies gravity and performs verlet integration on the object. Will not do so if the object is a trigger or fixed. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structcontact}{contact}} $\ast$ \mbox{\hyperlink{physics__object_8h_aa3e86c2136548098a7b35b8e3599fa8a}{physics\+\_\+object\+\_\+nearest\+\_\+contact}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
+\item 
+bool \mbox{\hyperlink{physics__object_8h_a7fcb557fd238f9bd365d891084edc57b}{physics\+\_\+object\+\_\+is\+\_\+touching}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, \mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} id)
+\item 
+void \mbox{\hyperlink{physics__object_8h_a0c5e8e021257cc28f4ca689ad7e6f5d0}{physics\+\_\+object\+\_\+accelerate}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$acceleration)
+\begin{DoxyCompactList}\small\item\em Accelerates the object by the given acceleration vector. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{physics__object_8h_a55a13d5317551b1e1167f81162621a3f}{physics\+\_\+object\+\_\+translate\+\_\+no\+\_\+force}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$translation)
+\item 
+void \mbox{\hyperlink{physics__object_8h_a628560ca48adba9321d2f47d3e446ab9}{physics\+\_\+object\+\_\+position\+\_\+no\+\_\+force}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$position)
+\item 
+struct \mbox{\hyperlink{structVector3}{Vector3}} \mbox{\hyperlink{physics__object_8h_a7523b7be8d05f64f6bcf611631551433}{physics\+\_\+object\+\_\+get\+\_\+velocity}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
+\item 
+void \mbox{\hyperlink{physics__object_8h_af4288fd2eacf9f2b9a0488a5f41a6538}{physics\+\_\+object\+\_\+set\+\_\+velocity}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$velocity)
+\item 
+void \mbox{\hyperlink{physics__object_8h_a6509ed06d4a0260f71a263152750ab47}{physics\+\_\+object\+\_\+apply\+\_\+impulse}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$impulse)
+\item 
+void \mbox{\hyperlink{physics__object_8h_a361ca8b6bc848059b6f27f1d75ad7a59}{physics\+\_\+object\+\_\+apply\+\_\+constraints}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
+\item 
+void \mbox{\hyperlink{physics__object_8h_af15088a7f87bfc31b773355b5b587bba}{physics\+\_\+object\+\_\+gjk\+\_\+support\+\_\+function}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+void \mbox{\hyperlink{physics__object_8h_a95d6a697cf19ac847a3e97c1461a74bb}{physics\+\_\+object\+\_\+recalculate\+\_\+aabb}} (struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$object)
+\begin{DoxyCompactList}\small\item\em re-\/caluclates the bounding box of the object using the collision type\textquotesingle{}s bounding box function \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{physics__object_8h_afbb98f526272c46369f405eee4e9d9aa}\label{physics__object_8h_afbb98f526272c46369f405eee4e9d9aa}} 
+\index{physics\_object.h@{physics\_object.h}!GRAVITY\_CONSTANT@{GRAVITY\_CONSTANT}}
+\index{GRAVITY\_CONSTANT@{GRAVITY\_CONSTANT}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{GRAVITY\_CONSTANT}{GRAVITY\_CONSTANT}}
+{\footnotesize\ttfamily \#define GRAVITY\+\_\+\+CONSTANT~-\/9.\+8f}
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{physics__object_8h_a1cc9c559667e84c5314b17b20c2e49fe}\label{physics__object_8h_a1cc9c559667e84c5314b17b20c2e49fe}} 
+\index{physics\_object.h@{physics\_object.h}!bounding\_box\_calculator@{bounding\_box\_calculator}}
+\index{bounding\_box\_calculator@{bounding\_box\_calculator}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{bounding\_box\_calculator}{bounding\_box\_calculator}}
+{\footnotesize\ttfamily typedef void($\ast$ bounding\+\_\+box\+\_\+calculator) (void $\ast$data, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})}
+
+\mbox{\Hypertarget{physics__object_8h_a2b2596f3bc6b9ec2aac53779a6b7927d}\label{physics__object_8h_a2b2596f3bc6b9ec2aac53779a6b7927d}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_collision\_shape\_type@{physics\_object\_collision\_shape\_type}}
+\index{physics\_object\_collision\_shape\_type@{physics\_object\_collision\_shape\_type}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_collision\_shape\_type}{physics\_object\_collision\_shape\_type}}
+{\footnotesize\ttfamily typedef enum \mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68}{physics\+\_\+object\+\_\+collision\+\_\+shape\+\_\+type}} \mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68}{physics\+\_\+object\+\_\+collision\+\_\+shape\+\_\+type}}}
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{physics__object_8h_ad015bc17d217387c011e973c01318bf4}\label{physics__object_8h_ad015bc17d217387c011e973c01318bf4}} 
+\index{physics\_object.h@{physics\_object.h}!collision\_group@{collision\_group}}
+\index{collision\_group@{collision\_group}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{collision\_group}{collision\_group}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{physics__object_8h_ad015bc17d217387c011e973c01318bf4}{collision\+\_\+group}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_GROUP\_PLAYER@{COLLISION\_GROUP\_PLAYER}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_GROUP\_PLAYER@{COLLISION\_GROUP\_PLAYER}}}\mbox{\Hypertarget{physics__object_8h_ad015bc17d217387c011e973c01318bf4a70bbc1411f094acca471775c6ec94d39}\label{physics__object_8h_ad015bc17d217387c011e973c01318bf4a70bbc1411f094acca471775c6ec94d39}} 
+COLLISION\+\_\+\+GROUP\+\_\+\+PLAYER&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2}\label{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2}} 
+\index{physics\_object.h@{physics\_object.h}!collision\_layers@{collision\_layers}}
+\index{collision\_layers@{collision\_layers}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{collision\_layers}{collision\_layers}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2}{collision\+\_\+layers}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_LAYER\_TANGIBLE@{COLLISION\_LAYER\_TANGIBLE}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_LAYER\_TANGIBLE@{COLLISION\_LAYER\_TANGIBLE}}}\mbox{\Hypertarget{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2af20faa47e6ff7689d64e139d8803b297}\label{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2af20faa47e6ff7689d64e139d8803b297}} 
+COLLISION\+\_\+\+LAYER\+\_\+\+TANGIBLE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_LAYER\_DAMAGE\_PLAYER@{COLLISION\_LAYER\_DAMAGE\_PLAYER}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_LAYER\_DAMAGE\_PLAYER@{COLLISION\_LAYER\_DAMAGE\_PLAYER}}}\mbox{\Hypertarget{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2a75ea0765945bdd61942fbe00f98c5c74}\label{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2a75ea0765945bdd61942fbe00f98c5c74}} 
+COLLISION\+\_\+\+LAYER\+\_\+\+DAMAGE\+\_\+\+PLAYER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_LAYER\_DAMAGE\_ENEMY@{COLLISION\_LAYER\_DAMAGE\_ENEMY}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_LAYER\_DAMAGE\_ENEMY@{COLLISION\_LAYER\_DAMAGE\_ENEMY}}}\mbox{\Hypertarget{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2aabfe4f1cc8db62d923dcafe3e0f60abe}\label{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2aabfe4f1cc8db62d923dcafe3e0f60abe}} 
+COLLISION\+\_\+\+LAYER\+\_\+\+DAMAGE\+\_\+\+ENEMY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_LAYER\_PLATFORM@{COLLISION\_LAYER\_PLATFORM}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_LAYER\_PLATFORM@{COLLISION\_LAYER\_PLATFORM}}}\mbox{\Hypertarget{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2ad8aa34de461f748309cf4213d764bf2f}\label{physics__object_8h_aa005f963232c81966557e7ec5b93d9e2ad8aa34de461f748309cf4213d764bf2f}} 
+COLLISION\+\_\+\+LAYER\+\_\+\+PLATFORM&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68}\label{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_collision\_shape\_type@{physics\_object\_collision\_shape\_type}}
+\index{physics\_object\_collision\_shape\_type@{physics\_object\_collision\_shape\_type}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_collision\_shape\_type}{physics\_object\_collision\_shape\_type}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68}{physics\+\_\+object\+\_\+collision\+\_\+shape\+\_\+type}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_SHAPE\_SPHERE@{COLLISION\_SHAPE\_SPHERE}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_SHAPE\_SPHERE@{COLLISION\_SHAPE\_SPHERE}}}\mbox{\Hypertarget{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68ae10016202e6305527d90461e6a908400}\label{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68ae10016202e6305527d90461e6a908400}} 
+COLLISION\+\_\+\+SHAPE\+\_\+\+SPHERE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_SHAPE\_CAPSULE@{COLLISION\_SHAPE\_CAPSULE}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_SHAPE\_CAPSULE@{COLLISION\_SHAPE\_CAPSULE}}}\mbox{\Hypertarget{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a299941b5955c3cb678d4fee96af20452}\label{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a299941b5955c3cb678d4fee96af20452}} 
+COLLISION\+\_\+\+SHAPE\+\_\+\+CAPSULE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_SHAPE\_BOX@{COLLISION\_SHAPE\_BOX}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_SHAPE\_BOX@{COLLISION\_SHAPE\_BOX}}}\mbox{\Hypertarget{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a67e8c8eacf978084ffaa4a0e44989b1f}\label{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a67e8c8eacf978084ffaa4a0e44989b1f}} 
+COLLISION\+\_\+\+SHAPE\+\_\+\+BOX&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_SHAPE\_CONE@{COLLISION\_SHAPE\_CONE}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_SHAPE\_CONE@{COLLISION\_SHAPE\_CONE}}}\mbox{\Hypertarget{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68ad8866c819de21a701bf9267341b960da}\label{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68ad8866c819de21a701bf9267341b960da}} 
+COLLISION\+\_\+\+SHAPE\+\_\+\+CONE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_SHAPE\_CYLINDER@{COLLISION\_SHAPE\_CYLINDER}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_SHAPE\_CYLINDER@{COLLISION\_SHAPE\_CYLINDER}}}\mbox{\Hypertarget{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a17a05cdd6f435913e451701326612c3e}\label{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a17a05cdd6f435913e451701326612c3e}} 
+COLLISION\+\_\+\+SHAPE\+\_\+\+CYLINDER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLISION\_SHAPE\_SWEEP@{COLLISION\_SHAPE\_SWEEP}!physics\_object.h@{physics\_object.h}}\index{physics\_object.h@{physics\_object.h}!COLLISION\_SHAPE\_SWEEP@{COLLISION\_SHAPE\_SWEEP}}}\mbox{\Hypertarget{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a9a87b15f489516c631fe678aba700900}\label{physics__object_8h_a49af2557fdce03be977f2d4ec085ff68a9a87b15f489516c631fe678aba700900}} 
+COLLISION\+\_\+\+SHAPE\+\_\+\+SWEEP&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{physics__object_8h_a0c5e8e021257cc28f4ca689ad7e6f5d0}\label{physics__object_8h_a0c5e8e021257cc28f4ca689ad7e6f5d0}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_accelerate@{physics\_object\_accelerate}}
+\index{physics\_object\_accelerate@{physics\_object\_accelerate}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_accelerate()}{physics\_object\_accelerate()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+accelerate (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{acceleration }\end{DoxyParamCaption})}
+
+
+
+Accelerates the object by the given acceleration vector. 
+
+Keep in mind that the acceleration is applied for one Physics update cycle and should be scaled by the PHYSICS\+\_\+\+TICKRATE so it scales to one second instead. 
+\begin{DoxyParams}{Parameters}
+{\em object} & \\
+\hline
+{\em acceleration} & ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{physics__object_8h_a361ca8b6bc848059b6f27f1d75ad7a59}\label{physics__object_8h_a361ca8b6bc848059b6f27f1d75ad7a59}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_apply\_constraints@{physics\_object\_apply\_constraints}}
+\index{physics\_object\_apply\_constraints@{physics\_object\_apply\_constraints}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_apply\_constraints()}{physics\_object\_apply\_constraints()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+apply\+\_\+constraints (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8h_a6509ed06d4a0260f71a263152750ab47}\label{physics__object_8h_a6509ed06d4a0260f71a263152750ab47}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_apply\_impulse@{physics\_object\_apply\_impulse}}
+\index{physics\_object\_apply\_impulse@{physics\_object\_apply\_impulse}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_apply\_impulse()}{physics\_object\_apply\_impulse()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+apply\+\_\+impulse (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{impulse }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8h_a7523b7be8d05f64f6bcf611631551433}\label{physics__object_8h_a7523b7be8d05f64f6bcf611631551433}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_get\_velocity@{physics\_object\_get\_velocity}}
+\index{physics\_object\_get\_velocity@{physics\_object\_get\_velocity}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_get\_velocity()}{physics\_object\_get\_velocity()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structVector3}{Vector3}} physics\+\_\+object\+\_\+get\+\_\+velocity (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8h_af15088a7f87bfc31b773355b5b587bba}\label{physics__object_8h_af15088a7f87bfc31b773355b5b587bba}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_gjk\_support\_function@{physics\_object\_gjk\_support\_function}}
+\index{physics\_object\_gjk\_support\_function@{physics\_object\_gjk\_support\_function}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_gjk\_support\_function()}{physics\_object\_gjk\_support\_function()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+gjk\+\_\+support\+\_\+function (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8h_a849874415ae6cff8d5fe635970be662b}\label{physics__object_8h_a849874415ae6cff8d5fe635970be662b}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_init@{physics\_object\_init}}
+\index{physics\_object\_init@{physics\_object\_init}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_init()}{physics\_object\_init()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}}]{entity\+\_\+id,  }\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structphysics__object__collision__data}{physics\+\_\+object\+\_\+collision\+\_\+data}} $\ast$}]{type,  }\item[{uint16\+\_\+t}]{collision\+\_\+layers,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{position,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{rotation,  }\item[{float}]{mass }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8h_a7fcb557fd238f9bd365d891084edc57b}\label{physics__object_8h_a7fcb557fd238f9bd365d891084edc57b}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_is\_touching@{physics\_object\_is\_touching}}
+\index{physics\_object\_is\_touching@{physics\_object\_is\_touching}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_is\_touching()}{physics\_object\_is\_touching()}}
+{\footnotesize\ttfamily bool physics\+\_\+object\+\_\+is\+\_\+touching (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8h_aa3e86c2136548098a7b35b8e3599fa8a}\label{physics__object_8h_aa3e86c2136548098a7b35b8e3599fa8a}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_nearest\_contact@{physics\_object\_nearest\_contact}}
+\index{physics\_object\_nearest\_contact@{physics\_object\_nearest\_contact}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_nearest\_contact()}{physics\_object\_nearest\_contact()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structcontact}{contact}}$\ast$ physics\+\_\+object\+\_\+nearest\+\_\+contact (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8h_a628560ca48adba9321d2f47d3e446ab9}\label{physics__object_8h_a628560ca48adba9321d2f47d3e446ab9}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_position\_no\_force@{physics\_object\_position\_no\_force}}
+\index{physics\_object\_position\_no\_force@{physics\_object\_position\_no\_force}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_position\_no\_force()}{physics\_object\_position\_no\_force()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+position\+\_\+no\+\_\+force (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{position }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8h_a95d6a697cf19ac847a3e97c1461a74bb}\label{physics__object_8h_a95d6a697cf19ac847a3e97c1461a74bb}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_recalculate\_aabb@{physics\_object\_recalculate\_aabb}}
+\index{physics\_object\_recalculate\_aabb@{physics\_object\_recalculate\_aabb}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_recalculate\_aabb()}{physics\_object\_recalculate\_aabb()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+recalculate\+\_\+aabb (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+
+
+re-\/caluclates the bounding box of the object using the collision type\textquotesingle{}s bounding box function 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{physics__object_8h_af4288fd2eacf9f2b9a0488a5f41a6538}\label{physics__object_8h_af4288fd2eacf9f2b9a0488a5f41a6538}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_set\_velocity@{physics\_object\_set\_velocity}}
+\index{physics\_object\_set\_velocity@{physics\_object\_set\_velocity}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_set\_velocity()}{physics\_object\_set\_velocity()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+set\+\_\+velocity (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{velocity }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8h_a55a13d5317551b1e1167f81162621a3f}\label{physics__object_8h_a55a13d5317551b1e1167f81162621a3f}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_translate\_no\_force@{physics\_object\_translate\_no\_force}}
+\index{physics\_object\_translate\_no\_force@{physics\_object\_translate\_no\_force}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_translate\_no\_force()}{physics\_object\_translate\_no\_force()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+translate\+\_\+no\+\_\+force (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{translation }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{physics__object_8h_ac3ad45f93ba3188077463605e97337dc}\label{physics__object_8h_ac3ad45f93ba3188077463605e97337dc}} 
+\index{physics\_object.h@{physics\_object.h}!physics\_object\_update@{physics\_object\_update}}
+\index{physics\_object\_update@{physics\_object\_update}!physics\_object.h@{physics\_object.h}}
+\doxysubsubsection{\texorpdfstring{physics\_object\_update()}{physics\_object\_update()}}
+{\footnotesize\ttfamily void physics\+\_\+object\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structphysics__object}{physics\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+
+
+Applies gravity and performs verlet integration on the object. Will not do so if the object is a trigger or fixed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & ~\newline
+ \\
+\hline
+\end{DoxyParams}

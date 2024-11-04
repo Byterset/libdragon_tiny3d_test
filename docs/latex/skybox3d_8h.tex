@@ -1,0 +1,81 @@
+\hypertarget{skybox3d_8h}{}\doxysection{src/skybox/skybox3d.h File Reference}
+\label{skybox3d_8h}\index{src/skybox/skybox3d.h@{src/skybox/skybox3d.h}}
+{\ttfamily \#include \char`\"{}../math/transform.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/vector2.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/render\+\_\+batch.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/renderable.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/model.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../resource/model\+\_\+cache.\+h\char`\"{}}\newline
+Include dependency graph for skybox3d.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{skybox3d_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{skybox3d_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structskybox__face}{skybox\+\_\+face}}
+\item 
+struct \mbox{\hyperlink{structskybox}{skybox}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{skybox3d_8h_a532804318c73fa8d568209834fdac12e}{SKYBOX\+\_\+\+FACE\+\_\+\+SUBDIVISIONS}}~3
+\item 
+\#define \mbox{\hyperlink{skybox3d_8h_a903ac16bfb501e04e8b934a9e8978155}{SKYBOX\+\_\+\+GRID\+\_\+\+SIZE}}~\mbox{\hyperlink{skybox3d_8h_a532804318c73fa8d568209834fdac12e}{SKYBOX\+\_\+\+FACE\+\_\+\+SUBDIVISIONS}} + 1
+\item 
+\#define \mbox{\hyperlink{skybox3d_8h_a7c266f4da9a695846ffe7f782ffdd331}{SKYBOX\+\_\+\+TOTAL\+\_\+\+VERT\+\_\+\+COUNT}}~(\mbox{\hyperlink{skybox3d_8h_a903ac16bfb501e04e8b934a9e8978155}{SKYBOX\+\_\+\+GRID\+\_\+\+SIZE}} $\ast$ \mbox{\hyperlink{skybox3d_8h_a903ac16bfb501e04e8b934a9e8978155}{SKYBOX\+\_\+\+GRID\+\_\+\+SIZE}} $\ast$ \mbox{\hyperlink{skybox3d_8h_a903ac16bfb501e04e8b934a9e8978155}{SKYBOX\+\_\+\+GRID\+\_\+\+SIZE}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{skybox3d_8h_aca9526d626c21362f941d0d3ced5b2de}{skybox\+\_\+init}} (struct \mbox{\hyperlink{structskybox}{skybox}} $\ast$\mbox{\hyperlink{structskybox}{skybox}})
+\item 
+void \mbox{\hyperlink{skybox3d_8h_a6235e8de0877bb0656149d629cc90654}{skybox\+\_\+destroy}} (struct \mbox{\hyperlink{structskybox}{skybox}} $\ast$\mbox{\hyperlink{structskybox}{skybox}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{skybox3d_8h_a532804318c73fa8d568209834fdac12e}\label{skybox3d_8h_a532804318c73fa8d568209834fdac12e}} 
+\index{skybox3d.h@{skybox3d.h}!SKYBOX\_FACE\_SUBDIVISIONS@{SKYBOX\_FACE\_SUBDIVISIONS}}
+\index{SKYBOX\_FACE\_SUBDIVISIONS@{SKYBOX\_FACE\_SUBDIVISIONS}!skybox3d.h@{skybox3d.h}}
+\doxysubsubsection{\texorpdfstring{SKYBOX\_FACE\_SUBDIVISIONS}{SKYBOX\_FACE\_SUBDIVISIONS}}
+{\footnotesize\ttfamily \#define SKYBOX\+\_\+\+FACE\+\_\+\+SUBDIVISIONS~3}
+
+\mbox{\Hypertarget{skybox3d_8h_a903ac16bfb501e04e8b934a9e8978155}\label{skybox3d_8h_a903ac16bfb501e04e8b934a9e8978155}} 
+\index{skybox3d.h@{skybox3d.h}!SKYBOX\_GRID\_SIZE@{SKYBOX\_GRID\_SIZE}}
+\index{SKYBOX\_GRID\_SIZE@{SKYBOX\_GRID\_SIZE}!skybox3d.h@{skybox3d.h}}
+\doxysubsubsection{\texorpdfstring{SKYBOX\_GRID\_SIZE}{SKYBOX\_GRID\_SIZE}}
+{\footnotesize\ttfamily \#define SKYBOX\+\_\+\+GRID\+\_\+\+SIZE~\mbox{\hyperlink{skybox3d_8h_a532804318c73fa8d568209834fdac12e}{SKYBOX\+\_\+\+FACE\+\_\+\+SUBDIVISIONS}} + 1}
+
+\mbox{\Hypertarget{skybox3d_8h_a7c266f4da9a695846ffe7f782ffdd331}\label{skybox3d_8h_a7c266f4da9a695846ffe7f782ffdd331}} 
+\index{skybox3d.h@{skybox3d.h}!SKYBOX\_TOTAL\_VERT\_COUNT@{SKYBOX\_TOTAL\_VERT\_COUNT}}
+\index{SKYBOX\_TOTAL\_VERT\_COUNT@{SKYBOX\_TOTAL\_VERT\_COUNT}!skybox3d.h@{skybox3d.h}}
+\doxysubsubsection{\texorpdfstring{SKYBOX\_TOTAL\_VERT\_COUNT}{SKYBOX\_TOTAL\_VERT\_COUNT}}
+{\footnotesize\ttfamily \#define SKYBOX\+\_\+\+TOTAL\+\_\+\+VERT\+\_\+\+COUNT~(\mbox{\hyperlink{skybox3d_8h_a903ac16bfb501e04e8b934a9e8978155}{SKYBOX\+\_\+\+GRID\+\_\+\+SIZE}} $\ast$ \mbox{\hyperlink{skybox3d_8h_a903ac16bfb501e04e8b934a9e8978155}{SKYBOX\+\_\+\+GRID\+\_\+\+SIZE}} $\ast$ \mbox{\hyperlink{skybox3d_8h_a903ac16bfb501e04e8b934a9e8978155}{SKYBOX\+\_\+\+GRID\+\_\+\+SIZE}})}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{skybox3d_8h_a6235e8de0877bb0656149d629cc90654}\label{skybox3d_8h_a6235e8de0877bb0656149d629cc90654}} 
+\index{skybox3d.h@{skybox3d.h}!skybox\_destroy@{skybox\_destroy}}
+\index{skybox\_destroy@{skybox\_destroy}!skybox3d.h@{skybox3d.h}}
+\doxysubsubsection{\texorpdfstring{skybox\_destroy()}{skybox\_destroy()}}
+{\footnotesize\ttfamily void skybox\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structskybox}{skybox}} $\ast$}]{skybox }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{skybox3d_8h_aca9526d626c21362f941d0d3ced5b2de}\label{skybox3d_8h_aca9526d626c21362f941d0d3ced5b2de}} 
+\index{skybox3d.h@{skybox3d.h}!skybox\_init@{skybox\_init}}
+\index{skybox\_init@{skybox\_init}!skybox3d.h@{skybox3d.h}}
+\doxysubsubsection{\texorpdfstring{skybox\_init()}{skybox\_init()}}
+{\footnotesize\ttfamily void skybox\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structskybox}{skybox}} $\ast$}]{skybox }\end{DoxyParamCaption})}
+

@@ -340,6 +340,16 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Decomposes a quaternion into an axis and an angle.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td>Pointer to the input quaternion to be decomposed. </td></tr>
+    <tr><td class="paramname">axis</td><td>Pointer to the vector that will store the axis of rotation. </td></tr>
+    <tr><td class="paramname">angle</td><td>Pointer to the float that will store the angle of rotation in radians.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>The function calculates the magnitude of the quaternion's vector part and normalizes it to obtain the axis of rotation. If the magnitude is very small (less than 0.0001), it sets the axis to a default up vector and the angle to 0. Otherwise, it normalizes the axis and calculates the angle using the sine of the magnitude. </p>
 
 </div>
 </div>
@@ -556,6 +566,16 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Multiplies a quaternion by a vector.</p>
+<p>This function takes a quaternion <code>q</code> and a vector <code>a</code>, and performs the quaternion-vector multiplication. The result is stored in the output vector <code>out</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">q</td><td>Pointer to the quaternion to be multiplied. </td></tr>
+    <tr><td class="paramname">a</td><td>Pointer to the vector to be multiplied. </td></tr>
+    <tr><td class="paramname">out</td><td>Pointer to the vector where the result will be stored. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

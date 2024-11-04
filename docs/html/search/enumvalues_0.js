@@ -1,9 +1,19 @@
 var searchData=
 [
-  ['callback_5flist_5fenumerating_1619',['CALLBACK_LIST_ENUMERATING',['../callback__list_8h.html#a65990328f05e4c602640bc5330de6946af478004c28e63277a91faf8daa664fc1',1,'callback_list.h']]],
-  ['callback_5flist_5fhas_5fdeletions_1620',['CALLBACK_LIST_HAS_DELETIONS',['../callback__list_8h.html#a65990328f05e4c602640bc5330de6946a57bd40a095086479352bea74df6851b9',1,'callback_list.h']]],
-  ['collision_5fgroup_5fplayer_1621',['COLLISION_GROUP_PLAYER',['../dynamic__object_8h.html#ad015bc17d217387c011e973c01318bf4a70bbc1411f094acca471775c6ec94d39',1,'dynamic_object.h']]],
-  ['collision_5flayer_5fdamage_5fenemy_1622',['COLLISION_LAYER_DAMAGE_ENEMY',['../dynamic__object_8h.html#aa005f963232c81966557e7ec5b93d9e2aabfe4f1cc8db62d923dcafe3e0f60abe',1,'dynamic_object.h']]],
-  ['collision_5flayer_5fdamage_5fplayer_1623',['COLLISION_LAYER_DAMAGE_PLAYER',['../dynamic__object_8h.html#aa005f963232c81966557e7ec5b93d9e2a75ea0765945bdd61942fbe00f98c5c74',1,'dynamic_object.h']]],
-  ['collision_5flayer_5ftangible_1624',['COLLISION_LAYER_TANGIBLE',['../dynamic__object_8h.html#aa005f963232c81966557e7ec5b93d9e2af20faa47e6ff7689d64e139d8803b297',1,'dynamic_object.h']]]
+  ['callback_5flist_5fenumerating_2030',['CALLBACK_LIST_ENUMERATING',['../callback__list_8h.html#a65990328f05e4c602640bc5330de6946af478004c28e63277a91faf8daa664fc1',1,'callback_list.h']]],
+  ['callback_5flist_5fhas_5fdeletions_2031',['CALLBACK_LIST_HAS_DELETIONS',['../callback__list_8h.html#a65990328f05e4c602640bc5330de6946a57bd40a095086479352bea74df6851b9',1,'callback_list.h']]],
+  ['collectable_5ftype_5fhealth_2032',['COLLECTABLE_TYPE_HEALTH',['../scene__definition_8h.html#af70d7bfc1a201d50065a25bdcd25bd17a14f76f79b8b54a2d13f6cd947a1446b5',1,'scene_definition.h']]],
+  ['collectable_5ftype_5fpotion_2033',['COLLECTABLE_TYPE_POTION',['../scene__definition_8h.html#af70d7bfc1a201d50065a25bdcd25bd17ae6b33ab4b0dff8e416a673c84fd00f04',1,'scene_definition.h']]],
+  ['collectable_5ftype_5fspell_5frune_2034',['COLLECTABLE_TYPE_SPELL_RUNE',['../scene__definition_8h.html#af70d7bfc1a201d50065a25bdcd25bd17a2ee7e282dbc3b52840089c4f6248ca26',1,'scene_definition.h']]],
+  ['collision_5fgroup_5fplayer_2035',['COLLISION_GROUP_PLAYER',['../physics__object_8h.html#ad015bc17d217387c011e973c01318bf4a70bbc1411f094acca471775c6ec94d39',1,'physics_object.h']]],
+  ['collision_5flayer_5fdamage_5fenemy_2036',['COLLISION_LAYER_DAMAGE_ENEMY',['../physics__object_8h.html#aa005f963232c81966557e7ec5b93d9e2aabfe4f1cc8db62d923dcafe3e0f60abe',1,'physics_object.h']]],
+  ['collision_5flayer_5fdamage_5fplayer_2037',['COLLISION_LAYER_DAMAGE_PLAYER',['../physics__object_8h.html#aa005f963232c81966557e7ec5b93d9e2a75ea0765945bdd61942fbe00f98c5c74',1,'physics_object.h']]],
+  ['collision_5flayer_5fplatform_2038',['COLLISION_LAYER_PLATFORM',['../physics__object_8h.html#aa005f963232c81966557e7ec5b93d9e2ad8aa34de461f748309cf4213d764bf2f',1,'physics_object.h']]],
+  ['collision_5flayer_5ftangible_2039',['COLLISION_LAYER_TANGIBLE',['../physics__object_8h.html#aa005f963232c81966557e7ec5b93d9e2af20faa47e6ff7689d64e139d8803b297',1,'physics_object.h']]],
+  ['collision_5fshape_5fbox_2040',['COLLISION_SHAPE_BOX',['../physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68a67e8c8eacf978084ffaa4a0e44989b1f',1,'physics_object.h']]],
+  ['collision_5fshape_5fcapsule_2041',['COLLISION_SHAPE_CAPSULE',['../physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68a299941b5955c3cb678d4fee96af20452',1,'physics_object.h']]],
+  ['collision_5fshape_5fcone_2042',['COLLISION_SHAPE_CONE',['../physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68ad8866c819de21a701bf9267341b960da',1,'physics_object.h']]],
+  ['collision_5fshape_5fcylinder_2043',['COLLISION_SHAPE_CYLINDER',['../physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68a17a05cdd6f435913e451701326612c3e',1,'physics_object.h']]],
+  ['collision_5fshape_5fsphere_2044',['COLLISION_SHAPE_SPHERE',['../physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68ae10016202e6305527d90461e6a908400',1,'physics_object.h']]],
+  ['collision_5fshape_5fsweep_2045',['COLLISION_SHAPE_SWEEP',['../physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68a9a87b15f489516c631fe678aba700900',1,'physics_object.h']]]
 ];

@@ -2,8 +2,9 @@
 \label{sweep_8c}\index{src/collision/shapes/sweep.c@{src/collision/shapes/sweep.c}}
 {\ttfamily \#include \char`\"{}sweep.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../../math/minmax.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../dynamic\+\_\+object.\+h\char`\"{}}\newline
-Include dependency graph for sweep.\+c\+:\nopagebreak
+{\ttfamily \#include \char`\"{}../physics\+\_\+object.\+h\char`\"{}}\newline
+Include dependency graph for sweep.\+c\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -13,22 +14,22 @@ Include dependency graph for sweep.\+c\+:\nopagebreak
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{sweep_8c_a38d1d078dd602e34d937e79ba3408aea}{sweep\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+void \mbox{\hyperlink{sweep_8c_ab494d72ab4ed48b145bc307f71247f16}{sweep\+\_\+support\+\_\+function}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
 \item 
-void \mbox{\hyperlink{sweep_8c_ab64bb2d14cbbab07464fc3656d3f1631}{sweep\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
+void \mbox{\hyperlink{sweep_8c_a6f95ace9237df6bcd471b2d155e74a52}{sweep\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{sweep_8c_ab64bb2d14cbbab07464fc3656d3f1631}\label{sweep_8c_ab64bb2d14cbbab07464fc3656d3f1631}} 
+\mbox{\Hypertarget{sweep_8c_a6f95ace9237df6bcd471b2d155e74a52}\label{sweep_8c_a6f95ace9237df6bcd471b2d155e74a52}} 
 \index{sweep.c@{sweep.c}!sweep\_bounding\_box@{sweep\_bounding\_box}}
 \index{sweep\_bounding\_box@{sweep\_bounding\_box}!sweep.c@{sweep.c}}
 \doxysubsubsection{\texorpdfstring{sweep\_bounding\_box()}{sweep\_bounding\_box()}}
-{\footnotesize\ttfamily void sweep\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void sweep\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{sweep_8c_a38d1d078dd602e34d937e79ba3408aea}\label{sweep_8c_a38d1d078dd602e34d937e79ba3408aea}} 
-\index{sweep.c@{sweep.c}!sweep\_minkowski\_sum@{sweep\_minkowski\_sum}}
-\index{sweep\_minkowski\_sum@{sweep\_minkowski\_sum}!sweep.c@{sweep.c}}
-\doxysubsubsection{\texorpdfstring{sweep\_minkowski\_sum()}{sweep\_minkowski\_sum()}}
-{\footnotesize\ttfamily void sweep\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{sweep_8c_ab494d72ab4ed48b145bc307f71247f16}\label{sweep_8c_ab494d72ab4ed48b145bc307f71247f16}} 
+\index{sweep.c@{sweep.c}!sweep\_support\_function@{sweep\_support\_function}}
+\index{sweep\_support\_function@{sweep\_support\_function}!sweep.c@{sweep.c}}
+\doxysubsubsection{\texorpdfstring{sweep\_support\_function()}{sweep\_support\_function()}}
+{\footnotesize\ttfamily void sweep\+\_\+support\+\_\+function (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
 

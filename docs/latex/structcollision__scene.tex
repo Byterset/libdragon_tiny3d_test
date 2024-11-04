@@ -6,7 +6,8 @@
 
 
 
-Collaboration diagram for collision\+\_\+scene\+:\nopagebreak
+Collaboration diagram for collision\+\_\+scene\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -27,6 +28,8 @@ struct \mbox{\hyperlink{structhash__map}{hash\+\_\+map}} \mbox{\hyperlink{struct
 uint16\+\_\+t \mbox{\hyperlink{structcollision__scene_abca705ecbdd9705471367fe6e69e8e86}{count}}
 \item 
 uint16\+\_\+t \mbox{\hyperlink{structcollision__scene_aac47282ef26158f77a9949bef56a5a7d}{capacity}}
+\item 
+\mbox{\hyperlink{structAABBTree}{AABBTree}} \mbox{\hyperlink{structcollision__scene_ae3ccf19d46309158a849831f006ab429}{object\+\_\+aabbtree}}
 \item 
 struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$ \mbox{\hyperlink{structcollision__scene_a615e1a44c5dd125fe873f5e23083ec32}{mesh\+\_\+collider}}
 \end{DoxyCompactItemize}
@@ -74,6 +77,12 @@ struct \mbox{\hyperlink{structmesh__collider}{mesh\+\_\+collider}} $\ast$ \mbox{
 \index{next\_free\_contact@{next\_free\_contact}!collision\_scene@{collision\_scene}}
 \doxysubsubsection{\texorpdfstring{next\_free\_contact}{next\_free\_contact}}
 {\footnotesize\ttfamily struct \mbox{\hyperlink{structcontact}{contact}}$\ast$ collision\+\_\+scene\+::next\+\_\+free\+\_\+contact}
+
+\mbox{\Hypertarget{structcollision__scene_ae3ccf19d46309158a849831f006ab429}\label{structcollision__scene_ae3ccf19d46309158a849831f006ab429}} 
+\index{collision\_scene@{collision\_scene}!object\_aabbtree@{object\_aabbtree}}
+\index{object\_aabbtree@{object\_aabbtree}!collision\_scene@{collision\_scene}}
+\doxysubsubsection{\texorpdfstring{object\_aabbtree}{object\_aabbtree}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structAABBTree}{AABBTree}} collision\+\_\+scene\+::object\+\_\+aabbtree}
 
 
 

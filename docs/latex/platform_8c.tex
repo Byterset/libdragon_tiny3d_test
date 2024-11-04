@@ -1,0 +1,48 @@
+\hypertarget{platform_8c}{}\doxysection{src/objects/platform/platform.c File Reference}
+\label{platform_8c}\index{src/objects/platform/platform.c@{src/objects/platform/platform.c}}
+{\ttfamily \#include \char`\"{}platform.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$libdragon.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../../render/render\+\_\+scene.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../collision/collision\+\_\+scene.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../collision/shapes/box.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../time/time.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../entity/entity\+\_\+id.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../render/defs.\+h\char`\"{}}\newline
+Include dependency graph for platform.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{platform_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{platform_8c_a6d0833f4351c1d1a15e580a1214f10e1}{platform\+\_\+update}} (struct \mbox{\hyperlink{structplatform}{platform}} $\ast$\mbox{\hyperlink{structplatform}{platform}})
+\item 
+void \mbox{\hyperlink{platform_8c_aa78d7201259592da422b12b9c4f2fd5e}{platform\+\_\+init}} (struct \mbox{\hyperlink{structplatform}{platform}} $\ast$\mbox{\hyperlink{structplatform}{platform}}, struct \mbox{\hyperlink{structplatform__definition}{platform\+\_\+definition}} $\ast$def)
+\item 
+void \mbox{\hyperlink{platform_8c_a1881b843d939d75d7378fd4c2a0d71e0}{platform\+\_\+destroy}} (struct \mbox{\hyperlink{structplatform}{platform}} $\ast$\mbox{\hyperlink{structplatform}{platform}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{platform_8c_a1881b843d939d75d7378fd4c2a0d71e0}\label{platform_8c_a1881b843d939d75d7378fd4c2a0d71e0}} 
+\index{platform.c@{platform.c}!platform\_destroy@{platform\_destroy}}
+\index{platform\_destroy@{platform\_destroy}!platform.c@{platform.c}}
+\doxysubsubsection{\texorpdfstring{platform\_destroy()}{platform\_destroy()}}
+{\footnotesize\ttfamily void platform\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structplatform}{platform}} $\ast$}]{platform }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{platform_8c_aa78d7201259592da422b12b9c4f2fd5e}\label{platform_8c_aa78d7201259592da422b12b9c4f2fd5e}} 
+\index{platform.c@{platform.c}!platform\_init@{platform\_init}}
+\index{platform\_init@{platform\_init}!platform.c@{platform.c}}
+\doxysubsubsection{\texorpdfstring{platform\_init()}{platform\_init()}}
+{\footnotesize\ttfamily void platform\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structplatform}{platform}} $\ast$}]{platform,  }\item[{struct \mbox{\hyperlink{structplatform__definition}{platform\+\_\+definition}} $\ast$}]{def }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{platform_8c_a6d0833f4351c1d1a15e580a1214f10e1}\label{platform_8c_a6d0833f4351c1d1a15e580a1214f10e1}} 
+\index{platform.c@{platform.c}!platform\_update@{platform\_update}}
+\index{platform\_update@{platform\_update}!platform.c@{platform.c}}
+\doxysubsubsection{\texorpdfstring{platform\_update()}{platform\_update()}}
+{\footnotesize\ttfamily void platform\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structplatform}{platform}} $\ast$}]{platform }\end{DoxyParamCaption})}
+

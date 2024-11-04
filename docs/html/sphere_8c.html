@@ -74,25 +74,34 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="sphere_8h_source.html">sphere.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="dynamic__object_8h_source.html">../dynamic_object.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="physics__object_8h_source.html">../physics_object.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="math_8h_source.html">math.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for sphere.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="sphere_8c__incl.png" border="0" usemap="#asrc_2collision_2shapes_2sphere_8c" alt=""/></div>
 <map name="asrc_2collision_2shapes_2sphere_8c" id="asrc_2collision_2shapes_2sphere_8c">
-<area shape="rect" title=" " alt="" coords="387,5,537,47"/>
-<area shape="rect" href="sphere_8h.html" title=" " alt="" coords="132,95,211,121"/>
-<area shape="rect" href="dynamic__object_8h.html" title=" " alt="" coords="387,95,537,121"/>
-<area shape="rect" href="math_8h.html" title="This file contains the declaration of commonly used integer math functions." alt="" coords="561,95,629,121"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="179,169,324,196"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="303,244,448,271"/>
-<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="26,169,154,196"/>
-<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="687,244,832,271"/>
-<area shape="rect" href="contact_8h.html" title=" " alt="" coords="679,169,762,196"/>
-<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="348,169,403,196"/>
-<area shape="rect" title=" " alt="" coords="427,169,497,196"/>
-<area shape="rect" title=" " alt="" coords="522,169,605,196"/>
+<area shape="rect" title=" " alt="" coords="487,5,637,47"/>
+<area shape="rect" href="sphere_8h.html" title=" " alt="" coords="113,169,192,196"/>
+<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="491,95,633,121"/>
+<area shape="rect" href="math_8h.html" title="This file contains the declaration of commonly used integer math functions." alt="" coords="657,95,725,121"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="5,543,151,569"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="375,543,520,569"/>
+<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="322,244,450,271"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="169,468,273,495"/>
+<area shape="rect" href="ray_8h.html" title=" " alt="" coords="419,319,473,345"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="398,393,497,420"/>
+<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="889,244,1035,271"/>
+<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="481,169,643,196"/>
+<area shape="rect" title=" " alt="" coords="743,244,813,271"/>
+<area shape="rect" href="contact_8h.html" title=" " alt="" coords="725,169,807,196"/>
+<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="268,393,323,420"/>
+<area shape="rect" title=" " alt="" coords="831,169,914,196"/>
+<area shape="rect" href="vec_8h.html" title=" " alt="" coords="624,244,719,271"/>
+<area shape="rect" title=" " alt="" coords="525,244,599,271"/>
+<area shape="rect" title=" " alt="" coords="734,319,809,345"/>
+<area shape="rect" title=" " alt="" coords="547,319,614,345"/>
+<area shape="rect" title=" " alt="" coords="639,319,709,345"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -103,10 +112,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aefbe3a8c80f3cdbe94a998d0569d2551"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8c.html#aefbe3a8c80f3cdbe94a998d0569d2551">sphere_minkowski_sum</a> (void *data, struct <a class="el" href="structVector3.html">Vector3</a> *direction, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
-<tr class="separator:aefbe3a8c80f3cdbe94a998d0569d2551"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af345f4883018ba5b9fc48f60e33357c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8c.html#af345f4883018ba5b9fc48f60e33357c4">sphere_bounding_box</a> (void *data, struct <a class="el" href="structVector2.html">Vector2</a> *rotation, struct <a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>)</td></tr>
-<tr class="separator:af345f4883018ba5b9fc48f60e33357c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fd1ac4f2987e3d80f237cc2addacba6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8c.html#a7fd1ac4f2987e3d80f237cc2addacba6">sphere_support_function</a> (void *data, struct <a class="el" href="structVector3.html">Vector3</a> *direction, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
+<tr class="separator:a7fd1ac4f2987e3d80f237cc2addacba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c7195e0e4490e74401efb9f399fbbdc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8c.html#a0c7195e0e4490e74401efb9f399fbbdc">sphere_bounding_box</a> (void *data, struct <a class="el" href="structQuaternion.html">Quaternion</a> *rotation, struct <a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>)</td></tr>
+<tr class="separator:a0c7195e0e4490e74401efb9f399fbbdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ae413c1abd5ab87aba083e12813302624"></a>
@@ -124,8 +133,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="af345f4883018ba5b9fc48f60e33357c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af345f4883018ba5b9fc48f60e33357c4">&#9670;&nbsp;</a></span>sphere_bounding_box()</h2>
+<a id="a0c7195e0e4490e74401efb9f399fbbdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c7195e0e4490e74401efb9f399fbbdc">&#9670;&nbsp;</a></span>sphere_bounding_box()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,7 +148,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector2.html">Vector2</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>rotation</em>, </td>
         </tr>
         <tr>
@@ -158,14 +167,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aefbe3a8c80f3cdbe94a998d0569d2551"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aefbe3a8c80f3cdbe94a998d0569d2551">&#9670;&nbsp;</a></span>sphere_minkowski_sum()</h2>
+<a id="a7fd1ac4f2987e3d80f237cc2addacba6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fd1ac4f2987e3d80f237cc2addacba6">&#9670;&nbsp;</a></span>sphere_support_function()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void sphere_minkowski_sum </td>
+          <td class="memname">void sphere_support_function </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>

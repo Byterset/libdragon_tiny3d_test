@@ -3,11 +3,12 @@
 {\ttfamily \#include \char`\"{}../../math/vector2.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../../math/vector3.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../../math/aabb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../math/quaternion.\+h\char`\"{}}\newline
 Include dependency graph for capsule.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=342pt]{capsule_8h__incl}
+\includegraphics[width=350pt]{capsule_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:\nopagebreak
@@ -20,22 +21,22 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{capsule_8h_ad4b965fdd7a584ab2223100e875c730f}{capsule\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+void \mbox{\hyperlink{capsule_8h_adeb4bd9b7d625e25298f487dd4273fbc}{capsule\+\_\+support\+\_\+function}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
 \item 
-void \mbox{\hyperlink{capsule_8h_a954654edb5c2ca9ccda860c4f86adbeb}{capsule\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
+void \mbox{\hyperlink{capsule_8h_aaf1ce8c5b5b125b99b695bd2fcf70764}{capsule\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{capsule_8h_a954654edb5c2ca9ccda860c4f86adbeb}\label{capsule_8h_a954654edb5c2ca9ccda860c4f86adbeb}} 
+\mbox{\Hypertarget{capsule_8h_aaf1ce8c5b5b125b99b695bd2fcf70764}\label{capsule_8h_aaf1ce8c5b5b125b99b695bd2fcf70764}} 
 \index{capsule.h@{capsule.h}!capsule\_bounding\_box@{capsule\_bounding\_box}}
 \index{capsule\_bounding\_box@{capsule\_bounding\_box}!capsule.h@{capsule.h}}
 \doxysubsubsection{\texorpdfstring{capsule\_bounding\_box()}{capsule\_bounding\_box()}}
-{\footnotesize\ttfamily void capsule\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void capsule\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{capsule_8h_ad4b965fdd7a584ab2223100e875c730f}\label{capsule_8h_ad4b965fdd7a584ab2223100e875c730f}} 
-\index{capsule.h@{capsule.h}!capsule\_minkowski\_sum@{capsule\_minkowski\_sum}}
-\index{capsule\_minkowski\_sum@{capsule\_minkowski\_sum}!capsule.h@{capsule.h}}
-\doxysubsubsection{\texorpdfstring{capsule\_minkowski\_sum()}{capsule\_minkowski\_sum()}}
-{\footnotesize\ttfamily void capsule\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{capsule_8h_adeb4bd9b7d625e25298f487dd4273fbc}\label{capsule_8h_adeb4bd9b7d625e25298f487dd4273fbc}} 
+\index{capsule.h@{capsule.h}!capsule\_support\_function@{capsule\_support\_function}}
+\index{capsule\_support\_function@{capsule\_support\_function}!capsule.h@{capsule.h}}
+\doxysubsubsection{\texorpdfstring{capsule\_support\_function()}{capsule\_support\_function()}}
+{\footnotesize\ttfamily void capsule\+\_\+support\+\_\+function (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
 

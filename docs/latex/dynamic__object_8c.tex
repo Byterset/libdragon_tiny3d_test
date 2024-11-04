@@ -1,6 +1,7 @@
 \hypertarget{dynamic__object_8c}{}\doxysection{src/collision/dynamic\+\_\+object.c File Reference}
 \label{dynamic__object_8c}\index{src/collision/dynamic\_object.c@{src/collision/dynamic\_object.c}}
 {\ttfamily \#include \char`\"{}dynamic\+\_\+object.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}../time/time.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../math/minmax.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$math.\+h$>$}\newline
@@ -16,9 +17,23 @@ Include dependency graph for dynamic\+\_\+object.\+c\+:
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{dynamic__object_8c_a3e356307902822049b6cfe98d47c6acf}{dynamic\+\_\+object\+\_\+init}} (\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} \mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}, struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$type, uint16\+\_\+t \mbox{\hyperlink{dynamic__object_8h_aa005f963232c81966557e7ec5b93d9e2}{collision\+\_\+layers}}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$position, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation)
+void \mbox{\hyperlink{dynamic__object_8c_a089f4b650abaf54721cc69c78c0b0481}{dynamic\+\_\+object\+\_\+init}} (\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}} \mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}, struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$type, uint16\+\_\+t \mbox{\hyperlink{dynamic__object_8h_aa005f963232c81966557e7ec5b93d9e2}{collision\+\_\+layers}}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$position, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$rotation, float mass)
 \item 
 void \mbox{\hyperlink{dynamic__object_8c_a12892a38ed35d4ce768e024fcebc6602}{dynamic\+\_\+object\+\_\+update}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\begin{DoxyCompactList}\small\item\em Applies gravity and performs verlet integration on the object. Will not do so if the object is a trigger or fixed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{dynamic__object_8c_a9fca368c21e2c07640df350a124cbb25}{dynamic\+\_\+object\+\_\+apply\+\_\+constraints}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\item 
+void \mbox{\hyperlink{dynamic__object_8c_a2994942d8b03a8dbcce3fec40ef889fd}{dynamic\+\_\+object\+\_\+accelerate}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$acceleration)
+\begin{DoxyCompactList}\small\item\em Accelerates the object by the given acceleration vector. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{dynamic__object_8c_a08e784d4b25fb9decf901438152329b1}{dynamic\+\_\+object\+\_\+translate\+\_\+no\+\_\+force}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$translation)
+\item 
+void \mbox{\hyperlink{dynamic__object_8c_aa680673112ac38284847553ac51ef428}{dynamic\+\_\+object\+\_\+position\+\_\+no\+\_\+force}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$position)
+\item 
+struct \mbox{\hyperlink{structVector3}{Vector3}} \mbox{\hyperlink{dynamic__object_8c_ac4e19bd90c917662bc3dc9ea3347c577}{dynamic\+\_\+object\+\_\+get\+\_\+velocity}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\item 
+void \mbox{\hyperlink{dynamic__object_8c_a3ab03192838bfc9abf11ff5b52a12697}{dynamic\+\_\+object\+\_\+set\+\_\+velocity}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$velocity)
+\item 
+void \mbox{\hyperlink{dynamic__object_8c_a037d89329d21a0f2fc33f5ec05b1b99d}{dynamic\+\_\+object\+\_\+apply\+\_\+impulse}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$impulse)
 \item 
 struct \mbox{\hyperlink{structcontact}{contact}} $\ast$ \mbox{\hyperlink{dynamic__object_8c_afdfc1a03d2a934b88a927152c699f7af}{dynamic\+\_\+object\+\_\+nearest\+\_\+contact}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
 \item 
@@ -26,16 +41,52 @@ bool \mbox{\hyperlink{dynamic__object_8c_aa7d4b2abb85c648b72c4418211266504}{dyna
 \item 
 void \mbox{\hyperlink{dynamic__object_8c_a24e500bbddc728608bbd424d474dbe64}{dynamic\+\_\+object\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
 \item 
-void \mbox{\hyperlink{dynamic__object_8c_a052ac720dfdd75cab4da5192f0a8a1a2}{dynamic\+\_\+object\+\_\+recalc\+\_\+bb}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
-\end{DoxyCompactItemize}
+void \mbox{\hyperlink{dynamic__object_8c_a475e4f01ed64ccf2bc29d5a470f71165}{dynamic\+\_\+object\+\_\+recalculate\+\_\+aabb}} (struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$object)
+\begin{DoxyCompactList}\small\item\em re-\/caluclates the bounding box of the object using the collision type\textquotesingle{}s bounding box function \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{dynamic__object_8c_a3e356307902822049b6cfe98d47c6acf}\label{dynamic__object_8c_a3e356307902822049b6cfe98d47c6acf}} 
+\mbox{\Hypertarget{dynamic__object_8c_a2994942d8b03a8dbcce3fec40ef889fd}\label{dynamic__object_8c_a2994942d8b03a8dbcce3fec40ef889fd}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_accelerate@{dynamic\_object\_accelerate}}
+\index{dynamic\_object\_accelerate@{dynamic\_object\_accelerate}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_accelerate()}{dynamic\_object\_accelerate()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+accelerate (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{acceleration }\end{DoxyParamCaption})}
+
+
+
+Accelerates the object by the given acceleration vector. 
+
+Keep in mind that the acceleration is applied for one Physics update cycle and should be scaled by the PHYSICS\+\_\+\+TICKRATE so it scales to one second instead. 
+\begin{DoxyParams}{Parameters}
+{\em object} & \\
+\hline
+{\em acceleration} & ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{dynamic__object_8c_a9fca368c21e2c07640df350a124cbb25}\label{dynamic__object_8c_a9fca368c21e2c07640df350a124cbb25}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_apply\_constraints@{dynamic\_object\_apply\_constraints}}
+\index{dynamic\_object\_apply\_constraints@{dynamic\_object\_apply\_constraints}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_apply\_constraints()}{dynamic\_object\_apply\_constraints()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+apply\+\_\+constraints (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{dynamic__object_8c_a037d89329d21a0f2fc33f5ec05b1b99d}\label{dynamic__object_8c_a037d89329d21a0f2fc33f5ec05b1b99d}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_apply\_impulse@{dynamic\_object\_apply\_impulse}}
+\index{dynamic\_object\_apply\_impulse@{dynamic\_object\_apply\_impulse}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_apply\_impulse()}{dynamic\_object\_apply\_impulse()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+apply\+\_\+impulse (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{impulse }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{dynamic__object_8c_ac4e19bd90c917662bc3dc9ea3347c577}\label{dynamic__object_8c_ac4e19bd90c917662bc3dc9ea3347c577}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_get\_velocity@{dynamic\_object\_get\_velocity}}
+\index{dynamic\_object\_get\_velocity@{dynamic\_object\_get\_velocity}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_get\_velocity()}{dynamic\_object\_get\_velocity()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structVector3}{Vector3}} dynamic\+\_\+object\+\_\+get\+\_\+velocity (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{dynamic__object_8c_a089f4b650abaf54721cc69c78c0b0481}\label{dynamic__object_8c_a089f4b650abaf54721cc69c78c0b0481}} 
 \index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_init@{dynamic\_object\_init}}
 \index{dynamic\_object\_init@{dynamic\_object\_init}!dynamic\_object.c@{dynamic\_object.c}}
 \doxysubsubsection{\texorpdfstring{dynamic\_object\_init()}{dynamic\_object\_init()}}
-{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}}]{entity\+\_\+id,  }\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$}]{type,  }\item[{uint16\+\_\+t}]{collision\+\_\+layers,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{position,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{entity__id_8h_a0b6e47c2160096e2e59d383c2c80dcd0}{entity\+\_\+id}}}]{entity\+\_\+id,  }\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structdynamic__object__type}{dynamic\+\_\+object\+\_\+type}} $\ast$}]{type,  }\item[{uint16\+\_\+t}]{collision\+\_\+layers,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{position,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{rotation,  }\item[{float}]{mass }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{dynamic__object_8c_aa7d4b2abb85c648b72c4418211266504}\label{dynamic__object_8c_aa7d4b2abb85c648b72c4418211266504}} 
 \index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_is\_touching@{dynamic\_object\_is\_touching}}
@@ -55,11 +106,39 @@ void \mbox{\hyperlink{dynamic__object_8c_a052ac720dfdd75cab4da5192f0a8a1a2}{dyna
 \doxysubsubsection{\texorpdfstring{dynamic\_object\_nearest\_contact()}{dynamic\_object\_nearest\_contact()}}
 {\footnotesize\ttfamily struct \mbox{\hyperlink{structcontact}{contact}}$\ast$ dynamic\+\_\+object\+\_\+nearest\+\_\+contact (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{dynamic__object_8c_a052ac720dfdd75cab4da5192f0a8a1a2}\label{dynamic__object_8c_a052ac720dfdd75cab4da5192f0a8a1a2}} 
-\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_recalc\_bb@{dynamic\_object\_recalc\_bb}}
-\index{dynamic\_object\_recalc\_bb@{dynamic\_object\_recalc\_bb}!dynamic\_object.c@{dynamic\_object.c}}
-\doxysubsubsection{\texorpdfstring{dynamic\_object\_recalc\_bb()}{dynamic\_object\_recalc\_bb()}}
-{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+recalc\+\_\+bb (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{dynamic__object_8c_aa680673112ac38284847553ac51ef428}\label{dynamic__object_8c_aa680673112ac38284847553ac51ef428}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_position\_no\_force@{dynamic\_object\_position\_no\_force}}
+\index{dynamic\_object\_position\_no\_force@{dynamic\_object\_position\_no\_force}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_position\_no\_force()}{dynamic\_object\_position\_no\_force()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+position\+\_\+no\+\_\+force (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{position }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{dynamic__object_8c_a475e4f01ed64ccf2bc29d5a470f71165}\label{dynamic__object_8c_a475e4f01ed64ccf2bc29d5a470f71165}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_recalculate\_aabb@{dynamic\_object\_recalculate\_aabb}}
+\index{dynamic\_object\_recalculate\_aabb@{dynamic\_object\_recalculate\_aabb}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_recalculate\_aabb()}{dynamic\_object\_recalculate\_aabb()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+recalculate\+\_\+aabb (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
+
+
+
+re-\/caluclates the bounding box of the object using the collision type\textquotesingle{}s bounding box function 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{dynamic__object_8c_a3ab03192838bfc9abf11ff5b52a12697}\label{dynamic__object_8c_a3ab03192838bfc9abf11ff5b52a12697}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_set\_velocity@{dynamic\_object\_set\_velocity}}
+\index{dynamic\_object\_set\_velocity@{dynamic\_object\_set\_velocity}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_set\_velocity()}{dynamic\_object\_set\_velocity()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+set\+\_\+velocity (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{velocity }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{dynamic__object_8c_a08e784d4b25fb9decf901438152329b1}\label{dynamic__object_8c_a08e784d4b25fb9decf901438152329b1}} 
+\index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_translate\_no\_force@{dynamic\_object\_translate\_no\_force}}
+\index{dynamic\_object\_translate\_no\_force@{dynamic\_object\_translate\_no\_force}!dynamic\_object.c@{dynamic\_object.c}}
+\doxysubsubsection{\texorpdfstring{dynamic\_object\_translate\_no\_force()}{dynamic\_object\_translate\_no\_force()}}
+{\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+translate\+\_\+no\+\_\+force (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{translation }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{dynamic__object_8c_a12892a38ed35d4ce768e024fcebc6602}\label{dynamic__object_8c_a12892a38ed35d4ce768e024fcebc6602}} 
 \index{dynamic\_object.c@{dynamic\_object.c}!dynamic\_object\_update@{dynamic\_object\_update}}
@@ -67,3 +146,13 @@ void \mbox{\hyperlink{dynamic__object_8c_a052ac720dfdd75cab4da5192f0a8a1a2}{dyna
 \doxysubsubsection{\texorpdfstring{dynamic\_object\_update()}{dynamic\_object\_update()}}
 {\footnotesize\ttfamily void dynamic\+\_\+object\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdynamic__object}{dynamic\+\_\+object}} $\ast$}]{object }\end{DoxyParamCaption})}
 
+
+
+Applies gravity and performs verlet integration on the object. Will not do so if the object is a trigger or fixed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & ~\newline
+ \\
+\hline
+\end{DoxyParams}

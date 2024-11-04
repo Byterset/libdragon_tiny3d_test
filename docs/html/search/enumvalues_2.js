@@ -1,6 +1,22 @@
 var searchData=
 [
-  ['mesh_5frange_5fresult_5fcollide_1628',['MESH_RANGE_RESULT_COLLIDE',['../mesh__collider_8c.html#ae57109d1b7dc2c5f2013f544781137f0abffa0cafbc7b63be762ba8ad4215b799',1,'mesh_collider.c']]],
-  ['mesh_5frange_5fresult_5fend_1629',['MESH_RANGE_RESULT_END',['../mesh__collider_8c.html#ae57109d1b7dc2c5f2013f544781137f0a9a5625cf1fb38deb78f371f681e79887',1,'mesh_collider.c']]],
-  ['mesh_5frange_5fresult_5fskip_1630',['MESH_RANGE_RESULT_SKIP',['../mesh__collider_8c.html#ae57109d1b7dc2c5f2013f544781137f0a8e4879de3691a76928c33225d6772c73',1,'mesh_collider.c']]]
+  ['interaction_5flook_2049',['INTERACTION_LOOK',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cda463e3e2845475f99a8e5d22db5be5566',1,'scene_definition.h']]],
+  ['interaction_5flook_5fmove_2050',['INTERACTION_LOOK_MOVE',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cda02f6da07123e2f39cebf57286b3986bb',1,'scene_definition.h']]],
+  ['interaction_5flook_5fmove_5fspace_2051',['INTERACTION_LOOK_MOVE_SPACE',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cdaaf362a3a4a1178e64b5fa890c8cadab3',1,'scene_definition.h']]],
+  ['interaction_5flook_5fmove_5fspace_5fwait_2052',['INTERACTION_LOOK_MOVE_SPACE_WAIT',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cdaf4e8d26e289eed5f82a7edebc4908bd1',1,'scene_definition.h']]],
+  ['interaction_5flook_5fmove_5fwait_2053',['INTERACTION_LOOK_MOVE_WAIT',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cda7c86e90205b27ce4ee8e18c0a5d30a84',1,'scene_definition.h']]],
+  ['interaction_5flook_5fspace_2054',['INTERACTION_LOOK_SPACE',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cda5289cbcf6108ee301ab6750ea005156e',1,'scene_definition.h']]],
+  ['interaction_5flook_5fspace_5fwait_2055',['INTERACTION_LOOK_SPACE_WAIT',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cdad098c28680a93ee88b27813ad412ffad',1,'scene_definition.h']]],
+  ['interaction_5flook_5fwait_2056',['INTERACTION_LOOK_WAIT',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cda6adcc5eebaf5cd52e724dbbbb59ef46e',1,'scene_definition.h']]],
+  ['interaction_5fmove_2057',['INTERACTION_MOVE',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cdaac981309bc83e86607ac51bf4bd22cec',1,'scene_definition.h']]],
+  ['interaction_5fmove_5fspace_2058',['INTERACTION_MOVE_SPACE',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cda5719b15ffd92c1691587bec7499bfcac',1,'scene_definition.h']]],
+  ['interaction_5fmove_5fspace_5fwait_2059',['INTERACTION_MOVE_SPACE_WAIT',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cdafcb2c7fa153e0715035663d012cc40de',1,'scene_definition.h']]],
+  ['interaction_5fmove_5fwait_2060',['INTERACTION_MOVE_WAIT',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cda920a10f16f1396fcc3657fc545d3f68b',1,'scene_definition.h']]],
+  ['interaction_5fnone_2061',['INTERACTION_NONE',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cdac0ac269750e3b5410a79056f6ec0d438',1,'scene_definition.h']]],
+  ['interaction_5fspace_2062',['INTERACTION_SPACE',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cdaaccd7782c0a13582f89d0b7ec3fb278c',1,'scene_definition.h']]],
+  ['interaction_5fspace_5fwait_2063',['INTERACTION_SPACE_WAIT',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cda4a412608593b9c69c73288a37aa89c15',1,'scene_definition.h']]],
+  ['interaction_5fwait_2064',['INTERACTION_WAIT',['../scene__definition_8h.html#a1f9dfccddd8668eb88705d17886ce0cdad2715bbce40ccf2cd5cf753a176db6ab',1,'scene_definition.h']]],
+  ['item_5ftype_5fcount_2065',['ITEM_TYPE_COUNT',['../scene__definition_8h.html#adf147b1fbd64700fd6084d08ba833433a73b5184c8869f2ee94cce64beab34605',1,'scene_definition.h']]],
+  ['item_5ftype_5fnone_2066',['ITEM_TYPE_NONE',['../scene__definition_8h.html#adf147b1fbd64700fd6084d08ba833433a45847d1883692dafbdc5d4926fb0ae6e',1,'scene_definition.h']]],
+  ['item_5ftype_5fstaff_5fdefault_2067',['ITEM_TYPE_STAFF_DEFAULT',['../scene__definition_8h.html#adf147b1fbd64700fd6084d08ba833433a6a3ea5e7020015d7a007fbe1872242b2',1,'scene_definition.h']]]
 ];

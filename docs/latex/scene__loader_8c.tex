@@ -1,0 +1,134 @@
+\hypertarget{scene__loader_8c}{}\doxysection{src/scene/scene\+\_\+loader.c File Reference}
+\label{scene__loader_8c}\index{src/scene/scene\_loader.c@{src/scene/scene\_loader.c}}
+{\ttfamily \#include \char`\"{}scene\+\_\+loader.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$malloc.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$libdragon.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../resource/mesh\+\_\+collider.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../resource/model\+\_\+cache.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/render\+\_\+scene.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../time/time.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../objects/box/box.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../collision/collision\+\_\+scene.\+h\char`\"{}}\newline
+Include dependency graph for scene\+\_\+loader.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{scene__loader_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtype__location}{type\+\_\+location}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{scene__loader_8c_aa5a0329e4b1d3df426a8713ee0dc477f}{EXPECTED\+\_\+\+HEADER}}~0x53434e45
+\item 
+\#define \mbox{\hyperlink{scene__loader_8c_a3f6258eda649ae8ac703becce28ae69c}{EXPECTED\+\_\+\+CONDITION\+\_\+\+HEADER}}~0x45585052
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{scene__loader_8c_ae02fbe85f939a0eb41fc3cd7ed4cfbad}{type\+\_\+location\+\_\+types}} \{ \mbox{\hyperlink{scene__loader_8c_ae02fbe85f939a0eb41fc3cd7ed4cfbadaf03f07292d2bf90b53c61bb9130b3dcd}{TYPE\+\_\+\+LOCATION\+\_\+\+STRING}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structentity__definition}{entity\+\_\+definition}} $\ast$ \mbox{\hyperlink{scene__loader_8c_a1713191aed46008df55e9855a5f83f99}{scene\+\_\+find\+\_\+def}} (const char $\ast$name)
+\item 
+void \mbox{\hyperlink{scene__loader_8c_ad63622d05908af9a0a4a9856c043ac10}{scene\+\_\+apply\+\_\+types}} (void $\ast$definition, char $\ast$string\+\_\+table, struct \mbox{\hyperlink{structtype__location}{type\+\_\+location}} $\ast$type\+\_\+locations, int type\+\_\+location\+\_\+count)
+\item 
+void \mbox{\hyperlink{scene__loader_8c_aa2b7ca733282e4ae88c4d433f2a07ffb}{scene\+\_\+load\+\_\+entity}} (struct \mbox{\hyperlink{structscene}{scene}} $\ast$\mbox{\hyperlink{structscene}{scene}}, struct \mbox{\hyperlink{structentity__data}{entity\+\_\+data}} $\ast$\mbox{\hyperlink{structentity__data}{entity\+\_\+data}}, FILE $\ast$file)
+\item 
+void \mbox{\hyperlink{scene__loader_8c_a8fc813c3b6f821f13d632a47143314ec}{scene\+\_\+destroy\+\_\+entity}} (struct \mbox{\hyperlink{structentity__data}{entity\+\_\+data}} $\ast$\mbox{\hyperlink{structentity__data}{entity\+\_\+data}})
+\item 
+struct \mbox{\hyperlink{structscene}{scene}} $\ast$ \mbox{\hyperlink{scene__loader_8c_ac957e7dd3153fe956676bdf74762b04b}{scene\+\_\+load}} (const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em Load a scene from a file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scene__loader_8c_aa128ca1400521c1f641e58a77aa0a844}{scene\+\_\+release}} (struct \mbox{\hyperlink{structscene}{scene}} $\ast$\mbox{\hyperlink{structscene}{scene}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{scene__loader_8c_a3f6258eda649ae8ac703becce28ae69c}\label{scene__loader_8c_a3f6258eda649ae8ac703becce28ae69c}} 
+\index{scene\_loader.c@{scene\_loader.c}!EXPECTED\_CONDITION\_HEADER@{EXPECTED\_CONDITION\_HEADER}}
+\index{EXPECTED\_CONDITION\_HEADER@{EXPECTED\_CONDITION\_HEADER}!scene\_loader.c@{scene\_loader.c}}
+\doxysubsubsection{\texorpdfstring{EXPECTED\_CONDITION\_HEADER}{EXPECTED\_CONDITION\_HEADER}}
+{\footnotesize\ttfamily \#define EXPECTED\+\_\+\+CONDITION\+\_\+\+HEADER~0x45585052}
+
+\mbox{\Hypertarget{scene__loader_8c_aa5a0329e4b1d3df426a8713ee0dc477f}\label{scene__loader_8c_aa5a0329e4b1d3df426a8713ee0dc477f}} 
+\index{scene\_loader.c@{scene\_loader.c}!EXPECTED\_HEADER@{EXPECTED\_HEADER}}
+\index{EXPECTED\_HEADER@{EXPECTED\_HEADER}!scene\_loader.c@{scene\_loader.c}}
+\doxysubsubsection{\texorpdfstring{EXPECTED\_HEADER}{EXPECTED\_HEADER}}
+{\footnotesize\ttfamily \#define EXPECTED\+\_\+\+HEADER~0x53434e45}
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{scene__loader_8c_ae02fbe85f939a0eb41fc3cd7ed4cfbad}\label{scene__loader_8c_ae02fbe85f939a0eb41fc3cd7ed4cfbad}} 
+\index{scene\_loader.c@{scene\_loader.c}!type\_location\_types@{type\_location\_types}}
+\index{type\_location\_types@{type\_location\_types}!scene\_loader.c@{scene\_loader.c}}
+\doxysubsubsection{\texorpdfstring{type\_location\_types}{type\_location\_types}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{scene__loader_8c_ae02fbe85f939a0eb41fc3cd7ed4cfbad}{type\+\_\+location\+\_\+types}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TYPE\_LOCATION\_STRING@{TYPE\_LOCATION\_STRING}!scene\_loader.c@{scene\_loader.c}}\index{scene\_loader.c@{scene\_loader.c}!TYPE\_LOCATION\_STRING@{TYPE\_LOCATION\_STRING}}}\mbox{\Hypertarget{scene__loader_8c_ae02fbe85f939a0eb41fc3cd7ed4cfbadaf03f07292d2bf90b53c61bb9130b3dcd}\label{scene__loader_8c_ae02fbe85f939a0eb41fc3cd7ed4cfbadaf03f07292d2bf90b53c61bb9130b3dcd}} 
+TYPE\+\_\+\+LOCATION\+\_\+\+STRING&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{scene__loader_8c_ad63622d05908af9a0a4a9856c043ac10}\label{scene__loader_8c_ad63622d05908af9a0a4a9856c043ac10}} 
+\index{scene\_loader.c@{scene\_loader.c}!scene\_apply\_types@{scene\_apply\_types}}
+\index{scene\_apply\_types@{scene\_apply\_types}!scene\_loader.c@{scene\_loader.c}}
+\doxysubsubsection{\texorpdfstring{scene\_apply\_types()}{scene\_apply\_types()}}
+{\footnotesize\ttfamily void scene\+\_\+apply\+\_\+types (\begin{DoxyParamCaption}\item[{void $\ast$}]{definition,  }\item[{char $\ast$}]{string\+\_\+table,  }\item[{struct \mbox{\hyperlink{structtype__location}{type\+\_\+location}} $\ast$}]{type\+\_\+locations,  }\item[{int}]{type\+\_\+location\+\_\+count }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scene__loader_8c_a8fc813c3b6f821f13d632a47143314ec}\label{scene__loader_8c_a8fc813c3b6f821f13d632a47143314ec}} 
+\index{scene\_loader.c@{scene\_loader.c}!scene\_destroy\_entity@{scene\_destroy\_entity}}
+\index{scene\_destroy\_entity@{scene\_destroy\_entity}!scene\_loader.c@{scene\_loader.c}}
+\doxysubsubsection{\texorpdfstring{scene\_destroy\_entity()}{scene\_destroy\_entity()}}
+{\footnotesize\ttfamily void scene\+\_\+destroy\+\_\+entity (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structentity__data}{entity\+\_\+data}} $\ast$}]{entity\+\_\+data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scene__loader_8c_a1713191aed46008df55e9855a5f83f99}\label{scene__loader_8c_a1713191aed46008df55e9855a5f83f99}} 
+\index{scene\_loader.c@{scene\_loader.c}!scene\_find\_def@{scene\_find\_def}}
+\index{scene\_find\_def@{scene\_find\_def}!scene\_loader.c@{scene\_loader.c}}
+\doxysubsubsection{\texorpdfstring{scene\_find\_def()}{scene\_find\_def()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structentity__definition}{entity\+\_\+definition}}$\ast$ scene\+\_\+find\+\_\+def (\begin{DoxyParamCaption}\item[{const char $\ast$}]{name }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scene__loader_8c_ac957e7dd3153fe956676bdf74762b04b}\label{scene__loader_8c_ac957e7dd3153fe956676bdf74762b04b}} 
+\index{scene\_loader.c@{scene\_loader.c}!scene\_load@{scene\_load}}
+\index{scene\_load@{scene\_load}!scene\_loader.c@{scene\_loader.c}}
+\doxysubsubsection{\texorpdfstring{scene\_load()}{scene\_load()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structscene}{scene}}$\ast$ scene\+\_\+load (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+Load a scene from a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & path to the scene file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the loaded scene 
+\end{DoxyReturn}
+\mbox{\Hypertarget{scene__loader_8c_aa2b7ca733282e4ae88c4d433f2a07ffb}\label{scene__loader_8c_aa2b7ca733282e4ae88c4d433f2a07ffb}} 
+\index{scene\_loader.c@{scene\_loader.c}!scene\_load\_entity@{scene\_load\_entity}}
+\index{scene\_load\_entity@{scene\_load\_entity}!scene\_loader.c@{scene\_loader.c}}
+\doxysubsubsection{\texorpdfstring{scene\_load\_entity()}{scene\_load\_entity()}}
+{\footnotesize\ttfamily void scene\+\_\+load\+\_\+entity (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structscene}{scene}} $\ast$}]{scene,  }\item[{struct \mbox{\hyperlink{structentity__data}{entity\+\_\+data}} $\ast$}]{entity\+\_\+data,  }\item[{FILE $\ast$}]{file }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scene__loader_8c_aa128ca1400521c1f641e58a77aa0a844}\label{scene__loader_8c_aa128ca1400521c1f641e58a77aa0a844}} 
+\index{scene\_loader.c@{scene\_loader.c}!scene\_release@{scene\_release}}
+\index{scene\_release@{scene\_release}!scene\_loader.c@{scene\_loader.c}}
+\doxysubsubsection{\texorpdfstring{scene\_release()}{scene\_release()}}
+{\footnotesize\ttfamily void scene\+\_\+release (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structscene}{scene}} $\ast$}]{scene }\end{DoxyParamCaption})}
+

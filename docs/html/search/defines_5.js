@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['initial_5falpha_1664',['INITIAL_ALPHA',['../fire_8c.html#a749d77a5f429c6f0458667f05bbdafb2',1,'fire.c']]]
+  ['half_5fpi_2118',['HALF_PI',['../mathf_8h.html#ae3ec3219e4eee3b0992bfd59c2e2bc42',1,'mathf.h']]],
+  ['has_5fflag_2119',['HAS_FLAG',['../flags_8h.html#a624e740076e775a0d9f1946290c66113',1,'flags.h']]]
 ];

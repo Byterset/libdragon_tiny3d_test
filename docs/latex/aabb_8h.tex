@@ -6,11 +6,12 @@ This file provides the definition of the \mbox{\hyperlink{structAABB}{AABB}} str
 
 
 {\ttfamily \#include \char`\"{}vector3.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}ray.\+h\char`\"{}}\newline
 Include dependency graph for aabb.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=175pt]{aabb_8h__incl}
+\includegraphics[width=286pt]{aabb_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -31,12 +32,20 @@ struct \mbox{\hyperlink{structAABB}{AABB}}
 \item 
 int \mbox{\hyperlink{aabb_8h_af3c0201f691cca6e377f6616bb265f07}{AABBContains\+Point}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point)
 \begin{DoxyCompactList}\small\item\em Checks if a point is contained within an Axis-\/\+Aligned Bounding Box (\mbox{\hyperlink{structAABB}{AABB}}). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{aabb_8h_a946cf2158ad562b02d12df819e6abacd}{AABBContains\+AABB}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$b)
+\begin{DoxyCompactList}\small\item\em Checks if an Axis-\/\+Aligned Bounding Box (\mbox{\hyperlink{structAABB}{AABB}}) contains another \mbox{\hyperlink{structAABB}{AABB}}. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{aabb_8h_a1b27c22223b8ed8c09d4b31164324cfd}{AABBHas\+Overlap}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$b)
 \begin{DoxyCompactList}\small\item\em Checks if two Axis-\/\+Aligned Bounding Boxes (\mbox{\hyperlink{structAABB}{AABB}}) overlap. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{aabb_8h_ac64481c6047f7ceab90b5d0ea7cd7221}{AABBUnion}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$b, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$out)
+int \mbox{\hyperlink{aabb_8h_ac6dad03aefe2b72d7b80b9e169729df4}{AABBIntersects\+Ray}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}}, struct \mbox{\hyperlink{structRayCast}{Ray\+Cast}} $\ast$ray)
+\begin{DoxyCompactList}\small\item\em Checks if an Axis-\/\+Aligned Bounding Box (\mbox{\hyperlink{structAABB}{AABB}}) intersects with a ray. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{aabb_8h_abe79646665ba26c1c48682760de88d72}{AABBGet\+Area}} (struct \mbox{\hyperlink{structAABB}{AABB}} aabb)
+\item 
+struct \mbox{\hyperlink{structAABB}{AABB}} \mbox{\hyperlink{aabb_8h_ac1cd307bd4898729dc06ffeed4da5596}{AABBUnion}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$b)
 \begin{DoxyCompactList}\small\item\em Computes the union of two axis-\/aligned bounding boxes (AABBs). \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{aabb_8h_adf716aac365d38ee4ca4135172088726}{AABBUnion\+Point}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$out)
+struct \mbox{\hyperlink{structAABB}{AABB}} \mbox{\hyperlink{aabb_8h_aafe27ecd6a0602505ba0ab853d543e95}{AABBUnion\+Point}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$point)
 \begin{DoxyCompactList}\small\item\em Computes the union of an axis-\/aligned bounding box (\mbox{\hyperlink{structAABB}{AABB}}) and a point. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structAABB}{AABB}} \mbox{\hyperlink{aabb_8h_a6409749dda802146d94f8da90c264c5d}{AABBFrom\+Triangle}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$c)
+\item 
 void \mbox{\hyperlink{aabb_8h_aa93a3d326d2d87e50857347cc48da712}{AABBExtend\+Direction}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$out)
 \begin{DoxyCompactList}\small\item\em Extends an axis-\/aligned bounding box (\mbox{\hyperlink{structAABB}{AABB}}) in a specified direction. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{aabb_8h_a82a00d8bb55f1b93a90f8ff62b566117}{AABBSupport\+Function}} (struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}}, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$input, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
@@ -49,6 +58,26 @@ This file provides the definition of the \mbox{\hyperlink{structAABB}{AABB}} str
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{aabb_8h_a946cf2158ad562b02d12df819e6abacd}\label{aabb_8h_a946cf2158ad562b02d12df819e6abacd}} 
+\index{aabb.h@{aabb.h}!AABBContainsAABB@{AABBContainsAABB}}
+\index{AABBContainsAABB@{AABBContainsAABB}!aabb.h@{aabb.h}}
+\doxysubsubsection{\texorpdfstring{AABBContainsAABB()}{AABBContainsAABB()}}
+{\footnotesize\ttfamily int AABBContains\+AABB (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{b }\end{DoxyParamCaption})}
+
+
+
+Checks if an Axis-\/\+Aligned Bounding Box (\mbox{\hyperlink{structAABB}{AABB}}) contains another \mbox{\hyperlink{structAABB}{AABB}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & \\
+\hline
+{\em b} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
 \mbox{\Hypertarget{aabb_8h_af3c0201f691cca6e377f6616bb265f07}\label{aabb_8h_af3c0201f691cca6e377f6616bb265f07}} 
 \index{aabb.h@{aabb.h}!AABBContainsPoint@{AABBContainsPoint}}
 \index{AABBContainsPoint@{AABBContainsPoint}!aabb.h@{aabb.h}}
@@ -92,6 +121,18 @@ This function takes an \mbox{\hyperlink{structAABB}{AABB}} {\ttfamily a} and a d
 {\em out} & Pointer to the output \mbox{\hyperlink{structAABB}{AABB}} where the result will be stored. \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{aabb_8h_a6409749dda802146d94f8da90c264c5d}\label{aabb_8h_a6409749dda802146d94f8da90c264c5d}} 
+\index{aabb.h@{aabb.h}!AABBFromTriangle@{AABBFromTriangle}}
+\index{AABBFromTriangle@{AABBFromTriangle}!aabb.h@{aabb.h}}
+\doxysubsubsection{\texorpdfstring{AABBFromTriangle()}{AABBFromTriangle()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structAABB}{AABB}} AABBFrom\+Triangle (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{b,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{c }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{aabb_8h_abe79646665ba26c1c48682760de88d72}\label{aabb_8h_abe79646665ba26c1c48682760de88d72}} 
+\index{aabb.h@{aabb.h}!AABBGetArea@{AABBGetArea}}
+\index{AABBGetArea@{AABBGetArea}!aabb.h@{aabb.h}}
+\doxysubsubsection{\texorpdfstring{AABBGetArea()}{AABBGetArea()}}
+{\footnotesize\ttfamily float AABBGet\+Area (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}}}]{aabb }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{aabb_8h_a1b27c22223b8ed8c09d4b31164324cfd}\label{aabb_8h_a1b27c22223b8ed8c09d4b31164324cfd}} 
 \index{aabb.h@{aabb.h}!AABBHasOverlap@{AABBHasOverlap}}
 \index{AABBHasOverlap@{AABBHasOverlap}!aabb.h@{aabb.h}}
@@ -114,6 +155,31 @@ This function determines whether two AABBs intersect by comparing their minimum 
 \begin{DoxyReturn}{Returns}
 int Returns 1 if the AABBs overlap, 0 otherwise. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{aabb_8h_ac6dad03aefe2b72d7b80b9e169729df4}\label{aabb_8h_ac6dad03aefe2b72d7b80b9e169729df4}} 
+\index{aabb.h@{aabb.h}!AABBIntersectsRay@{AABBIntersectsRay}}
+\index{AABBIntersectsRay@{AABBIntersectsRay}!aabb.h@{aabb.h}}
+\doxysubsubsection{\texorpdfstring{AABBIntersectsRay()}{AABBIntersectsRay()}}
+{\footnotesize\ttfamily int AABBIntersects\+Ray (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box,  }\item[{struct \mbox{\hyperlink{structRayCast}{Ray\+Cast}} $\ast$}]{ray }\end{DoxyParamCaption})}
+
+
+
+Checks if an Axis-\/\+Aligned Bounding Box (\mbox{\hyperlink{structAABB}{AABB}}) intersects with a ray. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em box} & Pointer to the \mbox{\hyperlink{structAABB}{AABB}} structure. \\
+\hline
+{\em origin} & Origin of the ray. \\
+\hline
+{\em direction} & Direction of the ray. \\
+\hline
+{\em max\+\_\+distance} & Maximum distance of the ray after which intersections should not be considered. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+~\newline
+ 
+\end{DoxyReturn}
 \mbox{\Hypertarget{aabb_8h_a82a00d8bb55f1b93a90f8ff62b566117}\label{aabb_8h_a82a00d8bb55f1b93a90f8ff62b566117}} 
 \index{aabb.h@{aabb.h}!AABBSupportFunction@{AABBSupportFunction}}
 \index{AABBSupportFunction@{AABBSupportFunction}!aabb.h@{aabb.h}}
@@ -135,11 +201,11 @@ This function computes the support function for an \mbox{\hyperlink{structAABB}{
 {\em output} & Pointer to the output vector where the result will be stored. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{aabb_8h_ac64481c6047f7ceab90b5d0ea7cd7221}\label{aabb_8h_ac64481c6047f7ceab90b5d0ea7cd7221}} 
+\mbox{\Hypertarget{aabb_8h_ac1cd307bd4898729dc06ffeed4da5596}\label{aabb_8h_ac1cd307bd4898729dc06ffeed4da5596}} 
 \index{aabb.h@{aabb.h}!AABBUnion@{AABBUnion}}
 \index{AABBUnion@{AABBUnion}!aabb.h@{aabb.h}}
 \doxysubsubsection{\texorpdfstring{AABBUnion()}{AABBUnion()}}
-{\footnotesize\ttfamily void AABBUnion (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{b,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{out }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structAABB}{AABB}} AABBUnion (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -153,14 +219,12 @@ This function takes two AABBs, {\ttfamily a} and {\ttfamily b}, and computes the
 \hline
 {\em b} & Pointer to the second \mbox{\hyperlink{structAABB}{AABB}}. \\
 \hline
-{\em out} & Pointer to the output \mbox{\hyperlink{structAABB}{AABB}} where the result will be stored. \\
-\hline
 \end{DoxyParams}
-\mbox{\Hypertarget{aabb_8h_adf716aac365d38ee4ca4135172088726}\label{aabb_8h_adf716aac365d38ee4ca4135172088726}} 
+\mbox{\Hypertarget{aabb_8h_aafe27ecd6a0602505ba0ab853d543e95}\label{aabb_8h_aafe27ecd6a0602505ba0ab853d543e95}} 
 \index{aabb.h@{aabb.h}!AABBUnionPoint@{AABBUnionPoint}}
 \index{AABBUnionPoint@{AABBUnionPoint}!aabb.h@{aabb.h}}
 \doxysubsubsection{\texorpdfstring{AABBUnionPoint()}{AABBUnionPoint()}}
-{\footnotesize\ttfamily void AABBUnion\+Point (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{point,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{out }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structAABB}{AABB}} AABBUnion\+Point (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{point }\end{DoxyParamCaption})}
 
 
 
@@ -173,7 +237,5 @@ This function takes an \mbox{\hyperlink{structAABB}{AABB}} {\ttfamily a} and a p
 {\em a} & Pointer to the \mbox{\hyperlink{structAABB}{AABB}}. \\
 \hline
 {\em point} & Pointer to the point. \\
-\hline
-{\em out} & Pointer to the output \mbox{\hyperlink{structAABB}{AABB}} where the result will be stored. \\
 \hline
 \end{DoxyParams}

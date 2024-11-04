@@ -74,37 +74,46 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="sweep_8h_source.html">sweep.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="minmax_8h_source.html">../../math/minmax.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="dynamic__object_8h_source.html">../dynamic_object.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="physics__object_8h_source.html">../physics_object.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for sweep.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="sweep_8c__incl.png" border="0" usemap="#asrc_2collision_2shapes_2sweep_8c" alt=""/></div>
 <map name="asrc_2collision_2shapes_2sweep_8c" id="asrc_2collision_2shapes_2sweep_8c">
-<area shape="rect" title=" " alt="" coords="387,5,537,47"/>
-<area shape="rect" href="sweep_8h.html" title=" " alt="" coords="133,95,209,121"/>
-<area shape="rect" href="minmax_8h.html" title="This file contains the definition of the MIN and MAX macros." alt="" coords="561,95,712,121"/>
-<area shape="rect" href="dynamic__object_8h.html" title=" " alt="" coords="387,95,537,121"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="179,169,324,196"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="303,244,448,271"/>
-<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="26,169,154,196"/>
-<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="687,244,832,271"/>
-<area shape="rect" href="contact_8h.html" title=" " alt="" coords="679,169,762,196"/>
-<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="348,169,403,196"/>
-<area shape="rect" title=" " alt="" coords="427,169,497,196"/>
-<area shape="rect" title=" " alt="" coords="522,169,605,196"/>
+<area shape="rect" title=" " alt="" coords="286,5,435,47"/>
+<area shape="rect" href="sweep_8h.html" title=" " alt="" coords="116,169,192,196"/>
+<area shape="rect" href="minmax_8h.html" title="This file contains the definition of the MIN and MAX macros." alt="" coords="285,95,436,121"/>
+<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="491,95,633,121"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="5,543,151,569"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="375,543,520,569"/>
+<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="322,244,450,271"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="169,468,273,495"/>
+<area shape="rect" href="ray_8h.html" title=" " alt="" coords="419,319,473,345"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="398,393,497,420"/>
+<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="889,244,1035,271"/>
+<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="481,169,643,196"/>
+<area shape="rect" title=" " alt="" coords="743,244,813,271"/>
+<area shape="rect" href="contact_8h.html" title=" " alt="" coords="725,169,807,196"/>
+<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="268,393,323,420"/>
+<area shape="rect" title=" " alt="" coords="831,169,914,196"/>
+<area shape="rect" href="vec_8h.html" title=" " alt="" coords="624,244,719,271"/>
+<area shape="rect" title=" " alt="" coords="525,244,599,271"/>
+<area shape="rect" title=" " alt="" coords="734,319,809,345"/>
+<area shape="rect" title=" " alt="" coords="547,319,614,345"/>
+<area shape="rect" title=" " alt="" coords="639,319,709,345"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a38d1d078dd602e34d937e79ba3408aea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sweep_8c.html#a38d1d078dd602e34d937e79ba3408aea">sweep_minkowski_sum</a> (void *data, struct <a class="el" href="structVector3.html">Vector3</a> *direction, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
-<tr class="separator:a38d1d078dd602e34d937e79ba3408aea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab64bb2d14cbbab07464fc3656d3f1631"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sweep_8c.html#ab64bb2d14cbbab07464fc3656d3f1631">sweep_bounding_box</a> (void *data, struct <a class="el" href="structVector2.html">Vector2</a> *rotation, struct <a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>)</td></tr>
-<tr class="separator:ab64bb2d14cbbab07464fc3656d3f1631"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab494d72ab4ed48b145bc307f71247f16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sweep_8c.html#ab494d72ab4ed48b145bc307f71247f16">sweep_support_function</a> (void *data, struct <a class="el" href="structVector3.html">Vector3</a> *direction, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
+<tr class="separator:ab494d72ab4ed48b145bc307f71247f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f95ace9237df6bcd471b2d155e74a52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sweep_8c.html#a6f95ace9237df6bcd471b2d155e74a52">sweep_bounding_box</a> (void *data, struct <a class="el" href="structQuaternion.html">Quaternion</a> *rotation, struct <a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>)</td></tr>
+<tr class="separator:a6f95ace9237df6bcd471b2d155e74a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ab64bb2d14cbbab07464fc3656d3f1631"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab64bb2d14cbbab07464fc3656d3f1631">&#9670;&nbsp;</a></span>sweep_bounding_box()</h2>
+<a id="a6f95ace9237df6bcd471b2d155e74a52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f95ace9237df6bcd471b2d155e74a52">&#9670;&nbsp;</a></span>sweep_bounding_box()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -118,7 +127,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector2.html">Vector2</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>rotation</em>, </td>
         </tr>
         <tr>
@@ -137,14 +146,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a38d1d078dd602e34d937e79ba3408aea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38d1d078dd602e34d937e79ba3408aea">&#9670;&nbsp;</a></span>sweep_minkowski_sum()</h2>
+<a id="ab494d72ab4ed48b145bc307f71247f16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab494d72ab4ed48b145bc307f71247f16">&#9670;&nbsp;</a></span>sweep_support_function()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void sweep_minkowski_sum </td>
+          <td class="memname">void sweep_support_function </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>

@@ -6,7 +6,8 @@
 
 
 
-Collaboration diagram for mesh\+\_\+collider\+:\nopagebreak
+Collaboration diagram for mesh\+\_\+collider\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -16,22 +17,32 @@ Collaboration diagram for mesh\+\_\+collider\+:\nopagebreak
 \doxysubsection*{Data Fields}
 \begin{DoxyCompactItemize}
 \item 
+struct \mbox{\hyperlink{structAABBTree}{AABBTree}} \mbox{\hyperlink{structmesh__collider_ad8e304c701649fcdb1b9080dafb222af}{aabbtree}}
+\item 
 struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$ \mbox{\hyperlink{structmesh__collider_a223ba7a62ad41d4aad0a4d3662b80e40}{vertices}}
 \item 
 struct \mbox{\hyperlink{structmesh__triangle__indices}{mesh\+\_\+triangle\+\_\+indices}} $\ast$ \mbox{\hyperlink{structmesh__collider_ae4fc5234b7ac94e6a8f3fbf96251cbb9}{triangles}}
 \item 
 uint16\+\_\+t \mbox{\hyperlink{structmesh__collider_a18e1da8fee1d3d10fcadea1b1d5005ba}{triangle\+\_\+count}}
 \item 
-struct \mbox{\hyperlink{structmesh__index}{mesh\+\_\+index}} \mbox{\hyperlink{structmesh__collider_a39229f672bf43a81a962612b82fb8bfd}{index}}
+uint16\+\_\+t \mbox{\hyperlink{structmesh__collider_a5ccdbe34e518df5209a8566ea3dd78e4}{vertex\+\_\+count}}
+\item 
+Raylib\+\_\+\+Model \mbox{\hyperlink{structmesh__collider_ae674cb1f26b3590c911a7be922db5eb8}{raylib\+\_\+mesh\+\_\+model}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Field Documentation}
-\mbox{\Hypertarget{structmesh__collider_a39229f672bf43a81a962612b82fb8bfd}\label{structmesh__collider_a39229f672bf43a81a962612b82fb8bfd}} 
-\index{mesh\_collider@{mesh\_collider}!index@{index}}
-\index{index@{index}!mesh\_collider@{mesh\_collider}}
-\doxysubsubsection{\texorpdfstring{index}{index}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{structmesh__index}{mesh\+\_\+index}} mesh\+\_\+collider\+::index}
+\mbox{\Hypertarget{structmesh__collider_ad8e304c701649fcdb1b9080dafb222af}\label{structmesh__collider_ad8e304c701649fcdb1b9080dafb222af}} 
+\index{mesh\_collider@{mesh\_collider}!aabbtree@{aabbtree}}
+\index{aabbtree@{aabbtree}!mesh\_collider@{mesh\_collider}}
+\doxysubsubsection{\texorpdfstring{aabbtree}{aabbtree}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structAABBTree}{AABBTree}} mesh\+\_\+collider\+::aabbtree}
+
+\mbox{\Hypertarget{structmesh__collider_ae674cb1f26b3590c911a7be922db5eb8}\label{structmesh__collider_ae674cb1f26b3590c911a7be922db5eb8}} 
+\index{mesh\_collider@{mesh\_collider}!raylib\_mesh\_model@{raylib\_mesh\_model}}
+\index{raylib\_mesh\_model@{raylib\_mesh\_model}!mesh\_collider@{mesh\_collider}}
+\doxysubsubsection{\texorpdfstring{raylib\_mesh\_model}{raylib\_mesh\_model}}
+{\footnotesize\ttfamily Raylib\+\_\+\+Model mesh\+\_\+collider\+::raylib\+\_\+mesh\+\_\+model}
 
 \mbox{\Hypertarget{structmesh__collider_a18e1da8fee1d3d10fcadea1b1d5005ba}\label{structmesh__collider_a18e1da8fee1d3d10fcadea1b1d5005ba}} 
 \index{mesh\_collider@{mesh\_collider}!triangle\_count@{triangle\_count}}
@@ -45,6 +56,12 @@ struct \mbox{\hyperlink{structmesh__index}{mesh\+\_\+index}} \mbox{\hyperlink{st
 \doxysubsubsection{\texorpdfstring{triangles}{triangles}}
 {\footnotesize\ttfamily struct \mbox{\hyperlink{structmesh__triangle__indices}{mesh\+\_\+triangle\+\_\+indices}}$\ast$ mesh\+\_\+collider\+::triangles}
 
+\mbox{\Hypertarget{structmesh__collider_a5ccdbe34e518df5209a8566ea3dd78e4}\label{structmesh__collider_a5ccdbe34e518df5209a8566ea3dd78e4}} 
+\index{mesh\_collider@{mesh\_collider}!vertex\_count@{vertex\_count}}
+\index{vertex\_count@{vertex\_count}!mesh\_collider@{mesh\_collider}}
+\doxysubsubsection{\texorpdfstring{vertex\_count}{vertex\_count}}
+{\footnotesize\ttfamily uint16\+\_\+t mesh\+\_\+collider\+::vertex\+\_\+count}
+
 \mbox{\Hypertarget{structmesh__collider_a223ba7a62ad41d4aad0a4d3662b80e40}\label{structmesh__collider_a223ba7a62ad41d4aad0a4d3662b80e40}} 
 \index{mesh\_collider@{mesh\_collider}!vertices@{vertices}}
 \index{vertices@{vertices}!mesh\_collider@{mesh\_collider}}
@@ -55,4 +72,4 @@ struct \mbox{\hyperlink{structmesh__index}{mesh\+\_\+index}} \mbox{\hyperlink{st
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/collision/\mbox{\hyperlink{mesh__collider_8h}{mesh\+\_\+collider.\+h}}\end{DoxyCompactItemize}
+src/collision/\mbox{\hyperlink{collision_2mesh__collider_8h}{mesh\+\_\+collider.\+h}}\end{DoxyCompactItemize}

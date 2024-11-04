@@ -74,25 +74,34 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="cylinder_8h_source.html">cylinder.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="dynamic__object_8h_source.html">../dynamic_object.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="physics__object_8h_source.html">../physics_object.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="math_8h_source.html">math.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for cylinder.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="cylinder_8c__incl.png" border="0" usemap="#asrc_2collision_2shapes_2cylinder_8c" alt=""/></div>
 <map name="asrc_2collision_2shapes_2cylinder_8c" id="asrc_2collision_2shapes_2cylinder_8c">
-<area shape="rect" title=" " alt="" coords="387,5,537,47"/>
-<area shape="rect" href="cylinder_8h.html" title=" " alt="" coords="129,95,214,121"/>
-<area shape="rect" href="dynamic__object_8h.html" title=" " alt="" coords="387,95,537,121"/>
-<area shape="rect" href="math_8h.html" title="This file contains the declaration of commonly used integer math functions." alt="" coords="561,95,629,121"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="179,169,324,196"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="303,244,448,271"/>
-<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="26,169,154,196"/>
-<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="687,244,832,271"/>
-<area shape="rect" href="contact_8h.html" title=" " alt="" coords="679,169,762,196"/>
-<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="348,169,403,196"/>
-<area shape="rect" title=" " alt="" coords="427,169,497,196"/>
-<area shape="rect" title=" " alt="" coords="522,169,605,196"/>
+<area shape="rect" title=" " alt="" coords="487,5,637,47"/>
+<area shape="rect" href="cylinder_8h.html" title=" " alt="" coords="107,169,193,196"/>
+<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="491,95,633,121"/>
+<area shape="rect" href="math_8h.html" title="This file contains the declaration of commonly used integer math functions." alt="" coords="657,95,725,121"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="5,543,151,569"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="375,543,520,569"/>
+<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="322,244,450,271"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="169,468,273,495"/>
+<area shape="rect" href="ray_8h.html" title=" " alt="" coords="419,319,473,345"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="398,393,497,420"/>
+<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="889,244,1035,271"/>
+<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="481,169,643,196"/>
+<area shape="rect" title=" " alt="" coords="743,244,813,271"/>
+<area shape="rect" href="contact_8h.html" title=" " alt="" coords="725,169,807,196"/>
+<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="268,393,323,420"/>
+<area shape="rect" title=" " alt="" coords="831,169,914,196"/>
+<area shape="rect" href="vec_8h.html" title=" " alt="" coords="624,244,719,271"/>
+<area shape="rect" title=" " alt="" coords="525,244,599,271"/>
+<area shape="rect" title=" " alt="" coords="734,319,809,345"/>
+<area shape="rect" title=" " alt="" coords="547,319,614,345"/>
+<area shape="rect" title=" " alt="" coords="639,319,709,345"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -103,10 +112,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8bbce21d2b7547f7d978f6ef31c8e432"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cylinder_8c.html#a8bbce21d2b7547f7d978f6ef31c8e432">cylinder_minkowski_sum</a> (void *data, struct <a class="el" href="structVector3.html">Vector3</a> *direction, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
-<tr class="separator:a8bbce21d2b7547f7d978f6ef31c8e432"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f99d5fafa159c96184bdb6d5f9f75c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cylinder_8c.html#a8f99d5fafa159c96184bdb6d5f9f75c7">cylinder_bounding_box</a> (void *data, struct <a class="el" href="structVector2.html">Vector2</a> *rotation, struct <a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>)</td></tr>
-<tr class="separator:a8f99d5fafa159c96184bdb6d5f9f75c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad397875888af58a156bb94c318043052"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cylinder_8c.html#ad397875888af58a156bb94c318043052">cylinder_support_function</a> (void *data, struct <a class="el" href="structVector3.html">Vector3</a> *direction, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
+<tr class="separator:ad397875888af58a156bb94c318043052"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c1aeebacd051c9ef8910d16a9659f7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cylinder_8c.html#a4c1aeebacd051c9ef8910d16a9659f7c">cylinder_bounding_box</a> (void *data, struct <a class="el" href="structQuaternion.html">Quaternion</a> *rotation, struct <a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>)</td></tr>
+<tr class="separator:a4c1aeebacd051c9ef8910d16a9659f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a85239b2c828f8da685e581dab64ea4f4"></a>
@@ -124,8 +133,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a8f99d5fafa159c96184bdb6d5f9f75c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f99d5fafa159c96184bdb6d5f9f75c7">&#9670;&nbsp;</a></span>cylinder_bounding_box()</h2>
+<a id="a4c1aeebacd051c9ef8910d16a9659f7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c1aeebacd051c9ef8910d16a9659f7c">&#9670;&nbsp;</a></span>cylinder_bounding_box()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,7 +148,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector2.html">Vector2</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>rotation</em>, </td>
         </tr>
         <tr>
@@ -158,14 +167,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8bbce21d2b7547f7d978f6ef31c8e432"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bbce21d2b7547f7d978f6ef31c8e432">&#9670;&nbsp;</a></span>cylinder_minkowski_sum()</h2>
+<a id="ad397875888af58a156bb94c318043052"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad397875888af58a156bb94c318043052">&#9670;&nbsp;</a></span>cylinder_support_function()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void cylinder_minkowski_sum </td>
+          <td class="memname">void cylinder_support_function </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>

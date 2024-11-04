@@ -1,16 +1,149 @@
 \hypertarget{scene_8h}{}\doxysection{src/scene/scene.h File Reference}
 \label{scene_8h}\index{src/scene/scene.h@{src/scene/scene.h}}
+{\ttfamily \#include \char`\"{}../render/render\+\_\+batch.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../render/camera.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$t3d/t3dmodel.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../render/model.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../collision/mesh\+\_\+collider.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../player/player.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}camera\+\_\+controller.\+h\char`\"{}}\newline
+Include dependency graph for scene.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{scene_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=338pt]{scene_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structentity__definition}{entity\+\_\+definition}}
+\item 
+struct \mbox{\hyperlink{structentity__data}{entity\+\_\+data}}
+\item 
+struct \mbox{\hyperlink{structstatic__entity}{static\+\_\+entity}}
+\item 
+struct \mbox{\hyperlink{structloading__zone}{loading\+\_\+zone}}
+\item 
+struct \mbox{\hyperlink{structscene}{scene}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{scene_8h_a6bbe680a3e5d6948080da1a68eefbe01}{ENTITY\+\_\+\+DEFINITION}}(name)~\{\#name, (\mbox{\hyperlink{scene_8h_af6d255dc5b0ba2b759cf364c1763a893}{entity\+\_\+init}})name \#\# \+\_\+init, (\mbox{\hyperlink{scene_8h_a4fa6729120ffc45873bf405d2ad3ab5d}{entity\+\_\+destroy}})name \#\# \+\_\+destroy, sizeof(struct name), sizeof(struct name \#\# \+\_\+definition)\}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef void($\ast$ \mbox{\hyperlink{scene_8h_af6d255dc5b0ba2b759cf364c1763a893}{entity\+\_\+init}}) (void $\ast$entity, void $\ast$definition)
+\item 
+typedef void($\ast$ \mbox{\hyperlink{scene_8h_a4fa6729120ffc45873bf405d2ad3ab5d}{entity\+\_\+destroy}}) (void $\ast$entity)
+\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-bool \mbox{\hyperlink{scene_8h_a26b9ff9e93443bf0dee6056822c42f81}{scene\+\_\+should\+\_\+change}} ()
+void \mbox{\hyperlink{scene_8h_a886ddb066f0cf6747a7f7caabdd9c18d}{scene\+\_\+render}} (void $\ast$data, struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$batch)
+\item 
+void \mbox{\hyperlink{scene_8h_afcc030df6f341ca1c7fc58df5f6f3956}{scene\+\_\+update}} (void $\ast$data)
+\item 
+void \mbox{\hyperlink{scene_8h_a0beb89fdeb55a743a417c4f08c910291}{scene\+\_\+queue\+\_\+next}} (char $\ast$scene\+\_\+name)
+\item 
+void \mbox{\hyperlink{scene_8h_a4a2763a6366e8bca2e8f32426cedc252}{scene\+\_\+clear\+\_\+next}} ()
+\item 
+bool \mbox{\hyperlink{scene_8h_a5419b65e3184be8c62dcd4d876ca5675}{scene\+\_\+has\+\_\+next}} ()
+\item 
+char $\ast$ \mbox{\hyperlink{scene_8h_a391e70aac6b1b783f9f80488457e289c}{scene\+\_\+get\+\_\+next}} ()
+\item 
+char $\ast$ \mbox{\hyperlink{scene_8h_a7164399b5129819e914ce92f9113d828}{scene\+\_\+get\+\_\+next\+\_\+entry}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structscene}{scene}} $\ast$ \mbox{\hyperlink{scene_8h_a9d6621b0b3b95f43b94f215ece7a0106}{current\+\_\+scene}}
 \end{DoxyCompactItemize}
 
 
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{scene_8h_a6bbe680a3e5d6948080da1a68eefbe01}\label{scene_8h_a6bbe680a3e5d6948080da1a68eefbe01}} 
+\index{scene.h@{scene.h}!ENTITY\_DEFINITION@{ENTITY\_DEFINITION}}
+\index{ENTITY\_DEFINITION@{ENTITY\_DEFINITION}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{ENTITY\_DEFINITION}{ENTITY\_DEFINITION}}
+{\footnotesize\ttfamily \#define ENTITY\+\_\+\+DEFINITION(\begin{DoxyParamCaption}\item[{}]{name }\end{DoxyParamCaption})~\{\#name, (\mbox{\hyperlink{scene_8h_af6d255dc5b0ba2b759cf364c1763a893}{entity\+\_\+init}})name \#\# \+\_\+init, (\mbox{\hyperlink{scene_8h_a4fa6729120ffc45873bf405d2ad3ab5d}{entity\+\_\+destroy}})name \#\# \+\_\+destroy, sizeof(struct name), sizeof(struct name \#\# \+\_\+definition)\}}
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{scene_8h_a4fa6729120ffc45873bf405d2ad3ab5d}\label{scene_8h_a4fa6729120ffc45873bf405d2ad3ab5d}} 
+\index{scene.h@{scene.h}!entity\_destroy@{entity\_destroy}}
+\index{entity\_destroy@{entity\_destroy}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{entity\_destroy}{entity\_destroy}}
+{\footnotesize\ttfamily typedef void($\ast$ entity\+\_\+destroy) (void $\ast$entity)}
+
+\mbox{\Hypertarget{scene_8h_af6d255dc5b0ba2b759cf364c1763a893}\label{scene_8h_af6d255dc5b0ba2b759cf364c1763a893}} 
+\index{scene.h@{scene.h}!entity\_init@{entity\_init}}
+\index{entity\_init@{entity\_init}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{entity\_init}{entity\_init}}
+{\footnotesize\ttfamily typedef void($\ast$ entity\+\_\+init) (void $\ast$entity, void $\ast$definition)}
+
+
+
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{scene_8h_a26b9ff9e93443bf0dee6056822c42f81}\label{scene_8h_a26b9ff9e93443bf0dee6056822c42f81}} 
-\index{scene.h@{scene.h}!scene\_should\_change@{scene\_should\_change}}
-\index{scene\_should\_change@{scene\_should\_change}!scene.h@{scene.h}}
-\doxysubsubsection{\texorpdfstring{scene\_should\_change()}{scene\_should\_change()}}
-{\footnotesize\ttfamily bool scene\+\_\+should\+\_\+change (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\Hypertarget{scene_8h_a4a2763a6366e8bca2e8f32426cedc252}\label{scene_8h_a4a2763a6366e8bca2e8f32426cedc252}} 
+\index{scene.h@{scene.h}!scene\_clear\_next@{scene\_clear\_next}}
+\index{scene\_clear\_next@{scene\_clear\_next}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{scene\_clear\_next()}{scene\_clear\_next()}}
+{\footnotesize\ttfamily void scene\+\_\+clear\+\_\+next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scene_8h_a391e70aac6b1b783f9f80488457e289c}\label{scene_8h_a391e70aac6b1b783f9f80488457e289c}} 
+\index{scene.h@{scene.h}!scene\_get\_next@{scene\_get\_next}}
+\index{scene\_get\_next@{scene\_get\_next}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{scene\_get\_next()}{scene\_get\_next()}}
+{\footnotesize\ttfamily char$\ast$ scene\+\_\+get\+\_\+next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scene_8h_a7164399b5129819e914ce92f9113d828}\label{scene_8h_a7164399b5129819e914ce92f9113d828}} 
+\index{scene.h@{scene.h}!scene\_get\_next\_entry@{scene\_get\_next\_entry}}
+\index{scene\_get\_next\_entry@{scene\_get\_next\_entry}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{scene\_get\_next\_entry()}{scene\_get\_next\_entry()}}
+{\footnotesize\ttfamily char$\ast$ scene\+\_\+get\+\_\+next\+\_\+entry (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scene_8h_a5419b65e3184be8c62dcd4d876ca5675}\label{scene_8h_a5419b65e3184be8c62dcd4d876ca5675}} 
+\index{scene.h@{scene.h}!scene\_has\_next@{scene\_has\_next}}
+\index{scene\_has\_next@{scene\_has\_next}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{scene\_has\_next()}{scene\_has\_next()}}
+{\footnotesize\ttfamily bool scene\+\_\+has\+\_\+next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scene_8h_a0beb89fdeb55a743a417c4f08c910291}\label{scene_8h_a0beb89fdeb55a743a417c4f08c910291}} 
+\index{scene.h@{scene.h}!scene\_queue\_next@{scene\_queue\_next}}
+\index{scene\_queue\_next@{scene\_queue\_next}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{scene\_queue\_next()}{scene\_queue\_next()}}
+{\footnotesize\ttfamily void scene\+\_\+queue\+\_\+next (\begin{DoxyParamCaption}\item[{char $\ast$}]{scene\+\_\+name }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scene_8h_a886ddb066f0cf6747a7f7caabdd9c18d}\label{scene_8h_a886ddb066f0cf6747a7f7caabdd9c18d}} 
+\index{scene.h@{scene.h}!scene\_render@{scene\_render}}
+\index{scene\_render@{scene\_render}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{scene\_render()}{scene\_render()}}
+{\footnotesize\ttfamily void scene\+\_\+render (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structrender__batch}{render\+\_\+batch}} $\ast$}]{batch }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scene_8h_afcc030df6f341ca1c7fc58df5f6f3956}\label{scene_8h_afcc030df6f341ca1c7fc58df5f6f3956}} 
+\index{scene.h@{scene.h}!scene\_update@{scene\_update}}
+\index{scene\_update@{scene\_update}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{scene\_update()}{scene\_update()}}
+{\footnotesize\ttfamily void scene\+\_\+update (\begin{DoxyParamCaption}\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{scene_8h_a9d6621b0b3b95f43b94f215ece7a0106}\label{scene_8h_a9d6621b0b3b95f43b94f215ece7a0106}} 
+\index{scene.h@{scene.h}!current\_scene@{current\_scene}}
+\index{current\_scene@{current\_scene}!scene.h@{scene.h}}
+\doxysubsubsection{\texorpdfstring{current\_scene}{current\_scene}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structscene}{scene}}$\ast$ current\+\_\+scene\hspace{0.3cm}{\ttfamily [extern]}}
 

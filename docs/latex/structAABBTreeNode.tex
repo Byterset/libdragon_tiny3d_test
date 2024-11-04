@@ -1,0 +1,82 @@
+\hypertarget{structAABBTreeNode}{}\doxysection{AABBTree\+Node Struct Reference}
+\label{structAABBTreeNode}\index{AABBTreeNode@{AABBTreeNode}}
+
+
+A node in the \mbox{\hyperlink{structAABBTree}{AABBTree}} structure. Holds the bounds of the node, the parent, left and right children, the next node, a flag to indicate if the node has moved, and a pointer to the collider data contained within.  
+
+
+
+
+{\ttfamily \#include $<$aabbtree.\+h$>$}
+
+
+
+Collaboration diagram for AABBTree\+Node\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{structAABBTreeNode__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structAABB}{AABB}} \mbox{\hyperlink{structAABBTreeNode_a99df8e118be63c1d2e4911a2addfac5b}{bounds}}
+\item 
+\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} \mbox{\hyperlink{structAABBTreeNode_a633dd50b4e2fe9ede8e1933622c39137}{parent}}
+\item 
+\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} \mbox{\hyperlink{structAABBTreeNode_a504abd6cbbfc580c524b68b47d25f056}{left}}
+\item 
+\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} \mbox{\hyperlink{structAABBTreeNode_a105f8edaa6bb7e8a94964d8c8a77a37f}{right}}
+\item 
+\mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} \mbox{\hyperlink{structAABBTreeNode_a6e934f620ed39f987e7ef37c4459ef24}{next}}
+\item 
+void $\ast$ \mbox{\hyperlink{structAABBTreeNode_a732cce098002791f89f788c44aa6b16b}{data}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A node in the \mbox{\hyperlink{structAABBTree}{AABBTree}} structure. Holds the bounds of the node, the parent, left and right children, the next node, a flag to indicate if the node has moved, and a pointer to the collider data contained within. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structAABBTreeNode_a99df8e118be63c1d2e4911a2addfac5b}\label{structAABBTreeNode_a99df8e118be63c1d2e4911a2addfac5b}} 
+\index{AABBTreeNode@{AABBTreeNode}!bounds@{bounds}}
+\index{bounds@{bounds}!AABBTreeNode@{AABBTreeNode}}
+\doxysubsubsection{\texorpdfstring{bounds}{bounds}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structAABB}{AABB}} AABBTree\+Node\+::bounds}
+
+\mbox{\Hypertarget{structAABBTreeNode_a732cce098002791f89f788c44aa6b16b}\label{structAABBTreeNode_a732cce098002791f89f788c44aa6b16b}} 
+\index{AABBTreeNode@{AABBTreeNode}!data@{data}}
+\index{data@{data}!AABBTreeNode@{AABBTreeNode}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily void$\ast$ AABBTree\+Node\+::data}
+
+\mbox{\Hypertarget{structAABBTreeNode_a504abd6cbbfc580c524b68b47d25f056}\label{structAABBTreeNode_a504abd6cbbfc580c524b68b47d25f056}} 
+\index{AABBTreeNode@{AABBTreeNode}!left@{left}}
+\index{left@{left}!AABBTreeNode@{AABBTreeNode}}
+\doxysubsubsection{\texorpdfstring{left}{left}}
+{\footnotesize\ttfamily \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} AABBTree\+Node\+::left}
+
+\mbox{\Hypertarget{structAABBTreeNode_a6e934f620ed39f987e7ef37c4459ef24}\label{structAABBTreeNode_a6e934f620ed39f987e7ef37c4459ef24}} 
+\index{AABBTreeNode@{AABBTreeNode}!next@{next}}
+\index{next@{next}!AABBTreeNode@{AABBTreeNode}}
+\doxysubsubsection{\texorpdfstring{next}{next}}
+{\footnotesize\ttfamily \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} AABBTree\+Node\+::next}
+
+\mbox{\Hypertarget{structAABBTreeNode_a633dd50b4e2fe9ede8e1933622c39137}\label{structAABBTreeNode_a633dd50b4e2fe9ede8e1933622c39137}} 
+\index{AABBTreeNode@{AABBTreeNode}!parent@{parent}}
+\index{parent@{parent}!AABBTreeNode@{AABBTreeNode}}
+\doxysubsubsection{\texorpdfstring{parent}{parent}}
+{\footnotesize\ttfamily \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} AABBTree\+Node\+::parent}
+
+\mbox{\Hypertarget{structAABBTreeNode_a105f8edaa6bb7e8a94964d8c8a77a37f}\label{structAABBTreeNode_a105f8edaa6bb7e8a94964d8c8a77a37f}} 
+\index{AABBTreeNode@{AABBTreeNode}!right@{right}}
+\index{right@{right}!AABBTreeNode@{AABBTreeNode}}
+\doxysubsubsection{\texorpdfstring{right}{right}}
+{\footnotesize\ttfamily \mbox{\hyperlink{aabbtree_8h_a56deab8b20877192956f8d19f7f20a6b}{Node\+Proxy}} AABBTree\+Node\+::right}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/collision/\mbox{\hyperlink{aabbtree_8h}{aabbtree.\+h}}\end{DoxyCompactItemize}

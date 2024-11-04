@@ -1,0 +1,50 @@
+\hypertarget{collision_2mesh__collider_8c}{}\doxysection{src/collision/mesh\+\_\+collider.c File Reference}
+\label{collision_2mesh__collider_8c}\index{src/collision/mesh\_collider.c@{src/collision/mesh\_collider.c}}
+{\ttfamily \#include \char`\"{}mesh\+\_\+collider.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../math/minmax.\+h\char`\"{}}\newline
+Include dependency graph for mesh\+\_\+collider.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{collision_2mesh__collider_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{collision_2mesh__collider_8c_ab04045b3c8505d4c3530dd42a195440b}{MAX\+\_\+\+INDEX\+\_\+\+SET\+\_\+\+SIZE}}~64
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{collision_2mesh__collider_8c_a864d30ffea8d08d3dc8edf71e30113ce}{mesh\+\_\+triangle\+\_\+gjk\+\_\+support\+\_\+function}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+\item 
+bool \mbox{\hyperlink{collision_2mesh__collider_8c_a39e8de9aa5c74858dfc18453dbfeeaa4}{is\+\_\+inf}} (float value)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{collision_2mesh__collider_8c_ab04045b3c8505d4c3530dd42a195440b}\label{collision_2mesh__collider_8c_ab04045b3c8505d4c3530dd42a195440b}} 
+\index{mesh\_collider.c@{mesh\_collider.c}!MAX\_INDEX\_SET\_SIZE@{MAX\_INDEX\_SET\_SIZE}}
+\index{MAX\_INDEX\_SET\_SIZE@{MAX\_INDEX\_SET\_SIZE}!mesh\_collider.c@{mesh\_collider.c}}
+\doxysubsubsection{\texorpdfstring{MAX\_INDEX\_SET\_SIZE}{MAX\_INDEX\_SET\_SIZE}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+INDEX\+\_\+\+SET\+\_\+\+SIZE~64}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{collision_2mesh__collider_8c_a39e8de9aa5c74858dfc18453dbfeeaa4}\label{collision_2mesh__collider_8c_a39e8de9aa5c74858dfc18453dbfeeaa4}} 
+\index{mesh\_collider.c@{mesh\_collider.c}!is\_inf@{is\_inf}}
+\index{is\_inf@{is\_inf}!mesh\_collider.c@{mesh\_collider.c}}
+\doxysubsubsection{\texorpdfstring{is\_inf()}{is\_inf()}}
+{\footnotesize\ttfamily bool is\+\_\+inf (\begin{DoxyParamCaption}\item[{float}]{value }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{collision_2mesh__collider_8c_a864d30ffea8d08d3dc8edf71e30113ce}\label{collision_2mesh__collider_8c_a864d30ffea8d08d3dc8edf71e30113ce}} 
+\index{mesh\_collider.c@{mesh\_collider.c}!mesh\_triangle\_gjk\_support\_function@{mesh\_triangle\_gjk\_support\_function}}
+\index{mesh\_triangle\_gjk\_support\_function@{mesh\_triangle\_gjk\_support\_function}!mesh\_collider.c@{mesh\_collider.c}}
+\doxysubsubsection{\texorpdfstring{mesh\_triangle\_gjk\_support\_function()}{mesh\_triangle\_gjk\_support\_function()}}
+{\footnotesize\ttfamily void mesh\+\_\+triangle\+\_\+gjk\+\_\+support\+\_\+function (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+

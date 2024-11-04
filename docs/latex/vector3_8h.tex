@@ -29,6 +29,8 @@ struct \mbox{\hyperlink{structVector3u8}{Vector3u8}}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+void \mbox{\hyperlink{vector3_8h_aea22a25263e11d466a2164df4f7a8d00}{vector3\+Copy}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$source, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$target)
+\item 
 void \mbox{\hyperlink{vector3_8h_add5e276b48cc03547316bc1d4d3c8565}{vector3\+Abs}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$in, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
 \item 
 void \mbox{\hyperlink{vector3_8h_a2733543dd1017860887c82543c1ed0d9}{vector3\+Negate}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$in, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
@@ -37,9 +39,13 @@ void \mbox{\hyperlink{vector3_8h_ad84d0a96082f470f88cab713ed3d48be}{vector3\+Sca
 \item 
 void \mbox{\hyperlink{vector3_8h_a6750f82be7276e5e35c95b3023385bb6}{vector3\+Add}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
 \item 
+void \mbox{\hyperlink{vector3_8h_aafc6276e2e7e593443f906d2fd9534f9}{vector3\+Add\+To\+Self}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b)
+\item 
 void \mbox{\hyperlink{vector3_8h_ad3cac6bcaa27a2f1b947d63663fe4714}{vector3\+Add\+Scaled}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$normal, float scale, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
 \item 
 void \mbox{\hyperlink{vector3_8h_a75dc1d0547f2b5a39a8221fed4054c35}{vector3\+Sub}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
+\item 
+void \mbox{\hyperlink{vector3_8h_a4107fbd9349f4ec8f72e11957308e8b3}{vector3\+Sub\+From\+Self}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b)
 \item 
 void \mbox{\hyperlink{vector3_8h_aca42df0fd3ba8b415ec2224b80968c0e}{vector3\+Multiply}} (struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$a, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$b, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$out)
 \item 
@@ -129,6 +135,18 @@ struct \mbox{\hyperlink{structVector3}{Vector3}} \mbox{\hyperlink{vector3_8h_a02
 \index{vector3AddScaled@{vector3AddScaled}!vector3.h@{vector3.h}}
 \doxysubsubsection{\texorpdfstring{vector3AddScaled()}{vector3AddScaled()}}
 {\footnotesize\ttfamily void vector3\+Add\+Scaled (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{normal,  }\item[{float}]{scale,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{vector3_8h_aafc6276e2e7e593443f906d2fd9534f9}\label{vector3_8h_aafc6276e2e7e593443f906d2fd9534f9}} 
+\index{vector3.h@{vector3.h}!vector3AddToSelf@{vector3AddToSelf}}
+\index{vector3AddToSelf@{vector3AddToSelf}!vector3.h@{vector3.h}}
+\doxysubsubsection{\texorpdfstring{vector3AddToSelf()}{vector3AddToSelf()}}
+{\footnotesize\ttfamily void vector3\+Add\+To\+Self (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{b }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{vector3_8h_aea22a25263e11d466a2164df4f7a8d00}\label{vector3_8h_aea22a25263e11d466a2164df4f7a8d00}} 
+\index{vector3.h@{vector3.h}!vector3Copy@{vector3Copy}}
+\index{vector3Copy@{vector3Copy}!vector3.h@{vector3.h}}
+\doxysubsubsection{\texorpdfstring{vector3Copy()}{vector3Copy()}}
+{\footnotesize\ttfamily void vector3\+Copy (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{source,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{target }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{vector3_8h_a3f5e0b6c93c8013b4ddbf460ad2b523b}\label{vector3_8h_a3f5e0b6c93c8013b4ddbf460ad2b523b}} 
 \index{vector3.h@{vector3.h}!vector3Cross@{vector3Cross}}
@@ -237,6 +255,12 @@ struct \mbox{\hyperlink{structVector3}{Vector3}} \mbox{\hyperlink{vector3_8h_a02
 \index{vector3Sub@{vector3Sub}!vector3.h@{vector3.h}}
 \doxysubsubsection{\texorpdfstring{vector3Sub()}{vector3Sub()}}
 {\footnotesize\ttfamily void vector3\+Sub (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{b,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{out }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{vector3_8h_a4107fbd9349f4ec8f72e11957308e8b3}\label{vector3_8h_a4107fbd9349f4ec8f72e11957308e8b3}} 
+\index{vector3.h@{vector3.h}!vector3SubFromSelf@{vector3SubFromSelf}}
+\index{vector3SubFromSelf@{vector3SubFromSelf}!vector3.h@{vector3.h}}
+\doxysubsubsection{\texorpdfstring{vector3SubFromSelf()}{vector3SubFromSelf()}}
+{\footnotesize\ttfamily void vector3\+Sub\+From\+Self (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{a,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{b }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{vector3_8h_af744f4cda71cb3e7b7d344ff5bd4f8d9}\label{vector3_8h_af744f4cda71cb3e7b7d344ff5bd4f8d9}} 
 \index{vector3.h@{vector3.h}!vector3ToVector3u8@{vector3ToVector3u8}}

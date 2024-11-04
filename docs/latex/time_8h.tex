@@ -20,9 +20,11 @@ This graph shows which files directly or indirectly include this file\+:
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{time_8h_a7f21fe9fdb3605017d51d802b41910ac}{TICKRATE}}~50.\+0f
+\#define \mbox{\hyperlink{time_8h_acc14909795a4c4ad67102c15a58df488}{PHYSICS\+\_\+\+TICKRATE}}~60.\+0f
 \item 
-\#define \mbox{\hyperlink{time_8h_ad703ea0cf0694a2f08699fd6db3a3a98}{FIXED\+\_\+\+DELTATIME}}~(1.\+0f/\mbox{\hyperlink{time_8h_a7f21fe9fdb3605017d51d802b41910ac}{TICKRATE}})
+\#define \mbox{\hyperlink{time_8h_ad703ea0cf0694a2f08699fd6db3a3a98}{FIXED\+\_\+\+DELTATIME}}~(1.\+0f/\mbox{\hyperlink{time_8h_acc14909795a4c4ad67102c15a58df488}{PHYSICS\+\_\+\+TICKRATE}})
+\item 
+\#define \mbox{\hyperlink{time_8h_a4f88a21e5c402a21133d43224f120013}{FIXED\+\_\+\+DELTATIME\+\_\+\+SQUARED}}~(\mbox{\hyperlink{time_8h_ad703ea0cf0694a2f08699fd6db3a3a98}{FIXED\+\_\+\+DELTATIME}} $\ast$ \mbox{\hyperlink{time_8h_ad703ea0cf0694a2f08699fd6db3a3a98}{FIXED\+\_\+\+DELTATIME}})
 \item 
 \#define \mbox{\hyperlink{time_8h_aba7d42f596231e649bc216ef5f3e9be6}{SEC\+\_\+\+TO\+\_\+\+USEC}}(a)~(((double)a) $\ast$ 1000000.\+0f)
 \item 
@@ -92,19 +94,25 @@ float \mbox{\hyperlink{time_8h_a80227714b4d9b676b4dd36466332e7ba}{frametime\+\_\
 \index{time.h@{time.h}!FIXED\_DELTATIME@{FIXED\_DELTATIME}}
 \index{FIXED\_DELTATIME@{FIXED\_DELTATIME}!time.h@{time.h}}
 \doxysubsubsection{\texorpdfstring{FIXED\_DELTATIME}{FIXED\_DELTATIME}}
-{\footnotesize\ttfamily \#define FIXED\+\_\+\+DELTATIME~(1.\+0f/\mbox{\hyperlink{time_8h_a7f21fe9fdb3605017d51d802b41910ac}{TICKRATE}})}
+{\footnotesize\ttfamily \#define FIXED\+\_\+\+DELTATIME~(1.\+0f/\mbox{\hyperlink{time_8h_acc14909795a4c4ad67102c15a58df488}{PHYSICS\+\_\+\+TICKRATE}})}
+
+\mbox{\Hypertarget{time_8h_a4f88a21e5c402a21133d43224f120013}\label{time_8h_a4f88a21e5c402a21133d43224f120013}} 
+\index{time.h@{time.h}!FIXED\_DELTATIME\_SQUARED@{FIXED\_DELTATIME\_SQUARED}}
+\index{FIXED\_DELTATIME\_SQUARED@{FIXED\_DELTATIME\_SQUARED}!time.h@{time.h}}
+\doxysubsubsection{\texorpdfstring{FIXED\_DELTATIME\_SQUARED}{FIXED\_DELTATIME\_SQUARED}}
+{\footnotesize\ttfamily \#define FIXED\+\_\+\+DELTATIME\+\_\+\+SQUARED~(\mbox{\hyperlink{time_8h_ad703ea0cf0694a2f08699fd6db3a3a98}{FIXED\+\_\+\+DELTATIME}} $\ast$ \mbox{\hyperlink{time_8h_ad703ea0cf0694a2f08699fd6db3a3a98}{FIXED\+\_\+\+DELTATIME}})}
+
+\mbox{\Hypertarget{time_8h_acc14909795a4c4ad67102c15a58df488}\label{time_8h_acc14909795a4c4ad67102c15a58df488}} 
+\index{time.h@{time.h}!PHYSICS\_TICKRATE@{PHYSICS\_TICKRATE}}
+\index{PHYSICS\_TICKRATE@{PHYSICS\_TICKRATE}!time.h@{time.h}}
+\doxysubsubsection{\texorpdfstring{PHYSICS\_TICKRATE}{PHYSICS\_TICKRATE}}
+{\footnotesize\ttfamily \#define PHYSICS\+\_\+\+TICKRATE~60.\+0f}
 
 \mbox{\Hypertarget{time_8h_aba7d42f596231e649bc216ef5f3e9be6}\label{time_8h_aba7d42f596231e649bc216ef5f3e9be6}} 
 \index{time.h@{time.h}!SEC\_TO\_USEC@{SEC\_TO\_USEC}}
 \index{SEC\_TO\_USEC@{SEC\_TO\_USEC}!time.h@{time.h}}
 \doxysubsubsection{\texorpdfstring{SEC\_TO\_USEC}{SEC\_TO\_USEC}}
 {\footnotesize\ttfamily \#define SEC\+\_\+\+TO\+\_\+\+USEC(\begin{DoxyParamCaption}\item[{}]{a }\end{DoxyParamCaption})~(((double)a) $\ast$ 1000000.\+0f)}
-
-\mbox{\Hypertarget{time_8h_a7f21fe9fdb3605017d51d802b41910ac}\label{time_8h_a7f21fe9fdb3605017d51d802b41910ac}} 
-\index{time.h@{time.h}!TICKRATE@{TICKRATE}}
-\index{TICKRATE@{TICKRATE}!time.h@{time.h}}
-\doxysubsubsection{\texorpdfstring{TICKRATE}{TICKRATE}}
-{\footnotesize\ttfamily \#define TICKRATE~50.\+0f}
 
 \mbox{\Hypertarget{time_8h_ada5936a26643ec0a705395f560128f6a}\label{time_8h_ada5936a26643ec0a705395f560128f6a}} 
 \index{time.h@{time.h}!UPDATE\_LAYER\_DIALOG@{UPDATE\_LAYER\_DIALOG}}

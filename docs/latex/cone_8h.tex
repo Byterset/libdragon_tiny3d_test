@@ -3,32 +3,33 @@
 {\ttfamily \#include \char`\"{}../../math/vector2.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../../math/vector3.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../../math/aabb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../math/quaternion.\+h\char`\"{}}\newline
 Include dependency graph for cone.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=342pt]{cone_8h__incl}
+\includegraphics[width=350pt]{cone_8h__incl}
 \end{center}
 \end{figure}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{cone_8h_abf356b1fdc91a58ffa63f86bfe768d77}{cone\+\_\+minkowski\+\_\+sum}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
+void \mbox{\hyperlink{cone_8h_a353a7ba868ac6297eae72f2e1d8c0061}{cone\+\_\+support\+\_\+function}} (void $\ast$data, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$direction, struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$output)
 \item 
-void \mbox{\hyperlink{cone_8h_a700bb61b2bf111a0143b5d6c9073f128}{cone\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$rotation, struct Box3D $\ast$\mbox{\hyperlink{structbox}{box}})
+void \mbox{\hyperlink{cone_8h_ae0b178aab77be51b395459154369873c}{cone\+\_\+bounding\+\_\+box}} (void $\ast$data, struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$rotation, struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$\mbox{\hyperlink{structbox}{box}})
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{cone_8h_a700bb61b2bf111a0143b5d6c9073f128}\label{cone_8h_a700bb61b2bf111a0143b5d6c9073f128}} 
+\mbox{\Hypertarget{cone_8h_ae0b178aab77be51b395459154369873c}\label{cone_8h_ae0b178aab77be51b395459154369873c}} 
 \index{cone.h@{cone.h}!cone\_bounding\_box@{cone\_bounding\_box}}
 \index{cone\_bounding\_box@{cone\_bounding\_box}!cone.h@{cone.h}}
 \doxysubsubsection{\texorpdfstring{cone\_bounding\_box()}{cone\_bounding\_box()}}
-{\footnotesize\ttfamily void cone\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector2}{Vector2}} $\ast$}]{rotation,  }\item[{struct Box3D $\ast$}]{box }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cone\+\_\+bounding\+\_\+box (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structQuaternion}{Quaternion}} $\ast$}]{rotation,  }\item[{struct \mbox{\hyperlink{structAABB}{AABB}} $\ast$}]{box }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{cone_8h_abf356b1fdc91a58ffa63f86bfe768d77}\label{cone_8h_abf356b1fdc91a58ffa63f86bfe768d77}} 
-\index{cone.h@{cone.h}!cone\_minkowski\_sum@{cone\_minkowski\_sum}}
-\index{cone\_minkowski\_sum@{cone\_minkowski\_sum}!cone.h@{cone.h}}
-\doxysubsubsection{\texorpdfstring{cone\_minkowski\_sum()}{cone\_minkowski\_sum()}}
-{\footnotesize\ttfamily void cone\+\_\+minkowski\+\_\+sum (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{cone_8h_a353a7ba868ac6297eae72f2e1d8c0061}\label{cone_8h_a353a7ba868ac6297eae72f2e1d8c0061}} 
+\index{cone.h@{cone.h}!cone\_support\_function@{cone\_support\_function}}
+\index{cone\_support\_function@{cone\_support\_function}!cone.h@{cone.h}}
+\doxysubsubsection{\texorpdfstring{cone\_support\_function()}{cone\_support\_function()}}
+{\footnotesize\ttfamily void cone\+\_\+support\+\_\+function (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{direction,  }\item[{struct \mbox{\hyperlink{structVector3}{Vector3}} $\ast$}]{output }\end{DoxyParamCaption})}
 

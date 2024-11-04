@@ -1,0 +1,266 @@
+\hypertarget{scene__definition_8h}{}\doxysection{src/scene/scene\+\_\+definition.h File Reference}
+\label{scene__definition_8h}\index{src/scene/scene\_definition.h@{src/scene/scene\_definition.h}}
+{\ttfamily \#include \char`\"{}../math/vector3.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../math/vector2.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+Include dependency graph for scene\+\_\+definition.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{scene__definition_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{scene__definition_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcrate__definition}{crate\+\_\+definition}}
+\item 
+struct \mbox{\hyperlink{structcollectable__definition}{collectable\+\_\+definition}}
+\item 
+struct \mbox{\hyperlink{structtraining__dummy__definition}{training\+\_\+dummy\+\_\+definition}}
+\item 
+struct \mbox{\hyperlink{structbox__definition}{box\+\_\+definition}}
+\item 
+struct \mbox{\hyperlink{structplatform__definition}{platform\+\_\+definition}}
+\item 
+struct \mbox{\hyperlink{structnpc__definition}{npc\+\_\+definition}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{scene__definition_8h_a67b084e417354bc8b9f70c6e4cc67c11}{SPELL\+\_\+\+SYBMOL\+\_\+\+COUNT}}~\mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a6a3ea5e7020015d7a007fbe1872242b2}{ITEM\+\_\+\+TYPE\+\_\+\+STAFF\+\_\+\+DEFAULT}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17}{collectable\+\_\+type}} \{ \mbox{\hyperlink{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17a14f76f79b8b54a2d13f6cd947a1446b5}{COLLECTABLE\+\_\+\+TYPE\+\_\+\+HEALTH}}
+, \mbox{\hyperlink{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17ae6b33ab4b0dff8e416a673c84fd00f04}{COLLECTABLE\+\_\+\+TYPE\+\_\+\+POTION}}
+, \mbox{\hyperlink{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17a2ee7e282dbc3b52840089c4f6248ca26}{COLLECTABLE\+\_\+\+TYPE\+\_\+\+SPELL\+\_\+\+RUNE}}
+ \}
+\item 
+enum \mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433}{inventory\+\_\+item\+\_\+type}} \{ \newline
+\mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a45847d1883692dafbdc5d4926fb0ae6e}{ITEM\+\_\+\+TYPE\+\_\+\+NONE}}
+, \mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a7ebea55db0663f039b8dc9a45bde6228}{SPELL\+\_\+\+SYMBOL\+\_\+\+FIRE}}
+, \mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a78a4f7de5a89e6c88f7dae34538d4f34}{SPELL\+\_\+\+SYMBOL\+\_\+\+ICE}}
+, \mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a64c72a9ea37926cf694b57642cc694b1}{SPELL\+\_\+\+SYMBOL\+\_\+\+EARTH}}
+, \newline
+\mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a999f528c06726fd8892b67293298a919}{SPELL\+\_\+\+SYMBOL\+\_\+\+AIR}}
+, \mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433aae15d5bb5598cf9dbdd59b322ee258f2}{SPELL\+\_\+\+SYMBOL\+\_\+\+LIFE}}
+, \mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a777ce13ae6e994cb74ac533b15e8d384}{SPELL\+\_\+\+SYMBOL\+\_\+\+RECAST}}
+, \mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a9621eacb41d42f2bc889abbb6816e2d3}{SPELL\+\_\+\+SYMBOL\+\_\+\+PASS\+\_\+\+DOWN}}
+, \newline
+\mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a6a3ea5e7020015d7a007fbe1872242b2}{ITEM\+\_\+\+TYPE\+\_\+\+STAFF\+\_\+\+DEFAULT}}
+, \mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a73b5184c8869f2ee94cce64beab34605}{ITEM\+\_\+\+TYPE\+\_\+\+COUNT}}
+ \}
+\item 
+enum \mbox{\hyperlink{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333}{npc\+\_\+type}} \{ \mbox{\hyperlink{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333a20707d63684c0e6ce9aac740c1d6e77e}{NPC\+\_\+\+TYPE\+\_\+\+NONE}}
+, \mbox{\hyperlink{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333a31ef49259f0380709393e0fc4c5da4d8}{NPC\+\_\+\+TYPE\+\_\+\+PLAYER}}
+, \mbox{\hyperlink{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333a6f328ca2a99703c6a6829b02ef6e3fe8}{NPC\+\_\+\+TYPE\+\_\+\+SUBJECT}}
+, \mbox{\hyperlink{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333aa6caa8522c46f22d42416d7ec3087970}{NPC\+\_\+\+TYPE\+\_\+\+MENTOR}}
+ \}
+\item 
+enum \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cd}{interaction\+\_\+type}} \{ \newline
+\mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdac0ac269750e3b5410a79056f6ec0d438}{INTERACTION\+\_\+\+NONE}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda463e3e2845475f99a8e5d22db5be5566}{INTERACTION\+\_\+\+LOOK}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaac981309bc83e86607ac51bf4bd22cec}{INTERACTION\+\_\+\+MOVE}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda02f6da07123e2f39cebf57286b3986bb}{INTERACTION\+\_\+\+LOOK\+\_\+\+MOVE}}
+, \newline
+\mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaaccd7782c0a13582f89d0b7ec3fb278c}{INTERACTION\+\_\+\+SPACE}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda5289cbcf6108ee301ab6750ea005156e}{INTERACTION\+\_\+\+LOOK\+\_\+\+SPACE}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda5719b15ffd92c1691587bec7499bfcac}{INTERACTION\+\_\+\+MOVE\+\_\+\+SPACE}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaaf362a3a4a1178e64b5fa890c8cadab3}{INTERACTION\+\_\+\+LOOK\+\_\+\+MOVE\+\_\+\+SPACE}}
+, \newline
+\mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdad2715bbce40ccf2cd5cf753a176db6ab}{INTERACTION\+\_\+\+WAIT}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda6adcc5eebaf5cd52e724dbbbb59ef46e}{INTERACTION\+\_\+\+LOOK\+\_\+\+WAIT}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda920a10f16f1396fcc3657fc545d3f68b}{INTERACTION\+\_\+\+MOVE\+\_\+\+WAIT}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda7c86e90205b27ce4ee8e18c0a5d30a84}{INTERACTION\+\_\+\+LOOK\+\_\+\+MOVE\+\_\+\+WAIT}}
+, \newline
+\mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda4a412608593b9c69c73288a37aa89c15}{INTERACTION\+\_\+\+SPACE\+\_\+\+WAIT}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdad098c28680a93ee88b27813ad412ffad}{INTERACTION\+\_\+\+LOOK\+\_\+\+SPACE\+\_\+\+WAIT}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdafcb2c7fa153e0715035663d012cc40de}{INTERACTION\+\_\+\+MOVE\+\_\+\+SPACE\+\_\+\+WAIT}}
+, \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaf4e8d26e289eed5f82a7edebc4908bd1}{INTERACTION\+\_\+\+LOOK\+\_\+\+MOVE\+\_\+\+SPACE\+\_\+\+WAIT}}
+ \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{scene__definition_8h_a67b084e417354bc8b9f70c6e4cc67c11}\label{scene__definition_8h_a67b084e417354bc8b9f70c6e4cc67c11}} 
+\index{scene\_definition.h@{scene\_definition.h}!SPELL\_SYBMOL\_COUNT@{SPELL\_SYBMOL\_COUNT}}
+\index{SPELL\_SYBMOL\_COUNT@{SPELL\_SYBMOL\_COUNT}!scene\_definition.h@{scene\_definition.h}}
+\doxysubsubsection{\texorpdfstring{SPELL\_SYBMOL\_COUNT}{SPELL\_SYBMOL\_COUNT}}
+{\footnotesize\ttfamily \#define SPELL\+\_\+\+SYBMOL\+\_\+\+COUNT~\mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a6a3ea5e7020015d7a007fbe1872242b2}{ITEM\+\_\+\+TYPE\+\_\+\+STAFF\+\_\+\+DEFAULT}}}
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17}\label{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17}} 
+\index{scene\_definition.h@{scene\_definition.h}!collectable\_type@{collectable\_type}}
+\index{collectable\_type@{collectable\_type}!scene\_definition.h@{scene\_definition.h}}
+\doxysubsubsection{\texorpdfstring{collectable\_type}{collectable\_type}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17}{collectable\+\_\+type}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLECTABLE\_TYPE\_HEALTH@{COLLECTABLE\_TYPE\_HEALTH}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!COLLECTABLE\_TYPE\_HEALTH@{COLLECTABLE\_TYPE\_HEALTH}}}\mbox{\Hypertarget{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17a14f76f79b8b54a2d13f6cd947a1446b5}\label{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17a14f76f79b8b54a2d13f6cd947a1446b5}} 
+COLLECTABLE\+\_\+\+TYPE\+\_\+\+HEALTH&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLECTABLE\_TYPE\_POTION@{COLLECTABLE\_TYPE\_POTION}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!COLLECTABLE\_TYPE\_POTION@{COLLECTABLE\_TYPE\_POTION}}}\mbox{\Hypertarget{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17ae6b33ab4b0dff8e416a673c84fd00f04}\label{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17ae6b33ab4b0dff8e416a673c84fd00f04}} 
+COLLECTABLE\+\_\+\+TYPE\+\_\+\+POTION&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLLECTABLE\_TYPE\_SPELL\_RUNE@{COLLECTABLE\_TYPE\_SPELL\_RUNE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!COLLECTABLE\_TYPE\_SPELL\_RUNE@{COLLECTABLE\_TYPE\_SPELL\_RUNE}}}\mbox{\Hypertarget{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17a2ee7e282dbc3b52840089c4f6248ca26}\label{scene__definition_8h_af70d7bfc1a201d50065a25bdcd25bd17a2ee7e282dbc3b52840089c4f6248ca26}} 
+COLLECTABLE\+\_\+\+TYPE\+\_\+\+SPELL\+\_\+\+RUNE&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cd}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cd}} 
+\index{scene\_definition.h@{scene\_definition.h}!interaction\_type@{interaction\_type}}
+\index{interaction\_type@{interaction\_type}!scene\_definition.h@{scene\_definition.h}}
+\doxysubsubsection{\texorpdfstring{interaction\_type}{interaction\_type}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cd}{interaction\+\_\+type}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_NONE@{INTERACTION\_NONE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_NONE@{INTERACTION\_NONE}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdac0ac269750e3b5410a79056f6ec0d438}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdac0ac269750e3b5410a79056f6ec0d438}} 
+INTERACTION\+\_\+\+NONE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_LOOK@{INTERACTION\_LOOK}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_LOOK@{INTERACTION\_LOOK}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda463e3e2845475f99a8e5d22db5be5566}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda463e3e2845475f99a8e5d22db5be5566}} 
+INTERACTION\+\_\+\+LOOK&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_MOVE@{INTERACTION\_MOVE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_MOVE@{INTERACTION\_MOVE}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaac981309bc83e86607ac51bf4bd22cec}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaac981309bc83e86607ac51bf4bd22cec}} 
+INTERACTION\+\_\+\+MOVE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_LOOK\_MOVE@{INTERACTION\_LOOK\_MOVE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_LOOK\_MOVE@{INTERACTION\_LOOK\_MOVE}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda02f6da07123e2f39cebf57286b3986bb}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda02f6da07123e2f39cebf57286b3986bb}} 
+INTERACTION\+\_\+\+LOOK\+\_\+\+MOVE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_SPACE@{INTERACTION\_SPACE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_SPACE@{INTERACTION\_SPACE}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaaccd7782c0a13582f89d0b7ec3fb278c}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaaccd7782c0a13582f89d0b7ec3fb278c}} 
+INTERACTION\+\_\+\+SPACE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_LOOK\_SPACE@{INTERACTION\_LOOK\_SPACE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_LOOK\_SPACE@{INTERACTION\_LOOK\_SPACE}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda5289cbcf6108ee301ab6750ea005156e}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda5289cbcf6108ee301ab6750ea005156e}} 
+INTERACTION\+\_\+\+LOOK\+\_\+\+SPACE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_MOVE\_SPACE@{INTERACTION\_MOVE\_SPACE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_MOVE\_SPACE@{INTERACTION\_MOVE\_SPACE}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda5719b15ffd92c1691587bec7499bfcac}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda5719b15ffd92c1691587bec7499bfcac}} 
+INTERACTION\+\_\+\+MOVE\+\_\+\+SPACE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_LOOK\_MOVE\_SPACE@{INTERACTION\_LOOK\_MOVE\_SPACE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_LOOK\_MOVE\_SPACE@{INTERACTION\_LOOK\_MOVE\_SPACE}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaaf362a3a4a1178e64b5fa890c8cadab3}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaaf362a3a4a1178e64b5fa890c8cadab3}} 
+INTERACTION\+\_\+\+LOOK\+\_\+\+MOVE\+\_\+\+SPACE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_WAIT@{INTERACTION\_WAIT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_WAIT@{INTERACTION\_WAIT}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdad2715bbce40ccf2cd5cf753a176db6ab}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdad2715bbce40ccf2cd5cf753a176db6ab}} 
+INTERACTION\+\_\+\+WAIT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_LOOK\_WAIT@{INTERACTION\_LOOK\_WAIT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_LOOK\_WAIT@{INTERACTION\_LOOK\_WAIT}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda6adcc5eebaf5cd52e724dbbbb59ef46e}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda6adcc5eebaf5cd52e724dbbbb59ef46e}} 
+INTERACTION\+\_\+\+LOOK\+\_\+\+WAIT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_MOVE\_WAIT@{INTERACTION\_MOVE\_WAIT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_MOVE\_WAIT@{INTERACTION\_MOVE\_WAIT}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda920a10f16f1396fcc3657fc545d3f68b}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda920a10f16f1396fcc3657fc545d3f68b}} 
+INTERACTION\+\_\+\+MOVE\+\_\+\+WAIT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_LOOK\_MOVE\_WAIT@{INTERACTION\_LOOK\_MOVE\_WAIT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_LOOK\_MOVE\_WAIT@{INTERACTION\_LOOK\_MOVE\_WAIT}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda7c86e90205b27ce4ee8e18c0a5d30a84}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda7c86e90205b27ce4ee8e18c0a5d30a84}} 
+INTERACTION\+\_\+\+LOOK\+\_\+\+MOVE\+\_\+\+WAIT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_SPACE\_WAIT@{INTERACTION\_SPACE\_WAIT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_SPACE\_WAIT@{INTERACTION\_SPACE\_WAIT}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda4a412608593b9c69c73288a37aa89c15}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cda4a412608593b9c69c73288a37aa89c15}} 
+INTERACTION\+\_\+\+SPACE\+\_\+\+WAIT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_LOOK\_SPACE\_WAIT@{INTERACTION\_LOOK\_SPACE\_WAIT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_LOOK\_SPACE\_WAIT@{INTERACTION\_LOOK\_SPACE\_WAIT}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdad098c28680a93ee88b27813ad412ffad}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdad098c28680a93ee88b27813ad412ffad}} 
+INTERACTION\+\_\+\+LOOK\+\_\+\+SPACE\+\_\+\+WAIT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_MOVE\_SPACE\_WAIT@{INTERACTION\_MOVE\_SPACE\_WAIT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_MOVE\_SPACE\_WAIT@{INTERACTION\_MOVE\_SPACE\_WAIT}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdafcb2c7fa153e0715035663d012cc40de}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdafcb2c7fa153e0715035663d012cc40de}} 
+INTERACTION\+\_\+\+MOVE\+\_\+\+SPACE\+\_\+\+WAIT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERACTION\_LOOK\_MOVE\_SPACE\_WAIT@{INTERACTION\_LOOK\_MOVE\_SPACE\_WAIT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!INTERACTION\_LOOK\_MOVE\_SPACE\_WAIT@{INTERACTION\_LOOK\_MOVE\_SPACE\_WAIT}}}\mbox{\Hypertarget{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaf4e8d26e289eed5f82a7edebc4908bd1}\label{scene__definition_8h_a1f9dfccddd8668eb88705d17886ce0cdaf4e8d26e289eed5f82a7edebc4908bd1}} 
+INTERACTION\+\_\+\+LOOK\+\_\+\+MOVE\+\_\+\+SPACE\+\_\+\+WAIT&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433}} 
+\index{scene\_definition.h@{scene\_definition.h}!inventory\_item\_type@{inventory\_item\_type}}
+\index{inventory\_item\_type@{inventory\_item\_type}!scene\_definition.h@{scene\_definition.h}}
+\doxysubsubsection{\texorpdfstring{inventory\_item\_type}{inventory\_item\_type}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433}{inventory\+\_\+item\+\_\+type}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ITEM\_TYPE\_NONE@{ITEM\_TYPE\_NONE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!ITEM\_TYPE\_NONE@{ITEM\_TYPE\_NONE}}}\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a45847d1883692dafbdc5d4926fb0ae6e}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a45847d1883692dafbdc5d4926fb0ae6e}} 
+ITEM\+\_\+\+TYPE\+\_\+\+NONE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPELL\_SYMBOL\_FIRE@{SPELL\_SYMBOL\_FIRE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!SPELL\_SYMBOL\_FIRE@{SPELL\_SYMBOL\_FIRE}}}\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a7ebea55db0663f039b8dc9a45bde6228}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a7ebea55db0663f039b8dc9a45bde6228}} 
+SPELL\+\_\+\+SYMBOL\+\_\+\+FIRE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPELL\_SYMBOL\_ICE@{SPELL\_SYMBOL\_ICE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!SPELL\_SYMBOL\_ICE@{SPELL\_SYMBOL\_ICE}}}\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a78a4f7de5a89e6c88f7dae34538d4f34}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a78a4f7de5a89e6c88f7dae34538d4f34}} 
+SPELL\+\_\+\+SYMBOL\+\_\+\+ICE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPELL\_SYMBOL\_EARTH@{SPELL\_SYMBOL\_EARTH}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!SPELL\_SYMBOL\_EARTH@{SPELL\_SYMBOL\_EARTH}}}\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a64c72a9ea37926cf694b57642cc694b1}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a64c72a9ea37926cf694b57642cc694b1}} 
+SPELL\+\_\+\+SYMBOL\+\_\+\+EARTH&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPELL\_SYMBOL\_AIR@{SPELL\_SYMBOL\_AIR}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!SPELL\_SYMBOL\_AIR@{SPELL\_SYMBOL\_AIR}}}\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a999f528c06726fd8892b67293298a919}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a999f528c06726fd8892b67293298a919}} 
+SPELL\+\_\+\+SYMBOL\+\_\+\+AIR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPELL\_SYMBOL\_LIFE@{SPELL\_SYMBOL\_LIFE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!SPELL\_SYMBOL\_LIFE@{SPELL\_SYMBOL\_LIFE}}}\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433aae15d5bb5598cf9dbdd59b322ee258f2}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433aae15d5bb5598cf9dbdd59b322ee258f2}} 
+SPELL\+\_\+\+SYMBOL\+\_\+\+LIFE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPELL\_SYMBOL\_RECAST@{SPELL\_SYMBOL\_RECAST}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!SPELL\_SYMBOL\_RECAST@{SPELL\_SYMBOL\_RECAST}}}\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a777ce13ae6e994cb74ac533b15e8d384}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a777ce13ae6e994cb74ac533b15e8d384}} 
+SPELL\+\_\+\+SYMBOL\+\_\+\+RECAST&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPELL\_SYMBOL\_PASS\_DOWN@{SPELL\_SYMBOL\_PASS\_DOWN}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!SPELL\_SYMBOL\_PASS\_DOWN@{SPELL\_SYMBOL\_PASS\_DOWN}}}\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a9621eacb41d42f2bc889abbb6816e2d3}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a9621eacb41d42f2bc889abbb6816e2d3}} 
+SPELL\+\_\+\+SYMBOL\+\_\+\+PASS\+\_\+\+DOWN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ITEM\_TYPE\_STAFF\_DEFAULT@{ITEM\_TYPE\_STAFF\_DEFAULT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!ITEM\_TYPE\_STAFF\_DEFAULT@{ITEM\_TYPE\_STAFF\_DEFAULT}}}\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a6a3ea5e7020015d7a007fbe1872242b2}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a6a3ea5e7020015d7a007fbe1872242b2}} 
+ITEM\+\_\+\+TYPE\+\_\+\+STAFF\+\_\+\+DEFAULT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ITEM\_TYPE\_COUNT@{ITEM\_TYPE\_COUNT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!ITEM\_TYPE\_COUNT@{ITEM\_TYPE\_COUNT}}}\mbox{\Hypertarget{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a73b5184c8869f2ee94cce64beab34605}\label{scene__definition_8h_adf147b1fbd64700fd6084d08ba833433a73b5184c8869f2ee94cce64beab34605}} 
+ITEM\+\_\+\+TYPE\+\_\+\+COUNT&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333}\label{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333}} 
+\index{scene\_definition.h@{scene\_definition.h}!npc\_type@{npc\_type}}
+\index{npc\_type@{npc\_type}!scene\_definition.h@{scene\_definition.h}}
+\doxysubsubsection{\texorpdfstring{npc\_type}{npc\_type}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333}{npc\+\_\+type}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NPC\_TYPE\_NONE@{NPC\_TYPE\_NONE}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!NPC\_TYPE\_NONE@{NPC\_TYPE\_NONE}}}\mbox{\Hypertarget{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333a20707d63684c0e6ce9aac740c1d6e77e}\label{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333a20707d63684c0e6ce9aac740c1d6e77e}} 
+NPC\+\_\+\+TYPE\+\_\+\+NONE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NPC\_TYPE\_PLAYER@{NPC\_TYPE\_PLAYER}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!NPC\_TYPE\_PLAYER@{NPC\_TYPE\_PLAYER}}}\mbox{\Hypertarget{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333a31ef49259f0380709393e0fc4c5da4d8}\label{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333a31ef49259f0380709393e0fc4c5da4d8}} 
+NPC\+\_\+\+TYPE\+\_\+\+PLAYER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NPC\_TYPE\_SUBJECT@{NPC\_TYPE\_SUBJECT}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!NPC\_TYPE\_SUBJECT@{NPC\_TYPE\_SUBJECT}}}\mbox{\Hypertarget{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333a6f328ca2a99703c6a6829b02ef6e3fe8}\label{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333a6f328ca2a99703c6a6829b02ef6e3fe8}} 
+NPC\+\_\+\+TYPE\+\_\+\+SUBJECT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NPC\_TYPE\_MENTOR@{NPC\_TYPE\_MENTOR}!scene\_definition.h@{scene\_definition.h}}\index{scene\_definition.h@{scene\_definition.h}!NPC\_TYPE\_MENTOR@{NPC\_TYPE\_MENTOR}}}\mbox{\Hypertarget{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333aa6caa8522c46f22d42416d7ec3087970}\label{scene__definition_8h_a9f0ba5c728597af2d1e173931d82c333aa6caa8522c46f22d42416d7ec3087970}} 
+NPC\+\_\+\+TYPE\+\_\+\+MENTOR&\\
+\hline
+
+\end{DoxyEnumFields}

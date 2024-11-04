@@ -6,7 +6,6 @@
 {\ttfamily \#include \char`\"{}../collision/collision\+\_\+scene.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../collision/shapes/capsule.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../collision/shapes/cylinder.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../collision/shapes/box.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../time/time.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../entity/entity\+\_\+id.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../render/defs.\+h\char`\"{}}\newline
@@ -22,6 +21,8 @@ Include dependency graph for player.\+c\+:
 \begin{DoxyCompactItemize}
 \item 
 \#define \mbox{\hyperlink{player_8c_a9e5036cddf12afce2f37ae0c25934d9c}{PLAYER\+\_\+\+MAX\+\_\+\+SPEED}}~4.\+2f
+\item 
+\#define \mbox{\hyperlink{player_8c_a43108aab3c7bfeb7432d64e22fe176d1}{PLAYER\+\_\+\+JUMP\+\_\+\+HEIGHT}}~2.\+5f
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -34,14 +35,15 @@ void \mbox{\hyperlink{player_8c_a084bb3eaf8f6a8c2d373909c403dd3cc}{player\+\_\+i
 \item 
 void \mbox{\hyperlink{player_8c_af70b4352eed410c90498788398ca2588}{player\+\_\+destroy}} (struct \mbox{\hyperlink{structplayer}{player}} $\ast$\mbox{\hyperlink{structplayer}{player}})
 \end{DoxyCompactItemize}
-\doxysubsection*{Variables}
-\begin{DoxyCompactItemize}
-\item 
-rspq\+\_\+block\+\_\+t $\ast$ \mbox{\hyperlink{player_8c_a8760fa2314dde0d62ffafb9c1f818b1d}{player\+\_\+dpl}}
-\end{DoxyCompactItemize}
 
 
 \doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{player_8c_a43108aab3c7bfeb7432d64e22fe176d1}\label{player_8c_a43108aab3c7bfeb7432d64e22fe176d1}} 
+\index{player.c@{player.c}!PLAYER\_JUMP\_HEIGHT@{PLAYER\_JUMP\_HEIGHT}}
+\index{PLAYER\_JUMP\_HEIGHT@{PLAYER\_JUMP\_HEIGHT}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{PLAYER\_JUMP\_HEIGHT}{PLAYER\_JUMP\_HEIGHT}}
+{\footnotesize\ttfamily \#define PLAYER\+\_\+\+JUMP\+\_\+\+HEIGHT~2.\+5f}
+
 \mbox{\Hypertarget{player_8c_a9e5036cddf12afce2f37ae0c25934d9c}\label{player_8c_a9e5036cddf12afce2f37ae0c25934d9c}} 
 \index{player.c@{player.c}!PLAYER\_MAX\_SPEED@{PLAYER\_MAX\_SPEED}}
 \index{PLAYER\_MAX\_SPEED@{PLAYER\_MAX\_SPEED}!player.c@{player.c}}
@@ -74,13 +76,4 @@ rspq\+\_\+block\+\_\+t $\ast$ \mbox{\hyperlink{player_8c_a8760fa2314dde0d62ffafb
 \index{player\_update@{player\_update}!player.c@{player.c}}
 \doxysubsubsection{\texorpdfstring{player\_update()}{player\_update()}}
 {\footnotesize\ttfamily void player\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structplayer}{player}} $\ast$}]{player }\end{DoxyParamCaption})}
-
-
-
-\doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{player_8c_a8760fa2314dde0d62ffafb9c1f818b1d}\label{player_8c_a8760fa2314dde0d62ffafb9c1f818b1d}} 
-\index{player.c@{player.c}!player\_dpl@{player\_dpl}}
-\index{player\_dpl@{player\_dpl}!player.c@{player.c}}
-\doxysubsubsection{\texorpdfstring{player\_dpl}{player\_dpl}}
-{\footnotesize\ttfamily rspq\+\_\+block\+\_\+t$\ast$ player\+\_\+dpl}
 
