@@ -75,7 +75,6 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
             physics_object_gjk_support_function,
             &result))
     {
-        // float behind_triangle = mesh_triangle_comparePoint(&triangle, &object->collision->collider_world_center);
         if(mesh_triangle_comparePoint(&triangle, &object->collision->collider_world_center) >= 0){
             correct_overlap(object, &result, -1.0f, object->collision->friction, object->collision->bounce);
         }
@@ -123,7 +122,7 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     }
 
     struct Simplex simplex;
-    if (!gjkCheckForOverlap(&simplex, a, physics_object_gjk_support_function, b, physics_object_gjk_support_function, &gForward)) {
+    if (!gjkCheckForOverlap(&simplex, a, physics_object_gjk_support_function, b, physics_object_gjk_support_function, &gRight)) {
         return;
     }
 
@@ -167,6 +166,12 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     float bounce = a->collision->friction > b->collision->friction ? a->collision->friction : b->collision->friction;
 
     float massRatio = a->mass / (a->mass + b->mass);
+    if(a->is_fixed){
+        massRatio = 1.0f;
+    }
+    if(b->is_fixed){
+        massRatio = 0.0f;
+    }
 
     correct_overlap(b, &result, -massRatio, friction, bounce);
     correct_overlap(a, &result, (1.0f - massRatio), friction, bounce);

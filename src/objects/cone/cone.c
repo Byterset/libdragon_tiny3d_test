@@ -1,0 +1,63 @@
+#include "cone.h"
+
+#include <libdragon.h>
+#include "../../render/render_scene.h"
+#include "../../collision/collision_scene.h"
+#include "../../collision/shapes/cone.h"
+#include "../../collision/shapes/cylinder.h"
+#include "../../time/time.h"
+#include "../../entity/entity_id.h"
+#include "../../render/defs.h"
+
+
+static struct physics_object_collision_data cone_collision = {
+    .gjk_support_function = cone_support_function,
+    .bounding_box_calculator = cone_bounding_box,
+    .shape_data = {
+        .cone = {
+            .half_height = 2.5f,
+            .radius = 6.0f
+        }
+    },
+    .shape_type = COLLISION_SHAPE_CONE,
+};
+
+
+void cone_init(struct cone* cone, struct cone_definition* def){
+    entity_id entity_id = entity_id_new();
+    transformInitIdentity(&cone->transform);
+
+    cone->transform.scale = (struct Vector3){6.0f, 5.0f, 6.0f};
+    cone->transform.position = def->position;
+    // quatRotateAxisEuler(&cone->transform.rotation, &gRight, DEG2RAD * 180, &cone->transform.rotation);
+
+    renderable_init(&cone->renderable, &cone->transform, "rom:/models/cone/cone.t3dm");
+
+    render_scene_add_renderable(&cone->renderable, 1.0f);
+
+
+    physics_object_init(
+        entity_id,
+        &cone->collision,
+        &cone_collision,
+        COLLISION_LAYER_TANGIBLE,
+        &cone->transform.position,
+        &cone->transform.rotation,
+        10.0f
+    );
+
+    // cone->collision.center_offset.y = cone_collision.shape_data.cylinder.half_height;
+    cone->collision.center_offset.y = cone_collision.shape_data.cone.half_height;
+
+
+    cone->collision.has_gravity = 0;
+    cone->collision.is_fixed = 1;
+
+    collision_scene_add(&cone->collision);
+}
+
+void cone_destroy(struct cone* cone){
+    render_scene_remove(&cone->renderable);
+    renderable_destroy(&cone->renderable);
+    collision_scene_remove(&cone->collision);
+}

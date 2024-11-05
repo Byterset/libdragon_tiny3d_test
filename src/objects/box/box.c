@@ -19,17 +19,13 @@ static struct physics_object_collision_data box_collision = {
     .shape_type = COLLISION_SHAPE_BOX,
 };
 
-void box_update(struct box* box){
-}
-
 void box_init(struct box* box, struct box_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&box->transform);
 
     box->transform.scale = (struct Vector3){2.0f, 2.0f, 2.0f};
-    box->transform.position = def->position;
-    quatRotateAxisEuler(&box->transform.rotation, &gUp, 45.0f, &box->transform.rotation);
-    box->look_direction = (struct Vector2){1.0f, 0.0f};
+    vector3Add(&box->transform.position, &def->position, &box->transform.position);
+    // quatRotateAxisEuler(&box->transform.rotation, &gUp, DEG2RAD * 45.0f, &box->transform.rotation);
 
     renderable_init(&box->renderable, &box->transform, "rom:/models/box/box.t3dm");
 
@@ -47,11 +43,8 @@ void box_init(struct box* box, struct box_definition* def){
     );
 
     box->collision.center_offset.y = box_collision.shape_data.box.half_size.y;
-
-
     box->collision.has_gravity = 1;
 
-    update_add(box, (update_callback)box_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
     collision_scene_add(&box->collision);
 }
 

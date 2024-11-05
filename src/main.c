@@ -15,6 +15,8 @@
 #include "player/player.h"
 #include "map/map.h"
 #include "objects/box/box.h"
+#include "objects/cone/cone.h"
+#include "objects/cylinder/cylinder.h"
 #include "objects/platform/platform.h"
 #include "effects/fire.h"
 #include "skybox/skybox_flat.h"
@@ -53,6 +55,8 @@ struct box box1;
 struct box box2;
 struct box box3;
 struct box box4;
+struct cone cone;
+struct cylinder cylinder;
 struct platform plat;
 struct fire fire;
 struct skybox_flat skybox_flat;
@@ -72,6 +76,15 @@ struct player_definition playerDef = {
 struct box_definition box_def = {
     (struct Vector3){0, 10, 0}
 };
+
+struct cone_definition cone_def = {
+    (struct Vector3){0, 0, -10}
+};
+
+struct cylinder_definition cyl_def = {
+    (struct Vector3){-10, 0, -10}
+};
+
 struct platform_definition plat_def = {
     (struct Vector3){9, 6, 7}
 };
@@ -97,8 +110,11 @@ void setup()
     box_init(&box2, &box_def);
     box_def.position.y += 5;
     box_init(&box3, &box_def);
-    box_def.position.y += 5;
-    box_init(&box4, &box_def);
+    // box_def.position.y += 5;
+    // box_init(&box4, &box_def);
+
+    // cone_init(&cone, &cone_def);
+    cylinder_init(&cylinder, &cyl_def);
 
     platform_init(&plat, &plat_def);
     fire_init(&fire);
@@ -117,7 +133,7 @@ void render3d()
 {
     #ifdef DEBUG_COLLIDERS_RAYLIB
     if(render_collision){
-        
+
         Camera3D raylib_cam = {0};
         raylib_cam.position = (Raylib_Vector3){camera.transform.position.x * SCENE_SCALE, camera.transform.position.y * SCENE_SCALE, camera.transform.position.z * SCENE_SCALE};
         raylib_cam.target = (Raylib_Vector3){

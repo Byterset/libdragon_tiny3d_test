@@ -1,4 +1,4 @@
-#include "cylinder.h"
+#include "box.h"
 
 #include "../physics_object.h"
 #include <math.h>
@@ -7,7 +7,6 @@
 void box_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
     struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)&object->collision->shape_data;
-
     output->x = direction->x > 0.0f ? shape_data->box.half_size.x : -shape_data->box.half_size.x;
     output->y = direction->y > 0.0f ? shape_data->box.half_size.y : -shape_data->box.half_size.y;
     output->z = direction->z > 0.0f ? shape_data->box.half_size.z : -shape_data->box.half_size.z;

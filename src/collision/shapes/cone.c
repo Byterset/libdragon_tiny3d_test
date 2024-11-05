@@ -1,41 +1,49 @@
-#include "cylinder.h"
+#include "cone.h"
 
 #include "../physics_object.h"
 #include "../../math/minmax.h"
+#include "../../math/mathf.h"
 #include <math.h>
 
 void cone_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
-    struct physics_object *object = (struct physics_object *)data;
-    union physics_object_collision_shape_data *shape_data = (union physics_object_collision_shape_data *)&object->collision->shape_data;
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)&object->collision->shape_data;
 
-    float projected_length = fabsf(direction->y);
-    struct Vector3 support_point_local;
-    if(direction->x * direction->x + direction->z * direction->z < 0.0001f){
-        output->x = 0.0f;
-        output->y = shape_data->cone.height;
-        output->z = 0.0f;
-    } else if(projected_length <= shape_data->cone.height){ 
-        float scale_factor = shape_data->cone.radius / sqrtf(direction->x * direction->x + direction->z * direction->z);
-        output->x = direction->x * scale_factor;
-        output->y = shape_data->cone.height;
-        output->z = direction->z * scale_factor;
+
+    // Step 2: Determine the point along the cones's central axis (local y-axis) that is furthest in `direction` direction
+    struct Vector3 axis_point;
+    float sign = (direction->y > 0.0f) ? 1.0f : -1.0f;
+    axis_point.x = 0.0f;
+    axis_point.z = 0.0f;
+    axis_point.y = sign * shape_data->cone.half_height;
+
+    // Step 3: Offset by the cones's radius in the direction of `direction`
+    struct Vector3 radius_offset = { direction->x, 0.0f, direction->z };
+    vector3Normalize(&radius_offset, &radius_offset);
+    radius_offset.x *= shape_data->cone.radius;
+    radius_offset.z *= shape_data->cone.radius;
+    if(sign > 0.0f){
+        radius_offset.x = 0.0f;
+        radius_offset.z = 0.0f;
     }
-    else {
-        output->x = direction->x * shape_data->cone.radius / projected_length;
-        output->y = -shape_data->cone.height;
-        output->z = direction->z * shape_data->cone.radius / projected_length;
-    }
+        
+
+    // Combine the endpoint on the cones's axis with the radius offset
+    output->x = axis_point.x + radius_offset.x;
+    output->y = axis_point.y;
+    output->z = axis_point.z + radius_offset.z;
+
 }
 
 void cone_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {
-    struct physics_object* object = (struct physics_object*)data;
+  struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
     
     // Get cone dimensions
-    float half_height = shape_data->cone.height / 2.0f;
+    float half_height = shape_data->cone.half_height;
     float radius = shape_data->cone.radius;
 
-    // Define the cone's central axis in local space
+    // Define the cones's central axis in local space
     struct Vector3 local_axis = { 0.0f, half_height, 0.0f };
 
     // Rotate the central axis by the given rotation to get its orientation in world space

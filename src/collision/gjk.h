@@ -1,6 +1,7 @@
 #ifndef __GJK_H___
 #define __GJK_H___
 
+#include "../math/mathf.h"
 #include "../math/vector3.h"
 #include "../math/quaternion.h"
 

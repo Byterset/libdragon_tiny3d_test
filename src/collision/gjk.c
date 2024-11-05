@@ -24,6 +24,33 @@ void simplexMovePoint(struct Simplex* simplex, int to, int from) {
     simplex->objectAPoint[to] = simplex->objectAPoint[from];
 }
 
+/**
+ * Checks the current simplex to determine if it encloses the origin and updates the search direction.
+ *
+ * @param simplex Pointer to the current simplex structure.
+ * @param nextDirection Pointer to the vector that will be updated with the next search direction.
+ * @return 1 if the simplex encloses the origin, 0 otherwise.
+ *
+ * The function performs the following steps:
+ * 1. Retrieves the last added point in the simplex and calculates the vector from this point to the origin.
+ * 2. Depending on the number of points in the simplex, different checks and updates are performed:
+ *    - If the simplex has 2 points:
+ *      - Calculates the vector from the last added point to the other point.
+ *      - Uses the triple product to find the perpendicular direction to the line segment.
+ *      - If the magnitude of the new direction is very small, it uses a perpendicular vector.
+ *    - If the simplex has 3 points:
+ *      - Calculates the normal of the triangle formed by the points.
+ *      - Checks if the origin is in front of or behind the triangle.
+ *      - Depending on the position of the origin, updates the simplex and the next search direction.
+ *      - If the origin is behind the triangle, changes the winding of the triangle.
+ *    - If the simplex has 4 points:
+ *      - Iterates through the faces of the tetrahedron formed by the points.
+ *      - Determines how many faces have the origin in front of them.
+ *      - If all faces are behind the origin, the origin is enclosed.
+ *      - If one face is in front, updates the simplex and the next search direction.
+ *      - If two faces are in front, updates the simplex and the next search direction.
+ *      - If three faces are in front, resets the simplex to a single point and updates the direction.
+ */
 int simplexCheck(struct Simplex* simplex, struct Vector3* nextDirection) {
     struct Vector3* lastAdded = &simplex->points[simplex->nPoints - 1];
     struct Vector3 aToOrigin;

@@ -1,5 +1,5 @@
-#ifndef __SOBJECT_BOX_H__
-#define __SOBJECT_BOX_H__
+#ifndef __OBJECT_CYLINDER_H__
+#define __OBJECT_CYLINDER_H__
 
 #include "../../math/transform.h"
 #include "../../math/vector2.h"
@@ -10,14 +10,14 @@
 #include "../../collision/physics_object.h"
 #include "../../scene/scene_definition.h"
 
-struct box {
+struct cylinder {
     struct Transform transform;
     struct renderable renderable;
     struct physics_object collision;
 };
 
-void box_init(struct box* box, struct box_definition* def);
+void cylinder_init(struct cylinder* box, struct cylinder_definition* def);
 
-void box_destroy(struct box* box);
+void cylinder_destroy(struct cylinder* box);
 
 #endif

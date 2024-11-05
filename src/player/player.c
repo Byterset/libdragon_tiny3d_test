@@ -6,6 +6,7 @@
 #include "../collision/collision_scene.h"
 #include "../collision/shapes/capsule.h"
 #include "../collision/shapes/cylinder.h"
+#include "../collision/shapes/sphere.h"
 #include "../time/time.h"
 #include "../entity/entity_id.h"
 #include "../render/defs.h"
@@ -25,6 +26,17 @@ static struct physics_object_collision_data player_collision = {
         }},
     .shape_type = COLLISION_SHAPE_CAPSULE,
 };
+
+// static struct physics_object_collision_data player_collision = {
+//     .gjk_support_function = sphere_support_function,
+//     .bounding_box_calculator = sphere_bounding_box,
+//     .shape_data = {
+//         .capsule = {
+//             .radius = 1.0f,
+//             // .inner_half_height = 0.75f,
+//         }},
+//     .shape_type = COLLISION_SHAPE_SPHERE,
+// };
 
 void player_get_move_basis(struct Transform* transform, struct Vector3* forward, struct Vector3* right) {
     quatMultVector(&transform->rotation, &gForward, forward);
@@ -207,7 +219,7 @@ void player_init(struct player* player, struct player_definition* definition, st
     
 
     player->collision.center_offset.y = player_collision.shape_data.capsule.inner_half_height + player_collision.shape_data.capsule.radius;
-    // player->collision.center.y = player_collision.data.cylinder.half_height;
+    // player->collision.center_offset.y = player_collision.shape_data.sphere.radius;
 
     collision_scene_add(&player->collision);
 

@@ -222,10 +222,6 @@ void collision_scene_step() {
         vector3Sub(element->object->position, &element->object->prev_step_pos, &displacement);
         AABBTree_moveNode(&g_scene.object_aabbtree, element->object->aabb_tree_node, element->object->bounding_box, &displacement);
 
-        if (g_scene.mesh_collider)
-        {
-            collision_scene_collide_single(element->object, &element->object->prev_step_pos);
-        }
     }
 
     for (int i = 0; i < g_scene.count; ++i)
@@ -238,6 +234,10 @@ void collision_scene_step() {
     for (int i = 0; i < g_scene.count; ++i)
     {
         element = &g_scene.elements[i];
+        if (g_scene.mesh_collider)
+        {
+            collision_scene_collide_single(element->object, &element->object->prev_step_pos);
+        }
 
         physics_object_apply_constraints(element->object);
         element->object->prev_step_pos = *element->object->position;
@@ -255,6 +255,7 @@ struct contact* collision_scene_new_contact() {
     return result;
 }
 
+#ifdef DEBUG_COLLIDERS_RAYLIB
 /// @brief Renders the collision scene colliders in debug mode using raylib.
 void collision_scene_render_debug_raylib(){
     if(g_scene.mesh_collider){ 
@@ -266,6 +267,11 @@ void collision_scene_render_debug_raylib(){
 
         struct Vector3 center_offset_rotated;
 
+        DrawBoundingBox(
+            (BoundingBox){
+                (Raylib_Vector3){object->bounding_box.min.x * SCENE_SCALE, object->bounding_box.min.y * SCENE_SCALE, object->bounding_box.min.z * SCENE_SCALE},
+                (Raylib_Vector3){object->bounding_box.max.x * SCENE_SCALE, object->bounding_box.max.y * SCENE_SCALE, object->bounding_box.max.z * SCENE_SCALE}},
+            RED);
         if (object->rotation)
             quatMultVector(object->rotation, &object->center_offset, &center_offset_rotated);
         else
@@ -330,7 +336,7 @@ void collision_scene_render_debug_raylib(){
             struct Vector3 worldPos;
             vector3Add(object->position, &center_offset_rotated, &worldPos);
             Raylib_Vector3 pos = {worldPos.x * SCENE_SCALE, worldPos.y * SCENE_SCALE, worldPos.z * SCENE_SCALE};
-            DrawSphereWires(pos, radius * SCENE_SCALE, 3, 3, YELLOW);
+            DrawSphereWires(pos, radius * SCENE_SCALE, 5, 5, PINK);
         }
         else if(object->collision->shape_type == COLLISION_SHAPE_CYLINDER){
             // Get capsule dimensions
@@ -363,9 +369,50 @@ void collision_scene_render_debug_raylib(){
                 (Raylib_Vector3){end.x * SCENE_SCALE, end.y * SCENE_SCALE, end.z * SCENE_SCALE},
                 radius * SCENE_SCALE,
                 radius * SCENE_SCALE,
-                5,
+                10,
                 BLUE
             );
         }
+        else if(object->collision->shape_type == COLLISION_SHAPE_CONE){
+            // Get capsule dimensions
+            float half_height = object->collision->shape_data.cone.half_height;
+            float radius = object->collision->shape_data.cone.radius;
+
+            // Define the capsule's central axis in local space
+            struct Vector3 local_axis = {0.0f, half_height, 0.0f};
+
+            // Rotate the central axis by the given rotation to get its orientation in world space
+            struct Vector3 world_axis;
+            
+            if (object->rotation)
+                quatMultVector(object->rotation, &local_axis, &world_axis);
+            else
+                vector3Copy(&local_axis, &world_axis);
+
+            struct Vector3 start;
+            struct Vector3 end;
+            vector3Copy(&world_axis, &start);
+            vector3Copy(&world_axis, &end);
+            vector3Scale(&end, &end, -1.0f);
+            vector3Add(&start, object->position, &start);
+            vector3Add(&end, object->position, &end);
+            vector3Add(&end, &center_offset_rotated, &end);
+            vector3Add(&start, &center_offset_rotated, &start);
+
+            DrawLine3D(
+                (Raylib_Vector3){start.x * SCENE_SCALE, start.y * SCENE_SCALE, start.z * SCENE_SCALE},
+                (Raylib_Vector3){end.x * SCENE_SCALE, end.y * SCENE_SCALE, end.z * SCENE_SCALE},
+                BLUE
+            );
+            DrawCircle3D(
+                (Raylib_Vector3){end.x * SCENE_SCALE, end.y * SCENE_SCALE, end.z * SCENE_SCALE},
+                radius * SCENE_SCALE,
+                (Raylib_Vector3){1, 0, 0},
+                90,
+                BLUE
+            );
+
+        }
     }
 }
+#endif

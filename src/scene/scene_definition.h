@@ -51,6 +51,14 @@ struct box_definition {
     struct Vector3 position;
 };
 
+struct cone_definition {
+    struct Vector3 position;
+};
+
+struct cylinder_definition {
+    struct Vector3 position;
+};
+
 struct platform_definition {
     struct Vector3 position;
 };
