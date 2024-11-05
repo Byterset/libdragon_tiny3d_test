@@ -9,30 +9,14 @@ void cone_support_function(void* data, struct Vector3* direction, struct Vector3
     struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)&object->collision->shape_data;
 
+    output->x = direction->x > 0.0f ? shape_data->cone.radius : -shape_data->cone.radius;
+    output->z = direction->z > 0.0f ? shape_data->cone.radius : -shape_data->cone.radius;
+    output->y = -shape_data->cone.half_height;
 
-    // Step 2: Determine the point along the cones's central axis (local y-axis) that is furthest in `direction` direction
-    struct Vector3 axis_point;
-    float sign = (direction->y > 0.0f) ? 1.0f : -1.0f;
-    axis_point.x = 0.0f;
-    axis_point.z = 0.0f;
-    axis_point.y = sign * shape_data->cone.half_height;
-
-    // Step 3: Offset by the cones's radius in the direction of `direction`
-    struct Vector3 radius_offset = { direction->x, 0.0f, direction->z };
-    vector3Normalize(&radius_offset, &radius_offset);
-    radius_offset.x *= shape_data->cone.radius;
-    radius_offset.z *= shape_data->cone.radius;
-    if(sign > 0.0f){
-        radius_offset.x = 0.0f;
-        radius_offset.z = 0.0f;
+    if (vector3Dot(output, direction) < 0) {
+        *output = gZeroVec;
+        output->y = shape_data->cone.half_height;
     }
-        
-
-    // Combine the endpoint on the cones's axis with the radius offset
-    output->x = axis_point.x + radius_offset.x;
-    output->y = axis_point.y;
-    output->z = axis_point.z + radius_offset.z;
-
 }
 
 void cone_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {

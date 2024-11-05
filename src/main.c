@@ -113,7 +113,7 @@ void setup()
     // box_def.position.y += 5;
     // box_init(&box4, &box_def);
 
-    // cone_init(&cone, &cone_def);
+    cone_init(&cone, &cone_def);
     cylinder_init(&cylinder, &cyl_def);
 
     platform_init(&plat, &plat_def);
