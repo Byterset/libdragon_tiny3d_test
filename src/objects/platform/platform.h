@@ -14,7 +14,7 @@ struct platform {
     float rot_y;
     struct Transform transform;
     struct renderable renderable;
-    struct physics_object collision;
+    struct physics_object physics;
     struct Vector2 look_direction;
 };
 

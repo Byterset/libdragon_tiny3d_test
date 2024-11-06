@@ -18,12 +18,12 @@ void physics_object_init(
     object->entity_id = entity_id;
     object->collision = type;
     object->position = position;
-    object->verlet_prev_position = *position;
     object->prev_step_pos = *position;
     object->rotation = rotation;
     object->velocity = gZeroVec;
     object->center_offset = gZeroVec;
     object->time_scalar = 1.0f;
+    object->gravity_scalar = 1.0f;
     object->mass = mass;
     object->mass_inv = 1.0f / mass;
     object->has_gravity = 1;
@@ -37,88 +37,59 @@ void physics_object_init(
     physics_object_recalculate_aabb(object);
 }
 
-/// @brief Applies gravity and performs verlet integration on the object.
-/// Will not do so if the object is a trigger or fixed
-/// @param object 
-void physics_object_update(struct physics_object* object) {
+void physics_object_update_euler(struct physics_object* object) {
     if (object->is_trigger | object->is_fixed) {
         return;
     }
 
     if (object->has_gravity) {
-        object->acceleration.y += GRAVITY_CONSTANT;
+        object->velocity.y += FIXED_DELTATIME * object->time_scalar * GRAVITY_CONSTANT * object->gravity_scalar;
     }
+    vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
+    object->velocity.y = clampf(object->velocity.y, -TERMINAL_VELOCITY, TERMINAL_VELOCITY);
+
     object->is_grounded = 0;
 
-    //new_pos = current_pos + (current_pos − previous_pos) + a * (Δt^2)
-    struct Vector3 displacement;
-    vector3Sub(object->position, &object->verlet_prev_position, &displacement); // current_pos − previous_pos
-    vector3Scale(&object->acceleration, &object->acceleration, FIXED_DELTATIME_SQUARED); // a * (Δt^2)
-    vector3Scale(&displacement, &displacement, 0.995f); // introduce damping
-    vector3Add(&displacement, &object->acceleration, &displacement); // current_pos − previous_pos + a * (Δt^2)
-    vector3Copy(object->position, &object->verlet_prev_position);
-    vector3Add(object->position, &displacement, object->position); // add to current position
-    object->velocity = physics_object_get_velocity(object); // update the inferred velocity
-    object->acceleration = gZeroVec; // reset forces
+    vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
+    object->acceleration = gZeroVec;
+
 }
 
 void physics_object_apply_constraints(struct physics_object* object){
     if (object->position->y <= -20){
-        physics_object_position_no_force(object, &(struct Vector3){object->position->x, -20, object->position->z});
+        object->position->y = -20;
     }
     if (object->position->y >= 2000){
-        physics_object_position_no_force(object, &(struct Vector3){object->position->x, 2000, object->position->z});
+        object->position->y = 2000;
     }
     if (object->position->x <= -2000){
-        physics_object_position_no_force(object, &(struct Vector3){-2000, object->position->y, object->position->z});
+        object->position->x = -2000;
     }
     if (object->position->x >= 2000){
-        physics_object_position_no_force(object, &(struct Vector3){2000, object->position->y, object->position->z});
+        object->position->x = 2000;
     }
     if (object->position->z <= -2000){
-        physics_object_position_no_force(object, &(struct Vector3){object->position->x, object->position->y, -2000});
+        object->position->z = -2000;
     }
     if (object->position->z >= 2000){
-        physics_object_position_no_force(object, &(struct Vector3){object->position->x, object->position->y, 2000});
+        object->position->z = 2000;
     }
 }
 
 /// @brief Accelerates the object by the given acceleration vector. 
-/// 
-/// Keep in mind that the acceleration is applied for one Physics update cycle and should be scaled by the 
-/// PHYSICS_TICKRATE so it scales to one second instead.
 /// @param object 
 /// @param acceleration 
 void physics_object_accelerate(struct physics_object* object, struct Vector3* acceleration) {
     vector3Add(&object->acceleration, acceleration, &object->acceleration);
 }
 
-void physics_object_translate_no_force(struct physics_object* object, struct Vector3* translation) {
-    vector3Add(object->position, translation, object->position);
-    vector3Add(&object->verlet_prev_position, translation, &object->verlet_prev_position);
-}
-
-void physics_object_position_no_force(struct physics_object* object, struct Vector3* position) {
-    vector3Copy(position, object->position);
-    vector3Copy(position, &object->verlet_prev_position);
-}
-
-struct Vector3 physics_object_get_velocity(struct physics_object* object){
-	struct Vector3 vel;
-	vector3Copy(object->position, &vel);
-    vector3Sub(&vel, &object->verlet_prev_position, &vel);
-    return vel;
-}
-
 void physics_object_set_velocity(struct physics_object* object, struct Vector3* velocity){
-    vector3Copy(object->position, &object->verlet_prev_position);
-    vector3Sub(&object->verlet_prev_position, velocity, &object->verlet_prev_position);
+    vector3Copy(velocity, &object->velocity);
 }
 
 void physics_object_apply_impulse(struct physics_object* object, struct Vector3* impulse) {
-    vector3Sub(&object->verlet_prev_position, impulse, &object->verlet_prev_position);
+    vector3AddScaled(&object->velocity, impulse, object->mass_inv, &object->velocity);
 }
-
 
 
 struct contact* physics_object_nearest_contact(struct physics_object* object) {

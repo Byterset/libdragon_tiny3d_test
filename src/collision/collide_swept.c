@@ -76,10 +76,7 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
             physics_object_gjk_support_function,
             &result))
     {
-        // struct Vector3 old_coll_center = collide_data->object->collision->collider_world_center;
-        // vector3SubFromSelf(&old_coll_center, &swept.offset);
         collide_data->hit_result = result;
-        // collide_data->in_front_of_triangle = mesh_triangle_comparePoint(&triangle, &old_coll_center) >= 0;
         return true;
     }
     *collide_data->object->position = final_pos;
@@ -120,15 +117,8 @@ void collide_object_swept_bounce(
 
     vector3Add(object->position, &move_amount_normal, object->position);
     vector3Add(object->position, &move_amount_tangent, object->position);
-    vector3Copy(object->position, &object->verlet_prev_position);
-
     // don't include friction on a bounce
-    // if(collide_data->in_front_of_triangle){
-        correct_velocity(object, &collide_data->hit_result, -1.0f, 0.0f, object->collision->bounce);
-    // }
-    // else{
-    //     correct_velocity(object, &collide_data->hit_result, 1.0f, 0.0f, object->collision->bounce);
-    // }
+    correct_velocity(object, &collide_data->hit_result, -1.0f, 0.0f, object->collision->bounce);
 
     vector3Sub(object->position, start_pos, &move_amount);
     vector3Add(&move_amount, &object->bounding_box.min, &object->bounding_box.min);

@@ -11,8 +11,9 @@
 #include "../entity/entity_id.h"
 #include "../render/defs.h"
 
-#define PLAYER_MAX_SPEED    4.2f
-#define PLAYER_JUMP_HEIGHT  2.5f
+#define PLAYER_MAX_SPEED    8.0f
+#define PLAYER_MAX_ACC       22.0f
+#define PLAYER_JUMP_HEIGHT  3.2f
 
 static struct Vector2 player_max_rotation;
 
@@ -22,7 +23,7 @@ static struct physics_object_collision_data player_collision = {
     .shape_data = {
         .capsule = {
             .radius = 1.0f,
-            .inner_half_height = 0.75f,
+            .inner_half_height = 0.7f,
         }},
     .shape_type = COLLISION_SHAPE_CAPSULE,
 };
@@ -31,9 +32,8 @@ static struct physics_object_collision_data player_collision = {
 //     .gjk_support_function = sphere_support_function,
 //     .bounding_box_calculator = sphere_bounding_box,
 //     .shape_data = {
-//         .capsule = {
+//         .sphere = {
 //             .radius = 1.0f,
-//             // .inner_half_height = 0.75f,
 //         }},
 //     .shape_type = COLLISION_SHAPE_SPHERE,
 // };
@@ -82,10 +82,8 @@ void player_update(struct player* player) {
         player->is_jumping = true;
     }
     if (pressed.b){
-        float jumpVelocity = sqrtf(2.0f * 9.8 * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
-        // physics_object_set_velocity(&player->collision, &(struct Vector3){0, jumpVelocity * FIXED_DELTATIME, 0});
-        physics_object_accelerate(&player->collision, &(struct Vector3){0, jumpVelocity * 1 / FIXED_DELTATIME, 0});
-
+        float jumpVelocity = sqrtf(2.0f * (-GRAVITY_CONSTANT * player->physics.gravity_scalar) * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
+        player->physics.velocity.y = jumpVelocity;
     }
 
     // Update the animation and modify the skeleton, this will however NOT recalculate the matrices
@@ -126,15 +124,26 @@ void player_update(struct player* player) {
     vector3Scale(&right, &directionWorld, direction.x);
     vector3AddScaled(&directionWorld, &forward, direction.y, &directionWorld);
 
-    struct Vector3 translation;
     if(held.r){
-        vector3Scale(&directionWorld, &translation, frametime_sec * PLAYER_MOVE_SPEED * 5);
+        vector3Scale(&directionWorld, &directionWorld, 10.0f);
     }
-    else{
-        vector3Scale(&directionWorld, &translation, frametime_sec * PLAYER_MOVE_SPEED );
-    }   
+    
+    struct Vector3 desiredVelocity = {directionWorld.x * PLAYER_MAX_SPEED, 0.0f, directionWorld.z * PLAYER_MAX_SPEED};
+    float maxSpeedChange = FIXED_DELTATIME * PLAYER_MAX_ACC;
+    if(player->physics.velocity.x < desiredVelocity.x){
+        player->physics.velocity.x = fminf(player->physics.velocity.x + maxSpeedChange, desiredVelocity.x);
+    }
+    else if(player->physics.velocity.x > desiredVelocity.x){
+        player->physics.velocity.x = fmaxf(player->physics.velocity.x - maxSpeedChange, desiredVelocity.x);
+    }
 
-    physics_object_translate_no_force(&player->collision, &translation);
+    if(player->physics.velocity.z < desiredVelocity.z){
+        player->physics.velocity.z = fminf(player->physics.velocity.z + maxSpeedChange, desiredVelocity.z);
+    }
+    else if(player->physics.velocity.z > desiredVelocity.z){
+        player->physics.velocity.z = fmaxf(player->physics.velocity.z - maxSpeedChange, desiredVelocity.z);
+    }
+
 
     if (magSqrd > 0.01f) {
         struct Vector2 directionUnit;
@@ -155,18 +164,12 @@ void player_update(struct player* player) {
 
     quatAxisComplex(&gUp, &player->look_direction, &player->transform.rotation);
 
-    // ...and limit position inside the box
-    const float BOX_SIZE = 60.0f;
-    if(player->transform.position.x < -BOX_SIZE)player->transform.position.x = -BOX_SIZE;
-    if(player->transform.position.x >  BOX_SIZE)player->transform.position.x =  BOX_SIZE;
-    if(player->transform.position.z < -BOX_SIZE)player->transform.position.z = -BOX_SIZE;
-    if(player->transform.position.z >  BOX_SIZE)player->transform.position.z =  BOX_SIZE;
 
-    struct contact* contact = player->collision.active_contacts;
+    struct contact* contact = player->physics.active_contacts;
 
     while (contact) {
         // struct collectable* collectable = collectable_get(contact->other_object);
-        debugf("Collision with %d\n", contact->other_object);
+        // debugf("Collision with %d\n", contact->other_object);
         // if (collectable) {
         //     collectable_collected(collectable);
         // }
@@ -205,7 +208,7 @@ void player_init(struct player* player, struct player_definition* definition, st
 
     physics_object_init(
         entity_id,
-        &player->collision,
+        &player->physics,
         &player_collision,
         COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_DAMAGE_PLAYER,
         &player->transform.position,
@@ -213,15 +216,16 @@ void player_init(struct player* player, struct player_definition* definition, st
         50.0f
     );
 
-    player->collision.collision_group = COLLISION_GROUP_PLAYER;
-
-    player->collision.has_gravity = 1;
+    player->physics.collision_group = COLLISION_GROUP_PLAYER;
+    player->physics.gravity_scalar = 1.9f;
+    
+    player->physics.has_gravity = 1;
     
 
-    player->collision.center_offset.y = player_collision.shape_data.capsule.inner_half_height + player_collision.shape_data.capsule.radius;
+    player->physics.center_offset.y = player_collision.shape_data.capsule.inner_half_height + player_collision.shape_data.capsule.radius;
     // player->collision.center_offset.y = player_collision.shape_data.sphere.radius;
 
-    collision_scene_add(&player->collision);
+    collision_scene_add(&player->physics);
 
     player->animations.jump = t3d_anim_create(player->renderable.model->t3d_model, "Snake_Jump");
     t3d_anim_set_looping(&player->animations.jump, false); // don't loop this animation
@@ -246,7 +250,7 @@ void player_destroy(struct player* player) {
 
     render_scene_remove(&player->renderable);
     update_remove(player);
-    collision_scene_remove(&player->collision);
+    collision_scene_remove(&player->physics);
     t3d_anim_destroy(&player->animations.idle);
     t3d_anim_destroy(&player->animations.walk);
     t3d_anim_destroy(&player->animations.attack);

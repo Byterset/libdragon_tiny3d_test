@@ -210,10 +210,12 @@ void collision_scene_step() {
 
     for (int i = 0; i < g_scene.count; ++i) {
         element = &g_scene.elements[i];
-
+        element->object->prev_step_pos = *element->object->position;
         collision_scene_release_object_contacts(element->object);
 
-        physics_object_update(element->object);
+        // physics_object_update_verlet(element->object);
+
+        physics_object_update_euler(element->object);
 
 
         physics_object_recalculate_aabb(element->object);
@@ -240,7 +242,6 @@ void collision_scene_step() {
         }
 
         physics_object_apply_constraints(element->object);
-        element->object->prev_step_pos = *element->object->position;
     }
 }
 

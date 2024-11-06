@@ -13,7 +13,7 @@
 struct cylinder {
     struct Transform transform;
     struct renderable renderable;
-    struct physics_object collision;
+    struct physics_object physics;
 };
 
 void cylinder_init(struct cylinder* box, struct cylinder_definition* def);

@@ -19,7 +19,7 @@ void scene_update(void* data) {
     struct scene* scene = (struct scene*)data;
 
     struct Vector3 player_center = scene->player.transform.position;
-    player_center.y += scene->player.collision.center_offset.y;
+    player_center.y += scene->player.physics.center_offset.y;
 
     for (int i = 0; i < scene->loading_zone_count; i += 1) {
         if (AABBContainsPoint(&scene->loading_zones[i].bounding_box, &player_center)) {

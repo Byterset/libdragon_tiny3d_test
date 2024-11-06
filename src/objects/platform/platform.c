@@ -56,7 +56,7 @@ void platform_init(struct platform* platform, struct platform_definition* def){
 
     physics_object_init(
         entity_id,
-        &platform->collision,
+        &platform->physics,
         &platform_collision,
         COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_PLATFORM,
         &platform->transform.position,
@@ -65,17 +65,17 @@ void platform_init(struct platform* platform, struct platform_definition* def){
     );
 
     // platform->collision.center_offset.y = platform_collision.shape_data.box.half_size.y;
-    platform->collision.center_offset.y = platform_collision.shape_data.cylinder.half_height;
+    platform->physics.center_offset.y = platform_collision.shape_data.cylinder.half_height;
 
-    platform->collision.has_gravity = 0;
-    platform->collision.is_fixed = 1;
+    platform->physics.has_gravity = 0;
+    platform->physics.is_fixed = 1;
 
     update_add(platform, (update_callback)platform_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
-    collision_scene_add(&platform->collision);
+    collision_scene_add(&platform->physics);
 }
 
 void platform_destroy(struct platform* platform){
     render_scene_remove(&platform->renderable);
     renderable_destroy(&platform->renderable);
-    collision_scene_remove(&platform->collision);
+    collision_scene_remove(&platform->physics);
 }

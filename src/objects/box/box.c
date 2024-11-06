@@ -34,22 +34,23 @@ void box_init(struct box* box, struct box_definition* def){
 
     physics_object_init(
         entity_id,
-        &box->collision,
+        &box->physics,
         &box_collision,
         COLLISION_LAYER_TANGIBLE,
         &box->transform.position,
         &box->transform.rotation,
-        10.0f
+        2.0f
     );
+    box->physics.collision->friction = 0.1f;
+    box->physics.collision->bounce = 0.0f;
+    box->physics.center_offset.y = box_collision.shape_data.box.half_size.y;
+    box->physics.has_gravity = 1;
 
-    box->collision.center_offset.y = box_collision.shape_data.box.half_size.y;
-    box->collision.has_gravity = 1;
-
-    collision_scene_add(&box->collision);
+    collision_scene_add(&box->physics);
 }
 
 void box_destroy(struct box* box){
     render_scene_remove(&box->renderable);
     renderable_destroy(&box->renderable);
-    collision_scene_remove(&box->collision);
+    collision_scene_remove(&box->physics);
 }

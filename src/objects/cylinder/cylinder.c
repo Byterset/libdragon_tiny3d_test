@@ -38,7 +38,7 @@ void cylinder_init(struct cylinder* cylinder, struct cylinder_definition* def){
 
     physics_object_init(
         entity_id,
-        &cylinder->collision,
+        &cylinder->physics,
         &cylinder_collision,
         COLLISION_LAYER_TANGIBLE,
         &cylinder->transform.position,
@@ -47,17 +47,17 @@ void cylinder_init(struct cylinder* cylinder, struct cylinder_definition* def){
     );
 
     // cylinder->collision.center_offset.y = cylinder_collision.shape_data.cylinder.half_height;
-    cylinder->collision.center_offset.y = cylinder_collision.shape_data.cylinder.half_height;
+    cylinder->physics.center_offset.y = cylinder_collision.shape_data.cylinder.half_height;
 
 
-    cylinder->collision.has_gravity = 1;
-    cylinder->collision.is_fixed = 0;
+    cylinder->physics.has_gravity = 1;
+    cylinder->physics.is_fixed = 0;
 
-    collision_scene_add(&cylinder->collision);
+    collision_scene_add(&cylinder->physics);
 }
 
 void cylinder_destroy(struct cylinder* cylinder){
     render_scene_remove(&cylinder->renderable);
     renderable_destroy(&cylinder->renderable);
-    collision_scene_remove(&cylinder->collision);
+    collision_scene_remove(&cylinder->physics);
 }

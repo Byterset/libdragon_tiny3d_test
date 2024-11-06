@@ -11,7 +11,6 @@ struct object_mesh_collide_data {
     struct mesh_collider* mesh;
     struct physics_object* object;
     struct EpaResult hit_result;
-    // int in_front_of_triangle;
 };
 
 bool collide_object_to_mesh_swept(struct physics_object* object, struct mesh_collider* mesh, struct Vector3* prev_pos);

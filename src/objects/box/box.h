@@ -13,7 +13,7 @@
 struct box {
     struct Transform transform;
     struct renderable renderable;
-    struct physics_object collision;
+    struct physics_object physics;
 };
 
 void box_init(struct box* box, struct box_definition* def);

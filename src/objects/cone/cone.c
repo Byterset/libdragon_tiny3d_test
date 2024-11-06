@@ -39,7 +39,7 @@ void cone_init(struct cone* cone, struct cone_definition* def){
 
     physics_object_init(
         entity_id,
-        &cone->collision,
+        &cone->physics,
         &cone_collision,
         COLLISION_LAYER_TANGIBLE,
         &cone->transform.position,
@@ -48,17 +48,17 @@ void cone_init(struct cone* cone, struct cone_definition* def){
     );
 
     // cone->collision.center_offset.y = cone_collision.shape_data.cylinder.half_height;
-    cone->collision.center_offset.y = cone_collision.shape_data.cone.half_height;
+    cone->physics.center_offset.y = cone_collision.shape_data.cone.half_height;
 
 
-    cone->collision.has_gravity = 0;
-    cone->collision.is_fixed = 1;
+    cone->physics.has_gravity = 0;
+    cone->physics.is_fixed = 1;
 
-    collision_scene_add(&cone->collision);
+    collision_scene_add(&cone->physics);
 }
 
 void cone_destroy(struct cone* cone){
     render_scene_remove(&cone->renderable);
     renderable_destroy(&cone->renderable);
-    collision_scene_remove(&cone->collision);
+    collision_scene_remove(&cone->physics);
 }

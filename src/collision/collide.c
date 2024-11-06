@@ -9,18 +9,26 @@
 
 
 void correct_velocity(struct physics_object* object, struct EpaResult* result, float ratio, float friction, float bounce) {
-    struct Vector3 vel;
-    vector3Sub(object->position, &object->prev_step_pos, &vel);
-    float velocityDot = vector3Dot(&vel, &result->normal);
+    // Calculate the component of velocity along the normal
+    float velocityDot = vector3Dot(&object->velocity, &result->normal);
 
+    // Only proceed if the object is moving toward the collision surface (velocityDot < 0)
     if ((velocityDot < 0) == (ratio < 0)) {
+        struct Vector3 normalVelocity;
         struct Vector3 tangentVelocity;
-        
-        vector3AddScaled(&vel, &result->normal, -velocityDot, &tangentVelocity);
+
+        // Calculate normal and tangential components of velocity
+        vector3Scale(&result->normal, &normalVelocity, velocityDot);
+        vector3Sub(&object->velocity, &normalVelocity, &tangentVelocity);
+
+        // Apply bounce: invert the normal velocity component and scale by bounce factor
+        vector3Scale(&normalVelocity, &normalVelocity, -bounce);
+
+        // Apply friction: scale the tangent velocity by (1 - friction)
         vector3Scale(&tangentVelocity, &tangentVelocity, 1.0f - friction);
 
-        vector3AddScaled(&tangentVelocity, &result->normal, velocityDot * -bounce, &tangentVelocity);
-        physics_object_set_velocity(object, &tangentVelocity);
+        // Combine normal and tangential components to get the new velocity
+        vector3Add(&normalVelocity, &tangentVelocity, &object->velocity);
     }
 }
 
@@ -28,24 +36,10 @@ void correct_overlap(struct physics_object* object, struct EpaResult* result, fl
     if (object->is_fixed) {
         return;
     }
-    struct Vector3 correction;
-    vector3Scale(&result->normal, &correction, result->penetration * ratio);
-    physics_object_translate_no_force(object, &correction);
-    
-    float angle = acosf(vector3Dot(&gUp, &result->normal)); // gives the angle between the normal and the up vector in radians
-    struct collision_scene* scene = collision_scene_get();
-    physics_object_recalculate_aabb(object);
-    AABBTree_moveNode(&scene->object_aabbtree, object->aabb_tree_node, object->bounding_box, &correction);
-    
-    if (correction.y > 0.0f && result->normal.y > 0.5f) {
-        struct Vector3 vel = physics_object_get_velocity(object);
-        if(vel.y < 0.0f){
-            vel.y = 0.0f;
-            physics_object_set_velocity(object, &vel);
-        }
-        
-    }
-    // correct_velocity(object, result, ratio, friction, bounce);
+
+    vector3AddScaled(object->position, &result->normal, result->penetration * ratio, object->position);
+
+    correct_velocity(object, result, ratio, friction, bounce);
 
 }
 
@@ -75,13 +69,7 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
             physics_object_gjk_support_function,
             &result))
     {
-        // if(mesh_triangle_comparePoint(&triangle, &object->collision->collider_world_center) >= 0){
-            correct_overlap(object, &result, -1.0f, object->collision->friction, object->collision->bounce);
-        // }
-        // else{
-        //     correct_overlap(object, &result, 1.0f, object->collision->friction, object->collision->bounce);
-        // }
-        
+        correct_overlap(object, &result, -1.0f, object->collision->friction, object->collision->bounce);
         collide_add_contact(object, &result);
         return true;
     }

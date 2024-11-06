@@ -13,6 +13,7 @@
 #include <stdbool.h>
 
 #define GRAVITY_CONSTANT    -9.8f
+#define TERMINAL_VELOCITY   50.0f
 
 enum collision_layers {
     COLLISION_LAYER_TANGIBLE = (1 << 0),
@@ -60,7 +61,6 @@ struct physics_object {
     entity_id entity_id;
     struct physics_object_collision_data* collision; // information about the collision shape
     struct Vector3* position;
-    struct Vector3 verlet_prev_position;
     struct Vector3 prev_step_pos;
     struct Quaternion* rotation;
     struct Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
@@ -70,6 +70,7 @@ struct physics_object {
     float time_scalar;
     float mass;
     float mass_inv;
+    float gravity_scalar;
     uint16_t has_gravity: 1;
     uint16_t is_trigger: 1;
     uint16_t is_fixed: 1;
@@ -91,7 +92,8 @@ void physics_object_init(
     float mass
 );
 
-void physics_object_update(struct physics_object* object);
+void physics_object_update_verlet(struct physics_object* object);
+void physics_object_update_euler(struct physics_object* object);
 
 struct contact* physics_object_nearest_contact(struct physics_object* object);
 bool physics_object_is_touching(struct physics_object* object, entity_id id);
@@ -99,7 +101,7 @@ bool physics_object_is_touching(struct physics_object* object, entity_id id);
 void physics_object_accelerate(struct physics_object* object, struct Vector3* acceleration);
 void physics_object_translate_no_force(struct physics_object* object, struct Vector3* translation);
 void physics_object_position_no_force(struct physics_object* object, struct Vector3* position);
-struct Vector3 physics_object_get_velocity(struct physics_object* object);
+struct Vector3 physics_object_get_velocity_verlet(struct physics_object* object);
 void physics_object_set_velocity(struct physics_object* object, struct Vector3* velocity);
 void physics_object_apply_impulse(struct physics_object* object, struct Vector3* impulse);
 
