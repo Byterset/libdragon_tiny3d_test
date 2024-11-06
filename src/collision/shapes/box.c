@@ -18,21 +18,16 @@ void box_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box)
     struct Vector3* half_size = &shape_data->box.half_size;
 
     // Define the local basis vectors for the oriented box
-    struct Vector3 local_x = { half_size->x, 0.0f, 0.0f };
-    struct Vector3 local_y = { 0.0f, half_size->y, 0.0f };
-    struct Vector3 local_z = { 0.0f, 0.0f, half_size->z };
+    struct Vector3 world_x = { half_size->x, 0.0f, 0.0f };
+    struct Vector3 world_y = { 0.0f, half_size->y, 0.0f };
+    struct Vector3 world_z = { 0.0f, 0.0f, half_size->z };
 
     // Rotate the basis vectors according to the given rotation
-    struct Vector3 world_x, world_y, world_z;
+
     if(rotation){
-        quatMultVector(rotation, &local_x, &world_x);
-        quatMultVector(rotation, &local_y, &world_y);
-        quatMultVector(rotation, &local_z, &world_z);
-    }
-    else{
-        vector3Copy(&local_x, &world_x);
-        vector3Copy(&local_y, &world_y);
-        vector3Copy(&local_z, &world_z);
+        quatMultVector(rotation, &world_x, &world_x);
+        quatMultVector(rotation, &world_y, &world_y);
+        quatMultVector(rotation, &world_z, &world_z);
     }
 
 

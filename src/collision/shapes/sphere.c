@@ -11,8 +11,24 @@ void sphere_support_function(void* data, struct Vector3* direction, struct Vecto
 
     float radius = shape_data->sphere.radius;
 
-    vector3Normalize(direction, output);
-    vector3Scale(output, output, radius);
+    float distance = fabsf(direction->x);
+    output->x = direction->x > 0.0f ? radius : -radius;
+    output->y = 0.0f;
+    output->z = 0.0f;
+
+    for (int i = 1; i < 3; ++i) {
+        float distanceCheck = fabsf(VECTOR3_AS_ARRAY(direction)[i]);
+
+        if (distanceCheck > distance) {
+            distance = distanceCheck;
+            *output = gZeroVec;
+            if (VECTOR3_AS_ARRAY(direction)[i] > 0.0f) {
+                VECTOR3_AS_ARRAY(output)[i] = radius;
+            } else {
+                VECTOR3_AS_ARRAY(output)[i] = -radius;
+            }
+        }
+    }
 }
 
 void sphere_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {
