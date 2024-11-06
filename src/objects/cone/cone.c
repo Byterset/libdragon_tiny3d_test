@@ -15,8 +15,8 @@ static struct physics_object_collision_data cone_collision = {
     .bounding_box_calculator = cone_bounding_box,
     .shape_data = {
         .cone = {
-            .half_height = 2.0f,
-            .radius = 4.0f
+            .half_height = 2.5f,
+            .radius = 7.0f
         }
     },
     .shape_type = COLLISION_SHAPE_CONE,
@@ -27,9 +27,10 @@ void cone_init(struct cone* cone, struct cone_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&cone->transform);
 
-    cone->transform.scale = (struct Vector3){4.0f, 4.0f, 4.0f};
+    cone->transform.scale = (struct Vector3){7.0f, 5.0f, 7.0f};
     cone->transform.position = def->position;
-    // quatRotateAxisEuler(&cone->transform.rotation, &gRight, DEG2RAD * 180, &cone->transform.rotation);
+    quatRotateAxisEuler(&cone->transform.rotation, &gRight, T3D_DEG_TO_RAD(0.0f), &cone->transform.rotation);
+    // cone->transform.position.y += 4.5f;
 
     renderable_init(&cone->renderable, &cone->transform, "rom:/models/cone/cone.t3dm");
 

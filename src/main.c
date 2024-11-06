@@ -78,7 +78,7 @@ struct box_definition box_def = {
 };
 
 struct cone_definition cone_def = {
-    (struct Vector3){0, 0, -10}
+    (struct Vector3){6, 0, -15}
 };
 
 struct cylinder_definition cyl_def = {

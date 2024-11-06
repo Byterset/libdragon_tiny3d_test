@@ -14,10 +14,11 @@ struct swept_physics_object {
 
 void swept_physics_object_gjk_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
     struct swept_physics_object* obj = (struct swept_physics_object*)data;
-
+    struct Vector3 norm_dir;
+    vector3Normalize(direction, &norm_dir);
     physics_object_gjk_support_function(obj->object, direction, output);
 
-    if (vector3Dot(&obj->offset, direction) > 0.0f) {
+    if (vector3Dot(&obj->offset, &norm_dir) > 0.0f) {
         vector3Add(output, &obj->offset, output);
     }
 }
@@ -31,7 +32,6 @@ void object_mesh_collide_data_init(
     data->prev_pos = prev_pos;
     data->mesh = mesh;
     data->object = object;
-    data->in_front_of_triangle = 1;
 }
 
 bool collide_object_swept_to_triangle(void* data, int triangle_index) {
@@ -76,8 +76,10 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
             physics_object_gjk_support_function,
             &result))
     {
+        // struct Vector3 old_coll_center = collide_data->object->collision->collider_world_center;
+        // vector3SubFromSelf(&old_coll_center, &swept.offset);
         collide_data->hit_result = result;
-        collide_data->in_front_of_triangle = mesh_triangle_comparePoint(&triangle, &collide_data->object->collision->collider_world_center) >= 0;
+        // collide_data->in_front_of_triangle = mesh_triangle_comparePoint(&triangle, &old_coll_center) >= 0;
         return true;
     }
     *collide_data->object->position = final_pos;
@@ -121,18 +123,16 @@ void collide_object_swept_bounce(
     vector3Copy(object->position, &object->verlet_prev_position);
 
     // don't include friction on a bounce
-    if(collide_data->in_front_of_triangle){
+    // if(collide_data->in_front_of_triangle){
         correct_velocity(object, &collide_data->hit_result, -1.0f, 0.0f, object->collision->bounce);
-        // correct_overlap(object, &collide_data->hit_result, 1.0f, 0.0f, object->collision->bounce);
-    }
-    else{
-        correct_velocity(object, &collide_data->hit_result, 1.0f, 0.0f, object->collision->bounce);
-        // correct_overlap(object, &collide_data->hit_result, -1.0f, 0.0f, object->collision->bounce);
-    }
+    // }
+    // else{
+    //     correct_velocity(object, &collide_data->hit_result, 1.0f, 0.0f, object->collision->bounce);
+    // }
 
-    // vector3Sub(object->position, start_pos, &move_amount);
-    // vector3Add(&move_amount, &object->bounding_box.min, &object->bounding_box.min);
-    // vector3Add(&move_amount, &object->bounding_box.max, &object->bounding_box.max);
+    vector3Sub(object->position, start_pos, &move_amount);
+    vector3Add(&move_amount, &object->bounding_box.min, &object->bounding_box.min);
+    vector3Add(&move_amount, &object->bounding_box.max, &object->bounding_box.max);
 
     collide_add_contact(object, &collide_data->hit_result);
 }

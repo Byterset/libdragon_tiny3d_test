@@ -28,31 +28,46 @@ void cylinder_bounding_box(void* data, struct Quaternion* rotation, struct AABB*
     struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
     
-    // Get cylinder dimensions
+    // Get capsule dimensions
     float half_height = shape_data->cylinder.half_height;
     float radius = shape_data->cylinder.radius;
 
-    // Define the cylinders's central axis in local space
-    struct Vector3 local_axis = { 0.0f, half_height, 0.0f };
 
-    // Rotate the central axis by the given rotation to get its orientation in world space
-    struct Vector3 world_axis;
-    if(rotation)
-        quatMultVector(rotation, &local_axis, &world_axis);
+    // Define the capsule's central axis in local space
+    struct Vector3 corners[8] = { 
+        {-radius, -half_height, -radius },
+        { radius, -half_height, -radius },
+        {-radius, -half_height,  radius },
+        { radius, -half_height,  radius },
+        {-radius,  half_height, -radius },
+        { radius,  half_height, -radius },
+        {-radius,  half_height,  radius },
+        { radius,  half_height,  radius }
+    };
+    struct Vector3 new_min;
+    struct Vector3 new_max;
+
+    // Initialize new_min and new_max with the first rotated corner
+    struct Vector3 rotated_corner;
+    if(object->rotation)
+        quatMultVector(object->rotation, &corners[0], &rotated_corner);
     else
-        vector3Copy(&local_axis, &world_axis);
+        vector3Copy(&corners[0], &rotated_corner);
+    new_min = rotated_corner;
+    new_max = rotated_corner;
 
-    // Calculate the extents by projecting the rotated axis and adding the radius
-    float extent_x = fabsf(world_axis.x) + radius;
-    float extent_y = fabsf(world_axis.y);
-    float extent_z = fabsf(world_axis.z) + radius;
+    for(int i = 1; i < 8; i++){
+        if(object->rotation)
+            quatMultVector(object->rotation, &corners[i], &rotated_corner);
+        else
+            vector3Copy(&corners[i], &rotated_corner);
 
-    // Set the AABB min and max based on the calculated extents
-    box->min.x = -extent_x;
-    box->min.y = -extent_y;
-    box->min.z = -extent_z;
+        // Update new_min and new_max
+        vector3Min(&new_min, &rotated_corner, &new_min);
+        vector3Max(&new_max, &rotated_corner, &new_max);
+    }
 
-    box->max.x = extent_x;
-    box->max.y = extent_y;
-    box->max.z = extent_z;
+    box->min = new_min;
+    box->max = new_max;
+
 }

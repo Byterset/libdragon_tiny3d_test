@@ -128,7 +128,7 @@ void player_update(struct player* player) {
 
     struct Vector3 translation;
     if(held.r){
-        vector3Scale(&directionWorld, &translation, frametime_sec * PLAYER_MOVE_SPEED * 10);
+        vector3Scale(&directionWorld, &translation, frametime_sec * PLAYER_MOVE_SPEED * 5);
     }
     else{
         vector3Scale(&directionWorld, &translation, frametime_sec * PLAYER_MOVE_SPEED );

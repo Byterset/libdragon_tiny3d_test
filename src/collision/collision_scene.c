@@ -184,8 +184,8 @@ void collision_scene_collide_single(struct physics_object* object, struct Vector
             {
                 return;
             }
-            // otherwise just do a normal collision check
         }
+        // otherwise just do a normal collision check
         else
         {
             collide_object_to_mesh(object, g_scene.mesh_collider);
@@ -402,15 +402,18 @@ void collision_scene_render_debug_raylib(){
             DrawLine3D(
                 (Raylib_Vector3){start.x * SCENE_SCALE, start.y * SCENE_SCALE, start.z * SCENE_SCALE},
                 (Raylib_Vector3){end.x * SCENE_SCALE, end.y * SCENE_SCALE, end.z * SCENE_SCALE},
-                BLUE
+                VIOLET
             );
-            DrawCircle3D(
-                (Raylib_Vector3){end.x * SCENE_SCALE, end.y * SCENE_SCALE, end.z * SCENE_SCALE},
-                radius * SCENE_SCALE,
-                (Raylib_Vector3){1, 0, 0},
-                90,
-                BLUE
-            );
+            // float angle = 0.0f;
+            // struct Vector3 axis;
+            // quatDecompose(object->rotation, &axis, &angle);
+            // DrawCircle3D(
+            //     (Raylib_Vector3){end.x * SCENE_SCALE, end.y * SCENE_SCALE, end.z * SCENE_SCALE},
+            //     radius * SCENE_SCALE,
+            //     (Raylib_Vector3){axis.x, axis.y, axis.z},
+            //     angle,
+            //     BLUE
+            // );
 
         }
     }

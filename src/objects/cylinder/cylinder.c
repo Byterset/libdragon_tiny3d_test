@@ -29,7 +29,7 @@ void cylinder_init(struct cylinder* cylinder, struct cylinder_definition* def){
 
     cylinder->transform.scale = (struct Vector3){6.0f, 5.0f, 6.0f};
     cylinder->transform.position = def->position;
-    // quatRotateAxisEuler(&cylinder->transform.rotation, &gRight, DEG2RAD * 180, &cylinder->transform.rotation);
+    // quatRotateAxisEuler(&cylinder->transform.rotation, &gRight, T3D_DEG_TO_RAD(45.0f), &cylinder->transform.rotation);
 
     renderable_init(&cylinder->renderable, &cylinder->transform, "rom:/models/cylinder/cylinder.t3dm");
 

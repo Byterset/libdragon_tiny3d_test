@@ -75,12 +75,12 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
             physics_object_gjk_support_function,
             &result))
     {
-        if(mesh_triangle_comparePoint(&triangle, &object->collision->collider_world_center) >= 0){
+        // if(mesh_triangle_comparePoint(&triangle, &object->collision->collider_world_center) >= 0){
             correct_overlap(object, &result, -1.0f, object->collision->friction, object->collision->bounce);
-        }
-        else{
-            correct_overlap(object, &result, 1.0f, object->collision->friction, object->collision->bounce);
-        }
+        // }
+        // else{
+        //     correct_overlap(object, &result, 1.0f, object->collision->friction, object->collision->bounce);
+        // }
         
         collide_add_contact(object, &result);
         return true;
