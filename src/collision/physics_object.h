@@ -92,8 +92,8 @@ void physics_object_init(
     float mass
 );
 
-void physics_object_update_verlet(struct physics_object* object);
 void physics_object_update_euler(struct physics_object* object);
+void physics_object_update_velocity_verlet_simple(struct physics_object* object);
 
 struct contact* physics_object_nearest_contact(struct physics_object* object);
 bool physics_object_is_touching(struct physics_object* object, entity_id id);

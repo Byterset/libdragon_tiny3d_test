@@ -74,7 +74,7 @@ struct player_definition playerDef = {
 };
 
 struct box_definition box_def = {
-    (struct Vector3){0, 10, 0}
+    (struct Vector3){0, 5, 5}
 };
 
 struct cone_definition cone_def = {
@@ -104,12 +104,12 @@ void setup()
     skybox_flat_init(&skybox_flat);
     map_init(&map);
     box_init(&box, &box_def);
-    box_def.position.y += 5;
+    box_def.position.y += 10;
     box_init(&box1, &box_def);
-    box_def.position.y += 5;
-    box_init(&box2, &box_def);
-    box_def.position.y += 5;
-    box_init(&box3, &box_def);
+    // box_def.position.y += 3;
+    // box_init(&box2, &box_def);
+    // box_def.position.y += 3;
+    // box_init(&box3, &box_def);
     // box_def.position.y += 5;
     // box_init(&box4, &box_def);
 
@@ -180,19 +180,7 @@ void render3d()
 
         rdpq_set_mode_standard();
 
-        t3d_viewport_set_projection(viewport, T3D_DEG_TO_RAD(camera.fov), camera.near * SCENE_SCALE, camera.far * SCENE_SCALE);
-        T3DVec3 camPos, camTarget;
-        camPos.v[0] = camera.transform.position.x * SCENE_SCALE;
-        camPos.v[1] = (camera.transform.position.y) * SCENE_SCALE;
-        camPos.v[2] = camera.transform.position.z * SCENE_SCALE;
-        struct Vector3 camera_target;
-        quatMultVector(&camera.transform.rotation, &gForward, &camera_target);
-        vector3Add(&camera.transform.position, &camera_target, &camera_target);
-
-        camTarget.v[0] = camera_controller.target.x * SCENE_SCALE;
-        camTarget.v[1] = (camera_controller.target.y + CAMERA_FOLLOW_HEIGHT) * SCENE_SCALE;
-        camTarget.v[2] = camera_controller.target.z * SCENE_SCALE;
-        t3d_viewport_look_at(viewport, &camPos, &camTarget, &(T3DVec3){{0, 1, 0}});
+        camera_apply(&camera, viewport, &camera_controller);
 
         render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool], &fog);
     #ifdef DEBUG_COLLIDERS_RAYLIB

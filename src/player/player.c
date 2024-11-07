@@ -12,7 +12,7 @@
 #include "../render/defs.h"
 
 #define PLAYER_MAX_SPEED    8.0f
-#define PLAYER_MAX_ACC       22.0f
+#define PLAYER_MAX_ACC       26.0f
 #define PLAYER_JUMP_HEIGHT  3.2f
 
 static struct Vector2 player_max_rotation;
@@ -82,7 +82,7 @@ void player_update(struct player* player) {
         player->is_jumping = true;
     }
     if (pressed.b){
-        float jumpVelocity = sqrtf(2.0f * (-GRAVITY_CONSTANT * player->physics.gravity_scalar) * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
+        float jumpVelocity = sqrtf(-2.0f * (GRAVITY_CONSTANT * player->physics.gravity_scalar) * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
         player->physics.velocity.y = jumpVelocity;
     }
 

@@ -1,8 +1,5 @@
 #include "camera.h"
-
 #include <math.h>
-
-#include "../math/matrix.h"
 #include "defs.h"
 
 void camera_init(struct camera* camera, float fov, float near, float far) {
@@ -12,55 +9,15 @@ void camera_init(struct camera* camera, float fov, float near, float far) {
     camera->far = far;
 }
 
+void camera_apply(struct camera* camera, T3DViewport* viewport, struct camera_controller* cam_controller) {
+    t3d_viewport_set_projection(viewport, T3D_DEG_TO_RAD(camera->fov), camera->near * SCENE_SCALE, camera->far * SCENE_SCALE);
+    T3DVec3 camPos, camTarget;
+    camPos.v[0] = camera->transform.position.x * SCENE_SCALE;
+    camPos.v[1] = (camera->transform.position.y) * SCENE_SCALE;
+    camPos.v[2] = camera->transform.position.z * SCENE_SCALE;
 
-void camera_extract_clipping_plane(float viewPersp[4][4], struct Plane* output, int axis, float direction) {
-    output->normal.x = viewPersp[0][axis] * direction + viewPersp[0][3];
-    output->normal.y = viewPersp[1][axis] * direction + viewPersp[1][3];
-    output->normal.z = viewPersp[2][axis] * direction + viewPersp[2][3];
-    output->d = viewPersp[3][axis] * direction + viewPersp[3][3];
-
-    float mult = 1.0f / sqrtf(vector3MagSqrd(&output->normal));
-    vector3Scale(&output->normal, &output->normal, mult);
-    output->d *= mult;
-}
-
-void camera_apply(struct camera* camera, T3DViewport* viewport, struct ClippingPlanes* clipping_planes, mat4x4 view_proj_matrix) {
-    float tan_fov = tanf(camera->fov * (0.5f * 3.14159f / 180.0f));
-    float aspect_ratio = (float)viewport->size[0] / (float)viewport->size[1];
-
-    float near = camera->near * SCENE_SCALE;
-    float far = camera->far * SCENE_SCALE;
-
-    matrixPerspective(
-        viewport->matProj.m, 
-        -aspect_ratio * tan_fov * near,
-        aspect_ratio * tan_fov * near,
-        tan_fov * near,
-        -tan_fov * near,
-        near,
-        far
-    );
-    t3d_viewport_set_w_normalize(viewport, near, far);
-
-    struct Transform inverse;
-    transformInvert(&camera->transform, &inverse);
-    vector3Scale(&inverse.position, &inverse.position, SCENE_SCALE);
-    transformToMatrix(&inverse, viewport->matCamera.m);
-    viewport->_isCamProjDirty = true;
-    
-    if (!view_proj_matrix) {
-        return;
-    }
-
-    matrixMul(viewport->matProj.m, viewport->matCamera.m, view_proj_matrix);
-
-    if (!clipping_planes) {
-        return;
-    }
-
-    camera_extract_clipping_plane(view_proj_matrix, &clipping_planes->planes[0], 0, 1.0f);
-    camera_extract_clipping_plane(view_proj_matrix, &clipping_planes->planes[1], 0, -1.0f);
-    camera_extract_clipping_plane(view_proj_matrix, &clipping_planes->planes[2], 1, 1.0f);
-    camera_extract_clipping_plane(view_proj_matrix, &clipping_planes->planes[3], 1, -1.0f);
-    camera_extract_clipping_plane(view_proj_matrix, &clipping_planes->planes[4], 2, 1.0f);
+    camTarget.v[0] = cam_controller->target.x * SCENE_SCALE;
+    camTarget.v[1] = (cam_controller->target.y + CAMERA_FOLLOW_HEIGHT) * SCENE_SCALE;
+    camTarget.v[2] = cam_controller->target.z * SCENE_SCALE;
+    t3d_viewport_look_at(viewport, &camPos, &camTarget, &(T3DVec3){{0, 1, 0}});
 }

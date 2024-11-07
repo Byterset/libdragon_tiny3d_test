@@ -1,5 +1,7 @@
 #include "gjk.h"
 
+#define MAX_GJK_ITERATIONS  18
+
 void simplexInit(struct Simplex* simplex) {
     simplex->nPoints = 0;
 }
@@ -189,7 +191,6 @@ int simplexCheck(struct Simplex* simplex, struct Vector3* nextDirection) {
     return 0;
 }
 
-#define MAX_GJK_ITERATIONS  16
 
 int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSupport, struct Vector3* firstDirection) {
     struct Vector3 aPoint;

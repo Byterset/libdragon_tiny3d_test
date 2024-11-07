@@ -25,7 +25,7 @@ void box_init(struct box* box, struct box_definition* def){
 
     box->transform.scale = (struct Vector3){2.0f, 2.0f, 2.0f};
     vector3Add(&box->transform.position, &def->position, &box->transform.position);
-    // quatRotateAxisEuler(&box->transform.rotation, &gUp, DEG2RAD * 45.0f, &box->transform.rotation);
+    quatRotateAxisEuler(&box->transform.rotation, &gUp, T3D_DEG_TO_RAD(45.0f), &box->transform.rotation);
 
     renderable_init(&box->renderable, &box->transform, "rom:/models/box/box.t3dm");
 
@@ -41,7 +41,7 @@ void box_init(struct box* box, struct box_definition* def){
         &box->transform.rotation,
         2.0f
     );
-    box->physics.collision->friction = 0.1f;
+    box->physics.collision->friction = 0.0f;
     box->physics.collision->bounce = 0.0f;
     box->physics.center_offset.y = box_collision.shape_data.box.half_size.y;
     box->physics.has_gravity = 1;

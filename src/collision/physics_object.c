@@ -55,6 +55,25 @@ void physics_object_update_euler(struct physics_object* object) {
 
 }
 
+void physics_object_update_velocity_verlet_simple(struct physics_object* object) {
+    if (object->is_trigger | object->is_fixed) {
+        return;
+    }
+
+    if (object->has_gravity) {
+        object->acceleration.y += GRAVITY_CONSTANT * object->gravity_scalar;
+    }
+    vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
+    object->velocity.y = clampf(object->velocity.y, -TERMINAL_VELOCITY, TERMINAL_VELOCITY);
+
+    object->is_grounded = 0;
+
+    vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
+    vector3AddScaled(object->position, &object->acceleration, FIXED_DELTATIME * FIXED_DELTATIME * object->time_scalar * 0.5f, object->position);
+    object->acceleration = gZeroVec;
+
+}
+
 void physics_object_apply_constraints(struct physics_object* object){
     if (object->position->y <= -20){
         object->position->y = -20;

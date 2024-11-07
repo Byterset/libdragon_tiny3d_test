@@ -78,13 +78,6 @@ void render_scene_remove(void* data) {
 void render_scene_render(struct camera* camera, T3DViewport* viewport, struct frame_memory_pool* pool, struct render_fog_params* fog) {
     struct render_batch batch;
 
-    struct ClippingPlanes clipping_planes;
-    mat4x4 view_proj_matrix;
-
-    // camera_apply(camera, viewport, &clipping_planes, view_proj_matrix);
-
-    matrixMul(viewport->matProj.m, viewport->matCamera.m, view_proj_matrix);
-
     t3d_viewport_attach(viewport);
 
     render_batch_init(&batch, &camera->transform, pool);
@@ -97,5 +90,5 @@ void render_scene_render(struct camera* camera, T3DViewport* viewport, struct fr
 
         current = callback_list_next(&r_scene_3d.callbacks, current);
     }
-    render_batch_execute(&batch, view_proj_matrix, viewport, fog);
+    render_batch_execute(&batch, viewport->matCamProj.m, viewport, fog);
 }

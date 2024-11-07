@@ -4,10 +4,10 @@
 #include "../math/plane.h"
 #include "../math/mathf.h"
 
-#define MAX_ITERATIONS  10
+#define MAX_EPA_ITERATIONS  14
 
-#define MAX_SIMPLEX_POINTS      (4 + MAX_ITERATIONS)
-#define MAX_SIMPLEX_TRIANGLES   (4 + MAX_ITERATIONS * 2)
+#define MAX_SIMPLEX_POINTS      (4 + MAX_EPA_ITERATIONS)
+#define MAX_SIMPLEX_TRIANGLES   (4 + MAX_EPA_ITERATIONS * 2)
 
 #define NEXT_FACE(index)        ((index) == 2 ? 0 : (index) + 1)
 
@@ -449,7 +449,7 @@ bool epaSolve(struct Simplex* startingSimplex, void* objectA, gjk_support_functi
     struct SimplexTriangle* closestFace = 0;
     float projection = 0.0f;
 
-    for (int i = 0; i < MAX_ITERATIONS; ++i) {
+    for (int i = 0; i < MAX_EPA_ITERATIONS; ++i) {
         struct Vector3 reverseNormal;
 
         closestFace = expandingSimplexClosestFace(&simplex);
@@ -531,7 +531,7 @@ int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_fu
     struct Vector3 raycastDir;
     vector3Sub(bStart, bEnd, &raycastDir);
 
-    for (int i = 0; i < MAX_ITERATIONS; ++i) {
+    for (int i = 0; i < MAX_EPA_ITERATIONS; ++i) {
         struct Vector3 reverseNormal;
 
         epaSweptFindFace(&simplex, &raycastDir, &currentTriangle, &currentEdge);

@@ -215,7 +215,8 @@ void collision_scene_step() {
 
         // physics_object_update_verlet(element->object);
 
-        physics_object_update_euler(element->object);
+        // physics_object_update_euler(element->object);
+        physics_object_update_velocity_verlet_simple(element->object);
 
 
         physics_object_recalculate_aabb(element->object);
