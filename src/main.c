@@ -31,6 +31,8 @@
 #include "resource/mesh_collider.h"
 #include "render/renderable.h"
 
+#include "collectables/collectable.h"
+
 #include "render/defs.h"
 
 #include <malloc.h>
@@ -48,13 +50,13 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 T3DVec3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
+#define NUM_BOXES 5
+#define NUM_COINS 5
+
 struct player player;
 struct map map;
-struct box box;
-struct box box1;
-struct box box2;
-struct box box3;
-struct box box4;
+struct box boxes[NUM_BOXES];
+struct collectable coins[NUM_COINS];
 struct cone cone;
 struct cylinder cylinder;
 struct platform plat;
@@ -81,6 +83,13 @@ struct cone_definition cone_def = {
     (struct Vector3){6, 0, -15}
 };
 
+struct collectable_definition collectableDef = {
+    (struct Vector3){-10, 1, -25},
+    (struct Vector2){1, 0},
+    COLLECTABLE_TYPE_COIN,
+    0
+};
+
 struct cylinder_definition cyl_def = {
     (struct Vector3){-10, 0, -10}
 };
@@ -100,18 +109,18 @@ void setup()
     render_scene_reset();
     update_reset();
     collision_scene_reset();
+    collectable_assets_load();
     camera_init(&camera, 70.0f, 1.0f, 150.0f);
     skybox_flat_init(&skybox_flat);
     map_init(&map);
-    box_init(&box, &box_def);
-    box_def.position.y += 10;
-    box_init(&box1, &box_def);
-    // box_def.position.y += 3;
-    // box_init(&box2, &box_def);
-    // box_def.position.y += 3;
-    // box_init(&box3, &box_def);
-    // box_def.position.y += 5;
-    // box_init(&box4, &box_def);
+    for(int i = 0; i < NUM_BOXES; i++){
+        box_init(&boxes[i], &box_def);
+        box_def.position.y += 10;
+    }
+    for(int i = 0; i < NUM_COINS; i++){
+        collectable_init(&coins[i], &collectableDef);
+        collectableDef.position.x += 5;
+    }
 
     cone_init(&cone, &cone_def);
     cylinder_init(&cylinder, &cyl_def);
@@ -203,15 +212,16 @@ void render()
     struct mallinfo mall_inf = mallinfo();
     int ram_used = mall_inf.uordblks + ((uint32_t)HEAP_START_ADDR) - 0x80000000 - 0x10000;
     struct collision_scene *collision_scene = collision_scene_get();
-    int aabbtree_objects_mem = sizeof(AABBTree) + (sizeof(AABBTreeNode) - sizeof(void*)) * collision_scene->object_aabbtree.nodeCount;
-    int aabb_tree_mesh_mem = sizeof(AABBTree) + (sizeof(AABBTreeNode) - sizeof(void*)) * collision_scene->mesh_collider->aabbtree.nodeCount;
+    float aabbtree_objects_mem = (sizeof(AABBTree) + (sizeof(AABBTreeNode)) * collision_scene->object_aabbtree.nodeCount) / 1024.0f;
+    float aabb_tree_mesh_mem = (sizeof(AABBTree) + (sizeof(AABBTreeNode)) * collision_scene->mesh_collider->aabbtree.nodeCount) / 1024.0f;
 
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", player.is_attacking);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "fps: %.1f", fps);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "mem: %d", ram_used);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "BVH dyn , nodes: %d, mem: %d", collision_scene->object_aabbtree.nodeCount, aabbtree_objects_mem);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "BVH mesh, nodes: %d, mem: %d", collision_scene->mesh_collider->aabbtree.nodeCount, aabb_tree_mesh_mem);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree.nodeCount, aabbtree_objects_mem);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree.nodeCount, aabb_tree_mesh_mem);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "Sleeping? %d", player.physics.is_sleeping);
 
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);

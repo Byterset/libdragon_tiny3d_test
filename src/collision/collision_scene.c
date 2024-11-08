@@ -61,7 +61,7 @@ void collision_scene_add(struct physics_object* object) {
     g_scene.count += 1;
 
     hash_map_set(&g_scene.entity_mapping, object->entity_id, object);
-    object->aabb_tree_node = AABBTreeNode_createNode(&g_scene.object_aabbtree, object->bounding_box, object);
+    object->_aabb_tree_node_id = AABBTreeNode_createNode(&g_scene.object_aabbtree, object->bounding_box, object);
 }
 
 /// @brief Returns the physics object associated with the given entity id if it exists in the collision scene.
@@ -118,7 +118,7 @@ void collision_scene_remove(struct physics_object* object) {
     if (has_found) {
         g_scene.count -= 1;
     }
-
+    AABBTree_removeLeaf(&g_scene.object_aabbtree, object->_aabb_tree_node_id, true);
     hash_map_delete(&g_scene.entity_mapping, object->entity_id);
 }
 
@@ -144,7 +144,7 @@ void collision_scene_collide_phys_object(struct collision_scene_element* element
 
     int result_count = 0;
     int aabbCheck_count = 0;
-    int max_results = 20;
+    int max_results = 5;
     NodeProxy results[max_results];
 
     AABBTree_queryBounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, &aabbCheck_count, max_results);
@@ -203,47 +203,86 @@ void collision_scene_collide_single(struct physics_object* object, struct Vector
 
 }
 
+#define SLEEP_THRESHOLD 0.0001f
+#define SLEEP_THRESHOLD_SQ (SLEEP_THRESHOLD * SLEEP_THRESHOLD)
+#define SLEEP_STEPS 20
+
 /// @brief performs a physics step on all objects in the scene, updating their positions and velocities and performing collision detection
 void collision_scene_step() {
 
     struct collision_scene_element* element;
 
+    // Update the positions of the objects and update the AABB object tree
     for (int i = 0; i < g_scene.count; ++i) {
         element = &g_scene.elements[i];
-        element->object->prev_step_pos = *element->object->position;
+
         collision_scene_release_object_contacts(element->object);
 
-        // physics_object_update_verlet(element->object);
-
-        // physics_object_update_euler(element->object);
+        if (element->object->has_gravity && !element->object->is_sleeping) // don't apply gravity to sleeping objects
+        {
+            element->object->acceleration.y += GRAVITY_CONSTANT * element->object->gravity_scalar;
+        }
         physics_object_update_velocity_verlet_simple(element->object);
-
 
         physics_object_recalculate_aabb(element->object);
 
         struct Vector3 displacement;
-        vector3Sub(element->object->position, &element->object->prev_step_pos, &displacement);
-        AABBTree_moveNode(&g_scene.object_aabbtree, element->object->aabb_tree_node, element->object->bounding_box, &displacement);
+        vector3Sub(element->object->position, &element->object->_prev_step_pos, &displacement);
+        AABBTree_moveNode(&g_scene.object_aabbtree, element->object->_aabb_tree_node_id, element->object->bounding_box, &displacement);
 
     }
 
+    // Perform collision detection and resolution for both objects and the static mesh
     for (int i = 0; i < g_scene.count; ++i)
     {
         element = &g_scene.elements[i];
+        if(element->object->is_sleeping){
+            continue;
+        }
 
         collision_scene_collide_phys_object(element);
-        
+
     }
-    for (int i = 0; i < g_scene.count; ++i)
+
+    // Update the sleep state of the objects so they can be put to sleep if they are not moving for a while
+    for (int i = 0; i < g_scene.count; i++)
     {
         element = &g_scene.elements[i];
-        if (g_scene.mesh_collider)
+
+        if (g_scene.mesh_collider && element->object->collision_layers & COLLISION_LAYER_TANGIBLE)
         {
-            collision_scene_collide_single(element->object, &element->object->prev_step_pos);
+            collision_scene_collide_single(element->object, &element->object->_prev_step_pos);
         }
 
         physics_object_apply_constraints(element->object);
+        struct Vector3 displacement_after_collision;
+        vector3Sub(element->object->position, &element->object->_prev_step_pos, &displacement_after_collision);
+        float displacement_dist = sqrtf(vector3MagSqrd(&displacement_after_collision));
+        int rot_same = 1;
+
+        element->object->_prev_step_pos = *element->object->position;
+        if(element->object->rotation){
+            rot_same = quatIsIdentical(element->object->rotation, &element->object->_prev_step_rot);
+            element->object->_prev_step_rot = *element->object->rotation;
+        }
+
+        if (displacement_dist < SLEEP_THRESHOLD && rot_same)
+        {
+            element->object->_sleep_counter += 1;
+            if (element->object->_sleep_counter > SLEEP_STEPS)
+            {
+                element->object->_sleep_counter = SLEEP_STEPS;
+                element->object->is_sleeping = 1;
+                
+            }
+
+            continue;
+        }
+        element->object->is_sleeping = 0;
+        element->object->_sleep_counter = 0;
+
     }
+    
 }
 
 /// @brief Returns a new contact from the global scene's free contact list, NULL if none are available.

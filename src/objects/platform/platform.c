@@ -58,7 +58,7 @@ void platform_init(struct platform* platform, struct platform_definition* def){
         entity_id,
         &platform->physics,
         &platform_collision,
-        COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_PLATFORM,
+        COLLISION_LAYER_TANGIBLE,
         &platform->transform.position,
         &platform->transform.rotation,
         10.0f

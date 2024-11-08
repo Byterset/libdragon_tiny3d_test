@@ -55,8 +55,6 @@ int AABBTree_moveNode(AABBTree *tree, NodeProxy node, struct AABB aabb, struct V
 
 void AABBTreeNode_rotateNode(AABBTree *tree, NodeProxy node);
 
-void AABBTreeNode_removeNode(AABBTree *tree, NodeProxy node);
-
 int AABBTreeNode_testOverlap(AABBTree *tree, NodeProxy a, NodeProxy b);
 
 struct AABB* AABBTreeNode_getBounds(AABBTree *tree, NodeProxy node);
@@ -65,7 +63,7 @@ void AABBTree_rebuild(AABBTree *tree);
 
 NodeProxy AABBTree_insertLeaf(AABBTree *tree, NodeProxy leaf);
 
-void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf);
+void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf, bool freeNode);
 
 struct AABB AABBTree_getNodeAABB(AABBTree *tree, NodeProxy node);
 

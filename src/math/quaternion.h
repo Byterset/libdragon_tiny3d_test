@@ -30,6 +30,7 @@ void quatLerp(struct Quaternion* a, struct Quaternion* b, float t, struct Quater
 void quatApplyAngularVelocity(struct Quaternion* input, struct Vector3* w, float timeStep, struct Quaternion* output);
 void quatDecompose(struct Quaternion* input, struct Vector3* axis, float* angle);
 void quatRotateAxisEuler(struct Quaternion* q, struct Vector3* axis, float angle, struct Quaternion* out);
+int quatIsIdentical(struct Quaternion* a, struct Quaternion* b);
 
 float quatDot(struct Quaternion* a, struct Quaternion* b);
 

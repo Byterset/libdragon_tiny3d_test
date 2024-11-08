@@ -90,6 +90,7 @@ void AABBTreeNode_freeNode(AABBTree *tree, NodeProxy node)
     assert(0 < tree->nodeCount);
     tree->nodes[node].parent = node;
     tree->nodes[node].next = tree->freeList;
+    tree->nodes[node].data = NULL;
     tree->freeList = node;
     tree->nodeCount--;
 }
@@ -176,7 +177,7 @@ int AABBTree_moveNode(AABBTree *tree, NodeProxy node, struct AABB aabb, struct V
     vector3AddToSelf(&aabb.max, &bounds_margin);
     vector3SubFromSelf(&aabb.min, &bounds_margin);
 
-    AABBTree_removeLeaf(tree, node);
+    AABBTree_removeLeaf(tree, node, false);
 
     tree->nodes[node].bounds = aabb;
 
@@ -487,7 +488,13 @@ NodeProxy AABBTree_insertLeaf(AABBTree *tree, NodeProxy leaf)
     return leaf;
 }
 
-void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf)
+/// @brief Removes a leaf from the tree structure and frees the parent/re-arranges the sibling accordingly
+///
+/// Will also free the node if the freeNode flag is set to true
+/// @param tree 
+/// @param leaf 
+/// @param freeNode 
+void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf, bool freeNode)
 {
     assert(0 <= leaf && leaf < tree->nodeCapacity);
     assert(AABBTreeNode_isLeaf(&tree->nodes[leaf]));
@@ -543,6 +550,10 @@ void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf)
     {
         tree->root = sibling;
         tree->nodes[sibling].parent = NULL_NODE;
+    }
+
+    if(freeNode){
+        AABBTreeNode_freeNode(tree, leaf);
     }
 }
 

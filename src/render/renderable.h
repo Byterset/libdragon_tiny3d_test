@@ -19,7 +19,6 @@ void renderable_destroy(struct renderable* renderable);
 struct renderable_single_axis {
     struct TransformSingleAxis* transform;
     struct model* model;
-    rspq_block_t* block;
 };
 
 void renderable_single_axis_init(struct renderable_single_axis* renderable, struct TransformSingleAxis* transform, const char* model_filename);

@@ -19,11 +19,12 @@ enum collision_layers {
     COLLISION_LAYER_TANGIBLE = (1 << 0),
     COLLISION_LAYER_DAMAGE_PLAYER = (1 << 1),
     COLLISION_LAYER_DAMAGE_ENEMY = (1 << 2),
-    COLLISION_LAYER_PLATFORM = (1 << 3),
+    COLLISION_LAYER_COLLECTABLES = (1 << 3),
 };
 
 enum collision_group {
     COLLISION_GROUP_PLAYER = 1,
+    COLLISION_GROUP_COLLECTABLE = 2,
 };
 
 typedef void (*bounding_box_calculator)(void* data, struct Quaternion* rotation, struct AABB* box);
@@ -61,8 +62,9 @@ struct physics_object {
     entity_id entity_id;
     struct physics_object_collision_data* collision; // information about the collision shape
     struct Vector3* position;
-    struct Vector3 prev_step_pos;
+    struct Vector3 _prev_step_pos;
     struct Quaternion* rotation;
+    struct Quaternion _prev_step_rot;
     struct Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
     struct Vector3 velocity;
     struct Vector3 acceleration;
@@ -76,10 +78,12 @@ struct physics_object {
     uint16_t is_fixed: 1;
     uint16_t is_grounded: 1;
     uint16_t is_out_of_bounds: 1;
-    uint16_t collision_layers;
-    uint16_t collision_group;
-    struct contact* active_contacts;
-    NodeProxy aabb_tree_node;
+    uint16_t collision_layers; // objects that share at least one layer can collide
+    uint16_t collision_group; // objects of the same group do not collide
+    struct contact* active_contacts; // contacts with other objects from the last physics step
+    NodeProxy _aabb_tree_node_id; // the node id of the object in the AABB tree
+    uint16_t _sleep_counter;
+    uint16_t is_sleeping: 1;
 };
 
 void physics_object_init(

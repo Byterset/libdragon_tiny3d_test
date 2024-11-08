@@ -10,9 +10,10 @@
 #include "../time/time.h"
 #include "../entity/entity_id.h"
 #include "../render/defs.h"
+#include "../collectables/collectable.h"
 
 #define PLAYER_MAX_SPEED    8.0f
-#define PLAYER_MAX_ACC       26.0f
+#define PLAYER_MAX_ACC       100.0f
 #define PLAYER_JUMP_HEIGHT  3.2f
 
 static struct Vector2 player_max_rotation;
@@ -124,11 +125,13 @@ void player_update(struct player* player) {
     vector3Scale(&right, &directionWorld, direction.x);
     vector3AddScaled(&directionWorld, &forward, direction.y, &directionWorld);
 
+    float max_speed = PLAYER_MAX_SPEED;
+
     if(held.r){
-        vector3Scale(&directionWorld, &directionWorld, 10.0f);
+        max_speed *= 8.0f;
     }
     
-    struct Vector3 desiredVelocity = {directionWorld.x * PLAYER_MAX_SPEED, 0.0f, directionWorld.z * PLAYER_MAX_SPEED};
+    struct Vector3 desiredVelocity = {directionWorld.x * max_speed, 0.0f, directionWorld.z * max_speed};
     float maxSpeedChange = FIXED_DELTATIME * PLAYER_MAX_ACC;
     if(player->physics.velocity.x < desiredVelocity.x){
         player->physics.velocity.x = fminf(player->physics.velocity.x + maxSpeedChange, desiredVelocity.x);
@@ -168,11 +171,13 @@ void player_update(struct player* player) {
     struct contact* contact = player->physics.active_contacts;
 
     while (contact) {
-        // struct collectable* collectable = collectable_get(contact->other_object);
-        // debugf("Collision with %d\n", contact->other_object);
-        // if (collectable) {
-        //     collectable_collected(collectable);
-        // }
+        struct collectable* collectable = collectable_get(contact->other_object);
+        if(contact->other_object != 0) {
+            debugf("Collision with %d\n", contact->other_object);
+        }
+        if (collectable) {
+            collectable_collected(collectable);
+        }
 
         contact = contact->next;
     }
@@ -210,7 +215,7 @@ void player_init(struct player* player, struct player_definition* definition, st
         entity_id,
         &player->physics,
         &player_collision,
-        COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_DAMAGE_PLAYER,
+        COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_DAMAGE_PLAYER | COLLISION_LAYER_COLLECTABLES,
         &player->transform.position,
         &player->transform.rotation,
         50.0f

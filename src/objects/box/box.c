@@ -4,6 +4,7 @@
 #include "../../render/render_scene.h"
 #include "../../collision/collision_scene.h"
 #include "../../collision/shapes/box.h"
+#include "../../collision/shapes/sphere.h"
 #include "../../time/time.h"
 #include "../../entity/entity_id.h"
 #include "../../render/defs.h"
@@ -25,7 +26,7 @@ void box_init(struct box* box, struct box_definition* def){
 
     box->transform.scale = (struct Vector3){2.0f, 2.0f, 2.0f};
     vector3Add(&box->transform.position, &def->position, &box->transform.position);
-    quatRotateAxisEuler(&box->transform.rotation, &gUp, T3D_DEG_TO_RAD(45.0f), &box->transform.rotation);
+    // quatRotateAxisEuler(&box->transform.rotation, &gUp, T3D_DEG_TO_RAD(45.0f), &box->transform.rotation);
 
     renderable_init(&box->renderable, &box->transform, "rom:/models/box/box.t3dm");
 
@@ -39,12 +40,11 @@ void box_init(struct box* box, struct box_definition* def){
         COLLISION_LAYER_TANGIBLE,
         &box->transform.position,
         &box->transform.rotation,
-        2.0f
+        10.0f
     );
-    box->physics.collision->friction = 0.0f;
-    box->physics.collision->bounce = 0.0f;
     box->physics.center_offset.y = box_collision.shape_data.box.half_size.y;
     box->physics.has_gravity = 1;
+    box->physics.collision->friction = 0.1f;
 
     collision_scene_add(&box->physics);
 }

@@ -18,8 +18,9 @@ void physics_object_init(
     object->entity_id = entity_id;
     object->collision = type;
     object->position = position;
-    object->prev_step_pos = *position;
+    object->_prev_step_pos = *position;
     object->rotation = rotation;
+    object->_prev_step_rot = gQuaternionZero;
     object->velocity = gZeroVec;
     object->center_offset = gZeroVec;
     object->time_scalar = 1.0f;
@@ -59,10 +60,6 @@ void physics_object_update_velocity_verlet_simple(struct physics_object* object)
     if (object->is_trigger | object->is_fixed) {
         return;
     }
-
-    if (object->has_gravity) {
-        object->acceleration.y += GRAVITY_CONSTANT * object->gravity_scalar;
-    }
     vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
     object->velocity.y = clampf(object->velocity.y, -TERMINAL_VELOCITY, TERMINAL_VELOCITY);
 
@@ -77,21 +74,27 @@ void physics_object_update_velocity_verlet_simple(struct physics_object* object)
 void physics_object_apply_constraints(struct physics_object* object){
     if (object->position->y <= -20){
         object->position->y = -20;
+        object->velocity.y = 0;
     }
     if (object->position->y >= 2000){
         object->position->y = 2000;
+        object->velocity.y = 0;
     }
     if (object->position->x <= -2000){
         object->position->x = -2000;
+        object->velocity.x = 0;
     }
     if (object->position->x >= 2000){
         object->position->x = 2000;
+        object->velocity.x = 0;
     }
     if (object->position->z <= -2000){
         object->position->z = -2000;
+        object->velocity.z = 0;
     }
     if (object->position->z >= 2000){
         object->position->z = 2000;
+        object->velocity.z = 0;
     }
 }
 

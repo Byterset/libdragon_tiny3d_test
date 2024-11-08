@@ -1,5 +1,5 @@
-#ifndef __SCENE_PLATFORM_H__
-#define __SCENE_PLATFORM_H__
+#ifndef __OBJECT_PLATFORM_H__
+#define __OBJECT_PLATFORM_H__
 
 #include "../../math/transform.h"
 #include "../../math/vector2.h"

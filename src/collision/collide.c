@@ -27,19 +27,17 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         // Apply friction: scale the tangent velocity by (1 - friction)
         vector3Scale(&tangentVelocity, &tangentVelocity, 1.0f - friction);
 
-        // Combine normal and tangential components to get the new velocity
+        // Combine normal and tangential components to get the corrected velocity
         vector3Add(&normalVelocity, &tangentVelocity, &object->velocity);
     }
 }
 
-void correct_overlap(struct physics_object* object, struct EpaResult* result, float ratio, float friction, float bounce) {
+void correct_overlap(struct physics_object* object, struct EpaResult* result, float ratio) {
     if (object->is_fixed) {
         return;
     }
 
     vector3AddScaled(object->position, &result->normal, result->penetration * ratio, object->position);
-
-    correct_velocity(object, result, ratio, friction, bounce);
 
 }
 
@@ -69,7 +67,8 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
             physics_object_gjk_support_function,
             &result))
     {
-        correct_overlap(object, &result, -1.0f, object->collision->friction, object->collision->bounce);
+        correct_overlap(object, &result, -1.0f);
+        correct_velocity(object, &result, -1.0f, object->collision->friction, object->collision->bounce);
         collide_add_contact(object, &result);
         return true;
     }
@@ -97,14 +96,17 @@ void collide_object_to_mesh(struct physics_object* object, struct mesh_collider*
 }
 
 void collide_object_to_object(struct physics_object* a, struct physics_object* b) {
+    // If the Object don't share any collision layers, don't collide
     if (!(a->collision_layers & b->collision_layers)) {
         return;
     }
 
-    if (a->collision_group && a->collision_group == b->collision_group) {
+    // If the objects are in the same collision group, don't collide (eg. player vs player, or enemy vs enemy)
+    if (a->collision_group && (a->collision_group == b->collision_group)) {
         return;
     }
 
+    // triggers can't collide with each other
     if (a->is_trigger && b->is_trigger) {
         return;
     }
@@ -121,17 +123,17 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
             return;
         }
 
-        if (b->is_trigger) {
+        if (a->is_trigger) {
             contact->normal = gZeroVec;
             contact->point = *a->position;
-            contact->other_object = a ? a->entity_id : 0;
+            contact->other_object = a->entity_id;
 
             contact->next = b->active_contacts;
             b->active_contacts = contact;
         } else {
             contact->normal = gZeroVec;
             contact->point = *b->position;
-            contact->other_object = b ? b->entity_id : 0;
+            contact->other_object = b->entity_id;
 
             contact->next = a->active_contacts;
             a->active_contacts = contact;
@@ -139,6 +141,8 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
 
         return;
     }
+    b->is_sleeping = 0;
+    b->_sleep_counter = 0;
 
     struct EpaResult result;
 
@@ -161,8 +165,10 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
         massRatio = 0.0f;
     }
 
-    correct_overlap(b, &result, -massRatio, friction, bounce);
-    correct_overlap(a, &result, (1.0f - massRatio), friction, bounce);
+    correct_overlap(b, &result, -massRatio);
+    correct_velocity(b, &result, -massRatio, friction, bounce);
+    correct_overlap(a, &result, (1.0f - massRatio));
+    correct_velocity(a, &result, (1.0f - massRatio), friction, bounce);
 
     struct contact* contact = collision_scene_new_contact();
 

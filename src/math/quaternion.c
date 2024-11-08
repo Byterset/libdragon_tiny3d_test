@@ -319,3 +319,17 @@ void quatRotateAxisEuler(struct Quaternion *q, struct Vector3 *axis, float angle
     quatMultiply(q, &quatRot, &tmp);
     *out = tmp;
 }
+
+int quatIsIdentical(struct Quaternion* a, struct Quaternion* b){
+    // Calculate the difference between the quaternions
+    float dx = b->x - a->x;
+    float dy = b->y - a->y;
+    float dz = b->z - a->z;
+    float dw = b->w - a->w;
+
+    // Calculate the magnitude of the difference
+    float magnitude = sqrtf(dx * dx + dy * dy + dz * dz + dw * dw);
+
+    // If the magnitude is greater than a small epsilon value, the quaternion has changed
+    return magnitude == 0;
+}
