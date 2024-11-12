@@ -50,6 +50,7 @@ void vector3Max(struct Vector3* a, struct Vector3* b, struct Vector3* out);
 void vector3Min(struct Vector3* a, struct Vector3* b, struct Vector3* out);
 
 int vector3IsZero(struct Vector3* vector);
+int vector3Equals(struct Vector3* a, struct Vector3* b);
 
 void vector3ToVector3u8(struct Vector3* input, struct Vector3u8* output);
 

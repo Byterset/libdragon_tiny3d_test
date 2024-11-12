@@ -31,7 +31,7 @@ void sphere_support_function(void* data, struct Vector3* direction, struct Vecto
     }
 }
 
-void sphere_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {
+void sphere_bounding_box(void* data, Quaternion* rotation, struct AABB* box) {
     struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
 

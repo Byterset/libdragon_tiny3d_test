@@ -6,7 +6,7 @@
 
 typedef struct Transform {
     struct Vector3 position;
-    struct Quaternion rotation;
+    Quaternion rotation;
     struct Vector3 scale;
 } Transform;
 

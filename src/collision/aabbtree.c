@@ -142,48 +142,44 @@ int AABBTree_moveNode(AABBTree *tree, NodeProxy node, struct AABB aabb, struct V
 
     // scale the displacement vector by a factor to enlarge the Node Bounds & accommodate for anticipated movement
     // potentially reduces the amount of moves/leaf inserts
-    struct Vector3 d;
-    vector3Scale(displacement, &d, AABBTREE_DISPLACEMENT_MULTIPLIER);
 
-    if (d.x > 0.0f)
+    if (displacement->x > 0.0f)
     {
-        aabb.max.x += d.x;
+        aabb.max.x += displacement->x * AABBTREE_DISPLACEMENT_MULTIPLIER;
     }
     else
     {
-        aabb.min.x += d.x;
+        aabb.min.x += displacement->x * AABBTREE_DISPLACEMENT_MULTIPLIER;
     }
 
-    if (d.y > 0.0f)
+    if (displacement->y > 0.0f)
     {
-        aabb.max.y += d.y;
+        aabb.max.y += displacement->y * AABBTREE_DISPLACEMENT_MULTIPLIER;
     }
     else
     {
-        aabb.min.y += d.y;
+        aabb.min.y += displacement->y * AABBTREE_DISPLACEMENT_MULTIPLIER;
     }
 
-    if (d.z > 0.0f)
+    if (displacement->z > 0.0f)
     {
-        aabb.max.z += d.z;
+        aabb.max.z += displacement->z * AABBTREE_DISPLACEMENT_MULTIPLIER;
     }
     else
     {
-        aabb.min.z += d.z;
+        aabb.min.z += displacement->z * AABBTREE_DISPLACEMENT_MULTIPLIER;
     }
 
     //fatten the aabb
-    struct Vector3 bounds_margin = {AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN};
-    vector3AddToSelf(&aabb.max, &bounds_margin);
-    vector3SubFromSelf(&aabb.min, &bounds_margin);
+    // struct Vector3 bounds_margin = {AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN};
+    // vector3AddToSelf(&aabb.max, &bounds_margin);
+    // vector3SubFromSelf(&aabb.min, &bounds_margin);
 
     AABBTree_removeLeaf(tree, node, false);
 
     tree->nodes[node].bounds = aabb;
 
     AABBTree_insertLeaf(tree, node);
-
-    // tree->nodes[node].moved = true;
 
     return true;
 }
@@ -597,7 +593,7 @@ void* AABBTreeNode_getData(AABBTree *tree, NodeProxy node)
 /// @param aabbChecks the amount of AABB checks performed
 /// @param max_results the maximum amount of results to find
 /// @param skipRootCheck if the root node should be checked
-void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *results, int *result_count, int *aabbChecks, int max_results)
+void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *results, int *result_count, int max_results)
 {
     // return if the tree is empty
     if (tree->root == NULL_NODE)
@@ -606,18 +602,17 @@ void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *res
     }
 
     // initialize the stack with the root node
-    vec_t *stack = vec_with_capacity(256, sizeof(int));
-    vec_push(stack, &tree->root);
+    NodeProxy stack[256];
+    int stackSize = 0;
+    stack[stackSize++] = tree->root;
 
     NodeProxy current;
 
-    while (stack->len != 0)
+    while (stackSize > 0)
     {
-        vec_pop(stack, &current);
+        NodeProxy current = stack[--stackSize];
         if (current == NULL_NODE)
             continue;
-
-        *aabbChecks += 1;
 
         // if the given AABB does not overlap the bounds of the current node, continue and thus discard all child nodes
         if (!AABBHasOverlap(&tree->nodes[current].bounds, query_box))
@@ -633,17 +628,20 @@ void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *res
             {
                 break;
             }
-            // if the AABB overlaps the current node and it is not a leaf, add the children to the stack
         }
         else
         {
-            vec_push(stack, &tree->nodes[current].left);
-            vec_push(stack, &tree->nodes[current].right);
+            if (stackSize + 2 > 256)
+            {
+                // Handle stack overflow (e.g., log an error, return an error code, etc.)
+                // For this example, we'll just return to avoid overflow
+                return;
+            }
+            // if the AABB overlaps the current node and it is not a leaf, add the children to the stack
+            stack[stackSize++] = tree->nodes[current].left;
+            stack[stackSize++] = tree->nodes[current].right;
         }
     }
-    // free the stack
-    vec_drop(stack);
-
 }
 
 /// @brief Query the AABBTree for (leaf) nodes that contain a point
@@ -662,12 +660,13 @@ void AABBTree_queryPoint(AABBTree *tree, struct Vector3 point, NodeProxy *result
     }
 
     // initialize the stack with the root node
-    vec_t *stack = vec_with_capacity(256, sizeof(int));
-    vec_push(stack, &tree->root);
+    NodeProxy stack[256];
+    int stackSize = 0;
+    stack[stackSize++] = tree->root;
     NodeProxy current;
-    while (stack->len != 0)
+    while (stackSize > 0)
     {
-        vec_pop(stack, &current);
+        NodeProxy current = stack[--stackSize];
         if (current == NULL_NODE)
             continue;
 
@@ -686,15 +685,19 @@ void AABBTree_queryPoint(AABBTree *tree, struct Vector3 point, NodeProxy *result
                 break;
             }
         }
-        // if the point is inside the current node and it is not a leaf, add the children to the stack
         else
         {
-            vec_push(stack, &tree->nodes[current].left);
-            vec_push(stack, &tree->nodes[current].right);
+            if (stackSize + 2 > 256)
+            {
+                // Handle stack overflow (e.g., log an error, return an error code, etc.)
+                // For this example, we'll just return to avoid overflow
+                return;
+            }
+            // if the AABB overlaps the current node and it is not a leaf, add the children to the stack
+            stack[stackSize++] = tree->nodes[current].left;
+            stack[stackSize++] = tree->nodes[current].right;
         }
     }
-    // free the stack
-    vec_drop(stack);
 }
 
 void AABBTree_queryRay(AABBTree *tree, struct RayCast* ray, NodeProxy *results, int *result_count, int max_results){
@@ -705,12 +708,13 @@ void AABBTree_queryRay(AABBTree *tree, struct RayCast* ray, NodeProxy *results, 
     }
 
     // initialize the stack with the root node
-    vec_t *stack = vec_with_capacity(256, sizeof(int));
-    vec_push(stack, &tree->root);
+    NodeProxy stack[256];
+    int stackSize = 0;
+    stack[stackSize++] = tree->root;
     NodeProxy current;
-    while (stack->len != 0)
+    while (stackSize > 0)
     {
-        vec_pop(stack, &current);
+        NodeProxy current = stack[--stackSize];
         if (current == NULL_NODE)
             continue;
 
@@ -732,9 +736,16 @@ void AABBTree_queryRay(AABBTree *tree, struct RayCast* ray, NodeProxy *results, 
         // if the ray intersects the current node and it is not a leaf, add the children to the stack
         else
         {
-            vec_push(stack, &tree->nodes[current].left);
-            vec_push(stack, &tree->nodes[current].right);
+
+            if (stackSize + 2 > 256)
+            {
+                // Handle stack overflow (e.g., log an error, return an error code, etc.)
+                // For this example, we'll just return to avoid overflow
+                return;
+            }
+            // if the AABB overlaps the current node and it is not a leaf, add the children to the stack
+            stack[stackSize++] = tree->nodes[current].left;
+            stack[stackSize++] = tree->nodes[current].right;
         }
     }
-    vec_drop(stack);
 }

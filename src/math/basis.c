@@ -16,7 +16,7 @@
  * @param basis Pointer to the Basis structure where the resulting basis vectors will be stored.
  * @param quat Pointer to the Quaternion structure used to generate the basis vectors.
  */
-void basisFromQuat(struct Basis* basis, struct Quaternion* quat) {
+void basisFromQuat(struct Basis* basis, Quaternion* quat) {
     quatMultVector(quat, &gRight, &basis->x);
     quatMultVector(quat, &gUp, &basis->y);
     vector3Cross(&basis->x, &basis->y, &basis->z);

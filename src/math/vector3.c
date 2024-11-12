@@ -169,6 +169,10 @@ int vector3IsZero(struct Vector3* vector) {
     return vector->x == 0.0f && vector->y == 0.0f && vector->z == 0.0f;
 }
 
+int vector3Equals(struct Vector3* a, struct Vector3* b){
+    return a->x == b->x && a->y == b->y && a->z == b->z;
+}
+
 void vector3ToVector3u8(struct Vector3* input, struct Vector3u8* output) {
     output->x = floatTos8norm(input->x);
     output->y = floatTos8norm(input->y);

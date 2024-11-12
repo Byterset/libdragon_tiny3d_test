@@ -27,7 +27,7 @@ enum collision_group {
     COLLISION_GROUP_COLLECTABLE = 2,
 };
 
-typedef void (*bounding_box_calculator)(void* data, struct Quaternion* rotation, struct AABB* box);
+typedef void (*bounding_box_calculator)(void* data, Quaternion* rotation, struct AABB* box);
 
 typedef enum physics_object_collision_shape_type {
     COLLISION_SHAPE_SPHERE,
@@ -63,8 +63,8 @@ struct physics_object {
     struct physics_object_collision_data* collision; // information about the collision shape
     struct Vector3* position;
     struct Vector3 _prev_step_pos;
-    struct Quaternion* rotation;
-    struct Quaternion _prev_step_rot;
+    Quaternion* rotation;
+    Quaternion _prev_step_rot;
     struct Vector3 velocity;
     struct Vector3 acceleration;
     struct Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
@@ -91,7 +91,7 @@ void physics_object_init(
     struct physics_object_collision_data* collision,
     uint16_t collision_layers,
     struct Vector3* position, 
-    struct Quaternion* rotation,
+    Quaternion* rotation,
     float mass
 );
 

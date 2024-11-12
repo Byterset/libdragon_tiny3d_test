@@ -7,6 +7,6 @@
 #include "../../math/quaternion.h"
 
 void cone_support_function(void* data, struct Vector3* direction, struct Vector3* output);
-void cone_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box);
+void cone_bounding_box(void* data, Quaternion* rotation, struct AABB* box);
 
 #endif

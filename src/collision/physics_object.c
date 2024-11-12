@@ -11,7 +11,7 @@ void physics_object_init(
     struct physics_object_collision_data* collision,
     uint16_t collision_layers,
     struct Vector3* position, 
-    struct Quaternion* rotation,
+    Quaternion* rotation,
     float mass
 ) {
     assert(mass > 0.0f);
@@ -151,7 +151,7 @@ void physics_object_gjk_support_function(void* data, struct Vector3* direction, 
     struct Vector3 world_center;
     struct Vector3 localDir;
     if(object->rotation){
-        struct Quaternion inv_rotation;
+        Quaternion inv_rotation;
         quatConjugate(object->rotation, &inv_rotation);
         quatMultVector(&inv_rotation, direction, &localDir);
         quatMultVector(object->rotation, &object->center_offset, &world_center);

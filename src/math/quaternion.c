@@ -4,16 +4,16 @@
 #include "mathf.h"
 #include <math.h>
 
-struct Quaternion gQuaternionZero = {0.0f, 0.0f, 0.0f, 0.0f};
+Quaternion gQuaternionZero = {0.0f, 0.0f, 0.0f, 0.0f};
 
-void quatIdent(struct Quaternion* q) {
+void quatIdent(Quaternion* q) {
     q->x = 0.0f;
     q->y = 0.0f;
     q->z = 0.0f;
     q->w = 1.0f;
 }
 
-void quatAxisAngle(struct Vector3* axis, float angle, struct Quaternion* out) {
+void quatAxisAngle(struct Vector3* axis, float angle, Quaternion* out) {
     float sinTheta = sinf(angle * 0.5f);
     float cosTheta = cosf(angle * 0.5f);
 
@@ -23,9 +23,9 @@ void quatAxisAngle(struct Vector3* axis, float angle, struct Quaternion* out) {
     out->w = cosTheta;
 }
 
-void quatEulerAngles(struct Vector3* angles, struct Quaternion* out) {
-    struct Quaternion angle;
-    struct Quaternion tmp;
+void quatEulerAngles(struct Vector3* angles, Quaternion* out) {
+    Quaternion angle;
+    Quaternion tmp;
 
     quatAxisAngle(&gRight, angles->x, &angle);
     quatAxisAngle(&gUp, angles->y, out);
@@ -34,7 +34,7 @@ void quatEulerAngles(struct Vector3* angles, struct Quaternion* out) {
     quatMultiply(&angle, &tmp, out);
 }
 
-void quatAxisComplex(struct Vector3* axis, struct Vector2* complex, struct Quaternion* out) {
+void quatAxisComplex(struct Vector3* axis, struct Vector2* complex, Quaternion* out) {
     float sinTheta = 0.5f - complex->x * 0.5f;
 
     if (sinTheta < 0.0f) {
@@ -61,14 +61,14 @@ void quatAxisComplex(struct Vector3* axis, struct Vector2* complex, struct Quate
     out->w = cosTheta;
 }
 
-void quatConjugate(struct Quaternion* in, struct Quaternion* out) {
+void quatConjugate(Quaternion* in, Quaternion* out) {
     out->x = -in->x;
     out->y = -in->y;
     out->z = -in->z;
     out->w = in->w;
 }
 
-void quatNegate(struct Quaternion* in, struct Quaternion* out) {
+void quatNegate(Quaternion* in, Quaternion* out) {
     out->x = -in->x;
     out->y = -in->y;
     out->z = -in->z;
@@ -85,25 +85,23 @@ void quatNegate(struct Quaternion* in, struct Quaternion* out) {
  * @param a Pointer to the vector to be multiplied.
  * @param out Pointer to the vector where the result will be stored.
  */
-void quatMultVector(struct Quaternion* q, struct Vector3* a, struct Vector3* out) {
-    struct Quaternion tmp;
-    struct Quaternion asQuat;
-    struct Quaternion conj;
-    asQuat.x = a->x;
-    asQuat.y = a->y;
-    asQuat.z = a->z;
-    asQuat.w = 0.0f;
+void quatMultVector(Quaternion* q, struct Vector3* a, struct Vector3* out) {
 
-    quatMultiply(q, &asQuat, &tmp);
+    Quaternion tmp;
+    Quaternion conj;
     quatConjugate(q, &conj);
-    quatMultiply(&tmp, &conj, &asQuat);
-    
-    out->x = asQuat.x;
-    out->y = asQuat.y;
-    out->z = asQuat.z;
+    tmp.x = q->w*a->x + q->y*a->z - q->z*a->y;
+    tmp.y = q->w*a->y + q->z*a->x - q->x*a->z;
+    tmp.z = q->w*a->z + q->x*a->y - q->y*a->x;
+    tmp.w = - q->x*a->x - q->y*a->y - q->z*a->z;
+
+    out->x = tmp.w*conj.x + tmp.x*q->w + tmp.y*conj.z - tmp.z*conj.y;
+    out->y = tmp.w*conj.y + tmp.y*q->w + tmp.z*conj.x - tmp.x*conj.z;
+    out->z = tmp.w*conj.z + tmp.z*q->w + tmp.x*conj.y - tmp.y*conj.x;
+
 }
 
-void quatRotatedBoundingBoxSize(struct Quaternion* q, struct Vector3* halfBoxSize, struct Vector3* out) {
+void quatRotatedBoundingBoxSize(Quaternion* q, struct Vector3* halfBoxSize, struct Vector3* out) {
     float xx = q->x*q->x;
     float yy = q->y*q->y;
     float zz = q->z*q->z;
@@ -129,7 +127,7 @@ void quatRotatedBoundingBoxSize(struct Quaternion* q, struct Vector3* halfBoxSiz
         fabsf(1.0f - 2.0f * (xx + yy)) * halfBoxSize->z;
 }
 
-void quatMultiply(struct Quaternion* a, struct Quaternion* b, struct Quaternion* out) {
+void quatMultiply(Quaternion* a, Quaternion* b, Quaternion* out) {
     assert(a != out && b != out);
     out->x = a->w*b->x + a->x*b->w + a->y*b->z - a->z*b->y;
     out->y = a->w*b->y + a->y*b->w + a->z*b->x - a->x*b->z;
@@ -137,14 +135,14 @@ void quatMultiply(struct Quaternion* a, struct Quaternion* b, struct Quaternion*
     out->w = a->w*b->w - a->x*b->x - a->y*b->y - a->z*b->z;
 }
 
-void quatAdd(struct Quaternion* a, struct Quaternion* b, struct Quaternion* out) {
+void quatAdd(Quaternion* a, Quaternion* b, Quaternion* out) {
     out->x = a->x + b->x;
     out->y = a->y + b->y;
     out->z = a->z + b->z;
     out->w = a->w + b->w;
 }
 
-void quatToMatrix(struct Quaternion* q, float out[4][4]) {
+void quatToMatrix(Quaternion* q, float out[4][4]) {
     float xx = q->x*q->x;
     float yy = q->y*q->y;
     float zz = q->z*q->z;
@@ -175,7 +173,7 @@ void quatToMatrix(struct Quaternion* q, float out[4][4]) {
     out[3][3] = 1.0f;
 }
 
-void quatNormalize(struct Quaternion* q, struct Quaternion* out) {
+void quatNormalize(Quaternion* q, Quaternion* out) {
     float magSqr = q->x * q->x + q->y * q->y + q->z * q->z + q->w * q->w;
 
     if (magSqr < 0.00001f) {
@@ -193,7 +191,7 @@ void quatNormalize(struct Quaternion* q, struct Quaternion* out) {
     }
 }
 
-void quatRandom(struct Quaternion* q) {
+void quatRandom(Quaternion* q) {
     q->x = mathfRandomFloat() - 0.5f;
     q->y = mathfRandomFloat() - 0.5f;
     q->z = mathfRandomFloat() - 0.5f;
@@ -201,7 +199,7 @@ void quatRandom(struct Quaternion* q) {
     quatNormalize(q, q);
 }
 
-void quatLook(struct Vector3* lookDir, struct Vector3* up, struct Quaternion* out) {
+void quatLook(struct Vector3* lookDir, struct Vector3* up, Quaternion* out) {
     // calculate orthonormal basis
     struct Vector3 zDir;
     vector3Normalize(lookDir, &zDir);
@@ -247,7 +245,7 @@ void quatLook(struct Vector3* lookDir, struct Vector3* up, struct Quaternion* ou
     }
 }
 
-void quatLerp(struct Quaternion* a, struct Quaternion* b, float t, struct Quaternion* out) {
+void quatLerp(Quaternion* a, Quaternion* b, float t, Quaternion* out) {
     float tInv = 1.0f - t;
 
     if (quatDot(a, b) < 0) {
@@ -265,14 +263,14 @@ void quatLerp(struct Quaternion* a, struct Quaternion* b, float t, struct Quater
     quatNormalize(out, out);
 }
 
-void quatApplyAngularVelocity(struct Quaternion* input, struct Vector3* w, float timeStep, struct Quaternion* output) {
-    struct Quaternion velocityAsQuat;
+void quatApplyAngularVelocity(Quaternion* input, struct Vector3* w, float timeStep, Quaternion* output) {
+    Quaternion velocityAsQuat;
     velocityAsQuat.w = 0.0f;
     velocityAsQuat.x = w->x * timeStep * 0.5f;
     velocityAsQuat.y = w->y * timeStep * 0.5f;
     velocityAsQuat.z = w->z * timeStep * 0.5f;
 
-    struct Quaternion intermediate;
+    Quaternion intermediate;
     quatMultiply(&velocityAsQuat, input, &intermediate);
 
     quatAdd(&intermediate, input, output);
@@ -291,7 +289,7 @@ void quatApplyAngularVelocity(struct Quaternion* input, struct Vector3* w, float
  * If the magnitude is very small (less than 0.0001), it sets the axis to a default up vector and the angle to 0.
  * Otherwise, it normalizes the axis and calculates the angle using the sine of the magnitude.
  */
-void quatDecompose(struct Quaternion* input, struct Vector3* axis, float* angle) {
+void quatDecompose(Quaternion* input, struct Vector3* axis, float* angle) {
     float axisMag = sqrtf(input->x * input->x + input->y * input->y + input->z * input->z);
 
     if (axisMag < 0.0001f) {
@@ -308,19 +306,19 @@ void quatDecompose(struct Quaternion* input, struct Vector3* axis, float* angle)
     *angle = sinf(axisMag) * 2.0f;
 }
 
-float quatDot(struct Quaternion* a, struct Quaternion* b) {
+float quatDot(Quaternion* a, Quaternion* b) {
     return a->x * b->x + a->y * b->y + a->z * b->z + a->w * b->w;
 }
 
-void quatRotateAxisEuler(struct Quaternion *q, struct Vector3 *axis, float angleRad, struct Quaternion *out)
+void quatRotateAxisEuler(Quaternion *q, struct Vector3 *axis, float angleRad, Quaternion *out)
 {
-    struct Quaternion tmp, quatRot;
+    Quaternion tmp, quatRot;
     quatAxisAngle(axis, angleRad, &quatRot);
     quatMultiply(q, &quatRot, &tmp);
     *out = tmp;
 }
 
-int quatIsIdentical(struct Quaternion* a, struct Quaternion* b){
+int quatIsIdentical(Quaternion* a, Quaternion* b){
     // Calculate the difference between the quaternions
     float dx = b->x - a->x;
     float dy = b->y - a->y;

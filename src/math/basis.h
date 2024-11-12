@@ -24,7 +24,7 @@ struct Basis {
     struct Vector3 z;
 };
 
-void basisFromQuat(struct Basis* basis, struct Quaternion* quat);
+void basisFromQuat(struct Basis* basis, Quaternion* quat);
 
 void basisRotate(struct Basis* basis, struct Vector3* input, struct Vector3* output);
 void basisUnRotate(struct Basis* basis, struct Vector3* input, struct Vector3* output);

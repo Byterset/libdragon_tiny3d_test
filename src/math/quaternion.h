@@ -5,33 +5,33 @@
 #include "vector3.h"
 #include "vector2.h"
 
-struct Quaternion {
+typedef struct Quaternion {
     float x, y, z, w;
-};
+} Quaternion;
 
-extern struct Quaternion gQuaternionZero;
+extern Quaternion gQuaternionZero;
 
-void quatIdent(struct Quaternion* q);
-void quatAxisAngle(struct Vector3* axis, float angle, struct Quaternion* out);
-void quatAxisComplex(struct Vector3* axis, struct Vector2* complex, struct Quaternion* out);
-void quatConjugate(struct Quaternion* in, struct Quaternion* out);
-void quatNegate(struct Quaternion* in, struct Quaternion* out);
-void quatMultVector(struct Quaternion* q, struct Vector3* a, struct Vector3* out);
-void quatRotatedBoundingBoxSize(struct Quaternion* q, struct Vector3* halfBoxSize, struct Vector3* out);
-void quatMultiply(struct Quaternion* a, struct Quaternion* b, struct Quaternion* out);
-void quatAdd(struct Quaternion* a, struct Quaternion* b, struct Quaternion* out);
-void quatToMatrix(struct Quaternion* q, float out[4][4]);
-void quatNormalize(struct Quaternion* q, struct Quaternion* out);
-void quatRandom(struct Quaternion* q);
-void quatLook(struct Vector3* lookDir, struct Vector3* up, struct Quaternion* out);
-void quatEulerAngles(struct Vector3* angles, struct Quaternion* out);
+void quatIdent(Quaternion* q);
+void quatAxisAngle(struct Vector3* axis, float angle, Quaternion* out);
+void quatAxisComplex(struct Vector3* axis, struct Vector2* complex, Quaternion* out);
+void quatConjugate(Quaternion* in, Quaternion* out);
+void quatNegate(Quaternion* in, Quaternion* out);
+void quatMultVector(Quaternion* q, struct Vector3* a, struct Vector3* out);
+void quatRotatedBoundingBoxSize(Quaternion* q, struct Vector3* halfBoxSize, struct Vector3* out);
+void quatMultiply(Quaternion* a, Quaternion* b, Quaternion* out);
+void quatAdd(Quaternion* a, Quaternion* b, Quaternion* out);
+void quatToMatrix(Quaternion* q, float out[4][4]);
+void quatNormalize(Quaternion* q, Quaternion* out);
+void quatRandom(Quaternion* q);
+void quatLook(struct Vector3* lookDir, struct Vector3* up, Quaternion* out);
+void quatEulerAngles(struct Vector3* angles, Quaternion* out);
 // cheap approximation of slerp
-void quatLerp(struct Quaternion* a, struct Quaternion* b, float t, struct Quaternion* out);
-void quatApplyAngularVelocity(struct Quaternion* input, struct Vector3* w, float timeStep, struct Quaternion* output);
-void quatDecompose(struct Quaternion* input, struct Vector3* axis, float* angle);
-void quatRotateAxisEuler(struct Quaternion* q, struct Vector3* axis, float angle, struct Quaternion* out);
-int quatIsIdentical(struct Quaternion* a, struct Quaternion* b);
+void quatLerp(Quaternion* a, Quaternion* b, float t, Quaternion* out);
+void quatApplyAngularVelocity(Quaternion* input, struct Vector3* w, float timeStep, Quaternion* output);
+void quatDecompose(Quaternion* input, struct Vector3* axis, float* angle);
+void quatRotateAxisEuler(Quaternion* q, struct Vector3* axis, float angle, Quaternion* out);
+int quatIsIdentical(Quaternion* a, Quaternion* b);
 
-float quatDot(struct Quaternion* a, struct Quaternion* b);
+float quatDot(Quaternion* a, Quaternion* b);
 
 #endif

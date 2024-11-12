@@ -12,7 +12,7 @@ void box_support_function(void* data, struct Vector3* direction, struct Vector3*
     output->z = direction->z > 0.0f ? shape_data->box.half_size.z : -shape_data->box.half_size.z;
 }
 
-void box_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box) {
+void box_bounding_box(void* data, Quaternion* rotation, struct AABB* box) {
     struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
     struct Vector3* half_size = &shape_data->box.half_size;

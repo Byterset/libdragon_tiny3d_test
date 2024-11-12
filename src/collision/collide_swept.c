@@ -157,11 +157,10 @@ bool collide_object_to_mesh_swept(struct physics_object* object, struct mesh_col
 
 
     int result_count = 0;
-    int aabbCheck_count = 0;
     int max_results = 20;
     NodeProxy results[max_results];
 
-    AABBTree_queryBounds(&mesh->aabbtree, &expanded_box, results, &result_count, &aabbCheck_count, max_results);
+    AABBTree_queryBounds(&mesh->aabbtree, &expanded_box, results, &result_count, max_results);
     
     bool did_hit = false;
     for (size_t j = 0; j < result_count; j++)

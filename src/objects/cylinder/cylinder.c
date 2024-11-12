@@ -42,7 +42,7 @@ void cylinder_init(struct cylinder* cylinder, struct cylinder_definition* def){
         &cylinder_collision,
         COLLISION_LAYER_TANGIBLE,
         &cylinder->transform.position,
-        &cylinder->transform.rotation,
+        NULL,
         50.0f
     );
 

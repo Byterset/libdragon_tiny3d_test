@@ -7,6 +7,6 @@
 #include "../../math/quaternion.h"
 
 void sphere_support_function(void* data, struct Vector3* direction, struct Vector3* output);
-void sphere_bounding_box(void* data, struct Quaternion* rotation, struct AABB* box);
+void sphere_bounding_box(void* data, Quaternion* rotation, struct AABB* box);
 
 #endif

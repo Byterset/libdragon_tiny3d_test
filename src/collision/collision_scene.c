@@ -143,11 +143,10 @@ void collision_scene_remove_static_collision() {
 void collision_scene_collide_phys_object(struct collision_scene_element* element) {
 
     int result_count = 0;
-    int aabbCheck_count = 0;
     int max_results = 5;
     NodeProxy results[max_results];
 
-    AABBTree_queryBounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, &aabbCheck_count, max_results);
+    AABBTree_queryBounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, max_results);
     for (size_t j = 0; j < result_count; j++)
     {
         struct physics_object *other = (struct physics_object *)AABBTreeNode_getData(&g_scene.object_aabbtree, results[j]);
@@ -223,16 +222,22 @@ void collision_scene_step() {
             element->object->acceleration.y += GRAVITY_CONSTANT * element->object->gravity_scalar;
         }
         physics_object_update_velocity_verlet_simple(element->object);
-
+        int rot_same = 1;
+        if(element->object->rotation){
+            rot_same = quatIsIdentical(element->object->rotation, &element->object->_prev_step_rot);
+            element->object->_prev_step_rot = *element->object->rotation;
+        }
+        if (vector3Equals(&element->object->_prev_step_pos, element->object->position) && rot_same)
+        {
+            continue;
+        }
         physics_object_recalculate_aabb(element->object);
-
         struct Vector3 displacement;
         vector3Sub(element->object->position, &element->object->_prev_step_pos, &displacement);
         AABBTree_moveNode(&g_scene.object_aabbtree, element->object->_aabb_tree_node_id, element->object->bounding_box, &displacement);
-
     }
 
-    // Perform collision detection and resolution for both objects and the static mesh
+    // Perform collision detection and resolution for phys objects between each other
     for (int i = 0; i < g_scene.count; ++i)
     {
         element = &g_scene.elements[i];

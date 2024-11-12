@@ -82,11 +82,10 @@ void collide_object_to_mesh(struct physics_object* object, struct mesh_collider*
     }
 
     int result_count = 0;
-    int aabbCheck_count = 0;
     int max_results = 20;
     NodeProxy results[max_results];
 
-    AABBTree_queryBounds(&mesh->aabbtree, &object->bounding_box, results, &result_count, &aabbCheck_count, max_results);
+    AABBTree_queryBounds(&mesh->aabbtree, &object->bounding_box, results, &result_count, max_results);
     for (size_t j = 0; j < result_count; j++)
     {
         int triangle_index = (int)AABBTreeNode_getData(&mesh->aabbtree, results[j]);

@@ -8,7 +8,7 @@
 #include <assert.h>
 
 #define NULL_NODE -1
-#define AABBTREE_DISPLACEMENT_MULTIPLIER 4.0f
+#define AABBTREE_DISPLACEMENT_MULTIPLIER 8.0f
 #define AABBTREE_NODE_BOUNDS_MARGIN 1.0f
 
 typedef int16_t NodeProxy;
@@ -73,7 +73,7 @@ int AABBTreeNode_wasMoved(AABBTree *tree, NodeProxy node);
 
 void* AABBTreeNode_getData(AABBTree *tree, NodeProxy node);
 
-void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *results, int* result_count, int* aabbChecks, int max_results);
+void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *results, int* result_count, int max_results);
 
 void AABBTree_queryPoint(AABBTree *tree, struct Vector3 point, NodeProxy *results, int *result_count, int max_results);
 
