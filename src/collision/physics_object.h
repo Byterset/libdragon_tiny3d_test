@@ -65,31 +65,30 @@ struct physics_object {
     struct Vector3 _prev_step_pos;
     struct Quaternion* rotation;
     struct Quaternion _prev_step_rot;
-    struct Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
     struct Vector3 velocity;
     struct Vector3 acceleration;
+    struct Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
     struct AABB bounding_box; // the bounding box fitting the object collider, used for broad phase collision detection
-    float time_scalar;
-    float mass;
-    float mass_inv;
-    float gravity_scalar;
-    uint16_t has_gravity: 1;
-    uint16_t is_trigger: 1;
-    uint16_t is_fixed: 1;
-    uint16_t is_grounded: 1;
-    uint16_t is_out_of_bounds: 1;
+    float time_scalar; // a scalar to adjust the time step for the object, default is 1.0
+    float mass; // the mass of the object, cannot be zero
+    float gravity_scalar; // how much gravity affects the object, default is 1.0
+    uint8_t has_gravity: 1;
+    uint8_t is_trigger: 1;
+    uint8_t is_fixed: 1;
+    uint8_t is_grounded: 1;
+    uint8_t is_out_of_bounds: 1;
+    uint8_t is_sleeping: 1;
+    uint16_t _sleep_counter;
     uint16_t collision_layers; // objects that share at least one layer can collide
     uint16_t collision_group; // objects of the same group do not collide
     struct contact* active_contacts; // contacts with other objects from the last physics step
-    NodeProxy _aabb_tree_node_id; // the node id of the object in the AABB tree
-    uint16_t _sleep_counter;
-    uint16_t is_sleeping: 1;
+    NodeProxy _aabb_tree_node_id; // the node id of the object in the phys-object AABB tree of the collision scene
 };
 
 void physics_object_init(
     entity_id entity_id,
     struct physics_object* object, 
-    struct physics_object_collision_data* type,
+    struct physics_object_collision_data* collision,
     uint16_t collision_layers,
     struct Vector3* position, 
     struct Quaternion* rotation,

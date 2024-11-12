@@ -8,7 +8,7 @@
 void physics_object_init(
     entity_id entity_id,
     struct physics_object* object, 
-    struct physics_object_collision_data* type,
+    struct physics_object_collision_data* collision,
     uint16_t collision_layers,
     struct Vector3* position, 
     struct Quaternion* rotation,
@@ -16,7 +16,7 @@ void physics_object_init(
 ) {
     assert(mass > 0.0f);
     object->entity_id = entity_id;
-    object->collision = type;
+    object->collision = collision;
     object->position = position;
     object->_prev_step_pos = *position;
     object->rotation = rotation;
@@ -26,12 +26,12 @@ void physics_object_init(
     object->time_scalar = 1.0f;
     object->gravity_scalar = 1.0f;
     object->mass = mass;
-    object->mass_inv = 1.0f / mass;
     object->has_gravity = 1;
     object->is_trigger = 0;
     object->is_fixed = 0;
     object->is_out_of_bounds = 0;
     object->is_grounded = 0;
+    object->is_sleeping = 0;
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
@@ -110,7 +110,7 @@ void physics_object_set_velocity(struct physics_object* object, struct Vector3* 
 }
 
 void physics_object_apply_impulse(struct physics_object* object, struct Vector3* impulse) {
-    vector3AddScaled(&object->velocity, impulse, object->mass_inv, &object->velocity);
+    vector3AddScaled(&object->velocity, impulse, 1.0f / object->mass, &object->velocity);
 }
 
 
