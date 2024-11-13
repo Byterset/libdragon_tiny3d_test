@@ -3,8 +3,8 @@
 #include "../time/time.h"
 #include "../render/defs.h"
 
-void camera_controller_update_position(struct camera_controller* controller, struct Transform* target) {
-    struct Vector3 offset;
+void camera_controller_update_position(struct camera_controller* controller, Transform* target) {
+    Vector3 offset;
 
     if (joypad_get_buttons_held(0).z) {
         quatMultVector(&target->rotation, &gForward, &offset);
@@ -22,7 +22,7 @@ void camera_controller_update_position(struct camera_controller* controller, str
 
     
     //calculate the target position of where the camera should be
-    struct Vector3 targetPosition;
+    Vector3 targetPosition;
     vector3AddScaled(&target->position, &offset, -CAMERA_FOLLOW_DISTANCE, &targetPosition);
     targetPosition.y += CAMERA_FOLLOW_HEIGHT;
 

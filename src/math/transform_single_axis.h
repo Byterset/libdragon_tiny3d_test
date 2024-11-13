@@ -6,8 +6,8 @@
 #include "matrix.h"
 
 struct TransformSingleAxis {
-    struct Vector3 position;
-    struct Vector2 rotation;
+    Vector3 position;
+    Vector2 rotation;
 };
 
 void transformSAToMatrix(struct TransformSingleAxis* transform, mat4x4 matrix);

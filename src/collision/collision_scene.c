@@ -156,21 +156,24 @@ void collision_scene_collide_phys_object(struct collision_scene_element* element
         {
             continue;
         }
+
         // only do detailed collision calculation if the bounding boxes overlap
         if (AABBHasOverlap(&element->object->bounding_box, &other->bounding_box))
+        {
             collide_object_to_object(element->object, other);
+        }
     }
 }
 
 #define MAX_SWEPT_ITERATIONS    5
 
-void collision_scene_collide_single(struct physics_object* object, struct Vector3* prev_pos) {
+void collision_scene_collide_single(struct physics_object* object, Vector3* prev_pos) {
 
     for (int i = 0; i < MAX_SWEPT_ITERATIONS; i += 1)
     {
-        struct Vector3 offset;
+        Vector3 offset;
         vector3Sub(object->position, prev_pos, &offset);
-        struct Vector3 bounding_box_size;
+        Vector3 bounding_box_size;
         vector3Sub(&object->bounding_box.max, &object->bounding_box.min, &bounding_box_size);
         vector3Scale(&bounding_box_size, &bounding_box_size, 0.5f);
 
@@ -225,14 +228,13 @@ void collision_scene_step() {
         int rot_same = 1;
         if(element->object->rotation){
             rot_same = quatIsIdentical(element->object->rotation, &element->object->_prev_step_rot);
-            element->object->_prev_step_rot = *element->object->rotation;
         }
         if (vector3Equals(&element->object->_prev_step_pos, element->object->position) && rot_same)
         {
             continue;
         }
         physics_object_recalculate_aabb(element->object);
-        struct Vector3 displacement;
+        Vector3 displacement;
         vector3Sub(element->object->position, &element->object->_prev_step_pos, &displacement);
         AABBTree_moveNode(&g_scene.object_aabbtree, element->object->_aabb_tree_node_id, element->object->bounding_box, &displacement);
     }
@@ -254,13 +256,13 @@ void collision_scene_step() {
     {
         element = &g_scene.elements[i];
 
-        if (g_scene.mesh_collider && element->object->collision_layers & COLLISION_LAYER_TANGIBLE)
+        if (g_scene.mesh_collider && !element->object->is_sleeping && element->object->collision_layers & COLLISION_LAYER_TANGIBLE)
         {
             collision_scene_collide_single(element->object, &element->object->_prev_step_pos);
         }
 
         physics_object_apply_constraints(element->object);
-        struct Vector3 displacement_after_collision;
+        Vector3 displacement_after_collision;
         vector3Sub(element->object->position, &element->object->_prev_step_pos, &displacement_after_collision);
         float displacement_dist = sqrtf(vector3MagSqrd(&displacement_after_collision));
         int rot_same = 1;
@@ -311,7 +313,7 @@ void collision_scene_render_debug_raylib(){
         struct collision_scene_element* element = &g_scene.elements[i];
         struct physics_object* object = element->object;
 
-        struct Vector3 center_offset_rotated;
+        Vector3 center_offset_rotated;
 
         DrawBoundingBox(
             (BoundingBox){
@@ -329,18 +331,18 @@ void collision_scene_render_debug_raylib(){
             float radius = object->collision->shape_data.capsule.radius;
 
             // Define the capsule's central axis in local space
-            struct Vector3 local_axis = {0.0f, half_height, 0.0f};
+            Vector3 local_axis = {0.0f, half_height, 0.0f};
 
             // Rotate the central axis by the given rotation to get its orientation in world space
-            struct Vector3 world_axis;
+            Vector3 world_axis;
             
             if (object->rotation)
                 quatMultVector(object->rotation, &local_axis, &world_axis);
             else
                 vector3Copy(&local_axis, &world_axis);
 
-            struct Vector3 start;
-            struct Vector3 end;
+            Vector3 start;
+            Vector3 end;
             vector3Copy(&world_axis, &start);
             vector3Copy(&world_axis, &end);
             vector3Scale(&end, &end, -1.0f);
@@ -360,8 +362,8 @@ void collision_scene_render_debug_raylib(){
         }
         else if(object->collision->shape_type == COLLISION_SHAPE_BOX){
             // Get capsule dimensions
-            struct Vector3 half_size = object->collision->shape_data.box.half_size;
-            struct Vector3 worldPos;
+            Vector3 half_size = object->collision->shape_data.box.half_size;
+            Vector3 worldPos;
 
             Raylib_Mesh cubeMesh = GenMeshCube(half_size.x * 2, half_size.y * 2, half_size.z * 2);
 
@@ -379,7 +381,7 @@ void collision_scene_render_debug_raylib(){
         }        
         else if(object->collision->shape_type == COLLISION_SHAPE_SPHERE){
             float radius = object->collision->shape_data.sphere.radius;
-            struct Vector3 worldPos;
+            Vector3 worldPos;
             vector3Add(object->position, &center_offset_rotated, &worldPos);
             Raylib_Vector3 pos = {worldPos.x * SCENE_SCALE, worldPos.y * SCENE_SCALE, worldPos.z * SCENE_SCALE};
             DrawSphereWires(pos, radius * SCENE_SCALE, 5, 5, PINK);
@@ -390,18 +392,18 @@ void collision_scene_render_debug_raylib(){
             float radius = object->collision->shape_data.cylinder.radius;
 
             // Define the capsule's central axis in local space
-            struct Vector3 local_axis = {0.0f, half_height, 0.0f};
+            Vector3 local_axis = {0.0f, half_height, 0.0f};
 
             // Rotate the central axis by the given rotation to get its orientation in world space
-            struct Vector3 world_axis;
+            Vector3 world_axis;
             
             if (object->rotation)
                 quatMultVector(object->rotation, &local_axis, &world_axis);
             else
                 vector3Copy(&local_axis, &world_axis);
 
-            struct Vector3 start;
-            struct Vector3 end;
+            Vector3 start;
+            Vector3 end;
             vector3Copy(&world_axis, &start);
             vector3Copy(&world_axis, &end);
             vector3Scale(&end, &end, -1.0f);
@@ -425,18 +427,18 @@ void collision_scene_render_debug_raylib(){
             float radius = object->collision->shape_data.cone.radius;
 
             // Define the capsule's central axis in local space
-            struct Vector3 local_axis = {0.0f, half_height, 0.0f};
+            Vector3 local_axis = {0.0f, half_height, 0.0f};
 
             // Rotate the central axis by the given rotation to get its orientation in world space
-            struct Vector3 world_axis;
+            Vector3 world_axis;
             
             if (object->rotation)
                 quatMultVector(object->rotation, &local_axis, &world_axis);
             else
                 vector3Copy(&local_axis, &world_axis);
 
-            struct Vector3 start;
-            struct Vector3 end;
+            Vector3 start;
+            Vector3 end;
             vector3Copy(&world_axis, &start);
             vector3Copy(&world_axis, &end);
             vector3Scale(&end, &end, -1.0f);
@@ -451,7 +453,7 @@ void collision_scene_render_debug_raylib(){
                 VIOLET
             );
             // float angle = 0.0f;
-            // struct Vector3 axis;
+            // Vector3 axis;
             // quatDecompose(object->rotation, &axis, &angle);
             // DrawCircle3D(
             //     (Raylib_Vector3){end.x * SCENE_SCALE, end.y * SCENE_SCALE, end.z * SCENE_SCALE},

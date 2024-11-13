@@ -12,10 +12,10 @@
 struct platform {
     float rot_x;
     float rot_y;
-    struct Transform transform;
+    Transform transform;
     struct renderable renderable;
     struct physics_object physics;
-    struct Vector2 look_direction;
+    Vector2 look_direction;
 };
 
 void platform_init(struct platform* platform, struct platform_definition* def);

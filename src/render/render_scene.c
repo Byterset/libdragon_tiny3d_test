@@ -13,7 +13,7 @@ void render_scene_reset() {
     callback_list_reset(&r_scene_3d.callbacks, sizeof(struct render_scene_element), MIN_RENDER_SCENE_SIZE, NULL);
 }
 
-void render_scene_add(struct Vector3* center, float radius, render_scene_callback callback, void* data) {
+void render_scene_add(Vector3* center, float radius, render_scene_callback callback, void* data) {
     struct render_scene_element element;
 
     element.data = data;

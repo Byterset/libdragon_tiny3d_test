@@ -4,7 +4,7 @@
 /// @param renderable pointer to the renderable
 /// @param transform pointer to the transform
 /// @param model_filename path string to the model in the rom file system
-void renderable_init(struct renderable* renderable, struct Transform* transform, const char* model_filename) {
+void renderable_init(struct renderable* renderable, Transform* transform, const char* model_filename) {
     renderable->transform = transform;
     renderable->model = model_cache_load(model_filename);
 }

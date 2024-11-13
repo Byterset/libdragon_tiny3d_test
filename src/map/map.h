@@ -10,7 +10,7 @@
 
 
 struct map {
-    struct Transform transform;
+    Transform transform;
     struct renderable renderable;
     struct model* model;
     float tileOffset;

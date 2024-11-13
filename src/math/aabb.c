@@ -21,7 +21,7 @@
  * @param point A pointer to the Vector3 structure that defines the point to be checked.
  * @return Returns 1 if the point is within the AABB, otherwise returns 0.
  */
-int AABBContainsPoint(struct AABB* box, struct Vector3* point) {
+int AABBContainsPoint(AABB* box, Vector3* point) {
     return box->min.x < point->x &&
         box->min.y < point->y &&
         box->min.z < point->z &&
@@ -38,7 +38,7 @@ int AABBContainsPoint(struct AABB* box, struct Vector3* point) {
  * @param b 
  * @return int 
  */
-int AABBContainsAABB(struct AABB *a, struct AABB *b)
+int AABBContainsAABB(AABB *a, AABB *b)
 {
     return (a->min.x <= b->min.x && a->min.y <= b->min.y && a->min.z <= b->min.z &&
             a->max.x >= b->max.x && a->max.y >= b->max.y && a->max.z >= b->max.z);
@@ -54,7 +54,7 @@ int AABBContainsAABB(struct AABB *a, struct AABB *b)
  * @param b Pointer to the second AABB structure.
  * @return int Returns 1 if the AABBs overlap, 0 otherwise.
  */
-int AABBHasOverlap(struct AABB* a, struct AABB* b) {
+int AABBHasOverlap(AABB* a, AABB* b) {
     return a->min.x <= b->max.x && a->max.x >= b->min.x &&
         a->min.y <= b->max.y && a->max.y >= b->min.y &&
         a->min.z <= b->max.z && a->max.z >= b->min.z;
@@ -66,7 +66,7 @@ int AABBHasOverlap(struct AABB* a, struct AABB* b) {
 /// @param direction Direction of the ray.
 /// @param max_distance Maximum distance of the ray after which intersections should not be considered.
 /// @return 
-int AABBIntersectsRay(struct AABB* box, struct RayCast* ray){
+int AABBIntersectsRay(AABB* box, struct RayCast* ray){
     float t_near = -FLT_MAX;
     float t_far = FLT_MAX;
     float t1, t2;
@@ -133,14 +133,14 @@ int AABBIntersectsRay(struct AABB* box, struct RayCast* ray){
  * @param a Pointer to the first AABB.
  * @param b Pointer to the second AABB.
  */
-struct AABB AABBUnion(struct AABB* a, struct AABB* b) {
-    struct AABB out;
+AABB AABBUnion(AABB* a, AABB* b) {
+    AABB out;
     vector3Max(&a->max, &b->max, &out.max);
     vector3Min(&a->min, &b->min, &out.min);
     return out;
 }
 
-float AABBGetArea(struct AABB aabb){
+float AABBGetArea(AABB aabb){
     float x = aabb.max.x - aabb.min.x;
     float y = aabb.max.y - aabb.min.y;
     float z = aabb.max.z - aabb.min.z;
@@ -157,15 +157,15 @@ float AABBGetArea(struct AABB aabb){
  * @param a Pointer to the AABB.
  * @param point Pointer to the point.
  */
-struct AABB AABBUnionPoint(struct AABB* a, struct Vector3* point) {
-    struct AABB out;
+AABB AABBUnionPoint(AABB* a, Vector3* point) {
+    AABB out;
     vector3Max(&a->max, point, &out.max);
     vector3Min(&a->min, point, &out.min);
     return out;
 }
 
-struct AABB AABBFromTriangle(struct Vector3* a, struct Vector3* b, struct Vector3* c){
-    struct AABB out;
+AABB AABBFromTriangle(Vector3* a, Vector3* b, Vector3* c){
+    AABB out;
     vector3Min(a, b, &out.min);
     vector3Min(&out.min, c, &out.min);
     vector3Max(a, b, &out.max);
@@ -184,7 +184,7 @@ struct AABB AABBFromTriangle(struct Vector3* a, struct Vector3* b, struct Vector
  * @param direction Pointer to the direction vector.
  * @param out Pointer to the output AABB where the result will be stored.
  */
-void AABBExtendDirection(struct AABB* a, struct Vector3* direction, struct AABB* out) {
+void AABBExtendDirection(AABB* a, Vector3* direction, AABB* out) {
     *out = *a;
 
     if (direction->x > 0.0) {
@@ -216,7 +216,7 @@ void AABBExtendDirection(struct AABB* a, struct Vector3* direction, struct AABB*
  * @param input Pointer to the direction vector.
  * @param output Pointer to the output vector where the result will be stored.
  */
-void AABBSupportFunction(struct AABB* box, struct Vector3* input, struct Vector3* output) {
+void AABBSupportFunction(AABB* box, Vector3* input, Vector3* output) {
     output->x = input->x > 0.0f ? box->max.x : box->min.x;
     output->y = input->y > 0.0f ? box->max.y : box->min.y;
     output->z = input->z > 0.0f ? box->max.z : box->min.z;

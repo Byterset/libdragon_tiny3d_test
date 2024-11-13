@@ -21,15 +21,15 @@ struct player_animations {
 };
 
 struct player_definition {
-    struct Vector3 location;
-    struct Vector2 rotation;
+    Vector3 location;
+    Vector2 rotation;
 };
 
 struct player {
-    struct Transform transform;
+    Transform transform;
     struct renderable renderable;
-    struct Transform* camera_transform;
-    struct Vector2 look_direction;
+    Transform* camera_transform;
+    Vector2 look_direction;
     bool is_attacking;
     bool is_jumping;
     struct physics_object physics;
@@ -37,7 +37,7 @@ struct player {
     struct player_animations animations;
 };
 
-void player_init(struct player* player, struct player_definition* definition, struct Transform* camera_transform);
+void player_init(struct player* player, struct player_definition* definition, Transform* camera_transform);
 
 void player_destroy(struct player* player);
 

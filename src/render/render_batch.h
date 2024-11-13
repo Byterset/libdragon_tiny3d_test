@@ -18,7 +18,7 @@
 #define MAX_BILLBOARD_SPRITES           128
 
 struct render_billboard_sprite {
-    struct Vector3 position;
+    Vector3 position;
     float radius;
     color_t color;
 };
@@ -74,7 +74,7 @@ struct render_batch {
     short element_count;
 };
 
-void render_batch_init(struct render_batch* batch, struct Transform* camera_transform, struct frame_memory_pool* pool);
+void render_batch_init(struct render_batch* batch, Transform* camera_transform, struct frame_memory_pool* pool);
 
 void render_batch_add_t3dmodel(struct render_batch* batch, struct model* model, T3DMat4FP* transform);
 

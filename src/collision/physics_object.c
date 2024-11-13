@@ -10,7 +10,7 @@ void physics_object_init(
     struct physics_object* object, 
     struct physics_object_collision_data* collision,
     uint16_t collision_layers,
-    struct Vector3* position, 
+    Vector3* position, 
     Quaternion* rotation,
     float mass
 ) {
@@ -101,15 +101,15 @@ void physics_object_apply_constraints(struct physics_object* object){
 /// @brief Accelerates the object by the given acceleration vector. 
 /// @param object 
 /// @param acceleration 
-void physics_object_accelerate(struct physics_object* object, struct Vector3* acceleration) {
+void physics_object_accelerate(struct physics_object* object, Vector3* acceleration) {
     vector3Add(&object->acceleration, acceleration, &object->acceleration);
 }
 
-void physics_object_set_velocity(struct physics_object* object, struct Vector3* velocity){
+void physics_object_set_velocity(struct physics_object* object, Vector3* velocity){
     vector3Copy(velocity, &object->velocity);
 }
 
-void physics_object_apply_impulse(struct physics_object* object, struct Vector3* impulse) {
+void physics_object_apply_impulse(struct physics_object* object, Vector3* impulse) {
     vector3AddScaled(&object->velocity, impulse, 1.0f / object->mass, &object->velocity);
 }
 
@@ -146,10 +146,10 @@ bool physics_object_is_touching(struct physics_object* object, entity_id id) {
     return false;
 }
 
-void physics_object_gjk_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
+void physics_object_gjk_support_function(void* data, Vector3* direction, Vector3* output) {
     struct physics_object* object = (struct physics_object*)data;
-    struct Vector3 world_center;
-    struct Vector3 localDir;
+    Vector3 world_center;
+    Vector3 localDir;
     if(object->rotation){
         Quaternion inv_rotation;
         quatConjugate(object->rotation, &inv_rotation);
@@ -178,7 +178,7 @@ void physics_object_gjk_support_function(void* data, struct Vector3* direction, 
 void physics_object_recalculate_aabb(struct physics_object* object) {
     //calculate bounding box for object in local space
     object->collision->bounding_box_calculator(object, object->rotation, &object->bounding_box);
-    struct Vector3 offset;
+    Vector3 offset;
 
     //calculate the rotated center offset if the object has a rotation
     if(object->rotation){

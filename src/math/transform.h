@@ -5,19 +5,19 @@
 #include "quaternion.h"
 
 typedef struct Transform {
-    struct Vector3 position;
+    Vector3 position;
     Quaternion rotation;
-    struct Vector3 scale;
+    Vector3 scale;
 } Transform;
 
-void transformInitIdentity(struct Transform* in);
-void transformToMatrix(struct Transform* in, float mtx[4][4]);
-void transformInvert(struct Transform* in, struct Transform* out);
-void transformPoint(struct Transform* transform, struct Vector3* in, struct Vector3* out);
-void transformPointInverse(struct Transform* transform, struct Vector3* in, struct Vector3* out);
-void transformPointInverseNoScale(struct Transform* transform, struct Vector3* in, struct Vector3* out);
-void transformConcat(struct Transform* left, struct Transform* right, struct Transform* output);
+void transformInitIdentity(Transform* in);
+void transformToMatrix(Transform* in, float mtx[4][4]);
+void transformInvert(Transform* in, Transform* out);
+void transformPoint(Transform* transform, Vector3* in, Vector3* out);
+void transformPointInverse(Transform* transform, Vector3* in, Vector3* out);
+void transformPointInverseNoScale(Transform* transform, Vector3* in, Vector3* out);
+void transformConcat(Transform* left, Transform* right, Transform* output);
 
-void transformLerp(struct Transform* a, struct Transform* b, float t, struct Transform* output);
+void transformLerp(Transform* a, Transform* b, float t, Transform* output);
 
 #endif

@@ -11,7 +11,7 @@
 #include "../../scene/scene_definition.h"
 
 struct box {
-    struct Transform transform;
+    Transform transform;
     struct renderable renderable;
     struct physics_object physics;
 };

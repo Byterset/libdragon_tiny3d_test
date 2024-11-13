@@ -34,7 +34,7 @@ void basisFromQuat(struct Basis* basis, Quaternion* quat) {
  * @param input A pointer to the input Vector3 structure to be rotated.
  * @param output A pointer to the output Vector3 structure where the result will be stored.
  */
-void basisRotate(struct Basis* basis, struct Vector3* input, struct Vector3* output) {
+void basisRotate(struct Basis* basis, Vector3* input, Vector3* output) {
     assert(input != output);
 
     vector3Scale(&basis->x, output, input->x);
@@ -52,7 +52,7 @@ void basisRotate(struct Basis* basis, struct Vector3* input, struct Vector3* out
  * @param input A pointer to the input Vector3 structure to be rotated.
  * @param output A pointer to the output Vector3 structure to store the result.
  */
-void basisUnRotate(struct Basis* basis, struct Vector3* input, struct Vector3* output) {
+void basisUnRotate(struct Basis* basis, Vector3* input, Vector3* output) {
     assert(input != output);
 
     output->x = vector3Dot(&basis->x, input);

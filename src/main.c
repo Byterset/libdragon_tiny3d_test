@@ -71,31 +71,31 @@ struct camera_controller camera_controller;
 float waiting_sec = 0.0f;
 
 struct player_definition playerDef = {
-    (struct Vector3){0, 0.15f, 0},
-    (struct Vector2){1, 0}
+    (Vector3){0, 0.15f, 0},
+    (Vector2){1, 0}
 };
 
 struct box_definition box_def = {
-    (struct Vector3){0, 5, 5}
+    (Vector3){0, 5, 5}
 };
 
 struct cone_definition cone_def = {
-    (struct Vector3){6, 0, -15}
+    (Vector3){6, 0, -15}
 };
 
 struct collectable_definition collectableDef = {
-    (struct Vector3){-10, 1, -25},
-    (struct Vector2){1, 0},
+    (Vector3){-10, 1, -25},
+    (Vector2){1, 0},
     COLLECTABLE_TYPE_COIN,
     0
 };
 
 struct cylinder_definition cyl_def = {
-    (struct Vector3){-10, 0, -10}
+    (Vector3){-10, 0, -10}
 };
 
 struct platform_definition plat_def = {
-    (struct Vector3){9, 6, 7}
+    (Vector3){9, 6, 7}
 };
 
 void on_vi_interrupt()
@@ -212,15 +212,15 @@ void render()
     struct mallinfo mall_inf = mallinfo();
     int ram_used = mall_inf.uordblks + ((uint32_t)HEAP_START_ADDR) - 0x80000000 - 0x10000;
     struct collision_scene *collision_scene = collision_scene_get();
-    float aabbtree_objects_mem = (sizeof(AABBTree) + (sizeof(AABBTreeNode)) * collision_scene->object_aabbtree.nodeCount) / 1024.0f;
-    float aabb_tree_mesh_mem = (sizeof(AABBTree) + (sizeof(AABBTreeNode)) * collision_scene->mesh_collider->aabbtree.nodeCount) / 1024.0f;
+    float aabbtree_objects_mem = (sizeof(AABBTree) + (sizeof(AABBTreeNode)) * collision_scene->object_aabbtree._nodeCount) / 1024.0f;
+    float aabb_tree_mesh_mem = (sizeof(AABBTree) + (sizeof(AABBTreeNode)) * collision_scene->mesh_collider->aabbtree._nodeCount) / 1024.0f;
 
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", player.is_attacking);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "fps: %.1f", fps);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "mem: %d", ram_used);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree.nodeCount, aabbtree_objects_mem);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree.nodeCount, aabb_tree_mesh_mem);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree._nodeCount, aabbtree_objects_mem);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree._nodeCount, aabb_tree_mesh_mem);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "Sleeping? %d", player.physics.is_sleeping);
 
     posY = 200;
@@ -241,6 +241,7 @@ int main()
     #endif
 
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS);
+    display_set_fps_limit(60);
 
     rdpq_init();
     joypad_init();

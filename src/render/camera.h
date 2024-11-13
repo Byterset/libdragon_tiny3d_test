@@ -12,7 +12,7 @@ struct ClippingPlanes {
 };
 
 struct camera {
-    struct Transform transform;
+    Transform transform;
     float fov;
     float near;
     float far;

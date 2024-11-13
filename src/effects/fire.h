@@ -10,9 +10,9 @@
 #define MAX_FIRE_PARTICLE_COUNT     7
 
 struct fire {
-    struct Vector3 particle_offset[MAX_FIRE_PARTICLE_COUNT];
-    struct Vector3 position;
-    struct Vector2 rotation;
+    Vector3 particle_offset[MAX_FIRE_PARTICLE_COUNT];
+    Vector3 position;
+    Vector2 rotation;
     float cycle_time;
     float total_time;
     float end_time;

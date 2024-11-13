@@ -76,7 +76,7 @@ float matrixNormalizedZValue(float depth, float near, float far) {
  * @param input The input 3D vector to be multiplied.
  * @param output The output 4D vector where the result will be stored.
  */
-void matrixVec3Mul(float matrix[4][4], struct Vector3* input, struct Vector4* output) {
+void matrixVec3Mul(float matrix[4][4], Vector3* input, Vector4* output) {
     output->x = matrix[0][0] * input->x + matrix[1][0] * input->y + matrix[2][0] * input->z + matrix[3][0];
     output->y = matrix[0][1] * input->x + matrix[1][1] * input->y + matrix[2][1] * input->z + matrix[3][1];
     output->z = matrix[0][2] * input->x + matrix[1][2] * input->y + matrix[2][2] * input->z + matrix[3][2];
@@ -94,7 +94,7 @@ void matrixVec3Mul(float matrix[4][4], struct Vector3* input, struct Vector4* ou
  * @param y The y vector of the basis.
  * @param z The z vector of the basis.
  */
-void matrixFromBasis(float matrix[4][4], struct Vector3* origin, struct Vector3* x, struct Vector3* y, struct Vector3* z) {
+void matrixFromBasis(float matrix[4][4], Vector3* origin, Vector3* x, Vector3* y, Vector3* z) {
     matrix[0][0] = x->x;
     matrix[0][1] = x->y;
     matrix[0][2] = x->z;
@@ -124,7 +124,7 @@ void matrixFromBasis(float matrix[4][4], struct Vector3* origin, struct Vector3*
  * @param matrix The 4x4 matrix to be initialized.
  * @param position The position vector.
  */
-void matrixFromPosition(float matrix[4][4], struct Vector3* position) {
+void matrixFromPosition(float matrix[4][4], Vector3* position) {
     matrix[0][0] = 1.0f;
     matrix[0][1] = 0.0f;
     matrix[0][2] = 0.0f;
@@ -184,7 +184,7 @@ void matrixFromScale(float matrix[4][4], float scale) {
  * @param matrix The 4x4 matrix to be modified.
  * @param position The position vector to be applied.
  */
-void matrixApplyPosition(float matrix[4][4], struct Vector3* position) {
+void matrixApplyPosition(float matrix[4][4], Vector3* position) {
     matrix[3][0] = position->x;
     matrix[3][1] = position->y;
     matrix[3][2] = position->z;

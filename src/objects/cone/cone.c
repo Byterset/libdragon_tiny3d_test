@@ -27,7 +27,7 @@ void cone_init(struct cone* cone, struct cone_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&cone->transform);
 
-    cone->transform.scale = (struct Vector3){7.0f, 5.0f, 7.0f};
+    cone->transform.scale = (Vector3){7.0f, 5.0f, 7.0f};
     cone->transform.position = def->position;
     quatRotateAxisEuler(&cone->transform.rotation, &gRight, T3D_DEG_TO_RAD(0.0f), &cone->transform.rotation);
     // cone->transform.position.y += 4.5f;

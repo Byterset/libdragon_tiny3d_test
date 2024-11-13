@@ -16,7 +16,7 @@
 #define PLAYER_MAX_ACC       100.0f
 #define PLAYER_JUMP_HEIGHT  3.2f
 
-static struct Vector2 player_max_rotation;
+static Vector2 player_max_rotation;
 
 static struct physics_object_collision_data player_collision = {
     .gjk_support_function = capsule_support_function,
@@ -39,7 +39,7 @@ static struct physics_object_collision_data player_collision = {
 //     .shape_type = COLLISION_SHAPE_SPHERE,
 // };
 
-void player_get_move_basis(struct Transform* transform, struct Vector3* forward, struct Vector3* right) {
+void player_get_move_basis(Transform* transform, Vector3* forward, Vector3* right) {
     quatMultVector(&transform->rotation, &gForward, forward);
     quatMultVector(&transform->rotation, &gRight, right);
 
@@ -57,10 +57,14 @@ void player_get_move_basis(struct Transform* transform, struct Vector3* forward,
     vector3Normalize(right, right);
 }
 
+void player_fixed_update(struct player* player){
+
+}
+
 
 void player_update(struct player* player) {
-    struct Vector3 right;
-    struct Vector3 forward;
+    Vector3 right;
+    Vector3 forward;
     float animBlend = 0.4f;
 
     joypad_inputs_t input = joypad_get_inputs(0);
@@ -110,7 +114,7 @@ void player_update(struct player* player) {
 
 
 
-    struct Vector2 direction;
+    Vector2 direction;
 
     direction.x = input.stick_x * (1.0f / 80.0f);
     direction.y = -input.stick_y * (1.0f / 80.0f);
@@ -121,7 +125,7 @@ void player_update(struct player* player) {
         vector2Scale(&direction, 1.0f / sqrtf(magSqrd), &direction);
     }
 
-    struct Vector3 directionWorld;
+    Vector3 directionWorld;
     vector3Scale(&right, &directionWorld, direction.x);
     vector3AddScaled(&directionWorld, &forward, direction.y, &directionWorld);
 
@@ -131,8 +135,8 @@ void player_update(struct player* player) {
         max_speed *= 8.0f;
     }
     
-    struct Vector3 desiredVelocity = {directionWorld.x * max_speed, 0.0f, directionWorld.z * max_speed};
-    float maxSpeedChange = FIXED_DELTATIME * PLAYER_MAX_ACC;
+    Vector3 desiredVelocity = {directionWorld.x * max_speed, 0.0f, directionWorld.z * max_speed};
+    float maxSpeedChange = frametime_sec * PLAYER_MAX_ACC;
     if(player->physics.velocity.x < desiredVelocity.x){
         player->physics.velocity.x = fminf(player->physics.velocity.x + maxSpeedChange, desiredVelocity.x);
     }
@@ -149,7 +153,7 @@ void player_update(struct player* player) {
 
 
     if (magSqrd > 0.01f) {
-        struct Vector2 directionUnit;
+        Vector2 directionUnit;
 
         directionUnit.x = directionWorld.x;
         directionUnit.y = directionWorld.z;
@@ -185,7 +189,7 @@ void player_update(struct player* player) {
 
 
 
-void player_init(struct player* player, struct player_definition* definition, struct Transform* camera_transform) {
+void player_init(struct player* player, struct player_definition* definition, Transform* camera_transform) {
     entity_id entity_id = entity_id_new();
 
     transformInitIdentity(&player->transform);
@@ -196,7 +200,7 @@ void player_init(struct player* player, struct player_definition* definition, st
 
     
     player->skelBlend = t3d_skeleton_clone(&player->renderable.model->skeleton, false);
-    player->transform.scale = (struct Vector3){1, 1, 1};
+    player->transform.scale = (Vector3){1, 1, 1};
     player->camera_transform = camera_transform;
 
     player->transform.position = definition->location;

@@ -40,7 +40,7 @@ struct static_entity {
 };
 
 struct loading_zone {
-    struct AABB bounding_box;
+    AABB bounding_box;
     char* scene_name;
 };
 

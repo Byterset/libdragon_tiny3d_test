@@ -56,7 +56,7 @@ void map_custom_render(void* data, struct render_batch* batch) {
 
 void map_update(struct map* map) {
     map->tileOffset += 0.5f;
-    // struct Vector3 rotAxis = {0, 1, 0};
+    // Vector3 rotAxis = {0, 1, 0};
     // quatRotateAxisEuler(&map->transform.rotation, &rotAxis, 0.01f, &map->transform.rotation);
 }
 
@@ -66,8 +66,8 @@ void map_init(struct map* map) {
     renderable_init(&map->renderable, &map->transform, "rom:/models/map/map.t3dm");
 
 
-    map->transform.position = (struct Vector3){0,0,0};
-    map->transform.scale = (struct Vector3){5.0f, 5.0f, 5.0f};
+    map->transform.position = (Vector3){0,0,0};
+    map->transform.scale = (Vector3){5.0f, 5.0f, 5.0f};
     map->tileOffset = 0.0f;
 
     map->model = model_cache_load("rom:/models/map/map.t3dm");

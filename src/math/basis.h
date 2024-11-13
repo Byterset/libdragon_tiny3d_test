@@ -19,14 +19,14 @@
  * 
  */
 struct Basis {
-    struct Vector3 x;
-    struct Vector3 y;
-    struct Vector3 z;
+    Vector3 x;
+    Vector3 y;
+    Vector3 z;
 };
 
 void basisFromQuat(struct Basis* basis, Quaternion* quat);
 
-void basisRotate(struct Basis* basis, struct Vector3* input, struct Vector3* output);
-void basisUnRotate(struct Basis* basis, struct Vector3* input, struct Vector3* output);
+void basisRotate(struct Basis* basis, Vector3* input, Vector3* output);
+void basisUnRotate(struct Basis* basis, Vector3* input, Vector3* output);
 
 #endif

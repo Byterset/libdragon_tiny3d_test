@@ -19,16 +19,16 @@ void matrixPerspective(float matrix[4][4], float l, float r, float top, float b,
 
 float matrixNormalizedZValue(float depth, float nearPlane, float farPlane);
 
-void matrixVec3Mul(float matrix[4][4], struct Vector3* input, struct Vector4* output);
+void matrixVec3Mul(float matrix[4][4], Vector3* input, Vector4* output);
 
 void matrixMul(float a[4][4], float b[4][4], float output[4][4]);
 
-void matrixFromBasis(float matrix[4][4], struct Vector3* origin, struct Vector3* x, struct Vector3* y, struct Vector3* z);
+void matrixFromBasis(float matrix[4][4], Vector3* origin, Vector3* x, Vector3* y, Vector3* z);
 
-void matrixFromPosition(float matrix[4][4], struct Vector3* position);
+void matrixFromPosition(float matrix[4][4], Vector3* position);
 
 void matrixFromScale(float matrix[4][4], float scale);
 
-void matrixApplyPosition(float matrix[4][4], struct Vector3* position);
+void matrixApplyPosition(float matrix[4][4], Vector3* position);
 
 #endif

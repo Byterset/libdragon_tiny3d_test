@@ -1,12 +1,12 @@
 #include "plane.h"
 #include "mathf.h"
 
-void planeInitWithNormalAndPoint(struct Plane* plane, struct Vector3* normal, struct Vector3* point) {
+void planeInitWithNormalAndPoint(struct Plane* plane, Vector3* normal, Vector3* point) {
     plane->normal = *normal;
     plane->d = -vector3Dot(normal, point);
 }
 
-int planeRayIntersection(struct Plane* plane, struct Vector3* rayOrigin, struct Vector3* rayDirection, float* rayDistance) {
+int planeRayIntersection(struct Plane* plane, Vector3* rayOrigin, Vector3* rayDirection, float* rayDistance) {
     float normalDot = vector3Dot(&plane->normal, rayDirection);
 
     if (fabsf(normalDot) < 0.00001f) {
@@ -19,17 +19,17 @@ int planeRayIntersection(struct Plane* plane, struct Vector3* rayOrigin, struct 
 }
 
 
-float planePointDistance(struct Plane* plane, struct Vector3* point) {
+float planePointDistance(struct Plane* plane, Vector3* point) {
     return vector3Dot(&plane->normal, point) + plane->d;
 }
 
-void planeProjectPoint(struct Plane* plane, struct Vector3* point, struct Vector3* output) {
+void planeProjectPoint(struct Plane* plane, Vector3* point, Vector3* output) {
     float distance = planePointDistance(plane, point);
     vector3AddScaled(point, &plane->normal, distance, output);
 }
 
-float calculateLerp(struct Vector3* a, struct Vector3* b, struct Vector3* point) {
-    struct Vector3 v0;
+float calculateLerp(Vector3* a, Vector3* b, Vector3* point) {
+    Vector3 v0;
     vector3Sub(b, a, &v0);
 
     float denom = vector3MagSqrd(&v0);
@@ -38,16 +38,16 @@ float calculateLerp(struct Vector3* a, struct Vector3* b, struct Vector3* point)
         return 0.5f;
     }
 
-    struct Vector3 pointOffset;
+    Vector3 pointOffset;
     vector3Sub(point, a, &pointOffset);
 
     return vector3Dot(&pointOffset, &v0) / denom;
 }
 
-void calculateBarycentricCoords(struct Vector3* a, struct Vector3* b, struct Vector3* c, struct Vector3* point, struct Vector3* output) {
-    struct Vector3 v0;
-    struct Vector3 v1;
-    struct Vector3 v2;
+void calculateBarycentricCoords(Vector3* a, Vector3* b, Vector3* c, Vector3* point, Vector3* output) {
+    Vector3 v0;
+    Vector3 v1;
+    Vector3 v2;
 
     vector3Sub(b, a, &v0);
     vector3Sub(c, a, &v1);
@@ -83,7 +83,7 @@ void calculateBarycentricCoords(struct Vector3* a, struct Vector3* b, struct Vec
     output->x = 1.0f - output->y - output->z;
 }
 
-void evaluateBarycentricCoords(struct Vector3* a, struct Vector3* b, struct Vector3* c, struct Vector3* bary, struct Vector3* output) {
+void evaluateBarycentricCoords(Vector3* a, Vector3* b, Vector3* c, Vector3* bary, Vector3* output) {
     vector3Scale(a, output, bary->x);
     if(bary->y > EPSILON){
         vector3AddScaled(output, b, bary->y, output);

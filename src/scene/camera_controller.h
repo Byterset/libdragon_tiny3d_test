@@ -11,7 +11,7 @@ struct camera_controller {
     struct camera* camera;
     struct player* player;
     float follow_distace;
-    struct Vector3 target;
+    Vector3 target;
 };
 
 void camera_controller_init(struct camera_controller* controller, struct camera* camera, struct player* player);

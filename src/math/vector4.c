@@ -1,6 +1,6 @@
 #include "vector4.h"
 
-void vector4Lerp(struct Vector4* a, struct Vector4* b, float lerp, struct Vector4* out) {
+void vector4Lerp(Vector4* a, Vector4* b, float lerp, Vector4* out) {
     float tInv = 1.0f - lerp;
 
     out->x = a->x * tInv + b->x * lerp;

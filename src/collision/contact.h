@@ -8,8 +8,8 @@ struct physics_object;
 
 struct contact {
     struct contact* next;
-    struct Vector3 point;
-    struct Vector3 normal;
+    Vector3 point;
+    Vector3 normal;
     entity_id other_object;
 };
 

@@ -45,7 +45,7 @@ void platform_update(struct platform* platform){
 void platform_init(struct platform* platform, struct platform_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&platform->transform);
-    platform->transform.scale = (struct Vector3){3.0f, 12.0f, 3.0f};
+    platform->transform.scale = (Vector3){3.0f, 12.0f, 3.0f};
     platform->transform.position = def->position;
     platform->rot_x = 0.0f;
 

@@ -17,12 +17,11 @@ typedef int16_t NodeProxy;
 /// left and right children, the next node, a flag to indicate if the node has moved, 
 /// and a pointer to the collider data contained within.
 typedef struct AABBTreeNode {
-    struct AABB bounds; /*The bounds of the Node in World Space*/
-    NodeProxy parent;
-    NodeProxy left;
-    NodeProxy right;
-    NodeProxy next;
-    // int moved;
+    AABB bounds; /*The bounds of the Node in World Space*/
+    NodeProxy _parent;
+    NodeProxy _left;
+    NodeProxy _right;
+    NodeProxy _next;
     void* data;
 } AABBTreeNode;
 
@@ -31,9 +30,9 @@ typedef struct AABBTreeNode {
 /// a free list of nodes, and an array of nodes.
 typedef struct AABBTree{
     NodeProxy root;
-    int16_t nodeCount;
-    int16_t nodeCapacity;
-    NodeProxy freeList;
+    int16_t _nodeCount;
+    int16_t _nodeCapacity;
+    NodeProxy _freeList;
     AABBTreeNode* nodes;
 
 } AABBTree;
@@ -49,23 +48,23 @@ NodeProxy AABBTree_allocateNode(AABBTree *tree);
 
 void AABBTreeNode_freeNode(AABBTree *tree, NodeProxy node);
 
-NodeProxy AABBTreeNode_createNode(AABBTree *tree, struct AABB bounds, void* data);
+NodeProxy AABBTreeNode_createNode(AABBTree *tree, AABB bounds, void* data);
 
-int AABBTree_moveNode(AABBTree *tree, NodeProxy node, struct AABB aabb, struct Vector3 *displacement);
+int AABBTree_moveNode(AABBTree *tree, NodeProxy node, AABB aabb, Vector3 *displacement);
 
 void AABBTreeNode_rotateNode(AABBTree *tree, NodeProxy node);
 
 int AABBTreeNode_testOverlap(AABBTree *tree, NodeProxy a, NodeProxy b);
 
-struct AABB* AABBTreeNode_getBounds(AABBTree *tree, NodeProxy node);
+AABB* AABBTreeNode_getBounds(AABBTree *tree, NodeProxy node);
 
 void AABBTree_rebuild(AABBTree *tree);
 
 NodeProxy AABBTree_insertLeaf(AABBTree *tree, NodeProxy leaf);
 
-void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf, bool freeNode);
+void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf, int freeNode);
 
-struct AABB AABBTree_getNodeAABB(AABBTree *tree, NodeProxy node);
+AABB AABBTree_getNodeAABB(AABBTree *tree, NodeProxy node);
 
 void AABBTreeNode_clearMoved(AABBTree *tree, NodeProxy node);
 
@@ -73,9 +72,9 @@ int AABBTreeNode_wasMoved(AABBTree *tree, NodeProxy node);
 
 void* AABBTreeNode_getData(AABBTree *tree, NodeProxy node);
 
-void AABBTree_queryBounds(AABBTree *tree, struct AABB *query_box, NodeProxy *results, int* result_count, int max_results);
+void AABBTree_queryBounds(AABBTree *tree, AABB *query_box, NodeProxy *results, int* result_count, int max_results);
 
-void AABBTree_queryPoint(AABBTree *tree, struct Vector3 point, NodeProxy *results, int *result_count, int max_results);
+void AABBTree_queryPoint(AABBTree *tree, Vector3 point, NodeProxy *results, int *result_count, int max_results);
 
 void AABBTree_queryRay(AABBTree *tree, struct RayCast *ray, NodeProxy *results, int *result_count, int max_results);
 

@@ -6,7 +6,7 @@ void simplexInit(struct Simplex* simplex) {
     simplex->nPoints = 0;
 }
 
-struct Vector3* simplexAddPoint(struct Simplex* simplex, struct Vector3* aPoint, struct Vector3* bPoint) {
+Vector3* simplexAddPoint(struct Simplex* simplex, Vector3* aPoint, Vector3* bPoint) {
     if (simplex->nPoints == MAX_SIMPLEX_SIZE) {
         // SHOULD never happen, but just in case
         return 0;
@@ -53,13 +53,13 @@ void simplexMovePoint(struct Simplex* simplex, int to, int from) {
  *      - If two faces are in front, updates the simplex and the next search direction.
  *      - If three faces are in front, resets the simplex to a single point and updates the direction.
  */
-int simplexCheck(struct Simplex* simplex, struct Vector3* nextDirection) {
-    struct Vector3* lastAdded = &simplex->points[simplex->nPoints - 1];
-    struct Vector3 aToOrigin;
+int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
+    Vector3* lastAdded = &simplex->points[simplex->nPoints - 1];
+    Vector3 aToOrigin;
     vector3Negate(lastAdded, &aToOrigin);
 
     if (simplex->nPoints == 2) {
-        struct Vector3 lastAddedToOther;
+        Vector3 lastAddedToOther;
         vector3Sub(&simplex->points[0], lastAdded, &lastAddedToOther);
         vector3TripleProduct(&lastAddedToOther, &aToOrigin, &lastAddedToOther, nextDirection);
 
@@ -69,15 +69,15 @@ int simplexCheck(struct Simplex* simplex, struct Vector3* nextDirection) {
 
         return 0;
     } else if (simplex->nPoints == 3) {
-        struct Vector3 normal;
-        struct Vector3 ab;
+        Vector3 normal;
+        Vector3 ab;
         vector3Sub(&simplex->points[1], lastAdded, &ab);
-        struct Vector3 ac;
+        Vector3 ac;
         vector3Sub(&simplex->points[0], lastAdded, &ac);
 
         vector3Cross(&ab, &ac, &normal);
 
-        struct Vector3 dirCheck;
+        Vector3 dirCheck;
         vector3Cross(&ab, &normal, &dirCheck);
 
         if (vector3Dot(&dirCheck, &aToOrigin) > 0.0f) {
@@ -128,11 +128,11 @@ int simplexCheck(struct Simplex* simplex, struct Vector3* nextDirection) {
         int lastInFrontIndex = -1;
         int isFrontCount = 0;
 
-        struct Vector3 normals[3];
+        Vector3 normals[3];
 
         for (int i = 0; i < 3; ++i) {
-            struct Vector3 firstEdge;
-            struct Vector3 secondEdge;
+            Vector3 firstEdge;
+            Vector3 secondEdge;
             vector3Sub(lastAdded, &simplex->points[i], &firstEdge);
             vector3Sub(i == 2 ? &simplex->points[0] : &simplex->points[i + 1], &simplex->points[i], &secondEdge);
             vector3Cross(&firstEdge, &secondEdge, &normals[i]);
@@ -171,7 +171,7 @@ int simplexCheck(struct Simplex* simplex, struct Vector3* nextDirection) {
             simplexMovePoint(simplex, 1, 3);
             simplex->nPoints = 2;
 
-            struct Vector3 ab;
+            Vector3 ab;
             vector3Sub(&simplex->points[0], &simplex->points[1], &ab);
 
             vector3TripleProduct(&ab, &aToOrigin, &ab, nextDirection);
@@ -192,10 +192,10 @@ int simplexCheck(struct Simplex* simplex, struct Vector3* nextDirection) {
 }
 
 
-int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSupport, struct Vector3* firstDirection) {
-    struct Vector3 aPoint;
-    struct Vector3 bPoint;
-    struct Vector3 nextDirection;
+int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSupport, Vector3* firstDirection) {
+    Vector3 aPoint;
+    Vector3 bPoint;
+    Vector3 nextDirection;
 
     simplexInit(simplex);
 
@@ -214,12 +214,12 @@ int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, gjk_support_funct
     }
 
     for (int iteration = 0; iteration < MAX_GJK_ITERATIONS; ++iteration) {
-        struct Vector3 reverseDirection;
+        Vector3 reverseDirection;
         vector3Negate(&nextDirection, &reverseDirection);
         objectASupport(objectA, &nextDirection, &aPoint);
         objectBSupport(objectB, &reverseDirection, &bPoint);
 
-        struct Vector3* addedPoint = simplexAddPoint(simplex, &aPoint, &bPoint);
+        Vector3* addedPoint = simplexAddPoint(simplex, &aPoint, &bPoint);
 
         if (!addedPoint) {
             return 0;

@@ -9,11 +9,11 @@
 #include "../render/model.h"
 
 struct renderable {
-    struct Transform* transform; //the transform of the object
+    Transform* transform; //the transform of the object
     struct model* model; //the model of the object
 };
 
-void renderable_init(struct renderable* renderable, struct Transform* transform, const char* model_filename);
+void renderable_init(struct renderable* renderable, Transform* transform, const char* model_filename);
 void renderable_destroy(struct renderable* renderable);
 
 struct renderable_single_axis {

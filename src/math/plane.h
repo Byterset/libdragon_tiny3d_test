@@ -4,18 +4,18 @@
 #include "vector3.h"
 
 struct Plane {
-    struct Vector3 normal;
+    Vector3 normal;
     float d;
 };
 
-void planeInitWithNormalAndPoint(struct Plane* plane, struct Vector3* normal, struct Vector3* point);
+void planeInitWithNormalAndPoint(struct Plane* plane, Vector3* normal, Vector3* point);
 
-int planeRayIntersection(struct Plane* plane, struct Vector3* rayOrigin, struct Vector3* rayDirection, float* rayDistance);
+int planeRayIntersection(struct Plane* plane, Vector3* rayOrigin, Vector3* rayDirection, float* rayDistance);
 
-float planePointDistance(struct Plane* plane, struct Vector3* point);
-void planeProjectPoint(struct Plane* plane, struct Vector3* point, struct Vector3* output);
+float planePointDistance(struct Plane* plane, Vector3* point);
+void planeProjectPoint(struct Plane* plane, Vector3* point, Vector3* output);
 
-void calculateBarycentricCoords(struct Vector3* a, struct Vector3* b, struct Vector3* c, struct Vector3* point, struct Vector3* output);
-void evaluateBarycentricCoords(struct Vector3* a, struct Vector3* b, struct Vector3* c, struct Vector3* bary, struct Vector3* output);
+void calculateBarycentricCoords(Vector3* a, Vector3* b, Vector3* c, Vector3* point, Vector3* output);
+void evaluateBarycentricCoords(Vector3* a, Vector3* b, Vector3* c, Vector3* bary, Vector3* output);
 
 #endif

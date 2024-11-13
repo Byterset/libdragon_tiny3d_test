@@ -9,12 +9,12 @@
 
 struct swept_physics_object {
     struct physics_object* object;
-    struct Vector3 offset;
+    Vector3 offset;
 };
 
-void swept_physics_object_gjk_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
+void swept_physics_object_gjk_support_function(void* data, Vector3* direction, Vector3* output) {
     struct swept_physics_object* obj = (struct swept_physics_object*)data;
-    struct Vector3 norm_dir;
+    Vector3 norm_dir;
     vector3Normalize(direction, &norm_dir);
     physics_object_gjk_support_function(obj->object, direction, output);
 
@@ -25,7 +25,7 @@ void swept_physics_object_gjk_support_function(void* data, struct Vector3* direc
 
 void object_mesh_collide_data_init(
     struct object_mesh_collide_data* data,
-    struct Vector3* prev_pos,
+    Vector3* prev_pos,
     struct mesh_collider* mesh,
     struct physics_object* object
 ) {
@@ -65,7 +65,7 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
         return true;
     }
 
-    struct Vector3 final_pos = *collide_data->object->position;
+    Vector3 final_pos = *collide_data->object->position;
     *collide_data->object->position = *collide_data->prev_pos;
 
     if (epaSolve(
@@ -97,19 +97,19 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
 void collide_object_swept_bounce(
     struct physics_object* object, 
     struct object_mesh_collide_data* collide_data,
-    struct Vector3* start_pos
+    Vector3* start_pos
 ) {
     // this is the new prev position when iterating
     // over mulitple swept collisions
     *collide_data->prev_pos = *object->position;
 
-    struct Vector3 move_amount;
+    Vector3 move_amount;
     vector3Sub(start_pos, object->position, &move_amount);
 
     // split the move amount due to the collision into normal and tangent components
-    struct Vector3 move_amount_normal;
+    Vector3 move_amount_normal;
     vector3Project(&move_amount, &collide_data->hit_result.normal, &move_amount_normal);
-    struct Vector3 move_amount_tangent;
+    Vector3 move_amount_tangent;
     vector3Sub(&move_amount, &move_amount_normal, &move_amount_tangent);
 
     vector3Scale(&move_amount_normal, &move_amount_normal, -object->collision->bounce);
@@ -127,7 +127,7 @@ void collide_object_swept_bounce(
     collide_add_contact(object, &collide_data->hit_result);
 }
 
-bool collide_object_to_mesh_swept(struct physics_object* object, struct mesh_collider* mesh, struct Vector3* prev_pos){
+bool collide_object_to_mesh_swept(struct physics_object* object, struct mesh_collider* mesh, Vector3* prev_pos){
     if (object->is_trigger) {
         return false;
     }
@@ -135,9 +135,9 @@ bool collide_object_to_mesh_swept(struct physics_object* object, struct mesh_col
     struct object_mesh_collide_data collide_data;
     object_mesh_collide_data_init(&collide_data, prev_pos, mesh, object);
 
-    struct Vector3 start_pos = *object->position;
+    Vector3 start_pos = *object->position;
 
-    struct Vector3 offset;
+    Vector3 offset;
 
 
     vector3Sub(
@@ -145,15 +145,15 @@ bool collide_object_to_mesh_swept(struct physics_object* object, struct mesh_col
         prev_pos,
         &offset);
 
-    struct Vector3 box_extent;
+    Vector3 box_extent;
     vector3Sub(&object->bounding_box.max, &object->bounding_box.min, &box_extent);
     vector3Scale(&box_extent, &box_extent, 0.5f);
-    struct AABB prev_box;
+    AABB prev_box;
     vector3Sub(prev_pos, &box_extent, &prev_box.min);
     vector3Add(prev_pos, &box_extent, &prev_box.max);
 
     // span a box from the previous position to the current position to catch all possible triangle collisions
-    struct AABB expanded_box = AABBUnion(&prev_box, &object->bounding_box);
+    AABB expanded_box = AABBUnion(&prev_box, &object->bounding_box);
 
 
     int result_count = 0;

@@ -2,10 +2,10 @@
 #ifndef _VECTOR4_H
 #define _VECTOR4_H
 
-struct Vector4 {
+typedef struct Vector4 {
     float x, y, z, w;
-};
+} Vector4;
 
-void vector4Lerp(struct Vector4* a, struct Vector4* b, float lerp, struct Vector4* out);
+void vector4Lerp(Vector4* a, Vector4* b, float lerp, Vector4* out);
 
 #endif

@@ -6,7 +6,7 @@
 
 #define MAX_INDEX_SET_SIZE 64
 
-void mesh_triangle_gjk_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
+void mesh_triangle_gjk_support_function(void* data, Vector3* direction, Vector3* output) {
     struct mesh_triangle* triangle = (struct mesh_triangle*)data;
 
     int idx = 0;
@@ -38,8 +38,8 @@ void mesh_triangle_gjk_support_function(void* data, struct Vector3* direction, s
 /// @param triangle 
 /// @param point 
 /// @return 
-float mesh_triangle_comparePoint(struct mesh_triangle *triangle, struct Vector3* point){
-    struct Vector3 normal, toPoint, vertexA;
+float mesh_triangle_comparePoint(struct mesh_triangle *triangle, Vector3* point){
+    Vector3 normal, toPoint, vertexA;
     normal = triangle->normal;
 
     // normal . (point - triangleVert)

@@ -15,7 +15,7 @@ typedef int render_id;
 
 struct render_scene_element {
     void* data;
-    struct Vector3* center;
+    Vector3* center;
     float radius;
 };
 
@@ -25,7 +25,7 @@ struct render_scene {
 
 void render_scene_reset();
 
-void render_scene_add(struct Vector3* center, float radius, render_scene_callback callback, void* data);
+void render_scene_add(Vector3* center, float radius, render_scene_callback callback, void* data);
 void render_scene_add_renderable(struct renderable* renderable, float radius);
 void render_scene_add_renderable_single_axis(struct renderable_single_axis* renderable, float radius);
 void render_scene_remove(void* data);

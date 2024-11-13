@@ -25,7 +25,7 @@ union SimplexTriangleIndexData {
 struct SimplexTriangle {
     union SimplexTriangleIndexData indexData;
     float distanceToOrigin;
-    struct Vector3 normal;
+    Vector3 normal;
 };
 
 enum SimplexFlags {
@@ -33,8 +33,8 @@ enum SimplexFlags {
 };
 
 struct ExpandingSimplex {
-    struct Vector3 points[MAX_SIMPLEX_POINTS];
-    struct Vector3 aPoints[MAX_SIMPLEX_POINTS];
+    Vector3 points[MAX_SIMPLEX_POINTS];
+    Vector3 aPoints[MAX_SIMPLEX_POINTS];
     struct SimplexTriangle triangles[MAX_SIMPLEX_TRIANGLES];
     short pointCount;
     short triangleCount;
@@ -73,7 +73,7 @@ int validateExpandingSimplex(struct ExpandingSimplex* simplex) {
                 return 0;
             }
 
-            struct Vector3 offset;
+            Vector3 offset;
             vector3Sub(
                 &simplex->points[adjacent->indexData.indices[triangle->indexData.oppositePoints[index]]], 
                 &simplex->points[triangle->indexData.indices[index]], 
@@ -90,7 +90,7 @@ int validateExpandingSimplex(struct ExpandingSimplex* simplex) {
     return 1;
 }
 
-void expandingSimplexAddPoint(struct ExpandingSimplex* simplex, struct Vector3* aPoint, struct Vector3* pointDiff) {
+void expandingSimplexAddPoint(struct ExpandingSimplex* simplex, Vector3* aPoint, Vector3* pointDiff) {
     int result = simplex->pointCount;
     simplex->aPoints[result] = *aPoint;
     simplex->points[result] = *pointDiff;
@@ -184,23 +184,23 @@ int expandingSimplexFindHeapIndex(struct ExpandingSimplex* simplex, int value) {
 }
 
 void expandingSimplexTriangleInitNormal(struct ExpandingSimplex* simplex, struct SimplexTriangle* triangle) {
-    struct Vector3 edgeB;
+    Vector3 edgeB;
     vector3Sub(&simplex->points[triangle->indexData.indices[1]], &simplex->points[triangle->indexData.indices[0]], &edgeB);
-    struct Vector3 edgeC;
+    Vector3 edgeC;
     vector3Sub(&simplex->points[triangle->indexData.indices[2]], &simplex->points[triangle->indexData.indices[0]], &edgeC);
 
     vector3Cross(&edgeB, &edgeC, &triangle->normal);
 }
 
 int expandingSimplexTriangleCheckEdge(struct ExpandingSimplex* simplex, struct SimplexTriangle* triangle, int index) {
-    struct Vector3* pointA = &simplex->points[triangle->indexData.indices[index]];
+    Vector3* pointA = &simplex->points[triangle->indexData.indices[index]];
 
-    struct Vector3 edge;
+    Vector3 edge;
     vector3Sub(&simplex->points[triangle->indexData.indices[NEXT_FACE(index)]], pointA, &edge);
-    struct Vector3 toOrigin;
+    Vector3 toOrigin;
     vector3Negate(pointA, &toOrigin);
 
-    struct Vector3 crossCheck;
+    Vector3 crossCheck;
     vector3Cross(&edge, &toOrigin, &crossCheck);
 
     // check if origin is off to the side of edge
@@ -219,7 +219,7 @@ int expandingSimplexTriangleCheckEdge(struct ExpandingSimplex* simplex, struct S
         edgeLerp /= edgeMagSqrd;
     }
 
-    struct Vector3 nearestPoint;
+    Vector3 nearestPoint;
     vector3AddScaled(pointA, &edge, edgeLerp, &nearestPoint);
 
     triangle->distanceToOrigin = sqrtf(vector3MagSqrd(&nearestPoint));
@@ -289,11 +289,11 @@ void expandingSimplexRotateEdge(struct ExpandingSimplex* simplex, struct Simplex
 void expandingSimplexTriangleCheckRotate(struct ExpandingSimplex* simplex, int triangleIndex, int heapIndex) {
     struct SimplexTriangle* triangle = &simplex->triangles[triangleIndex];
     struct SimplexTriangle* adjacent = &simplex->triangles[triangle->indexData.adjacentFaces[0]];
-    struct Vector3* oppositePoint = &simplex->points[adjacent->indexData.indices[triangle->indexData.oppositePoints[0]]];
+    Vector3* oppositePoint = &simplex->points[adjacent->indexData.indices[triangle->indexData.oppositePoints[0]]];
 
-    struct Vector3* firstPoint = &simplex->points[triangle->indexData.indices[0]];
+    Vector3* firstPoint = &simplex->points[triangle->indexData.indices[0]];
 
-    struct Vector3 offset;
+    Vector3 offset;
     vector3Sub(oppositePoint, firstPoint, &offset);
 
     if (vector3Dot(&offset, &triangle->normal) > 0.0f) {
@@ -407,8 +407,8 @@ void expandingSimplexExpand(struct ExpandingSimplex* expandingSimplex, int newPo
     }
 }
 
-void epaCalculateContact(struct ExpandingSimplex* simplex, struct SimplexTriangle* closestFace, struct Vector3* planePos, struct EpaResult* result) {
-    struct Vector3 baryCoords;
+void epaCalculateContact(struct ExpandingSimplex* simplex, struct SimplexTriangle* closestFace, Vector3* planePos, struct EpaResult* result) {
+    Vector3 baryCoords;
 
     calculateBarycentricCoords(
         &simplex->points[closestFace->indexData.indices[0]],
@@ -450,14 +450,14 @@ bool epaSolve(struct Simplex* startingSimplex, void* objectA, gjk_support_functi
     float projection = 0.0f;
 
     for (int i = 0; i < MAX_EPA_ITERATIONS; ++i) {
-        struct Vector3 reverseNormal;
+        Vector3 reverseNormal;
 
         closestFace = expandingSimplexClosestFace(&simplex);
 
         int nextIndex = simplex.pointCount;
 
-        struct Vector3* aPoint = &simplex.aPoints[nextIndex];
-        struct Vector3 bPoint;
+        Vector3* aPoint = &simplex.aPoints[nextIndex];
+        Vector3 bPoint;
 
         objectASupport(objectA, &closestFace->normal, aPoint);
         vector3Negate(&closestFace->normal, &reverseNormal);
@@ -478,7 +478,7 @@ bool epaSolve(struct Simplex* startingSimplex, void* objectA, gjk_support_functi
     if (closestFace) {
         result->normal = closestFace->normal;
         result->penetration = -projection;
-        struct Vector3 planePos;
+        Vector3 planePos;
         vector3Scale(&closestFace->normal, &planePos, closestFace->distanceToOrigin);
         epaCalculateContact(&simplex, closestFace, &planePos, result);
 
@@ -490,7 +490,7 @@ bool epaSolve(struct Simplex* startingSimplex, void* objectA, gjk_support_functi
 
 #define MAX_SWEPT_ITERATIONS    20
 
-void epaSweptFindFace(struct ExpandingSimplex* simplex, struct Vector3* direction, int* startTriangleIndex, int* startFaceEdge) {
+void epaSweptFindFace(struct ExpandingSimplex* simplex, Vector3* direction, int* startTriangleIndex, int* startFaceEdge) {
     int currentFace = NEXT_FACE(*startFaceEdge);
 
     int i = 0;
@@ -501,7 +501,7 @@ void epaSweptFindFace(struct ExpandingSimplex* simplex, struct Vector3* directio
 
         struct SimplexTriangle* triangle = &simplex->triangles[*startTriangleIndex];
 
-        struct Vector3 normal;
+        Vector3 normal;
         vector3Cross(
             &simplex->points[triangle->indexData.indices[currentFace]],
             &simplex->points[triangle->indexData.indices[nextFace]],
@@ -521,26 +521,26 @@ void epaSweptFindFace(struct ExpandingSimplex* simplex, struct Vector3* directio
     }
 }
 
-int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSum, struct Vector3* bStart, struct Vector3* bEnd, struct EpaResult* result) {
+int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSum, Vector3* bStart, Vector3* bEnd, struct EpaResult* result) {
     struct ExpandingSimplex simplex;
     expandingSimplexInit(&simplex, startingSimplex, SimplexFlagsSkipDistance);
     struct SimplexTriangle* closestFace = 0;
     float projection = 0.0f;
     int currentTriangle = 0;
     int currentEdge = 0;
-    struct Vector3 raycastDir;
+    Vector3 raycastDir;
     vector3Sub(bStart, bEnd, &raycastDir);
 
     for (int i = 0; i < MAX_EPA_ITERATIONS; ++i) {
-        struct Vector3 reverseNormal;
+        Vector3 reverseNormal;
 
         epaSweptFindFace(&simplex, &raycastDir, &currentTriangle, &currentEdge);
         closestFace = &simplex.triangles[currentTriangle];
 
         int nextIndex = simplex.pointCount;
 
-        struct Vector3* aPoint = &simplex.aPoints[nextIndex];
-        struct Vector3 bPoint;
+        Vector3* aPoint = &simplex.aPoints[nextIndex];
+        Vector3 bPoint;
 
         objectASupport(objectA, &closestFace->normal, aPoint);
         vector3Negate(&closestFace->normal, &reverseNormal);
@@ -578,7 +578,7 @@ int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_fu
 
         result->penetration = 0;
 
-        struct Vector3 planePos;
+        Vector3 planePos;
         vector3Scale(&raycastDir, &planePos, distance);
         float moveOffset = vector3DistSqrd(bStart, bEnd);
         
@@ -595,7 +595,7 @@ int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_fu
 }
 
 void epaSwapResult(struct EpaResult* result) {
-    struct Vector3 tmp = result->contactA;
+    Vector3 tmp = result->contactA;
     result->contactA = result->contactB;
     result->contactB = tmp;
     vector3Negate(&result->normal, &result->normal);

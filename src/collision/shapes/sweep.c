@@ -3,17 +3,17 @@
 #include "../../math/minmax.h"
 #include "../physics_object.h"
 
-void sweep_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
+void sweep_support_function(void* data, Vector3* direction, Vector3* output) {
     union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)data;
 
-    struct Vector2 dir_2d;
+    Vector2 dir_2d;
     dir_2d.x = direction->x;
     dir_2d.y = direction->z;
 
-    struct Vector2 result_2d = gZeroVec2;
+    Vector2 result_2d = gZeroVec2;
     float distance = 0.0f;
 
-    struct Vector2 arm_check = shape_data->sweep.range;
+    Vector2 arm_check = shape_data->sweep.range;
 
     if (direction->x < 0.0f) {
         arm_check.x = -arm_check.x;
@@ -27,7 +27,7 @@ void sweep_support_function(void* data, struct Vector3* direction, struct Vector
     }
 
     if (dir_2d.y > distance) {
-        result_2d = (struct Vector2){0.0f, 1.0f};
+        result_2d = (Vector2){0.0f, 1.0f};
     }
 
     output->x = result_2d.x * shape_data->sweep.radius;
@@ -35,15 +35,15 @@ void sweep_support_function(void* data, struct Vector3* direction, struct Vector
     output->z = result_2d.y * shape_data->sweep.radius;
 }
 
-void sweep_bounding_box(void* data, Quaternion* rotation, struct AABB* box) {
+void sweep_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
 
-    // box->min = (struct Vector3){0.0f, -shape_data->sweep.half_height, 0.0f};
-    // box->max = (struct Vector3){0.0f, shape_data->sweep.half_height, 1.0f};
+    // box->min = (Vector3){0.0f, -shape_data->sweep.half_height, 0.0f};
+    // box->max = (Vector3){0.0f, shape_data->sweep.half_height, 1.0f};
 
     // for (int i = 0; i < 2; i += 1) {
-    //     struct Vector2 extent;
+    //     Vector2 extent;
     //     extent.x = i == 0 ? shape_data->sweep.range.x : -shape_data->sweep.range.x;
     //     extent.y = shape_data->sweep.range.y;
     //     vector2ComplexMul(rotation, &extent, &extent);

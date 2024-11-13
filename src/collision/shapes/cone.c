@@ -5,7 +5,7 @@
 #include "../../math/mathf.h"
 #include <math.h>
 
-void cone_support_function(void* data, struct Vector3* direction, struct Vector3* output) {
+void cone_support_function(void* data, Vector3* direction, Vector3* output) {
     struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)&object->collision->shape_data;
 
@@ -19,7 +19,7 @@ void cone_support_function(void* data, struct Vector3* direction, struct Vector3
     }
 }
 
-void cone_bounding_box(void* data, Quaternion* rotation, struct AABB* box) {
+void cone_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
     
@@ -28,18 +28,18 @@ void cone_bounding_box(void* data, Quaternion* rotation, struct AABB* box) {
     float radius = shape_data->cone.radius;
 
     // Define the capsule's central axis in local space
-    struct Vector3 corners[5] = { 
+    Vector3 corners[5] = { 
         {-radius, -half_height, -radius },
         { radius, -half_height, -radius },
         {-radius, -half_height,  radius },
         { radius, -half_height,  radius },
         { 0.0f,  half_height, 0.0f }
     };
-    struct Vector3 new_min;
-    struct Vector3 new_max;
+    Vector3 new_min;
+    Vector3 new_max;
 
     // Initialize new_min and new_max with the first rotated corner
-    struct Vector3 rotated_corner;
+    Vector3 rotated_corner;
     if(object->rotation)
         quatMultVector(object->rotation, &corners[0], &rotated_corner);
     else

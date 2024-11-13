@@ -14,8 +14,8 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
 
     // Only proceed if the object is moving toward the collision surface (velocityDot < 0)
     if ((velocityDot < 0) == (ratio < 0)) {
-        struct Vector3 normalVelocity;
-        struct Vector3 tangentVelocity;
+        Vector3 normalVelocity;
+        Vector3 tangentVelocity;
 
         // Calculate normal and tangential components of velocity
         vector3Scale(&result->normal, &normalVelocity, velocityDot);
@@ -94,6 +94,14 @@ void collide_object_to_mesh(struct physics_object* object, struct mesh_collider*
     }    
 }
 
+
+/// @brief Handles the collision between two physics objects
+///
+/// The function first checks if the two object are able and supposed to collide.
+/// Then it performs a GJK/EPA collision detection and resolution.
+/// @param a physics object a
+/// @param b physics object b
+/// @return returns 1 if an overlap was resolved (NOTE: a 0 return does not mean no collision happened, only that no overlap was resolved)
 void collide_object_to_object(struct physics_object* a, struct physics_object* b) {
     // If the Object don't share any collision layers, don't collide
     if (!(a->collision_layers & b->collision_layers)) {

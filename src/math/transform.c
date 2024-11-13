@@ -2,13 +2,13 @@
 #include "transform.h"
 #include <assert.h>
 
-void transformInitIdentity(struct Transform* in) {
+void transformInitIdentity(Transform* in) {
     in->position = gZeroVec;
     quatIdent(&in->rotation);
     in->scale = gOneVec;
 }
 
-void transformToMatrix(struct Transform* in, float mtx[4][4]) {
+void transformToMatrix(Transform* in, float mtx[4][4]) {
     quatToMatrix(&in->rotation, mtx);
 
     mtx[0][0] *= in->scale.x; mtx[0][1] *= in->scale.x; mtx[0][2] *= in->scale.x;
@@ -20,7 +20,7 @@ void transformToMatrix(struct Transform* in, float mtx[4][4]) {
     mtx[3][2] = in->position.z;
 }
 
-void transformInvert(struct Transform* in, struct Transform* out) {
+void transformInvert(Transform* in, Transform* out) {
     assert(in != out);
 
     float uniformScale = 1.0f;
@@ -51,13 +51,13 @@ void transformInvert(struct Transform* in, struct Transform* out) {
     }
 }
 
-void transformPoint(struct Transform* transform, struct Vector3* in, struct Vector3* out) {
+void transformPoint(Transform* transform, Vector3* in, Vector3* out) {
     vector3Multiply(&transform->scale, in, out);
     quatMultVector(&transform->rotation, out, out);
     vector3Add(&transform->position, out, out);
 }
 
-void transformPointInverse(struct Transform* transform, struct Vector3* in, struct Vector3* out) {
+void transformPointInverse(Transform* transform, Vector3* in, Vector3* out) {
     vector3Sub(in, &transform->position, out);
     Quaternion quatInverse;
     quatConjugate(&transform->rotation, &quatInverse);
@@ -67,16 +67,16 @@ void transformPointInverse(struct Transform* transform, struct Vector3* in, stru
     out->z /= transform->scale.z;
 }
 
-void transformPointInverseNoScale(struct Transform* transform, struct Vector3* in, struct Vector3* out) {
+void transformPointInverseNoScale(Transform* transform, Vector3* in, Vector3* out) {
     vector3Sub(in, &transform->position, out);
     Quaternion quatInverse;
     quatConjugate(&transform->rotation, &quatInverse);
     quatMultVector(&quatInverse, out, out);
 }
 
-void transformConcat(struct Transform* left, struct Transform* right, struct Transform* output) {
+void transformConcat(Transform* left, Transform* right, Transform* output) {
     vector3Multiply(&left->scale, &right->scale, &output->scale);
-    struct Vector3 rotatedOffset;
+    Vector3 rotatedOffset;
     quatMultVector(&left->rotation, &right->position, &rotatedOffset);
     quatMultiply(&left->rotation, &right->rotation, &output->rotation);
 
@@ -85,7 +85,7 @@ void transformConcat(struct Transform* left, struct Transform* right, struct Tra
     output->position.z = left->position.z + rotatedOffset.z * left->scale.z;
 }
 
-void transformLerp(struct Transform* a, struct Transform* b, float t, struct Transform* output) {
+void transformLerp(Transform* a, Transform* b, float t, Transform* output) {
     vector3Lerp(&a->position, &b->position, t, &output->position);
     quatLerp(&a->rotation, &b->rotation, t, &output->rotation);
     vector3Lerp(&a->scale, &b->scale, t, &output->scale);

@@ -14,29 +14,29 @@
  * @brief The Axis Aligned Bounding Box (AABB) structure.
  * 
  */
-struct AABB {
-    struct Vector3 min; /**< The minimum of the Bounding Box or the bottom corner*/
-    struct Vector3 max; /**< The maximum of the Bounding Box or the top corner*/
-};
+typedef struct AABB {
+    Vector3 min; /**< The minimum of the Bounding Box or the bottom corner*/
+    Vector3 max; /**< The maximum of the Bounding Box or the top corner*/
+} AABB;
 
-int AABBContainsPoint(struct AABB* box, struct Vector3* point);
+int AABBContainsPoint(AABB* box, Vector3* point);
 
-int AABBContainsAABB(struct AABB* a, struct AABB* b);
+int AABBContainsAABB(AABB* a, AABB* b);
 
-int AABBHasOverlap(struct AABB* a, struct AABB* b);
+int AABBHasOverlap(AABB* a, AABB* b);
 
-int AABBIntersectsRay(struct AABB* box, struct RayCast* ray);
+int AABBIntersectsRay(AABB* box, struct RayCast* ray);
 
-float AABBGetArea(struct AABB aabb);
+float AABBGetArea(AABB aabb);
 
-struct AABB AABBUnion(struct AABB* a, struct AABB* b);
+AABB AABBUnion(AABB* a, AABB* b);
 
-struct AABB AABBUnionPoint(struct AABB* a, struct Vector3* point);
+AABB AABBUnionPoint(AABB* a, Vector3* point);
 
-struct AABB AABBFromTriangle(struct Vector3* a, struct Vector3* b, struct Vector3* c);
+AABB AABBFromTriangle(Vector3* a, Vector3* b, Vector3* c);
 
-void AABBExtendDirection(struct AABB* a, struct Vector3* direction, struct AABB* out);
+void AABBExtendDirection(AABB* a, Vector3* direction, AABB* out);
 
-void AABBSupportFunction(struct AABB* box, struct Vector3* input, struct Vector3* output);
+void AABBSupportFunction(AABB* box, Vector3* input, Vector3* output);
 
 #endif

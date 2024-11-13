@@ -24,7 +24,7 @@ void box_init(struct box* box, struct box_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&box->transform);
 
-    box->transform.scale = (struct Vector3){2.0f, 2.0f, 2.0f};
+    box->transform.scale = (Vector3){2.0f, 2.0f, 2.0f};
     vector3Add(&box->transform.position, &def->position, &box->transform.position);
     // quatRotateAxisEuler(&box->transform.rotation, &gUp, T3D_DEG_TO_RAD(45.0f), &box->transform.rotation);
 

@@ -9,7 +9,7 @@
 
 T3DVertPacked billboard_vertices[2];
 
-void render_batch_init(struct render_batch *batch, struct Transform *camera_transform, struct frame_memory_pool *pool)
+void render_batch_init(struct render_batch *batch, Transform *camera_transform, struct frame_memory_pool *pool)
 {
     batch->element_count = 0;
     batch->pool = pool;
@@ -348,8 +348,8 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 struct render_billboard_sprite sprite = element->billboard.sprites[sprite_index];
 
                 // Transform sprite position to view projection space
-                struct Vector4 transformed;
-                struct Vector3 scaled;
+                Vector4 transformed;
+                Vector3 scaled;
                 vector3Scale(&sprite.position, &scaled, SCENE_SCALE);
                 matrixVec3Mul(view_proj_matrix, &scaled, &transformed);
 
@@ -456,7 +456,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             }
 
             // Calculate forward vector from camera matrix
-            struct Vector3 forward = {viewport->matCamera.m[0][2], viewport->matCamera.m[1][2], viewport->matCamera.m[2][2]};
+            Vector3 forward = {viewport->matCamera.m[0][2], viewport->matCamera.m[1][2], viewport->matCamera.m[2][2]};
             // Calculate yaw and pitch from forward vector (negative to reverse the direction or rotation)
             float inv_yaw = -atan2f(forward.x, forward.z);
             float inv_pitch = -asinf(-forward.y);

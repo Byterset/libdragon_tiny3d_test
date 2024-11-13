@@ -207,11 +207,11 @@ struct scene *scene_load(const char *filename)
         // fread(on_enter, on_enter_length, 1, file);
         // on_enter[on_enter_length] = '\0';
 
-        struct Vector3 pos;
-        struct Vector2 rot;
+        Vector3 pos;
+        Vector2 rot;
 
-        fread(&pos, sizeof(struct Vector3), 1, file);
-        fread(&rot, sizeof(struct Vector2), 1, file);
+        fread(&pos, sizeof(Vector3), 1, file);
+        fread(&rot, sizeof(Vector2), 1, file);
 
         if (found_entry)
         {

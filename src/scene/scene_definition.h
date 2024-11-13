@@ -7,8 +7,8 @@
 #include <stdint.h>
 
 struct crate_definition {
-    struct Vector3 position;
-    struct Vector2 rotation;
+    Vector3 position;
+    Vector2 rotation;
 };
 
 enum collectable_type {
@@ -17,35 +17,35 @@ enum collectable_type {
 
 
 struct collectable_definition {
-    struct Vector3 position;
-    struct Vector2 rotation;
+    Vector3 position;
+    Vector2 rotation;
     enum collectable_type collectable_type;
     uint32_t collectable_sub_type;
 };
 
 struct coin_definition {
-    struct Vector3 position;
+    Vector3 position;
 };
 
 struct training_dummy_definition {
-    struct Vector3 position;
-    struct Vector2 rotation;
+    Vector3 position;
+    Vector2 rotation;
 };
 
 struct box_definition {
-    struct Vector3 position;
+    Vector3 position;
 };
 
 struct cone_definition {
-    struct Vector3 position;
+    Vector3 position;
 };
 
 struct cylinder_definition {
-    struct Vector3 position;
+    Vector3 position;
 };
 
 struct platform_definition {
-    struct Vector3 position;
+    Vector3 position;
 };
 
 
@@ -78,8 +78,8 @@ enum interaction_type {
 };
 
 struct npc_definition {
-    struct Vector3 position;
-    struct Vector2 rotation;
+    Vector3 position;
+    Vector2 rotation;
     enum npc_type npc_type;
     char* dialog;
 };

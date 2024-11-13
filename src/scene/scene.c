@@ -18,7 +18,7 @@ void scene_render(void* data, struct render_batch* batch) {
 void scene_update(void* data) {
     struct scene* scene = (struct scene*)data;
 
-    struct Vector3 player_center = scene->player.transform.position;
+    Vector3 player_center = scene->player.transform.position;
     player_center.y += scene->player.physics.center_offset.y;
 
     for (int i = 0; i < scene->loading_zone_count; i += 1) {
