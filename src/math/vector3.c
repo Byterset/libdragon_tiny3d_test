@@ -173,7 +173,7 @@ int vector3Equals(Vector3* a, Vector3* b){
     return a->x == b->x && a->y == b->y && a->z == b->z;
 }
 
-void vector3ToVector3u8(Vector3* input, struct Vector3u8* output) {
+void vector3ToVector3u8(Vector3* input, Vector3u8* output) {
     output->x = floatTos8norm(input->x);
     output->y = floatTos8norm(input->y);
     output->z = floatTos8norm(input->z);

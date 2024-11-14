@@ -5,11 +5,11 @@
 #include "vector2.h"
 #include "matrix.h"
 
-struct TransformSingleAxis {
+typedef struct TransformSingleAxis {
     Vector3 position;
     Vector2 rotation;
-};
+} TransformSingleAxis;
 
-void transformSAToMatrix(struct TransformSingleAxis* transform, mat4x4 matrix);
+void transformSAToMatrix(TransformSingleAxis* transform, mat4x4 matrix);
 
 #endif

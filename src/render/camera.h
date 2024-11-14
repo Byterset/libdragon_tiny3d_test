@@ -2,14 +2,8 @@
 #define __RENDER_CAMERA_H__
 
 #include "../math/transform.h"
-#include "../math/plane.h"
-#include "../math/matrix.h"
 #include "../scene/camera_controller.h"
 #include <t3d/t3d.h>
-
-struct ClippingPlanes {
-    struct Plane planes[5];
-};
 
 struct camera {
     Transform transform;

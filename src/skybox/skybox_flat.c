@@ -27,7 +27,7 @@ void skybox_flat_init(struct skybox_flat* skybox) {
     //sprite_get_pixels -> gets the sprite pixels as a surface_t
     skybox->surface = sprite_get_pixels(skybox->texture);
 
-    render_scene_add(0, 0, skybox_flat_custom_render, skybox);
+    render_scene_add_callback(NULL, 0, skybox_flat_custom_render, skybox);
 
 }
 

@@ -4,13 +4,13 @@
 #include "vector3.h"
 #include "transform.h"
 
-struct RayCast {
+typedef struct RayCast {
     Vector3 origin;
     Vector3 dir;
     float maxDistance;
-};
+} RayCast;
 
-void rayTransform(Transform* transform, struct RayCast* ray, struct RayCast* output);
-float rayDetermineDistance(struct RayCast* ray, Vector3* point);
+void rayTransform(Transform* transform, RayCast* ray, RayCast* output);
+float rayDetermineDistance(RayCast* ray, Vector3* point);
 
 #endif

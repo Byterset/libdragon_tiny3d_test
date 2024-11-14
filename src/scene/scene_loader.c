@@ -291,7 +291,7 @@ struct scene *scene_load(const char *filename)
 
     fclose(file);
 
-    render_scene_add(NULL, 0.0f, scene_render, scene);
+    render_scene_add_callback(NULL, 0.0f, scene_render, scene);
     update_add(scene, scene_update, UPDATE_PRIORITY_CAMERA, UPDATE_LAYER_WORLD);
 
     // if (starting_cutscene)

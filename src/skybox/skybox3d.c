@@ -130,7 +130,7 @@ void skybox_init(struct skybox* skybox) {
     t3d_tri_sync(); // after each batch of triangles, a sync is needed
     skybox->block = rspq_block_end();
 
-    render_scene_add(&gZeroVec, 80.0f, skybox_custom_render, skybox);
+    render_scene_add_callback(NULL, 0, skybox_custom_render, skybox);
 }
 
 

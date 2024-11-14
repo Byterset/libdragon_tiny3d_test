@@ -26,8 +26,6 @@ void AABBTree_create(AABBTree* tree, int nodeCapacity)
     tree->nodes[nodeCapacity - 1]._parent = nodeCapacity - 1;
 
     tree->_freeList = 0;
-
-    // return tree;
 }
 
 void AABBTree_free(AABBTree *tree)
@@ -60,7 +58,6 @@ NodeProxy AABBTree_allocateNode(AABBTree *tree)
         assert(tree->_nodeCount == tree->_nodeCapacity);
         tree->_nodeCapacity += 20;
         AABBTreeNode *nodes_new = (AABBTreeNode *)realloc(tree->nodes, sizeof(AABBTreeNode) * tree->_nodeCapacity);
-        int totalSize = sizeof(AABBTreeNode) * tree->_nodeCapacity;
         tree->nodes = nodes_new;
         int i;
         for (i = tree->_nodeCount; i < tree->_nodeCapacity - 1; ++i)
@@ -79,7 +76,6 @@ NodeProxy AABBTree_allocateNode(AABBTree *tree)
     tree->nodes[node]._left = NULL_NODE;
     tree->nodes[node]._right = NULL_NODE;
     tree->nodes[node].data = NULL;
-    // tree->nodes[node].moved = false;
     tree->_nodeCount++;
     return node;
 }
@@ -170,10 +166,10 @@ int AABBTree_moveNode(AABBTree *tree, NodeProxy node, AABB aabb, Vector3 *displa
         aabb.min.z += displacement->z * AABBTREE_DISPLACEMENT_MULTIPLIER;
     }
 
-    //fatten the aabb
-    // Vector3 bounds_margin = {AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN};
-    // vector3AddToSelf(&aabb.max, &bounds_margin);
-    // vector3SubFromSelf(&aabb.min, &bounds_margin);
+    //fatten the aabb to potentially reduce the number of moves/leaf inserts
+    Vector3 bounds_margin = {AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN};
+    vector3AddToSelf(&aabb.max, &bounds_margin);
+    vector3SubFromSelf(&aabb.min, &bounds_margin);
 
     AABBTree_removeLeaf(tree, node, false);
 
@@ -684,7 +680,7 @@ void AABBTree_queryPoint(AABBTree *tree, Vector3 point, NodeProxy *results, int 
     }
 }
 
-void AABBTree_queryRay(AABBTree *tree, struct RayCast* ray, NodeProxy *results, int *result_count, int max_results){
+void AABBTree_queryRay(AABBTree *tree, RayCast* ray, NodeProxy *results, int *result_count, int max_results){
     // return if the tree is empty
     if (tree->root == NULL_NODE)
     {

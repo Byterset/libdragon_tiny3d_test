@@ -13,8 +13,6 @@ void render_batch_init(struct render_batch *batch, Transform *camera_transform, 
 {
     batch->element_count = 0;
     batch->pool = pool;
-
-    transformToMatrix(camera_transform, batch->camera_matrix);
 }
 
 static struct render_batch_element *render_batch_add_init(struct render_batch *batch)
@@ -44,6 +42,7 @@ void render_batch_add_t3dmodel(struct render_batch *batch, struct model *model, 
         return;
     }
 
+    element->type = RENDER_BATCH_MODEL;
     element->model.block = model->t3d_model->userBlock;
     element->material = NULL; // T3DModels have their own materials
     element->model.transform = transform;
@@ -287,22 +286,6 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             {
                 continue;
             }
-
-
-            //TODO: replace test aabb with model aabb
-            // T3DVec3 aabbmin, aabbmax;
-            // aabbmin.v[0] = -1.0f * SCENE_SCALE;
-            // aabbmin.v[1] = -1.0f * SCENE_SCALE;
-            // aabbmin.v[2] = -1.0f * SCENE_SCALE;
-            // aabbmax.v[0] = 1.0f * SCENE_SCALE;
-            // aabbmax.v[1] = 1.0f * SCENE_SCALE;
-            // aabbmax.v[2] = 1.0f * SCENE_SCALE;
-
-            // if (!t3d_frustum_vs_aabb(&viewport->viewFrustum, &aabbmin, &aabbmax))
-            // {
-            //     frustum_cull_count++;
-            //     continue;
-            // }
 
             // Push transform if it exists
             if (element->model.transform)

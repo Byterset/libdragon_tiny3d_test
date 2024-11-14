@@ -12,6 +12,7 @@
 
 #include "../math/matrix.h"
 #include "../math/transform.h"
+#include "../math/aabb.h"
 
 #define RENDER_BATCH_MAX_SIZE   256
 #define RENDER_BATCH_TRANSFORM_COUNT    64
@@ -68,7 +69,6 @@ struct render_batch_element {
 };
 
 struct render_batch {
-    mat4x4 camera_matrix;
     struct frame_memory_pool* pool;
     struct render_batch_element elements[RENDER_BATCH_MAX_SIZE];
     short element_count;

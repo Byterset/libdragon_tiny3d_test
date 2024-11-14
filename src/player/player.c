@@ -204,8 +204,8 @@ void player_init(struct player* player, struct player_definition* definition, Tr
     player->camera_transform = camera_transform;
 
     player->transform.position = definition->location;
-
-    render_scene_add_renderable(&player->renderable, 2.0f);
+    render_scene_add_callback(NULL, 0, render_scene_render_renderable, &player->renderable);
+    // render_scene_add_renderable(&player->renderable, 2.0f);
 
 
     

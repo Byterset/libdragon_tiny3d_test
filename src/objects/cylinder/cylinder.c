@@ -33,7 +33,7 @@ void cylinder_init(struct cylinder* cylinder, struct cylinder_definition* def){
 
     renderable_init(&cylinder->renderable, &cylinder->transform, "rom:/models/cylinder/cylinder.t3dm");
 
-    render_scene_add_renderable(&cylinder->renderable, 1.0f);
+    render_scene_add_renderable(&cylinder->renderable, 6.0f);
 
 
     physics_object_init(

@@ -1,6 +1,6 @@
 #include "transform_single_axis.h"
 
-void transformSAToMatrix(struct TransformSingleAxis* transform, mat4x4 matrix) {
+void transformSAToMatrix(TransformSingleAxis* transform, mat4x4 matrix) {
     matrix[0][0] = transform->rotation.x;
     matrix[0][1] = 0.0f;
     matrix[0][2] = transform->rotation.y;

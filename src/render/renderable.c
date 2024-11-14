@@ -17,7 +17,7 @@ void renderable_destroy(struct renderable* renderable) {
     renderable->model = NULL;
 }
 
-void renderable_single_axis_init(struct renderable_single_axis* renderable, struct TransformSingleAxis* transform, const char* model_filename) {
+void renderable_single_axis_init(struct renderable_single_axis* renderable, TransformSingleAxis* transform, const char* model_filename) {
     renderable->transform = transform;
     renderable->model = model_cache_load(model_filename);
 }

@@ -76,6 +76,6 @@ void AABBTree_queryBounds(AABBTree *tree, AABB *query_box, NodeProxy *results, i
 
 void AABBTree_queryPoint(AABBTree *tree, Vector3 point, NodeProxy *results, int *result_count, int max_results);
 
-void AABBTree_queryRay(AABBTree *tree, struct RayCast *ray, NodeProxy *results, int *result_count, int max_results);
+void AABBTree_queryRay(AABBTree *tree, RayCast *ray, NodeProxy *results, int *result_count, int max_results);
 
 #endif // _AABBTREE_H_

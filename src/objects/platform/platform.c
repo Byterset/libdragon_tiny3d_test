@@ -51,7 +51,7 @@ void platform_init(struct platform* platform, struct platform_definition* def){
 
     renderable_init(&platform->renderable, &platform->transform, "rom:/models/cylinder/cylinder.t3dm");
 
-    render_scene_add_renderable(&platform->renderable, 1.0f);
+    render_scene_add_renderable(&platform->renderable, 12.0f);
 
 
     physics_object_init(

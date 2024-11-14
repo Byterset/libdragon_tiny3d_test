@@ -72,7 +72,8 @@ void map_init(struct map* map) {
 
     map->model = model_cache_load("rom:/models/map/map.t3dm");
 
-    render_scene_add_renderable(&map->renderable, 1.0f);
+    // render_scene_add_renderable(&map->renderable, 1.0f);
+    render_scene_add_callback(NULL, 0, render_scene_render_renderable, &map->renderable);
     // render_scene_add(&map->transform.position, 80.0f, map_custom_render, map);
 
     // update_add(map, (update_callback)map_update, UPDATE_PRIORITY_WORLD, UPDATE_LAYER_WORLD);

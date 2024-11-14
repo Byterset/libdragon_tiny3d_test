@@ -1,12 +1,12 @@
 #include "plane.h"
 #include "mathf.h"
 
-void planeInitWithNormalAndPoint(struct Plane* plane, Vector3* normal, Vector3* point) {
+void planeInitWithNormalAndPoint(Plane* plane, Vector3* normal, Vector3* point) {
     plane->normal = *normal;
     plane->d = -vector3Dot(normal, point);
 }
 
-int planeRayIntersection(struct Plane* plane, Vector3* rayOrigin, Vector3* rayDirection, float* rayDistance) {
+int planeRayIntersection(Plane* plane, Vector3* rayOrigin, Vector3* rayDirection, float* rayDistance) {
     float normalDot = vector3Dot(&plane->normal, rayDirection);
 
     if (fabsf(normalDot) < 0.00001f) {
@@ -19,11 +19,11 @@ int planeRayIntersection(struct Plane* plane, Vector3* rayOrigin, Vector3* rayDi
 }
 
 
-float planePointDistance(struct Plane* plane, Vector3* point) {
+float planePointDistance(Plane* plane, Vector3* point) {
     return vector3Dot(&plane->normal, point) + plane->d;
 }
 
-void planeProjectPoint(struct Plane* plane, Vector3* point, Vector3* output) {
+void planeProjectPoint(Plane* plane, Vector3* point, Vector3* output) {
     float distance = planePointDistance(plane, point);
     vector3AddScaled(point, &plane->normal, distance, output);
 }

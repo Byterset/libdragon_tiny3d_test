@@ -357,7 +357,7 @@ void collision_scene_render_debug_raylib(){
                 radius * SCENE_SCALE,
                 4,
                 2,
-                RED
+                PINK
             );
         }
         else if(object->collision->shape_type == COLLISION_SHAPE_BOX){

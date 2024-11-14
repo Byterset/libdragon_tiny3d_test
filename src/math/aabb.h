@@ -25,7 +25,7 @@ int AABBContainsAABB(AABB* a, AABB* b);
 
 int AABBHasOverlap(AABB* a, AABB* b);
 
-int AABBIntersectsRay(AABB* box, struct RayCast* ray);
+int AABBIntersectsRay(AABB* box, RayCast* ray);
 
 float AABBGetArea(AABB aabb);
 

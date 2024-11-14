@@ -26,7 +26,7 @@ struct mesh_index_block {
 struct mesh_index {
     Vector3 min;
     Vector3 stride_inv;
-    struct Vector3u8 block_count;
+    Vector3u8 block_count;
 
     struct mesh_index_block* blocks;
     uint16_t* index_indices;

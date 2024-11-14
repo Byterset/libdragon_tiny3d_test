@@ -564,7 +564,7 @@ int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_fu
         vector3Normalize(&closestFace->normal, &result->normal);
 
 
-        struct Plane facePlane;
+        Plane facePlane;
         planeInitWithNormalAndPoint(&facePlane, &result->normal, &simplex.points[closestFace->indexData.indices[0]]);
         
         float distance;

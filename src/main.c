@@ -76,7 +76,7 @@ struct player_definition playerDef = {
 };
 
 struct box_definition box_def = {
-    (Vector3){0, 5, 5}
+    (Vector3){-6, 5, 5}
 };
 
 struct cone_definition cone_def = {
@@ -126,7 +126,7 @@ void setup()
     cylinder_init(&cylinder, &cyl_def);
 
     platform_init(&plat, &plat_def);
-    fire_init(&fire);
+    // fire_init(&fire);
 
     player_init(&player, &playerDef, &camera.transform);
 

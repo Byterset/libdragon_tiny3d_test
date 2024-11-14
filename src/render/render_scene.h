@@ -25,10 +25,12 @@ struct render_scene {
 
 void render_scene_reset();
 
-void render_scene_add(Vector3* center, float radius, render_scene_callback callback, void* data);
+void render_scene_add_callback(Vector3* center, float radius, render_scene_callback callback, void* data);
 void render_scene_add_renderable(struct renderable* renderable, float radius);
 void render_scene_add_renderable_single_axis(struct renderable_single_axis* renderable, float radius);
 void render_scene_remove(void* data);
+void render_scene_render_renderable(void* data, struct render_batch* batch);
+void render_scene_render_renderable_single_axis(void* data, struct render_batch* batch);
 
 void render_scene_render(struct camera* camera, T3DViewport* viewport, struct frame_memory_pool* pool, struct render_fog_params* fog);
 

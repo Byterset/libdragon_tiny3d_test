@@ -8,7 +8,7 @@
 #include "../render/renderable.h"
 
 struct collectable {
-    struct TransformSingleAxis transform;
+    TransformSingleAxis transform;
     struct renderable_single_axis renderable;
     struct physics_object physics;
     enum collectable_type collectable_type;

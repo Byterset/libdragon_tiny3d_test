@@ -66,7 +66,7 @@ int AABBHasOverlap(AABB* a, AABB* b) {
 /// @param direction Direction of the ray.
 /// @param max_distance Maximum distance of the ray after which intersections should not be considered.
 /// @return 
-int AABBIntersectsRay(AABB* box, struct RayCast* ray){
+int AABBIntersectsRay(AABB* box, RayCast* ray){
     float t_near = -FLT_MAX;
     float t_far = FLT_MAX;
     float t1, t2;

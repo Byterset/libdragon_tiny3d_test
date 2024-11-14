@@ -34,7 +34,7 @@ void cone_init(struct cone* cone, struct cone_definition* def){
 
     renderable_init(&cone->renderable, &cone->transform, "rom:/models/cone/cone.t3dm");
 
-    render_scene_add_renderable(&cone->renderable, 1.0f);
+    render_scene_add_renderable(&cone->renderable, 7.0f);
 
 
     physics_object_init(

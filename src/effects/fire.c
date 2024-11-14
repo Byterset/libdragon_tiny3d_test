@@ -79,7 +79,7 @@ void fire_render(struct fire* fire, struct render_batch* batch) {
 }
 
 void fire_init(struct fire* fire) {
-    render_scene_add(&gZeroVec, 4.0f, (render_scene_callback)fire_render, fire);
+    render_scene_add_callback(&fire->position, 3.0f, (render_scene_callback)fire_render, fire);
 
     fire->cycle_time = 0.0f;
     fire->total_time = 0.0f;

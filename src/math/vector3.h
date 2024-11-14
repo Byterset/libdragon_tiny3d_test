@@ -2,17 +2,17 @@
 #ifndef _VECTOR3_H
 #define _VECTOR3_H
 
-struct Vector3i32 {
+typedef struct Vector3i32 {
     int x, y, z;
-};
+} Vector3i32;
 
 typedef struct Vector3 {
     float x, y, z;
 } Vector3;
 
-struct Vector3u8 {
+typedef struct Vector3u8 {
     char x, y, z;
-};
+} Vector3u8;
 
 extern Vector3 gRight;
 extern Vector3 gUp;
@@ -52,7 +52,7 @@ void vector3Min(Vector3* a, Vector3* b, Vector3* out);
 int vector3IsZero(Vector3* vector);
 int vector3Equals(Vector3* a, Vector3* b);
 
-void vector3ToVector3u8(Vector3* input, struct Vector3u8* output);
+void vector3ToVector3u8(Vector3* input, Vector3u8* output);
 
 float vector3EvalBarycentric1D(Vector3* baryCoords, float a, float b, float c);
 
