@@ -1,8 +1,22 @@
 var searchData=
 [
-  ['value_1982',['value',['../structhash__map__entry.html#aa7d9993de18f3c5e96556fda7f4cd1a8',1,'hash_map_entry']]],
-  ['velocity_1983',['velocity',['../structphysics__object.html#a2ac094a6e50e20fa0bbd6cb9338c569c',1,'physics_object']]],
-  ['vertex_5fcount_1984',['vertex_count',['../structmesh__collider.html#a5ccdbe34e518df5209a8566ea3dd78e4',1,'mesh_collider']]],
-  ['vertices_1985',['vertices',['../structmesh__collider.html#a223ba7a62ad41d4aad0a4d3662b80e40',1,'mesh_collider::vertices()'],['../structmesh__triangle.html#a47a996617d44fb0e40d6952fab73a259',1,'mesh_triangle::vertices()']]],
-  ['verts_1986',['verts',['../structskybox.html#ad7dba92d3092b46f306a216399bebdf4',1,'skybox']]]
+  ['t3d_5fmodel_2015',['t3d_model',['../structmodel.html#ad13ced5ba81cbf4c43d21b9bbf771676',1,'model']]],
+  ['target_2016',['target',['../structcamera__controller.html#adeca1baea595ec219b47b1ce5ba4b861',1,'camera_controller']]],
+  ['test_5fmesh_5fcollider_2017',['test_mesh_collider',['../main_8c.html#a71384948bb8aa12305a5779035225c5c',1,'main.c']]],
+  ['tex0_2018',['tex0',['../structmaterial.html#ada70b90107e1890decf13053a88d699c',1,'material']]],
+  ['tex1_2019',['tex1',['../structmaterial.html#a1a9b55d1ca31eff12b9ee15f6bda0c3f',1,'material']]],
+  ['texture_2020',['texture',['../structskybox__flat.html#ae84eba7bbaaa77032744a44e49421897',1,'skybox_flat']]],
+  ['texture_5ffront_2021',['texture_front',['../structskybox.html#adb5548e2ca5e4c44814bbbc7d6782f29',1,'skybox']]],
+  ['tileoffset_2022',['tileOffset',['../structmap.html#ab7d514cddb637e1db2e873a334db6187',1,'map']]],
+  ['time_5fscalar_2023',['time_scalar',['../structphysics__object.html#a4bfb5808d601e9637074116fb33d1b0d',1,'physics_object']]],
+  ['tlut_2024',['tlut',['../structmaterial__palette.html#ab30a38aac0c896f718919ac2501d7f7c',1,'material_palette']]],
+  ['total_5ftime_2025',['total_time',['../structfire.html#a8651edc2e029d30f66c3ec5d913f2e99',1,'fire']]],
+  ['transform_2026',['transform',['../structrenderable__single__axis.html#afe9a19dcceb43db92496fe87721fdd7b',1,'renderable_single_axis::transform()'],['../structrenderable.html#a85bad97de964608ab49143f3ebbf61b2',1,'renderable::transform()'],['../structrender__batch__element.html#a6fb41e04b60cc480846b6b363a8a71d6',1,'render_batch_element::transform()'],['../structcamera.html#a548d3695a5e83e1f29647bf9e469ec3f',1,'camera::transform()'],['../structplayer.html#a19d5f5b125790271386e0ae263786e5e',1,'player::transform()'],['../structplatform.html#a6cce3d27f632cc6d8b1d5a5ded1b7891',1,'platform::transform()'],['../structcylinder.html#a2f23ca87221967b9aa21ae843c78f755',1,'cylinder::transform()'],['../structcone.html#aaa93675a7a5ace44f90757521841f7e3',1,'cone::transform()'],['../structbox.html#a5ca9b35c369a6dc25f190a7f71aa7211',1,'box::transform()'],['../structmap.html#a23eb372915b88a6db69e5c7a4dcf4eef',1,'map::transform()'],['../structcollectable.html#a23373963a93f57c6084a71aadd4dabdd',1,'collectable::transform()']]],
+  ['translate_2027',['translate',['../structtext__axis.html#a4498b25ca31d3511271009f00519340b',1,'text_axis']]],
+  ['triangle_2028',['triangle',['../structobject__mesh__collide__data.html#a479107755bf8b20e860a1d335f3c4454',1,'object_mesh_collide_data::triangle()'],['../structmesh__triangle.html#afe7ab5ac2a16127d0698d6d164c8b49b',1,'mesh_triangle::triangle()']]],
+  ['triangle_5fcount_2029',['triangle_count',['../structmesh__collider.html#a18e1da8fee1d3d10fcadea1b1d5005ba',1,'mesh_collider']]],
+  ['trianglecount_2030',['triangleCount',['../structExpandingSimplex.html#a4e294e236664ad4e23bcdd327a051e7a',1,'ExpandingSimplex']]],
+  ['triangleheap_2031',['triangleHeap',['../structExpandingSimplex.html#a9382cb756678ec13e404c9e514a845f4',1,'ExpandingSimplex']]],
+  ['triangles_2032',['triangles',['../structExpandingSimplex.html#a43f721e1d4c87ffdf834b8229fcdd11b',1,'ExpandingSimplex::triangles()'],['../structmesh__collider.html#ae4fc5234b7ac94e6a8f3fbf96251cbb9',1,'mesh_collider::triangles()']]],
+  ['type_2033',['type',['../structrender__batch__element.html#ad08d3fa394d6a8c04bb57b9368ab4734',1,'render_batch_element::type()'],['../structtype__location.html#a1e1ef2ed0e6de1b27b0fa1b1155e06b2',1,'type_location::type()']]]
 ];

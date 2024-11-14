@@ -94,53 +94,55 @@ Include dependency graph for quaternion.c:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1ec133ab599d7efd0e6fca8c8fc38fe4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a1ec133ab599d7efd0e6fca8c8fc38fe4">quatIdent</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *q)</td></tr>
-<tr class="separator:a1ec133ab599d7efd0e6fca8c8fc38fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfb7ce6701664de28b3285102b3c894d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#adfb7ce6701664de28b3285102b3c894d">quatAxisAngle</a> (struct <a class="el" href="structVector3.html">Vector3</a> *axis, float angle, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:adfb7ce6701664de28b3285102b3c894d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e9eab533e3ae6a26582688b1752f20f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a9e9eab533e3ae6a26582688b1752f20f">quatEulerAngles</a> (struct <a class="el" href="structVector3.html">Vector3</a> *angles, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a9e9eab533e3ae6a26582688b1752f20f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42db0ea69c5467cebefb4a637260b64c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a42db0ea69c5467cebefb4a637260b64c">quatAxisComplex</a> (struct <a class="el" href="structVector3.html">Vector3</a> *axis, struct <a class="el" href="structVector2.html">Vector2</a> *complex, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a42db0ea69c5467cebefb4a637260b64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad252a8d7d2de394de516eda950cfab1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#ad252a8d7d2de394de516eda950cfab1c">quatConjugate</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *in, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:ad252a8d7d2de394de516eda950cfab1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88575333a1fcbe1cc9d8c0dcd19ddd98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a88575333a1fcbe1cc9d8c0dcd19ddd98">quatNegate</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *in, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a88575333a1fcbe1cc9d8c0dcd19ddd98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a239f9e5d38751ef0988202f04b3fe356"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a239f9e5d38751ef0988202f04b3fe356">quatMultVector</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *q, struct <a class="el" href="structVector3.html">Vector3</a> *a, struct <a class="el" href="structVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a239f9e5d38751ef0988202f04b3fe356"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a989a9899b4fac5ed9533e9c82cb1c17a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a989a9899b4fac5ed9533e9c82cb1c17a">quatRotatedBoundingBoxSize</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *q, struct <a class="el" href="structVector3.html">Vector3</a> *halfBoxSize, struct <a class="el" href="structVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a989a9899b4fac5ed9533e9c82cb1c17a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e91b8660bc4c5a62349ae8dfdc89ec7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a0e91b8660bc4c5a62349ae8dfdc89ec7">quatMultiply</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *a, struct <a class="el" href="structQuaternion.html">Quaternion</a> *b, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a0e91b8660bc4c5a62349ae8dfdc89ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa93fa8f792aa76af8ce0168910c177a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#aa93fa8f792aa76af8ce0168910c177a2">quatAdd</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *a, struct <a class="el" href="structQuaternion.html">Quaternion</a> *b, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:aa93fa8f792aa76af8ce0168910c177a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7847103b963a353c651d068af317ab5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a7847103b963a353c651d068af317ab5e">quatToMatrix</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *q, float out[4][4])</td></tr>
-<tr class="separator:a7847103b963a353c651d068af317ab5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbff0950ef01a65d264468b458659a4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#afbff0950ef01a65d264468b458659a4f">quatNormalize</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *q, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:afbff0950ef01a65d264468b458659a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a650aa70345b2b27754d7dddf96b9e2c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a650aa70345b2b27754d7dddf96b9e2c8">quatRandom</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *q)</td></tr>
-<tr class="separator:a650aa70345b2b27754d7dddf96b9e2c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ce233579c1d79bcb54cbfe064c85d68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a1ce233579c1d79bcb54cbfe064c85d68">quatLook</a> (struct <a class="el" href="structVector3.html">Vector3</a> *lookDir, struct <a class="el" href="structVector3.html">Vector3</a> *up, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a1ce233579c1d79bcb54cbfe064c85d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afaf6cc44a1ed67f76cd3a312e0fc28fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#afaf6cc44a1ed67f76cd3a312e0fc28fc">quatLerp</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *a, struct <a class="el" href="structQuaternion.html">Quaternion</a> *b, float t, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:afaf6cc44a1ed67f76cd3a312e0fc28fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af10a8b1896cc0d86dd010d2774dd174e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#af10a8b1896cc0d86dd010d2774dd174e">quatApplyAngularVelocity</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *input, struct <a class="el" href="structVector3.html">Vector3</a> *w, float timeStep, struct <a class="el" href="structQuaternion.html">Quaternion</a> *output)</td></tr>
-<tr class="separator:af10a8b1896cc0d86dd010d2774dd174e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a127107efa71df58f4e4244a27d6fa1a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a127107efa71df58f4e4244a27d6fa1a8">quatDecompose</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *input, struct <a class="el" href="structVector3.html">Vector3</a> *axis, float *angle)</td></tr>
-<tr class="separator:a127107efa71df58f4e4244a27d6fa1a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b6ef1f221bea1b1267ad0520c7e1007"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a0b6ef1f221bea1b1267ad0520c7e1007">quatDot</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *a, struct <a class="el" href="structQuaternion.html">Quaternion</a> *b)</td></tr>
-<tr class="separator:a0b6ef1f221bea1b1267ad0520c7e1007"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a606a872c20831cbd8d2c0054615cfa02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a606a872c20831cbd8d2c0054615cfa02">quatRotateAxisEuler</a> (struct <a class="el" href="structQuaternion.html">Quaternion</a> *q, struct <a class="el" href="structVector3.html">Vector3</a> *axis, float angleRad, struct <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a606a872c20831cbd8d2c0054615cfa02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae121ee9135c9da7e6cc2619a99e2645c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#ae121ee9135c9da7e6cc2619a99e2645c">quatIdent</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q)</td></tr>
+<tr class="separator:ae121ee9135c9da7e6cc2619a99e2645c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab45b8f43b04b1fe0f4b9796480d493e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#ab45b8f43b04b1fe0f4b9796480d493e4">quatAxisAngle</a> (<a class="el" href="structVector3.html">Vector3</a> *axis, float angle, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:ab45b8f43b04b1fe0f4b9796480d493e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67fcd84362c643129d69a1f00f66b01d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a67fcd84362c643129d69a1f00f66b01d">quatEulerAngles</a> (<a class="el" href="structVector3.html">Vector3</a> *angles, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:a67fcd84362c643129d69a1f00f66b01d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c666a3dc6956ff66043a558468ba7f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a0c666a3dc6956ff66043a558468ba7f0">quatAxisComplex</a> (<a class="el" href="structVector3.html">Vector3</a> *axis, <a class="el" href="structVector2.html">Vector2</a> *complex, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:a0c666a3dc6956ff66043a558468ba7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69905a1431117a6dd0817ca016f9e1d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a69905a1431117a6dd0817ca016f9e1d9">quatConjugate</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *in, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:a69905a1431117a6dd0817ca016f9e1d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a485f7e2430bd5e7895674ff2c015dd53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a485f7e2430bd5e7895674ff2c015dd53">quatNegate</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *in, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:a485f7e2430bd5e7895674ff2c015dd53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac726a3867b018503417208a988d4640c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#ac726a3867b018503417208a988d4640c">quatMultVector</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q, <a class="el" href="structVector3.html">Vector3</a> *a, <a class="el" href="structVector3.html">Vector3</a> *out)</td></tr>
+<tr class="separator:ac726a3867b018503417208a988d4640c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4094a0e9a6b252ab5e19b1e6183abe5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#ac4094a0e9a6b252ab5e19b1e6183abe5">quatRotatedBoundingBoxSize</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q, <a class="el" href="structVector3.html">Vector3</a> *halfBoxSize, <a class="el" href="structVector3.html">Vector3</a> *out)</td></tr>
+<tr class="separator:ac4094a0e9a6b252ab5e19b1e6183abe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cd26605ace7ccaeab3cf26613d79312"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a6cd26605ace7ccaeab3cf26613d79312">quatMultiply</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *a, <a class="el" href="structQuaternion.html">Quaternion</a> *b, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:a6cd26605ace7ccaeab3cf26613d79312"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a954c5493a1a3802b7b241c9f42029a38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a954c5493a1a3802b7b241c9f42029a38">quatAdd</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *a, <a class="el" href="structQuaternion.html">Quaternion</a> *b, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:a954c5493a1a3802b7b241c9f42029a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72ee8797e1fe3c35b701d8038d875d01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a72ee8797e1fe3c35b701d8038d875d01">quatToMatrix</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q, float out[4][4])</td></tr>
+<tr class="separator:a72ee8797e1fe3c35b701d8038d875d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1110e54a2461a938fff79b66d143db93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a1110e54a2461a938fff79b66d143db93">quatNormalize</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:a1110e54a2461a938fff79b66d143db93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce32b242b038bc6011d0cd9e569c32d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a8ce32b242b038bc6011d0cd9e569c32d">quatRandom</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q)</td></tr>
+<tr class="separator:a8ce32b242b038bc6011d0cd9e569c32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02b262fe1eba55d072292636ddabea20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a02b262fe1eba55d072292636ddabea20">quatLook</a> (<a class="el" href="structVector3.html">Vector3</a> *lookDir, <a class="el" href="structVector3.html">Vector3</a> *up, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:a02b262fe1eba55d072292636ddabea20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61295b100b3029d7aad5013113aa3575"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a61295b100b3029d7aad5013113aa3575">quatLerp</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *a, <a class="el" href="structQuaternion.html">Quaternion</a> *b, float t, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:a61295b100b3029d7aad5013113aa3575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22149fa08c22cb8212df255cefde0f74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a22149fa08c22cb8212df255cefde0f74">quatApplyAngularVelocity</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *input, <a class="el" href="structVector3.html">Vector3</a> *w, float timeStep, <a class="el" href="structQuaternion.html">Quaternion</a> *output)</td></tr>
+<tr class="separator:a22149fa08c22cb8212df255cefde0f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc4b8e6e29282312169311d7b36d5fef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#acc4b8e6e29282312169311d7b36d5fef">quatDecompose</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *input, <a class="el" href="structVector3.html">Vector3</a> *axis, float *angle)</td></tr>
+<tr class="separator:acc4b8e6e29282312169311d7b36d5fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21b5bfdd64a2b123c16c116c5263a53e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a21b5bfdd64a2b123c16c116c5263a53e">quatDot</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *a, <a class="el" href="structQuaternion.html">Quaternion</a> *b)</td></tr>
+<tr class="separator:a21b5bfdd64a2b123c16c116c5263a53e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bef5eb2f3d4d628dd413b142c5643b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a3bef5eb2f3d4d628dd413b142c5643b0">quatRotateAxisEuler</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q, <a class="el" href="structVector3.html">Vector3</a> *axis, float angleRad, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
+<tr class="separator:a3bef5eb2f3d4d628dd413b142c5643b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7af17ea186a5a670a2f25dba8d4d9a92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a7af17ea186a5a670a2f25dba8d4d9a92">quatIsIdentical</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *a, <a class="el" href="structQuaternion.html">Quaternion</a> *b)</td></tr>
+<tr class="separator:a7af17ea186a5a670a2f25dba8d4d9a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a36ccb3aa3709e849441155a5e4a56d72"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structQuaternion.html">Quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a36ccb3aa3709e849441155a5e4a56d72">gQuaternionZero</a> = {0.0f, 0.0f, 0.0f, 0.0f}</td></tr>
-<tr class="separator:a36ccb3aa3709e849441155a5e4a56d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0aad318a4f1e244aa7e16509d808aa85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structQuaternion.html">Quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a0aad318a4f1e244aa7e16509d808aa85">gQuaternionZero</a> = {0.0f, 0.0f, 0.0f, 0.0f}</td></tr>
+<tr class="separator:a0aad318a4f1e244aa7e16509d808aa85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aa93fa8f792aa76af8ce0168910c177a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa93fa8f792aa76af8ce0168910c177a2">&#9670;&nbsp;</a></span>quatAdd()</h2>
+<a id="a954c5493a1a3802b7b241c9f42029a38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a954c5493a1a3802b7b241c9f42029a38">&#9670;&nbsp;</a></span>quatAdd()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,19 +150,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatAdd </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -173,8 +175,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="af10a8b1896cc0d86dd010d2774dd174e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af10a8b1896cc0d86dd010d2774dd174e">&#9670;&nbsp;</a></span>quatApplyAngularVelocity()</h2>
+<a id="a22149fa08c22cb8212df255cefde0f74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22149fa08c22cb8212df255cefde0f74">&#9670;&nbsp;</a></span>quatApplyAngularVelocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -182,13 +184,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatApplyAngularVelocity </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>w</em>, </td>
         </tr>
         <tr>
@@ -200,7 +202,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>
@@ -213,8 +215,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="adfb7ce6701664de28b3285102b3c894d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adfb7ce6701664de28b3285102b3c894d">&#9670;&nbsp;</a></span>quatAxisAngle()</h2>
+<a id="ab45b8f43b04b1fe0f4b9796480d493e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab45b8f43b04b1fe0f4b9796480d493e4">&#9670;&nbsp;</a></span>quatAxisAngle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -222,7 +224,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatAxisAngle </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>axis</em>, </td>
         </tr>
         <tr>
@@ -234,7 +236,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -247,8 +249,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a42db0ea69c5467cebefb4a637260b64c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42db0ea69c5467cebefb4a637260b64c">&#9670;&nbsp;</a></span>quatAxisComplex()</h2>
+<a id="a0c666a3dc6956ff66043a558468ba7f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c666a3dc6956ff66043a558468ba7f0">&#9670;&nbsp;</a></span>quatAxisComplex()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -256,19 +258,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatAxisComplex </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>axis</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector2.html">Vector2</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector2.html">Vector2</a> *&#160;</td>
           <td class="paramname"><em>complex</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -281,8 +283,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ad252a8d7d2de394de516eda950cfab1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad252a8d7d2de394de516eda950cfab1c">&#9670;&nbsp;</a></span>quatConjugate()</h2>
+<a id="a69905a1431117a6dd0817ca016f9e1d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69905a1431117a6dd0817ca016f9e1d9">&#9670;&nbsp;</a></span>quatConjugate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -290,13 +292,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatConjugate </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -309,8 +311,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a127107efa71df58f4e4244a27d6fa1a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a127107efa71df58f4e4244a27d6fa1a8">&#9670;&nbsp;</a></span>quatDecompose()</h2>
+<a id="acc4b8e6e29282312169311d7b36d5fef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc4b8e6e29282312169311d7b36d5fef">&#9670;&nbsp;</a></span>quatDecompose()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -318,13 +320,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatDecompose </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>axis</em>, </td>
         </tr>
         <tr>
@@ -353,8 +355,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a0b6ef1f221bea1b1267ad0520c7e1007"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b6ef1f221bea1b1267ad0520c7e1007">&#9670;&nbsp;</a></span>quatDot()</h2>
+<a id="a21b5bfdd64a2b123c16c116c5263a53e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21b5bfdd64a2b123c16c116c5263a53e">&#9670;&nbsp;</a></span>quatDot()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -362,13 +364,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">float quatDot </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
@@ -381,8 +383,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a9e9eab533e3ae6a26582688b1752f20f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e9eab533e3ae6a26582688b1752f20f">&#9670;&nbsp;</a></span>quatEulerAngles()</h2>
+<a id="a67fcd84362c643129d69a1f00f66b01d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67fcd84362c643129d69a1f00f66b01d">&#9670;&nbsp;</a></span>quatEulerAngles()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -390,13 +392,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatEulerAngles </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>angles</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -409,8 +411,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a1ec133ab599d7efd0e6fca8c8fc38fe4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ec133ab599d7efd0e6fca8c8fc38fe4">&#9670;&nbsp;</a></span>quatIdent()</h2>
+<a id="ae121ee9135c9da7e6cc2619a99e2645c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae121ee9135c9da7e6cc2619a99e2645c">&#9670;&nbsp;</a></span>quatIdent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -418,7 +420,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatIdent </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em></td><td>)</td>
           <td></td>
         </tr>
@@ -427,8 +429,36 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="afaf6cc44a1ed67f76cd3a312e0fc28fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afaf6cc44a1ed67f76cd3a312e0fc28fc">&#9670;&nbsp;</a></span>quatLerp()</h2>
+<a id="a7af17ea186a5a670a2f25dba8d4d9a92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7af17ea186a5a670a2f25dba8d4d9a92">&#9670;&nbsp;</a></span>quatIsIdentical()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int quatIsIdentical </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a61295b100b3029d7aad5013113aa3575"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61295b100b3029d7aad5013113aa3575">&#9670;&nbsp;</a></span>quatLerp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -436,13 +466,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatLerp </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
@@ -454,7 +484,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -467,8 +497,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a1ce233579c1d79bcb54cbfe064c85d68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ce233579c1d79bcb54cbfe064c85d68">&#9670;&nbsp;</a></span>quatLook()</h2>
+<a id="a02b262fe1eba55d072292636ddabea20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02b262fe1eba55d072292636ddabea20">&#9670;&nbsp;</a></span>quatLook()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -476,19 +506,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatLook </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>lookDir</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>up</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -501,8 +531,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a0e91b8660bc4c5a62349ae8dfdc89ec7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e91b8660bc4c5a62349ae8dfdc89ec7">&#9670;&nbsp;</a></span>quatMultiply()</h2>
+<a id="a6cd26605ace7ccaeab3cf26613d79312"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cd26605ace7ccaeab3cf26613d79312">&#9670;&nbsp;</a></span>quatMultiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -510,19 +540,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatMultiply </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -535,8 +565,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a239f9e5d38751ef0988202f04b3fe356"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a239f9e5d38751ef0988202f04b3fe356">&#9670;&nbsp;</a></span>quatMultVector()</h2>
+<a id="ac726a3867b018503417208a988d4640c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac726a3867b018503417208a988d4640c">&#9670;&nbsp;</a></span>quatMultVector()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -544,19 +574,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatMultVector </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -579,8 +609,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a88575333a1fcbe1cc9d8c0dcd19ddd98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88575333a1fcbe1cc9d8c0dcd19ddd98">&#9670;&nbsp;</a></span>quatNegate()</h2>
+<a id="a485f7e2430bd5e7895674ff2c015dd53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a485f7e2430bd5e7895674ff2c015dd53">&#9670;&nbsp;</a></span>quatNegate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -588,13 +618,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatNegate </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -607,8 +637,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="afbff0950ef01a65d264468b458659a4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbff0950ef01a65d264468b458659a4f">&#9670;&nbsp;</a></span>quatNormalize()</h2>
+<a id="a1110e54a2461a938fff79b66d143db93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1110e54a2461a938fff79b66d143db93">&#9670;&nbsp;</a></span>quatNormalize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -616,13 +646,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatNormalize </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -635,8 +665,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a650aa70345b2b27754d7dddf96b9e2c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a650aa70345b2b27754d7dddf96b9e2c8">&#9670;&nbsp;</a></span>quatRandom()</h2>
+<a id="a8ce32b242b038bc6011d0cd9e569c32d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce32b242b038bc6011d0cd9e569c32d">&#9670;&nbsp;</a></span>quatRandom()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -644,7 +674,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatRandom </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em></td><td>)</td>
           <td></td>
         </tr>
@@ -653,8 +683,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a606a872c20831cbd8d2c0054615cfa02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a606a872c20831cbd8d2c0054615cfa02">&#9670;&nbsp;</a></span>quatRotateAxisEuler()</h2>
+<a id="a3bef5eb2f3d4d628dd413b142c5643b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bef5eb2f3d4d628dd413b142c5643b0">&#9670;&nbsp;</a></span>quatRotateAxisEuler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -662,13 +692,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatRotateAxisEuler </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>axis</em>, </td>
         </tr>
         <tr>
@@ -680,7 +710,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -693,8 +723,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a989a9899b4fac5ed9533e9c82cb1c17a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a989a9899b4fac5ed9533e9c82cb1c17a">&#9670;&nbsp;</a></span>quatRotatedBoundingBoxSize()</h2>
+<a id="ac4094a0e9a6b252ab5e19b1e6183abe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4094a0e9a6b252ab5e19b1e6183abe5">&#9670;&nbsp;</a></span>quatRotatedBoundingBoxSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -702,19 +732,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatRotatedBoundingBoxSize </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>halfBoxSize</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -727,8 +757,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a7847103b963a353c651d068af317ab5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7847103b963a353c651d068af317ab5e">&#9670;&nbsp;</a></span>quatToMatrix()</h2>
+<a id="a72ee8797e1fe3c35b701d8038d875d01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72ee8797e1fe3c35b701d8038d875d01">&#9670;&nbsp;</a></span>quatToMatrix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -736,7 +766,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatToMatrix </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
@@ -756,14 +786,14 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a36ccb3aa3709e849441155a5e4a56d72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36ccb3aa3709e849441155a5e4a56d72">&#9670;&nbsp;</a></span>gQuaternionZero</h2>
+<a id="a0aad318a4f1e244aa7e16509d808aa85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0aad318a4f1e244aa7e16509d808aa85">&#9670;&nbsp;</a></span>gQuaternionZero</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structQuaternion.html">Quaternion</a> gQuaternionZero = {0.0f, 0.0f, 0.0f, 0.0f}</td>
+          <td class="memname"><a class="el" href="structQuaternion.html">Quaternion</a> gQuaternionZero = {0.0f, 0.0f, 0.0f, 0.0f}</td>
         </tr>
       </table>
 </div><div class="memdoc">

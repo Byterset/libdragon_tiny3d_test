@@ -67,6 +67,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -88,6 +89,8 @@ $(function() {
 <code>#include &quot;<a class="el" href="player_8h_source.html">player/player.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="map_8h_source.html">map/map.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="objects_2box_2box_8h_source.html">objects/box/box.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="objects_2cone_2cone_8h_source.html">objects/cone/cone.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="objects_2cylinder_2cylinder_8h_source.html">objects/cylinder/cylinder.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="platform_8h_source.html">objects/platform/platform.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="fire_8h_source.html">effects/fire.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="skybox__flat_8h_source.html">skybox/skybox_flat.h</a>&quot;</code><br />
@@ -99,6 +102,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="model__cache_8h_source.html">resource/model_cache.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="resource_2mesh__collider_8h_source.html">resource/mesh_collider.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="renderable_8h_source.html">render/renderable.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="collectable_8h_source.html">collectables/collectable.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="defs_8h_source.html">render/defs.h</a>&quot;</code><br />
 <code>#include &lt;malloc.h&gt;</code><br />
 <code>#include &lt;raylib.h&gt;</code><br />
@@ -109,59 +113,66 @@ Include dependency graph for main.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8c__incl.png" border="0" usemap="#asrc_2main_8c" alt=""/></div>
 <map name="asrc_2main_8c" id="asrc_2main_8c">
-<area shape="rect" title=" " alt="" coords="2446,5,2535,32"/>
-<area shape="rect" title=" " alt="" coords="538,483,633,509"/>
-<area shape="rect" title=" " alt="" coords="2661,326,2741,353"/>
-<area shape="rect" title=" " alt="" coords="3809,80,3924,107"/>
-<area shape="rect" title=" " alt="" coords="993,483,1114,509"/>
-<area shape="rect" title=" " alt="" coords="1139,483,1274,509"/>
-<area shape="rect" title=" " alt="" coords="2258,244,2371,271"/>
-<area shape="rect" title=" " alt="" coords="3948,80,4068,107"/>
-<area shape="rect" href="time_8h.html" title=" " alt="" coords="3769,326,3868,353"/>
-<area shape="rect" href="frame__alloc_8h.html" title=" " alt="" coords="2765,326,2923,353"/>
-<area shape="rect" href="render__scene_8h.html" title=" " alt="" coords="2597,162,2763,189"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="2479,483,2612,509"/>
-<area shape="rect" href="renderable_8h.html" title=" " alt="" coords="1147,244,1251,271"/>
-<area shape="rect" href="transform_8h.html" title=" " alt="" coords="1598,326,1746,353"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="1503,483,1585,509"/>
-<area shape="rect" href="model__cache_8h.html" title=" " alt="" coords="672,326,864,353"/>
-<area shape="rect" title=" " alt="" coords="571,408,650,435"/>
-<area shape="rect" href="camera_8h.html" title=" " alt="" coords="2447,244,2529,271"/>
-<area shape="rect" href="collision__scene_8h.html" title=" " alt="" coords="3137,155,3271,196"/>
-<area shape="rect" href="collision_2mesh__collider_8h.html" title=" " alt="" coords="3348,244,3543,271"/>
-<area shape="rect" title=" " alt="" coords="3595,326,3666,353"/>
-<area shape="rect" title=" " alt="" coords="3690,326,3745,353"/>
-<area shape="rect" href="player_8h.html" title=" " alt="" coords="2006,162,2125,189"/>
-<area shape="rect" href="map_8h.html" title=" " alt="" coords="884,162,980,189"/>
-<area shape="rect" href="objects_2box_2box_8h.html" title=" " alt="" coords="1527,162,1665,189"/>
-<area shape="rect" href="platform_8h.html" title=" " alt="" coords="1733,162,1934,189"/>
-<area shape="rect" href="fire_8h.html" title=" " alt="" coords="241,244,343,271"/>
-<area shape="rect" href="skybox__flat_8h.html" title=" " alt="" coords="1005,162,1163,189"/>
-<area shape="rect" href="camera__controller_8h.html" title=" " alt="" coords="2394,80,2587,107"/>
-<area shape="rect" href="resource_2mesh__collider_8h.html" title=" " alt="" coords="3353,162,3537,189"/>
-<area shape="rect" href="defs_8h.html" title=" " alt="" coords="3058,80,3166,107"/>
-<area shape="rect" title=" " alt="" coords="4093,80,4182,107"/>
-<area shape="rect" title=" " alt="" coords="3155,408,3226,435"/>
-<area shape="rect" title=" " alt="" coords="3115,483,3197,509"/>
-<area shape="rect" href="render__batch_8h.html" title=" " alt="" coords="1537,244,1655,271"/>
-<area shape="rect" href="callback__list_8h.html" title=" " alt="" coords="2604,244,2756,271"/>
-<area shape="rect" href="model_8h.html" title=" " alt="" coords="987,408,1120,435"/>
-<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="2027,408,2131,435"/>
-<area shape="rect" href="material_8h.html" title=" " alt="" coords="189,408,278,435"/>
-<area shape="rect" href="matrix_8h.html" title="This file contains the definition of the 4x4 matrix structure and functions to work with those matric..." alt="" coords="2307,326,2384,353"/>
-<area shape="rect" href="plane_8h.html" title=" " alt="" coords="2408,408,2528,435"/>
-<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="2103,244,2233,271"/>
-<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="3205,326,3368,353"/>
-<area shape="rect" href="contact_8h.html" title=" " alt="" coords="2947,326,3029,353"/>
-<area shape="rect" href="hash__map_8h.html" title=" " alt="" coords="3135,244,3273,271"/>
-<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="3250,408,3366,435"/>
-<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="1275,244,1410,271"/>
-<area shape="rect" href="scene__definition_8h.html" title=" " alt="" coords="1822,326,2029,353"/>
-<area shape="rect" href="material__cache_8h.html" title=" " alt="" coords="144,319,293,360"/>
-<area shape="rect" title=" " alt="" coords="3567,244,3633,271"/>
+<area shape="rect" title=" " alt="" coords="2379,5,2469,32"/>
+<area shape="rect" title=" " alt="" coords="461,647,555,673"/>
+<area shape="rect" title=" " alt="" coords="2987,490,3067,517"/>
+<area shape="rect" title=" " alt="" coords="3832,80,3947,107"/>
+<area shape="rect" title=" " alt="" coords="891,647,1013,673"/>
+<area shape="rect" title=" " alt="" coords="1142,647,1277,673"/>
+<area shape="rect" title=" " alt="" coords="2705,401,2818,427"/>
+<area shape="rect" title=" " alt="" coords="3971,80,4091,107"/>
+<area shape="rect" href="time_8h.html" title=" " alt="" coords="2480,490,2579,517"/>
+<area shape="rect" href="frame__alloc_8h.html" title=" " alt="" coords="2755,490,2912,517"/>
+<area shape="rect" href="render__scene_8h.html" title=" " alt="" coords="2489,80,2655,107"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="3180,647,3313,673"/>
+<area shape="rect" href="renderable_8h.html" title=" " alt="" coords="1027,401,1131,427"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="1750,490,1898,517"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="1808,647,1891,673"/>
+<area shape="rect" href="model__cache_8h.html" title=" " alt="" coords="621,490,813,517"/>
+<area shape="rect" title=" " alt="" coords="599,572,678,599"/>
+<area shape="rect" href="camera_8h.html" title=" " alt="" coords="2331,155,2413,181"/>
+<area shape="rect" href="camera__controller_8h.html" title=" " alt="" coords="2157,229,2363,256"/>
+<area shape="rect" href="player_8h.html" title=" " alt="" coords="2212,311,2343,338"/>
+<area shape="rect" href="collision__scene_8h.html" title=" " alt="" coords="3266,304,3401,345"/>
+<area shape="rect" href="collision_2mesh__collider_8h.html" title=" " alt="" coords="3461,401,3656,427"/>
+<area shape="rect" href="defs_8h.html" title=" " alt="" coords="3739,490,3859,517"/>
+<area shape="rect" href="map_8h.html" title=" " alt="" coords="941,311,1037,338"/>
+<area shape="rect" href="objects_2box_2box_8h.html" title=" " alt="" coords="1331,311,1469,338"/>
+<area shape="rect" href="objects_2cone_2cone_8h.html" title=" " alt="" coords="1761,311,1911,338"/>
+<area shape="rect" href="objects_2cylinder_2cylinder_8h.html" title=" " alt="" coords="1544,311,1736,338"/>
+<area shape="rect" href="platform_8h.html" title=" " alt="" coords="1935,311,2137,338"/>
+<area shape="rect" href="fire_8h.html" title=" " alt="" coords="234,401,337,427"/>
+<area shape="rect" href="skybox__flat_8h.html" title=" " alt="" coords="758,311,917,338"/>
+<area shape="rect" href="resource_2mesh__collider_8h.html" title=" " alt="" coords="3376,229,3560,256"/>
+<area shape="rect" href="collectable_8h.html" title=" " alt="" coords="2516,311,2703,338"/>
+<area shape="rect" title=" " alt="" coords="4115,80,4186,107"/>
+<area shape="rect" title=" " alt="" coords="4210,80,4265,107"/>
+<area shape="rect" title=" " alt="" coords="4289,80,4378,107"/>
+<area shape="rect" title=" " alt="" coords="2798,572,2869,599"/>
+<area shape="rect" title=" " alt="" coords="2479,647,2561,673"/>
+<area shape="rect" href="render__batch_8h.html" title=" " alt="" coords="1358,401,1477,427"/>
+<area shape="rect" href="callback__list_8h.html" title=" " alt="" coords="2492,155,2644,181"/>
+<area shape="rect" href="model_8h.html" title=" " alt="" coords="1091,572,1224,599"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="2277,572,2381,599"/>
+<area shape="rect" href="material_8h.html" title=" " alt="" coords="138,572,227,599"/>
+<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="3093,572,3209,599"/>
+<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="2539,393,2680,435"/>
+<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="3141,490,3304,517"/>
+<area shape="rect" href="contact_8h.html" title=" " alt="" coords="3328,490,3411,517"/>
+<area shape="rect" href="hash__map_8h.html" title=" " alt="" coords="3197,401,3336,427"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="1501,401,1624,427"/>
+<area shape="rect" href="scene__definition_8h.html" title=" " alt="" coords="2054,401,2261,427"/>
+<area shape="rect" href="material__cache_8h.html" title=" " alt="" coords="93,483,243,524"/>
 </map>
 </div>
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae60312c439afe39ee61a5a2c23cd6c16"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ae60312c439afe39ee61a5a2c23cd6c16">NUM_BOXES</a>&#160;&#160;&#160;5</td></tr>
+<tr class="separator:ae60312c439afe39ee61a5a2c23cd6c16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabce967be00a115a8b534aa56cbc42a6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aabce967be00a115a8b534aa56cbc42a6">NUM_COINS</a>&#160;&#160;&#160;5</td></tr>
+<tr class="separator:aabce967be00a115a8b534aa56cbc42a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:adb3fff7b7fdfdfca3d8d74d2d85a1b6b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#adb3fff7b7fdfdfca3d8d74d2d85a1b6b">on_vi_interrupt</a> ()</td></tr>
@@ -187,16 +198,14 @@ Variables</h2></td></tr>
 <tr class="separator:a17162130f1eeca8018805556745c7464"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aceb1ca55c7458494b7fe73d271432ad8"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structmap.html">map</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aceb1ca55c7458494b7fe73d271432ad8">map</a></td></tr>
 <tr class="separator:aceb1ca55c7458494b7fe73d271432ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d260210eaac9f6583276fc83da3d80e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structbox.html">box</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a3d260210eaac9f6583276fc83da3d80e">box</a></td></tr>
-<tr class="separator:a3d260210eaac9f6583276fc83da3d80e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01650976217fdc0de7794f1bfe4dfd2d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structbox.html">box</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a01650976217fdc0de7794f1bfe4dfd2d">box1</a></td></tr>
-<tr class="separator:a01650976217fdc0de7794f1bfe4dfd2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a325aca70de651368d5adad1dedd0c71b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structbox.html">box</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a325aca70de651368d5adad1dedd0c71b">box2</a></td></tr>
-<tr class="separator:a325aca70de651368d5adad1dedd0c71b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add114d70ed94684edfa2928b4e5f4e5b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structbox.html">box</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#add114d70ed94684edfa2928b4e5f4e5b">box3</a></td></tr>
-<tr class="separator:add114d70ed94684edfa2928b4e5f4e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a595e4f84debdc8d25f3a2b833b8c258e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structbox.html">box</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a595e4f84debdc8d25f3a2b833b8c258e">box4</a></td></tr>
-<tr class="separator:a595e4f84debdc8d25f3a2b833b8c258e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace96600b06426088e506e77826e87eaa"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structbox.html">box</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ace96600b06426088e506e77826e87eaa">boxes</a> [<a class="el" href="main_8c.html#ae60312c439afe39ee61a5a2c23cd6c16">NUM_BOXES</a>]</td></tr>
+<tr class="separator:ace96600b06426088e506e77826e87eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab83d2daeb6731189e3078d70bf31075b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structcollectable.html">collectable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ab83d2daeb6731189e3078d70bf31075b">coins</a> [<a class="el" href="main_8c.html#aabce967be00a115a8b534aa56cbc42a6">NUM_COINS</a>]</td></tr>
+<tr class="separator:ab83d2daeb6731189e3078d70bf31075b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a368ff55fd0c84378d235d38add6fd7da"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structcone.html">cone</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a368ff55fd0c84378d235d38add6fd7da">cone</a></td></tr>
+<tr class="separator:a368ff55fd0c84378d235d38add6fd7da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a352ae6e561e3b530da3530e5eda3fe55"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structcylinder.html">cylinder</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a352ae6e561e3b530da3530e5eda3fe55">cylinder</a></td></tr>
+<tr class="separator:a352ae6e561e3b530da3530e5eda3fe55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e0a8b59267a0142f08d108514e78f1d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structplatform.html">platform</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a5e0a8b59267a0142f08d108514e78f1d">plat</a></td></tr>
 <tr class="separator:a5e0a8b59267a0142f08d108514e78f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2679197f992bdfb30d7f958633bcd80"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structfire.html">fire</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ac2679197f992bdfb30d7f958633bcd80">fire</a></td></tr>
@@ -217,9 +226,44 @@ Variables</h2></td></tr>
 <tr class="separator:a64d44df028023506502d8bb24dc1d232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf4ebcf05b31002a91d0ff460183d5c1"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structbox__definition.html">box_definition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#adf4ebcf05b31002a91d0ff460183d5c1">box_def</a></td></tr>
 <tr class="separator:adf4ebcf05b31002a91d0ff460183d5c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a893c17540cafdcbf7d4e768b5ebed5ef"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structcone__definition.html">cone_definition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a893c17540cafdcbf7d4e768b5ebed5ef">cone_def</a></td></tr>
+<tr class="separator:a893c17540cafdcbf7d4e768b5ebed5ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a850b2420b76e9540c9a4e8ddc0245f4f"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structcollectable__definition.html">collectable_definition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a850b2420b76e9540c9a4e8ddc0245f4f">collectableDef</a></td></tr>
+<tr class="separator:a850b2420b76e9540c9a4e8ddc0245f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a1902a2cf4611f0c4b8d6674e1076ac"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structcylinder__definition.html">cylinder_definition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a2a1902a2cf4611f0c4b8d6674e1076ac">cyl_def</a></td></tr>
+<tr class="separator:a2a1902a2cf4611f0c4b8d6674e1076ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49791d6da22e2328903950155c4dd19e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structplatform__definition.html">platform_definition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a49791d6da22e2328903950155c4dd19e">plat_def</a></td></tr>
 <tr class="separator:a49791d6da22e2328903950155c4dd19e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae60312c439afe39ee61a5a2c23cd6c16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae60312c439afe39ee61a5a2c23cd6c16">&#9670;&nbsp;</a></span>NUM_BOXES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NUM_BOXES&#160;&#160;&#160;5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aabce967be00a115a8b534aa56cbc42a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabce967be00a115a8b534aa56cbc42a6">&#9670;&nbsp;</a></span>NUM_COINS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NUM_COINS&#160;&#160;&#160;5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ae66f6b31b5ad750f1fe042a706a4e3d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae66f6b31b5ad750f1fe042a706a4e3d4">&#9670;&nbsp;</a></span>main()</h2>
@@ -307,76 +351,6 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a3d260210eaac9f6583276fc83da3d80e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d260210eaac9f6583276fc83da3d80e">&#9670;&nbsp;</a></span>box</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structbox.html">box</a> <a class="el" href="structbox.html">box</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a01650976217fdc0de7794f1bfe4dfd2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01650976217fdc0de7794f1bfe4dfd2d">&#9670;&nbsp;</a></span>box1</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structbox.html">box</a> box1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a325aca70de651368d5adad1dedd0c71b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a325aca70de651368d5adad1dedd0c71b">&#9670;&nbsp;</a></span>box2</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structbox.html">box</a> box2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="add114d70ed94684edfa2928b4e5f4e5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add114d70ed94684edfa2928b4e5f4e5b">&#9670;&nbsp;</a></span>box3</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structbox.html">box</a> box3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a595e4f84debdc8d25f3a2b833b8c258e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a595e4f84debdc8d25f3a2b833b8c258e">&#9670;&nbsp;</a></span>box4</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structbox.html">box</a> box4</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="adf4ebcf05b31002a91d0ff460183d5c1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adf4ebcf05b31002a91d0ff460183d5c1">&#9670;&nbsp;</a></span>box_def</h2>
 
@@ -389,10 +363,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    (<span class="keyword">struct </span><a class="code" href="structVector3.html">Vector3</a>){0, 10, 0}</div>
+<div class="line">    (<a class="code" href="vector2_8h.html#a3b29ec21f9ba832999ff4fdff39dd804">Vector3</a>){-6, 5, 5}</div>
 <div class="line">}</div>
-<div class="ttc" id="astructVector3_html"><div class="ttname"><a href="structVector3.html">Vector3</a></div><div class="ttdef"><b>Definition:</b> vector3.h:9</div></div>
+<div class="ttc" id="avector2_8h_html_a3b29ec21f9ba832999ff4fdff39dd804"><div class="ttname"><a href="vector2_8h.html#a3b29ec21f9ba832999ff4fdff39dd804">Vector3</a></div><div class="ttdeci">struct Vector3 Vector3</div><div class="ttdef"><b>Definition:</b> vector2.h:13</div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="ace96600b06426088e506e77826e87eaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace96600b06426088e506e77826e87eaa">&#9670;&nbsp;</a></span>boxes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structbox.html">box</a> boxes[<a class="el" href="main_8c.html#ae60312c439afe39ee61a5a2c23cd6c16">NUM_BOXES</a>]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 </div>
 </div>
 <a id="a8738a254b347f9aa4a18f7b62dbe8b1c"></a>
@@ -423,6 +411,42 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ab83d2daeb6731189e3078d70bf31075b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab83d2daeb6731189e3078d70bf31075b">&#9670;&nbsp;</a></span>coins</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structcollectable.html">collectable</a> coins[<a class="el" href="main_8c.html#aabce967be00a115a8b534aa56cbc42a6">NUM_COINS</a>]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a850b2420b76e9540c9a4e8ddc0245f4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a850b2420b76e9540c9a4e8ddc0245f4f">&#9670;&nbsp;</a></span>collectableDef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structcollectable__definition.html">collectable_definition</a> collectableDef</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    (<a class="code" href="vector2_8h.html#a3b29ec21f9ba832999ff4fdff39dd804">Vector3</a>){-10, 1, -25},</div>
+<div class="line">    (<a class="code" href="vector2_8h.html#a682e0907769244e5f75f92e91460878f">Vector2</a>){1, 0},</div>
+<div class="line">    <a class="code" href="scene__definition_8h.html#af70d7bfc1a201d50065a25bdcd25bd17a35f40160e4c79c4691a31f90b1551573">COLLECTABLE_TYPE_COIN</a>,</div>
+<div class="line">    0</div>
+<div class="line">}</div>
+<div class="ttc" id="ascene__definition_8h_html_af70d7bfc1a201d50065a25bdcd25bd17a35f40160e4c79c4691a31f90b1551573"><div class="ttname"><a href="scene__definition_8h.html#af70d7bfc1a201d50065a25bdcd25bd17a35f40160e4c79c4691a31f90b1551573">COLLECTABLE_TYPE_COIN</a></div><div class="ttdeci">@ COLLECTABLE_TYPE_COIN</div><div class="ttdef"><b>Definition:</b> scene_definition.h:15</div></div>
+<div class="ttc" id="avector2_8h_html_a682e0907769244e5f75f92e91460878f"><div class="ttname"><a href="vector2_8h.html#a682e0907769244e5f75f92e91460878f">Vector2</a></div><div class="ttdeci">struct Vector2 Vector2</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a3adcf78197d2c94d61550404656b0b1f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3adcf78197d2c94d61550404656b0b1f">&#9670;&nbsp;</a></span>colorAmbient</h2>
 
@@ -445,6 +469,68 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a368ff55fd0c84378d235d38add6fd7da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a368ff55fd0c84378d235d38add6fd7da">&#9670;&nbsp;</a></span>cone</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structcone.html">cone</a> <a class="el" href="structcone.html">cone</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a893c17540cafdcbf7d4e768b5ebed5ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a893c17540cafdcbf7d4e768b5ebed5ef">&#9670;&nbsp;</a></span>cone_def</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structcone__definition.html">cone_definition</a> cone_def</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    (<a class="code" href="vector2_8h.html#a3b29ec21f9ba832999ff4fdff39dd804">Vector3</a>){6, 0, -15}</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a2a1902a2cf4611f0c4b8d6674e1076ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a1902a2cf4611f0c4b8d6674e1076ac">&#9670;&nbsp;</a></span>cyl_def</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structcylinder__definition.html">cylinder_definition</a> cyl_def</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    (<a class="code" href="vector2_8h.html#a3b29ec21f9ba832999ff4fdff39dd804">Vector3</a>){-10, 0, -10}</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a352ae6e561e3b530da3530e5eda3fe55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a352ae6e561e3b530da3530e5eda3fe55">&#9670;&nbsp;</a></span>cylinder</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structcylinder.html">cylinder</a> <a class="el" href="structcylinder.html">cylinder</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -519,7 +605,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    (<span class="keyword">struct </span><a class="code" href="structVector3.html">Vector3</a>){9, 4, 7}</div>
+<div class="line">    (<a class="code" href="vector2_8h.html#a3b29ec21f9ba832999ff4fdff39dd804">Vector3</a>){9, 6, 7}</div>
 <div class="line">}</div>
 </div><!-- fragment -->
 </div>
@@ -550,10 +636,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    (<span class="keyword">struct </span><a class="code" href="structVector3.html">Vector3</a>){0, 0.15f, 0},</div>
-<div class="line">    (<span class="keyword">struct </span><a class="code" href="structVector2.html">Vector2</a>){1, 0}</div>
+<div class="line">    (<a class="code" href="vector2_8h.html#a3b29ec21f9ba832999ff4fdff39dd804">Vector3</a>){0, 0.15f, 0},</div>
+<div class="line">    (<a class="code" href="vector2_8h.html#a682e0907769244e5f75f92e91460878f">Vector2</a>){1, 0}</div>
 <div class="line">}</div>
-<div class="ttc" id="astructVector2_html"><div class="ttname"><a href="structVector2.html">Vector2</a></div><div class="ttdef"><b>Definition:</b> vector2.h:4</div></div>
 </div><!-- fragment -->
 </div>
 </div>

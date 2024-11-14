@@ -68,6 +68,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">plane.h File Reference</div>  </div>
@@ -88,27 +89,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="plane_8h__dep__incl.png" border="0" usemap="#asrc_2math_2plane_8hdep" alt=""/></div>
 <map name="asrc_2math_2plane_8hdep" id="asrc_2math_2plane_8hdep">
-<area shape="rect" title=" " alt="" coords="1306,5,1437,32"/>
-<area shape="rect" href="epa_8c.html" title=" " alt="" coords="1143,80,1282,107"/>
-<area shape="rect" href="plane_8c.html" title=" " alt="" coords="1306,80,1437,107"/>
-<area shape="rect" href="camera_8h.html" title=" " alt="" coords="1461,80,1613,107"/>
-<area shape="rect" href="main_8c.html" title=" " alt="" coords="1484,237,1573,263"/>
-<area shape="rect" href="camera_8c.html" title=" " alt="" coords="1348,155,1499,181"/>
-<area shape="rect" href="render__scene_8h.html" title=" " alt="" coords="804,155,995,181"/>
-<area shape="rect" href="camera__controller_8h.html" title=" " alt="" coords="1589,155,1805,181"/>
-<area shape="rect" href="scene_8h.html" title=" " alt="" coords="1836,237,1973,263"/>
-<area shape="rect" href="fire_8c.html" title=" " alt="" coords="1334,237,1459,263"/>
-<area shape="rect" href="map_8c.html" title=" " alt="" coords="5,237,124,263"/>
-<area shape="rect" href="objects_2box_2box_8c.html" title=" " alt="" coords="148,237,307,263"/>
-<area shape="rect" href="platform_8c.html" title=" " alt="" coords="331,229,483,271"/>
-<area shape="rect" href="player_8c.html" title=" " alt="" coords="507,237,649,263"/>
-<area shape="rect" href="render__scene_8c.html" title=" " alt="" coords="673,237,862,263"/>
-<area shape="rect" href="scene__loader_8c.html" title=" " alt="" coords="1219,393,1401,420"/>
-<area shape="rect" href="skybox3d_8c.html" title=" " alt="" coords="937,237,1105,263"/>
-<area shape="rect" href="skybox__flat_8c.html" title=" " alt="" coords="1129,237,1309,263"/>
-<area shape="rect" href="camera__controller_8c.html" title=" " alt="" coords="1597,237,1812,263"/>
-<area shape="rect" href="scene_8c.html" title=" " alt="" coords="1837,319,1973,345"/>
-<area shape="rect" href="scene__loader_8h.html" title=" " alt="" coords="1423,319,1607,345"/>
+<area shape="rect" title=" " alt="" coords="88,5,219,32"/>
+<area shape="rect" href="epa_8c.html" title=" " alt="" coords="5,80,144,107"/>
+<area shape="rect" href="plane_8c.html" title=" " alt="" coords="168,80,299,107"/>
 </map>
 </div>
 </div>
@@ -119,24 +102,44 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPlane.html">Plane</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:aac80d51bb4ccb9ad14c927e2ea8894e2"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structPlane.html">Plane</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#aac80d51bb4ccb9ad14c927e2ea8894e2">Plane</a></td></tr>
+<tr class="separator:aac80d51bb4ccb9ad14c927e2ea8894e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a625f777f0669c9678d4722e4075fdacb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#a625f777f0669c9678d4722e4075fdacb">planeInitWithNormalAndPoint</a> (struct <a class="el" href="structPlane.html">Plane</a> *plane, struct <a class="el" href="structVector3.html">Vector3</a> *normal, struct <a class="el" href="structVector3.html">Vector3</a> *point)</td></tr>
-<tr class="separator:a625f777f0669c9678d4722e4075fdacb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59b4ccd7950fb3de95ca3127ad520ffe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#a59b4ccd7950fb3de95ca3127ad520ffe">planeRayIntersection</a> (struct <a class="el" href="structPlane.html">Plane</a> *plane, struct <a class="el" href="structVector3.html">Vector3</a> *rayOrigin, struct <a class="el" href="structVector3.html">Vector3</a> *rayDirection, float *rayDistance)</td></tr>
-<tr class="separator:a59b4ccd7950fb3de95ca3127ad520ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5de6d0b7b5e5a051d8783f1d4e39fafd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#a5de6d0b7b5e5a051d8783f1d4e39fafd">planePointDistance</a> (struct <a class="el" href="structPlane.html">Plane</a> *plane, struct <a class="el" href="structVector3.html">Vector3</a> *point)</td></tr>
-<tr class="separator:a5de6d0b7b5e5a051d8783f1d4e39fafd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f1513f207d431f8c4fc731e90607ba6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#a2f1513f207d431f8c4fc731e90607ba6">planeProjectPoint</a> (struct <a class="el" href="structPlane.html">Plane</a> *plane, struct <a class="el" href="structVector3.html">Vector3</a> *point, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
-<tr class="separator:a2f1513f207d431f8c4fc731e90607ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43f206478c390508a20c3e8eaad2e4d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#a43f206478c390508a20c3e8eaad2e4d0">calculateBarycentricCoords</a> (struct <a class="el" href="structVector3.html">Vector3</a> *a, struct <a class="el" href="structVector3.html">Vector3</a> *b, struct <a class="el" href="structVector3.html">Vector3</a> *c, struct <a class="el" href="structVector3.html">Vector3</a> *point, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
-<tr class="separator:a43f206478c390508a20c3e8eaad2e4d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c008264cb0708f589bbe87e682e88cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#a0c008264cb0708f589bbe87e682e88cb">evaluateBarycentricCoords</a> (struct <a class="el" href="structVector3.html">Vector3</a> *a, struct <a class="el" href="structVector3.html">Vector3</a> *b, struct <a class="el" href="structVector3.html">Vector3</a> *c, struct <a class="el" href="structVector3.html">Vector3</a> *bary, struct <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
-<tr class="separator:a0c008264cb0708f589bbe87e682e88cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab25ea4efe024c21e20cdf3788c47aace"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#ab25ea4efe024c21e20cdf3788c47aace">planeInitWithNormalAndPoint</a> (<a class="el" href="structPlane.html">Plane</a> *plane, <a class="el" href="structVector3.html">Vector3</a> *normal, <a class="el" href="structVector3.html">Vector3</a> *point)</td></tr>
+<tr class="separator:ab25ea4efe024c21e20cdf3788c47aace"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e9662bba98f16bcbf335eda68e22599"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#a1e9662bba98f16bcbf335eda68e22599">planeRayIntersection</a> (<a class="el" href="structPlane.html">Plane</a> *plane, <a class="el" href="structVector3.html">Vector3</a> *rayOrigin, <a class="el" href="structVector3.html">Vector3</a> *rayDirection, float *rayDistance)</td></tr>
+<tr class="separator:a1e9662bba98f16bcbf335eda68e22599"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6d0f10ecae6d7e260a2d715980b637f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#ae6d0f10ecae6d7e260a2d715980b637f">planePointDistance</a> (<a class="el" href="structPlane.html">Plane</a> *plane, <a class="el" href="structVector3.html">Vector3</a> *point)</td></tr>
+<tr class="separator:ae6d0f10ecae6d7e260a2d715980b637f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad39e2931e79c08cd046b87d201cb77f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#ad39e2931e79c08cd046b87d201cb77f7">planeProjectPoint</a> (<a class="el" href="structPlane.html">Plane</a> *plane, <a class="el" href="structVector3.html">Vector3</a> *point, <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
+<tr class="separator:ad39e2931e79c08cd046b87d201cb77f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8253289a24d1897bcdae2494d5b20e74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#a8253289a24d1897bcdae2494d5b20e74">calculateBarycentricCoords</a> (<a class="el" href="structVector3.html">Vector3</a> *a, <a class="el" href="structVector3.html">Vector3</a> *b, <a class="el" href="structVector3.html">Vector3</a> *c, <a class="el" href="structVector3.html">Vector3</a> *point, <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
+<tr class="separator:a8253289a24d1897bcdae2494d5b20e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7282e3e2cf2c858a39d9b77007ce261"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plane_8h.html#ae7282e3e2cf2c858a39d9b77007ce261">evaluateBarycentricCoords</a> (<a class="el" href="structVector3.html">Vector3</a> *a, <a class="el" href="structVector3.html">Vector3</a> *b, <a class="el" href="structVector3.html">Vector3</a> *c, <a class="el" href="structVector3.html">Vector3</a> *bary, <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
+<tr class="separator:ae7282e3e2cf2c858a39d9b77007ce261"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="aac80d51bb4ccb9ad14c927e2ea8894e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac80d51bb4ccb9ad14c927e2ea8894e2">&#9670;&nbsp;</a></span>Plane</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structPlane.html">Plane</a> <a class="el" href="structPlane.html">Plane</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a43f206478c390508a20c3e8eaad2e4d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43f206478c390508a20c3e8eaad2e4d0">&#9670;&nbsp;</a></span>calculateBarycentricCoords()</h2>
+<a id="a8253289a24d1897bcdae2494d5b20e74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8253289a24d1897bcdae2494d5b20e74">&#9670;&nbsp;</a></span>calculateBarycentricCoords()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,31 +147,31 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void calculateBarycentricCoords </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>c</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>point</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>
@@ -181,8 +184,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0c008264cb0708f589bbe87e682e88cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c008264cb0708f589bbe87e682e88cb">&#9670;&nbsp;</a></span>evaluateBarycentricCoords()</h2>
+<a id="ae7282e3e2cf2c858a39d9b77007ce261"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7282e3e2cf2c858a39d9b77007ce261">&#9670;&nbsp;</a></span>evaluateBarycentricCoords()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,31 +193,31 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void evaluateBarycentricCoords </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>c</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>bary</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>
@@ -227,8 +230,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a625f777f0669c9678d4722e4075fdacb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a625f777f0669c9678d4722e4075fdacb">&#9670;&nbsp;</a></span>planeInitWithNormalAndPoint()</h2>
+<a id="ab25ea4efe024c21e20cdf3788c47aace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab25ea4efe024c21e20cdf3788c47aace">&#9670;&nbsp;</a></span>planeInitWithNormalAndPoint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,19 +239,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void planeInitWithNormalAndPoint </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structPlane.html">Plane</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structPlane.html">Plane</a> *&#160;</td>
           <td class="paramname"><em>plane</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>normal</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>point</em>&#160;</td>
         </tr>
         <tr>
@@ -261,8 +264,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5de6d0b7b5e5a051d8783f1d4e39fafd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5de6d0b7b5e5a051d8783f1d4e39fafd">&#9670;&nbsp;</a></span>planePointDistance()</h2>
+<a id="ae6d0f10ecae6d7e260a2d715980b637f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6d0f10ecae6d7e260a2d715980b637f">&#9670;&nbsp;</a></span>planePointDistance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -270,13 +273,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">float planePointDistance </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structPlane.html">Plane</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structPlane.html">Plane</a> *&#160;</td>
           <td class="paramname"><em>plane</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>point</em>&#160;</td>
         </tr>
         <tr>
@@ -289,8 +292,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2f1513f207d431f8c4fc731e90607ba6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f1513f207d431f8c4fc731e90607ba6">&#9670;&nbsp;</a></span>planeProjectPoint()</h2>
+<a id="ad39e2931e79c08cd046b87d201cb77f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad39e2931e79c08cd046b87d201cb77f7">&#9670;&nbsp;</a></span>planeProjectPoint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -298,19 +301,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void planeProjectPoint </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structPlane.html">Plane</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structPlane.html">Plane</a> *&#160;</td>
           <td class="paramname"><em>plane</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>point</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>
@@ -323,8 +326,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a59b4ccd7950fb3de95ca3127ad520ffe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59b4ccd7950fb3de95ca3127ad520ffe">&#9670;&nbsp;</a></span>planeRayIntersection()</h2>
+<a id="a1e9662bba98f16bcbf335eda68e22599"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e9662bba98f16bcbf335eda68e22599">&#9670;&nbsp;</a></span>planeRayIntersection()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -332,19 +335,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int planeRayIntersection </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structPlane.html">Plane</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structPlane.html">Plane</a> *&#160;</td>
           <td class="paramname"><em>plane</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>rayOrigin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>rayDirection</em>, </td>
         </tr>
         <tr>

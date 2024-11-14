@@ -122,8 +122,12 @@ Functions</h2></td></tr>
 <tr class="separator:abb00b664c771b4c229e93f1aa4a9bcc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf99f35761e50b1d589dca2296df36f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time_8c.html#adf99f35761e50b1d589dca2296df36f6">update_add</a> (void *data, <a class="el" href="time_8h.html#a75c4cc3bf2c23905b9fc6dc91fad9aeb">update_callback</a> callback, int priority, int mask)</td></tr>
 <tr class="separator:adf99f35761e50b1d589dca2296df36f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed2b33efd45f4f34e944d398e0a31c37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time_8c.html#aed2b33efd45f4f34e944d398e0a31c37">fixed_update_add</a> (void *data, <a class="el" href="time_8h.html#a75c4cc3bf2c23905b9fc6dc91fad9aeb">update_callback</a> callback, int priority, int mask)</td></tr>
+<tr class="separator:aed2b33efd45f4f34e944d398e0a31c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac77ad383cc72480534cc4d0507c784f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time_8c.html#ac77ad383cc72480534cc4d0507c784f3">update_remove</a> (void *data)</td></tr>
 <tr class="separator:ac77ad383cc72480534cc4d0507c784f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1800f5871fcc376a0db0d17586ffe6b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time_8c.html#a1800f5871fcc376a0db0d17586ffe6b2">fixed_update_remove</a> (void *data)</td></tr>
+<tr class="separator:a1800f5871fcc376a0db0d17586ffe6b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35a703a467d1849b173ad83750e3599f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time_8c.html#a35a703a467d1849b173ad83750e3599f">update_pause_layers</a> (int mask)</td></tr>
 <tr class="separator:a35a703a467d1849b173ad83750e3599f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3bf16b798833abff114a66fa5816e0af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time_8c.html#a3bf16b798833abff114a66fa5816e0af">update_unpause_layers</a> (int mask)</td></tr>
@@ -132,6 +136,8 @@ Functions</h2></td></tr>
 <tr class="separator:ab1a1da703948187acc2f98533facec58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa8da4768bd7f8ab0b35b824a4aee69b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time_8c.html#aaa8da4768bd7f8ab0b35b824a4aee69b">update_dispatch</a> ()</td></tr>
 <tr class="separator:aaa8da4768bd7f8ab0b35b824a4aee69b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cf2207acda03df67be2def5830e4e19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time_8c.html#a1cf2207acda03df67be2def5830e4e19">fixed_update_dispatch</a> ()</td></tr>
+<tr class="separator:a1cf2207acda03df67be2def5830e4e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -164,6 +170,81 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="aed2b33efd45f4f34e944d398e0a31c37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed2b33efd45f4f34e944d398e0a31c37">&#9670;&nbsp;</a></span>fixed_update_add()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fixed_update_add </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="time_8h.html#a75c4cc3bf2c23905b9fc6dc91fad9aeb">update_callback</a>&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>priority</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>mask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1cf2207acda03df67be2def5830e4e19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cf2207acda03df67be2def5830e4e19">&#9670;&nbsp;</a></span>fixed_update_dispatch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fixed_update_dispatch </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1800f5871fcc376a0db0d17586ffe6b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1800f5871fcc376a0db0d17586ffe6b2">&#9670;&nbsp;</a></span>fixed_update_remove()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fixed_update_remove </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="adf99f35761e50b1d589dca2296df36f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adf99f35761e50b1d589dca2296df36f6">&#9670;&nbsp;</a></span>update_add()</h2>
 

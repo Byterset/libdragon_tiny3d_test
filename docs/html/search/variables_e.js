@@ -1,13 +1,14 @@
 var searchData=
 [
-  ['object_1891',['object',['../structobject__mesh__collide__data.html#a81507edb5788f9f685a096649e828cb6',1,'object_mesh_collide_data::object()'],['../structswept__physics__object.html#a5ba14e5c71827102e9f17415b6f911e4',1,'swept_physics_object::object()'],['../structcollision__scene__element.html#a17a4dd8eb288c012059c948d3d1e536b',1,'collision_scene_element::object()']]],
-  ['object_5faabbtree_1892',['object_aabbtree',['../structcollision__scene.html#ae3ccf19d46309158a849831f006ab429',1,'collision_scene']]],
-  ['objectapoint_1893',['objectAPoint',['../structSimplex.html#a2fbca9de502e29ac536797b774dbd24e',1,'Simplex']]],
-  ['offset_1894',['offset',['../structswept__physics__object.html#ad20e38e88fbf6ee83332217e33727bc2',1,'swept_physics_object::offset()'],['../structtype__location.html#a0bbacfe73df920415d8ccb670bfc6238',1,'type_location::offset()']]],
-  ['oldtime_5fticks_1895',['oldtime_ticks',['../time_8c.html#ae4dad1b5c8ab8adf9cdd7ddbc6cc3ac7',1,'oldtime_ticks():&#160;time.c'],['../time_8h.html#ae4dad1b5c8ab8adf9cdd7ddbc6cc3ac7',1,'oldtime_ticks():&#160;time.c']]],
-  ['on_5ftimer_5fstart_1896',['on_timer_start',['../structCountdownTimer.html#a5645dc285df4136564f267a254884801',1,'CountdownTimer']]],
-  ['on_5ftimer_5fstop_1897',['on_timer_stop',['../structCountdownTimer.html#a7a55a84b4f62b6c92852f000bda1112f',1,'CountdownTimer']]],
-  ['oppositepoints_1898',['oppositePoints',['../unionSimplexTriangleIndexData.html#a6d9627c88c09bd285153d0facaf41f94',1,'SimplexTriangleIndexData']]],
-  ['origin_1899',['origin',['../structRayCast.html#a6afbd442bdce46662b1307a50f8e52ef',1,'RayCast']]],
-  ['other_5fobject_1900',['other_object',['../structcontact.html#aacf3d1b190935bfda64b96fd0628d49f',1,'contact']]]
+  ['name_1936',['name',['../structentity__definition.html#abd2b2876c14cf24b85977220ea43bc01',1,'entity_definition']]],
+  ['near_1937',['near',['../structcamera.html#a5cb69cebf0ba27202f7d2db611bc0b8e',1,'camera']]],
+  ['next_1938',['next',['../structcontact.html#a1d6c2737df05acbd03030ce0cd523acd',1,'contact']]],
+  ['next_5fentry_5findex_1939',['next_entry_index',['../structresource__cache.html#ac1aea87f6b6b09a496c31abf85955cdf',1,'resource_cache']]],
+  ['next_5ffree_5fcontact_1940',['next_free_contact',['../structcollision__scene.html#a29d2e89917c2af63fc48e24a3204bb4e',1,'collision_scene']]],
+  ['next_5fid_1941',['next_id',['../structcallback__list.html#a227ee3c97d2b22cbd02fad5cf8fb38b3',1,'callback_list']]],
+  ['nodes_1942',['nodes',['../structAABBTree.html#a783876cebee182d37a71f0f47fb95b41',1,'AABBTree']]],
+  ['normal_1943',['normal',['../structcontact.html#a32f6e3044e3d058ebc22a1858130e0a3',1,'contact::normal()'],['../structSimplexTriangle.html#af47767215b7ace46906c2e0d77956d4a',1,'SimplexTriangle::normal()'],['../structEpaResult.html#a5e9397745fe3aef80f7b74eefb8866c6',1,'EpaResult::normal()'],['../structmesh__triangle.html#a40f4131272cd3cc033284a11ba057f99',1,'mesh_triangle::normal()'],['../structPlane.html#a338da57ef85d4d8d32d80a8674e90ab7',1,'Plane::normal()']]],
+  ['normals_1944',['normals',['../structmesh__collider.html#ab6cdaad54d4e1d24713753ddb58e3cf3',1,'mesh_collider']]],
+  ['npc_5ftype_1945',['npc_type',['../structnpc__definition.html#acfa8569d654a3f740ca440f6fab9ddeb',1,'npc_definition']]],
+  ['npoints_1946',['nPoints',['../structSimplex.html#a5798007d19e48ee7b2b566ce26093227',1,'Simplex']]]
 ];

@@ -1,19 +1,8 @@
 var searchData=
 [
-  ['id_1838',['id',['../structcallback__element.html#a58481106b8cebd272f5b68730ef4f03d',1,'callback_element::id()'],['../structinteractable.html#a8cd04dd2df2f1b8e1d0bade3691368b0',1,'interactable::id()']]],
-  ['idle_1839',['idle',['../structplayer__animations.html#aac77b2a4096b49b377fd765489272e5b',1,'player_animations']]],
-  ['idx_1840',['idx',['../structmaterial__palette.html#ab21b99015e0d2dea6398b61a476919cf',1,'material_palette']]],
-  ['index_5findices_1841',['index_indices',['../structmesh__index.html#a94a7fa19e8b12dc7d09dc7ef97c119e8',1,'mesh_index']]],
-  ['index_5foffset_1842',['index_offset',['../structfire.html#a49c6328e34e2f44b512863c270fc0b22',1,'fire']]],
-  ['indexdata_1843',['indexData',['../structSimplexTriangle.html#ae11d92b0d453c1fa8579430c0ba54bd6',1,'SimplexTriangle']]],
-  ['indices_1844',['indices',['../unionSimplexTriangleIndexData.html#a960b7db45b573ecaaa8b5f4ca2675e3d',1,'SimplexTriangleIndexData::indices()'],['../structmesh__triangle__indices.html#affb54faeb1310cd3cdd0b9f74a593863',1,'mesh_triangle_indices::indices()']]],
-  ['init_1845',['init',['../structentity__definition.html#a571eb41b541a326862aebda6834b5f12',1,'entity_definition']]],
-  ['inner_5fhalf_5fheight_1846',['inner_half_height',['../unionphysics__object__collision__shape__data.html#aef6d773d72f7fa44ccd2742155e0f2e2',1,'physics_object_collision_shape_data']]],
-  ['is_5fattacking_1847',['is_attacking',['../structplayer.html#aac8433946ece52e6b9369a7fb0b320ba',1,'player']]],
-  ['is_5ffixed_1848',['is_fixed',['../structphysics__object.html#a6e1942c9286db4bb6836a6063adb86f1',1,'physics_object']]],
-  ['is_5fgrounded_1849',['is_grounded',['../structphysics__object.html#aa4753a2ec13359241bdc497eb99b2b5f',1,'physics_object']]],
-  ['is_5fjumping_1850',['is_jumping',['../structplayer.html#adc873e5e51ba0483b2bd9e07b3d6ac0f',1,'player']]],
-  ['is_5fout_5fof_5fbounds_1851',['is_out_of_bounds',['../structphysics__object.html#ae4c280df9a3bbb007993410b9697dbd1',1,'physics_object']]],
-  ['is_5frunning_1852',['is_running',['../structCountdownTimer.html#a361712a06efa3def28fe8e2915bac8ee',1,'CountdownTimer']]],
-  ['is_5ftrigger_1853',['is_trigger',['../structphysics__object.html#a48030ab9ecd655de54f7c5c2fc3ac53e',1,'physics_object']]]
+  ['half_5fheight_1890',['half_height',['../unionphysics__object__collision__shape__data.html#ae17dd9a20e576d4ed1117634fa59841f',1,'physics_object_collision_shape_data']]],
+  ['half_5fsize_1891',['half_size',['../unionphysics__object__collision__shape__data.html#a46311e65506453023378e67cde8e37ff',1,'physics_object_collision_shape_data']]],
+  ['has_5fgravity_1892',['has_gravity',['../structphysics__object.html#a1b3e9254c8c6efec0935b96835072213',1,'physics_object']]],
+  ['has_5fskeleton_1893',['has_skeleton',['../structmodel.html#a8aabe405be8d9c727bcbd875f0345d5a',1,'model']]],
+  ['hit_5fresult_1894',['hit_result',['../structobject__mesh__collide__data.html#a07840c2bf5317bf7f2b48430095b7165',1,'object_mesh_collide_data']]]
 ];
