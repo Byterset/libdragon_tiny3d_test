@@ -35,6 +35,9 @@ struct player {
     struct physics_object physics;
     T3DSkeleton skelBlend;
     struct player_animations animations;
+    Vector3 desired_velocity;
+    bool is_on_ground;
+    Vector3 ground_normal;
 };
 
 void player_init(struct player* player, struct player_definition* definition, Transform* camera_transform);

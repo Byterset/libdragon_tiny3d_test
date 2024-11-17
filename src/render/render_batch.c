@@ -218,7 +218,6 @@ static bool element_type_2d[] = {
 void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T3DViewport *viewport, struct render_fog_params *fog)
 {
     uint16_t order[RENDER_BATCH_MAX_SIZE];
-    int frustum_cull_count = 0;
 
     for (int i = 0; i < batch->element_count; ++i)
     {
@@ -438,26 +437,33 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 continue;
             }
 
+            // Ensure the skybox texture is at least as large as the display otherwise the wrap will not work
+            assert(element->skybox.surface->width >= display_get_width() && element->skybox.surface->height >= display_get_height());
+
             // Calculate forward vector from camera matrix
             Vector3 forward = {viewport->matCamera.m[0][2], viewport->matCamera.m[1][2], viewport->matCamera.m[2][2]};
             // Calculate yaw and pitch from forward vector (negative to reverse the direction or rotation)
             float inv_yaw = -atan2f(forward.x, forward.z);
             float inv_pitch = -asinf(-forward.y);
 
-            if(inv_pitch >= -(0.0001) && inv_pitch <= 0.0001){
+            if (inv_pitch >= -(0.001) && inv_pitch <= 0.001)
+            {
                 inv_pitch = 0; // Prevent floating point errors from making the skybox flicker up and down ever so slightly at rest
             }
-            
-            //default width and height, if using HD need to change this and scale the blit accordingly
-            int width = 320;
-            int height = 240;
+
+            float ideal_tex_width = 960.0f;
+            float ideal_tex_height = 720.0f;
+
+            float scaling_height = ideal_tex_height / element->skybox.surface->height;
+            float scaling_width = ideal_tex_width / element->skybox.surface->width;
+
+            // not sure how this looks when using high res mode
+            int width = display_get_width()/scaling_width;
+            int height = display_get_height()/scaling_height;
 
             // Normalize yaw and pitch between 0 and 1
             inv_yaw = ((inv_yaw + PI) / TWO_PI); // Normalize yaw from [-π, π] to [0, 1]
             inv_pitch = (inv_pitch + HALF_PI) / PI; // Normalize pitch from [-π/2, π/2] to [0, 1]
-
-            assert(inv_yaw >= 0 && inv_yaw <= 1); // Ensure yaw is between 0 and 1
-            assert(inv_pitch >= 0 && inv_pitch <= 1); // Ensure pitch is between 0 and 1
 
             int texOffsetX = inv_yaw * element->skybox.surface->width - (width / 2);
             int texOffsetY = inv_pitch * element->skybox.surface->height - (height / 2);
@@ -486,15 +492,15 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             // if the window is within the bounds of the texture, just blit it
             if (texOffsetX + width < element->skybox.surface->width)
             {
-                
+
                 rdpq_tex_blit(element->skybox.surface, 0, 0, &(rdpq_blitparms_t){
-                                                                 .s0 = texOffsetX,
-                                                                 .t0 = texOffsetY,
-                                                                 .scale_x = 1,
-                                                                 .scale_y = 1,
-                                                                 .width = width,
-                                                                 .height = height,
-                                                             });
+                                                                    .s0 = texOffsetX,
+                                                                    .t0 = texOffsetY,
+                                                                    .scale_x = scaling_width,
+                                                                    .scale_y = scaling_height,
+                                                                    .width = width,
+                                                                    .height = height,
+                                                                });
             }
             // Split the blit into two parts to achieve a wrap around if the window overlapts the edge of the texture
             else
@@ -502,25 +508,25 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 int first_width = element->skybox.surface->width - 1 - texOffsetX;
                 int second_width = width - first_width;
 
-                // First part
+                // Left side (from x-offset until the end of the texture)
                 if(first_width > 0){
                     rdpq_tex_blit(element->skybox.surface, 0, 0, &(rdpq_blitparms_t){
                                                                     .s0 = texOffsetX,
                                                                     .t0 = texOffsetY,
-                                                                    .scale_x = 1,
-                                                                    .scale_y = 1,
+                                                                    .scale_x = scaling_width,
+                                                                    .scale_y = scaling_height,
                                                                     .width = first_width,
                                                                     .height = height
                                                                 });
                 }
 
-                // Second part
+                // Right side (from the start of the texture until the remaining width)
                 if(second_width > 0){
-                    rdpq_tex_blit(element->skybox.surface, first_width, 0, &(rdpq_blitparms_t){
+                    rdpq_tex_blit(element->skybox.surface, first_width * scaling_width, 0, &(rdpq_blitparms_t){
                                                                     .s0 = 0,
                                                                     .t0 = texOffsetY,
-                                                                    .scale_x = 1,
-                                                                    .scale_y = 1,
+                                                                    .scale_x = scaling_width,
+                                                                    .scale_y = scaling_height,
                                                                     .width = second_width,
                                                                     .height = height
                                                                 });
@@ -538,5 +544,4 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             element->callback.callback(element->callback.data, batch);
         }
     }
-    // rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, 20, 85, "culled: %d", frustum_cull_count);
 }

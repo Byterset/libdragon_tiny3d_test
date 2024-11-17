@@ -73,8 +73,8 @@ void physics_object_update_velocity_verlet_simple(struct physics_object* object)
 
 void physics_object_apply_constraints(struct physics_object* object){
     if (object->position->y <= -20){
-        object->position->y = -20;
-        object->velocity.y = 0;
+        *object->position = (Vector3){0, 10, 0};
+        object->velocity = gZeroVec;
     }
     if (object->position->y >= 2000){
         object->position->y = 2000;

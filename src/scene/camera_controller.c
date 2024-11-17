@@ -38,7 +38,7 @@ void camera_controller_update_position(struct camera_controller* controller, Tra
     }
 
     //move the camera towards the target position
-    vector3Lerp(&controller->camera->transform.position, &targetPosition, frametime_sec * 6.0f, &controller->camera->transform.position);
+    vector3Lerp(&controller->camera->transform.position, &targetPosition, deltatime_sec * 6.0f, &controller->camera->transform.position);
 
     //look at the target
     vector3Sub(&target->position, &controller->camera->transform.position, &offset);

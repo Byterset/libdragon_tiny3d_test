@@ -12,9 +12,12 @@
 #include "../render/defs.h"
 #include "../collectables/collectable.h"
 
-#define PLAYER_MAX_SPEED    8.0f
-#define PLAYER_MAX_ACC       100.0f
-#define PLAYER_JUMP_HEIGHT  3.2f
+#define PLAYER_MAX_SPEED    10.0f
+#define PLAYER_MAX_ACC       30.0f
+#define PLAYER_MAX_ACC_AIR   5.0f
+#define PLAYER_MAX_ANGLE_GROUND 40.0f
+#define PLAYER_MAX_ANGLE_GROUND_DOT cosf(T3D_DEG_TO_RAD(PLAYER_MAX_ANGLE_GROUND))
+#define PLAYER_JUMP_HEIGHT  4.2f
 
 static Vector2 player_max_rotation;
 
@@ -29,15 +32,33 @@ static struct physics_object_collision_data player_collision = {
     .shape_type = COLLISION_SHAPE_CAPSULE,
 };
 
-// static struct physics_object_collision_data player_collision = {
-//     .gjk_support_function = sphere_support_function,
-//     .bounding_box_calculator = sphere_bounding_box,
-//     .shape_data = {
-//         .sphere = {
-//             .radius = 1.0f,
-//         }},
-//     .shape_type = COLLISION_SHAPE_SPHERE,
-// };
+void player_handle_contacts(struct player* player){
+    struct contact *contact = player->physics.active_contacts;
+    while (contact)
+    {
+        struct collectable *collectable = collectable_get(contact->other_object);
+        struct physics_object *other = collision_scene_find_object(contact->other_object); 
+        if (contact->other_object != 0)
+        {
+            debugf("Collision with %d\n", contact->other_object);
+        }
+        if (collectable)
+        {
+            collectable_collected(collectable);
+        }
+
+        if ((other && other->collision_layers & COLLISION_LAYER_TANGIBLE) || contact->other_object == 0)
+        {
+            if (contact->normal.y >= PLAYER_MAX_ANGLE_GROUND_DOT)
+            {
+                player->is_on_ground = true;
+                vector3Add(&player->ground_normal, &contact->normal, &player->ground_normal);
+            }
+        }
+
+        contact = contact->next;
+    }
+}
 
 void player_get_move_basis(Transform* transform, Vector3* forward, Vector3* right) {
     quatMultVector(&transform->rotation, &gForward, forward);
@@ -57,7 +78,57 @@ void player_get_move_basis(Transform* transform, Vector3* forward, Vector3* righ
     vector3Normalize(right, right);
 }
 
+void player_reset_state(struct player* player){
+    if (!player->physics.is_sleeping)
+    {
+        player->is_on_ground = false;
+    }
+    player->ground_normal = gZeroVec;
+}
+
+void adjust_velocity(struct player* player){
+
+}
+
+Vector3 ProjectOnContactPlane(Vector3 vector, Vector3 contactNormal)
+{
+    Vector3 out;
+    float dot = vector3Dot(&vector, &contactNormal);
+    vector3Scale(&contactNormal, &out, dot);
+    vector3Sub(&vector, &out, &out);
+    return out;
+}
+
 void player_fixed_update(struct player* player){
+
+    float acc = PLAYER_MAX_ACC_AIR;
+    if (player->is_on_ground)
+    {
+        acc = PLAYER_MAX_ACC;
+        // ground normal was summed up in the handle contacts function so we need to normalize it
+        vector3Normalize(&player->ground_normal, &player->ground_normal);
+    }
+    else
+    {
+        player->ground_normal = gUp;
+    }
+    Vector3 xAxis = ProjectOnContactPlane(gRight, player->ground_normal);
+    Vector3 zAxis = ProjectOnContactPlane(gForward, player->ground_normal);
+    vector3Normalize(&xAxis, &xAxis);
+    vector3Normalize(&zAxis, &zAxis);
+    float currentX = vector3Dot(&player->physics.velocity, &xAxis);
+	float currentZ = vector3Dot(&player->physics.velocity, &zAxis);
+    float maxSpeedChange = FIXED_DELTATIME * acc;
+    float newX = mathfMoveTowards(currentX, player->desired_velocity.x, maxSpeedChange);
+    float newZ = mathfMoveTowards(currentZ, player->desired_velocity.z, maxSpeedChange);
+
+    
+    vector3Scale(&xAxis, &xAxis, (newX - currentX));
+    vector3Scale(&zAxis, &zAxis, (newZ - currentZ));
+    vector3Add(&xAxis, &player->physics.velocity, &player->physics.velocity);
+    vector3Add(&zAxis, &player->physics.velocity, &player->physics.velocity);
+
+    player_reset_state(player);
 
 }
 
@@ -71,7 +142,7 @@ void player_update(struct player* player) {
     joypad_buttons_t pressed = joypad_get_buttons_pressed(0);
     joypad_buttons_t held = joypad_get_buttons_held(0);
 
-    player_get_move_basis(player->camera_transform, &forward, &right);
+    player_handle_contacts(player);
 
     // Player Attack
     if (pressed.a && !player->animations.attack.isPlaying)
@@ -86,23 +157,23 @@ void player_update(struct player* player) {
         t3d_anim_set_time(&player->animations.jump, 0.0f);
         player->is_jumping = true;
     }
-    if (pressed.b){
+    if (pressed.b && player->is_on_ground){
         float jumpVelocity = sqrtf(-2.0f * (GRAVITY_CONSTANT * player->physics.gravity_scalar) * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
         player->physics.velocity.y = jumpVelocity;
     }
 
     // Update the animation and modify the skeleton, this will however NOT recalculate the matrices
-    t3d_anim_update(&player->animations.idle, frametime_sec);
+    t3d_anim_update(&player->animations.idle, deltatime_sec);
     // t3d_anim_set_speed(&animWalk, animBlend + 0.15f);
-    t3d_anim_update(&player->animations.walk, frametime_sec);
+    t3d_anim_update(&player->animations.walk, deltatime_sec);
 
     if(player->is_attacking) {
-      t3d_anim_update(&player->animations.attack, frametime_sec); // attack animation now overrides the idle one
+      t3d_anim_update(&player->animations.attack, deltatime_sec); // attack animation now overrides the idle one
       animBlend = 0.3f;
       if(!player->animations.attack.isPlaying)player->is_attacking = false;
     }
     if(player->is_jumping) {
-      t3d_anim_update(&player->animations.jump, frametime_sec); // attack animation now overrides the idle one
+      t3d_anim_update(&player->animations.jump, deltatime_sec); // attack animation now overrides the idle one
       animBlend = 0.1f;
       if(!player->animations.jump.isPlaying)player->is_jumping = false;
     }
@@ -113,6 +184,8 @@ void player_update(struct player* player) {
     t3d_skeleton_update(&player->renderable.model->skeleton);
 
 
+    // Update Player Rotation and desired Velocity based on the camera and input
+    player_get_move_basis(player->camera_transform, &forward, &right);
 
     Vector2 direction;
 
@@ -129,29 +202,6 @@ void player_update(struct player* player) {
     vector3Scale(&right, &directionWorld, direction.x);
     vector3AddScaled(&directionWorld, &forward, direction.y, &directionWorld);
 
-    float max_speed = PLAYER_MAX_SPEED;
-
-    if(held.r){
-        max_speed *= 8.0f;
-    }
-    
-    Vector3 desiredVelocity = {directionWorld.x * max_speed, 0.0f, directionWorld.z * max_speed};
-    float maxSpeedChange = frametime_sec * PLAYER_MAX_ACC;
-    if(player->physics.velocity.x < desiredVelocity.x){
-        player->physics.velocity.x = fminf(player->physics.velocity.x + maxSpeedChange, desiredVelocity.x);
-    }
-    else if(player->physics.velocity.x > desiredVelocity.x){
-        player->physics.velocity.x = fmaxf(player->physics.velocity.x - maxSpeedChange, desiredVelocity.x);
-    }
-
-    if(player->physics.velocity.z < desiredVelocity.z){
-        player->physics.velocity.z = fminf(player->physics.velocity.z + maxSpeedChange, desiredVelocity.z);
-    }
-    else if(player->physics.velocity.z > desiredVelocity.z){
-        player->physics.velocity.z = fmaxf(player->physics.velocity.z - maxSpeedChange, desiredVelocity.z);
-    }
-
-
     if (magSqrd > 0.01f) {
         Vector2 directionUnit;
 
@@ -164,7 +214,7 @@ void player_update(struct player* player) {
         directionUnit.x = directionUnit.y;
         directionUnit.y = tmp;
 
-        vector2ComplexFromAngleRad(frametime_sec * PLAYER_TURN_SPEED, &player_max_rotation);
+        vector2ComplexFromAngleRad(deltatime_sec * PLAYER_TURN_SPEED, &player_max_rotation);
 
         vector2RotateTowards(&player->look_direction, &directionUnit, &player_max_rotation, &player->look_direction);
     }
@@ -172,19 +222,10 @@ void player_update(struct player* player) {
     quatAxisComplex(&gUp, &player->look_direction, &player->transform.rotation);
 
 
-    struct contact* contact = player->physics.active_contacts;
+    float max_speed = held.r ? PLAYER_MAX_SPEED * 8.0f : PLAYER_MAX_SPEED;
 
-    while (contact) {
-        struct collectable* collectable = collectable_get(contact->other_object);
-        if(contact->other_object != 0) {
-            debugf("Collision with %d\n", contact->other_object);
-        }
-        if (collectable) {
-            collectable_collected(collectable);
-        }
+    player->desired_velocity = (Vector3){directionWorld.x * max_speed, 0.0f, directionWorld.z * max_speed};
 
-        contact = contact->next;
-    }
 }
 
 
@@ -202,6 +243,8 @@ void player_init(struct player* player, struct player_definition* definition, Tr
     player->skelBlend = t3d_skeleton_clone(&player->renderable.model->skeleton, false);
     player->transform.scale = (Vector3){1, 1, 1};
     player->camera_transform = camera_transform;
+    player->desired_velocity = gZeroVec;
+    player->is_on_ground = false;
 
     player->transform.position = definition->location;
     render_scene_add_callback(NULL, 0, render_scene_render_renderable, &player->renderable);
@@ -210,10 +253,9 @@ void player_init(struct player* player, struct player_definition* definition, Tr
 
     
     update_add(player, (update_callback)player_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_PLAYER);
+    fixed_update_add(player, (update_callback)player_fixed_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_PLAYER);
 
     player->look_direction = definition->rotation;
-
-    
 
     physics_object_init(
         entity_id,
@@ -227,8 +269,8 @@ void player_init(struct player* player, struct player_definition* definition, Tr
 
     player->physics.collision_group = COLLISION_GROUP_PLAYER;
     player->physics.gravity_scalar = 1.9f;
-    
     player->physics.has_gravity = 1;
+    player->physics.collision->friction = 0.0f;
     
 
     player->physics.center_offset.y = player_collision.shape_data.capsule.inner_half_height + player_collision.shape_data.capsule.radius;

@@ -28,9 +28,9 @@ typedef int update_id;
 extern uint64_t oldtime_ticks;
 extern uint32_t accumulator_ticks;
 extern uint64_t currtime_ticks;
-extern uint32_t frametime_ticks;
+extern uint32_t deltatime_ticks;
 extern float currtime_sec;
-extern float frametime_sec;
+extern float deltatime_sec;
 
 void update_reset();
 void update_time();

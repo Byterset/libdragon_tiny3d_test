@@ -30,7 +30,7 @@ void box_init(struct box* box, struct box_definition* def){
 
     renderable_init(&box->renderable, &box->transform, "rom:/models/box/box.t3dm");
 
-    render_scene_add_renderable(&box->renderable, 1.0f);
+    render_scene_add_renderable(&box->renderable, 2.0f);
 
 
     physics_object_init(

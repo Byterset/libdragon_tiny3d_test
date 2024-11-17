@@ -34,11 +34,11 @@ static struct physics_object_collision_data platform_collision = {
 };
 
 void platform_update(struct platform* platform){
-    platform->rot_x = 0.8f * frametime_sec;
-    platform->rot_y = 0.3f * frametime_sec;
-    if(platform->rot_x > 360.0f) platform->rot_x -= 360.0f;
-    if(platform->rot_y > 360.0f) platform->rot_y -= 360.0f;
-    quatRotateAxisEuler(&platform->transform.rotation, &gForward, platform->rot_x, &platform->transform.rotation);
+    // platform->rot_x = 0.8f * deltatime_sec;
+    platform->rot_y = 0.3f * deltatime_sec;
+    // if(platform->rot_x > 360.0f) platform->rot_x -= 360.0f;
+    // if(platform->rot_y > 360.0f) platform->rot_y -= 360.0f;
+    // quatRotateAxisEuler(&platform->transform.rotation, &gForward, platform->rot_x, &platform->transform.rotation);
     quatRotateAxisEuler(&platform->transform.rotation, &gUp, platform->rot_y, &platform->transform.rotation);
 }
 
@@ -48,6 +48,8 @@ void platform_init(struct platform* platform, struct platform_definition* def){
     platform->transform.scale = (Vector3){3.0f, 12.0f, 3.0f};
     platform->transform.position = def->position;
     platform->rot_x = 0.0f;
+    quatRotateAxisEuler(&platform->transform.rotation, &gRight, T3D_DEG_TO_RAD(90.0f), &platform->transform.rotation);
+
 
     renderable_init(&platform->renderable, &platform->transform, "rom:/models/cylinder/cylinder.t3dm");
 
@@ -58,7 +60,7 @@ void platform_init(struct platform* platform, struct platform_definition* def){
         entity_id,
         &platform->physics,
         &platform_collision,
-        COLLISION_LAYER_TANGIBLE,
+        COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_TERRAIN_LIKE,
         &platform->transform.position,
         &platform->transform.rotation,
         10.0f

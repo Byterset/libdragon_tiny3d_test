@@ -95,7 +95,7 @@ struct cylinder_definition cyl_def = {
 };
 
 struct platform_definition plat_def = {
-    (Vector3){9, 6, 7}
+    (Vector3){9, 2, 7}
 };
 
 void on_vi_interrupt()
@@ -221,7 +221,7 @@ void render()
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "mem: %d", ram_used);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree._nodeCount, aabbtree_objects_mem);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree._nodeCount, aabb_tree_mesh_mem);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "Sleeping? %d", player.physics.is_sleeping);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "grounded? %d", player.is_on_ground);
 
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
@@ -278,7 +278,7 @@ int main()
         // ======== Update the Time ======== //
 
         update_time();
-        accumulator_ticks += frametime_ticks;
+        accumulator_ticks += deltatime_ticks;
 
         // ======== Update Joypad ======== //
         joypad_poll();
@@ -287,9 +287,6 @@ int main()
             render_collision = !render_collision;
             // render_collision ? update_pause_layers(UPDATE_LAYER_WORLD) : update_unpause_layers(UPDATE_LAYER_WORLD);
         }
-
-        // ======== Run the Update Callbacks ======== //
-        update_dispatch();
 
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //
         while (accumulator_ticks >= l_fixed_dt_ticks)
@@ -301,6 +298,9 @@ int main()
             }
             accumulator_ticks -= l_fixed_dt_ticks;
         }
+
+        // ======== Run the Update Callbacks ======== //
+        update_dispatch();
 
         // ======== Render the Game ======== //
 

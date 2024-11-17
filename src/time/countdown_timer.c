@@ -35,7 +35,7 @@ void countdown_timer_stop(struct CountdownTimer* timer) {
 
 void countdown_timer_update(struct CountdownTimer* timer) {
     if (timer->is_running) {
-        timer->current_time += frametime_sec;
+        timer->current_time += deltatime_sec;
         if (timer->current_time >= timer->duration_sec) {
             countdown_timer_stop(timer);
         }

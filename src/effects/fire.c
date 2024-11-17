@@ -106,8 +106,8 @@ void fire_destroy(struct fire* fire) {
 }
 
 void fire_update(struct fire* fire) {
-    fire->cycle_time += frametime_sec;
-    fire->total_time += frametime_sec;
+    fire->cycle_time += deltatime_sec;
+    fire->total_time += deltatime_sec;
 
     if (fire->cycle_time > CYCLE_TIME) {
         fire->cycle_time -= CYCLE_TIME;

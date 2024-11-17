@@ -28,22 +28,23 @@ uint64_t oldtime_ticks = 0;
 uint32_t accumulator_ticks = 0;
 uint64_t currtime_ticks = 0;
 float currtime_sec = 0.0f;
-uint32_t frametime_ticks = 0;
-float frametime_sec = 0.0f;
+uint32_t deltatime_ticks = 0;
+float deltatime_sec = 0.0f;
 
 void update_time() {
 
     currtime_ticks = get_ticks();
     currtime_sec = (float)TICKS_TO_MS(currtime_ticks) / 1000.0f;
-    frametime_ticks = currtime_ticks - oldtime_ticks;
+    deltatime_ticks = currtime_ticks - oldtime_ticks;
 
-    if (frametime_ticks > TICKS_FROM_US(SEC_TO_USEC(0.25f)))
+    // Clamp deltatime to 0.25 seconds
+    if (deltatime_ticks > TICKS_FROM_US(SEC_TO_USEC(0.25f)))
     {
-        frametime_ticks = TICKS_FROM_US(SEC_TO_USEC(0.25f));
+        deltatime_ticks = TICKS_FROM_US(SEC_TO_USEC(0.25f));
     }
     oldtime_ticks = currtime_ticks;
 
-    frametime_sec = (float)TICKS_TO_MS((float)frametime_ticks) / 1000.0f;
+    deltatime_sec = (float)TICKS_TO_MS((float)deltatime_ticks) / 1000.0f;
 }
 
 int update_compare_elements(void* a, void* b) {
