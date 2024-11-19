@@ -29,11 +29,11 @@ void cone_bounding_box(void* data, Quaternion* rotation, AABB* box) {
 
     // Define the capsule's central axis in local space
     Vector3 corners[5] = { 
-        {-radius, -half_height, -radius },
-        { radius, -half_height, -radius },
-        {-radius, -half_height,  radius },
-        { radius, -half_height,  radius },
-        { 0.0f,  half_height, 0.0f }
+        {{-radius, -half_height, -radius }},
+        {{ radius, -half_height, -radius }},
+        {{-radius, -half_height,  radius }},
+        {{ radius, -half_height,  radius }},
+        {{ 0.0f,  half_height, 0.0f }}
     };
     Vector3 new_min;
     Vector3 new_max;

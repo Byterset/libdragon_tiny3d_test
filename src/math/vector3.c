@@ -3,11 +3,11 @@
 #include "mathf.h"
 #include <math.h>
 
-Vector3 gRight = {1.0f, 0.0f, 0.0f};
-Vector3 gUp = {0.0f, 1.0f, 0.0f};
-Vector3 gForward = {0.0f, 0.0f, 1.0f};
-Vector3 gZeroVec = {0.0f, 0.0f, 0.0f};
-Vector3 gOneVec = {1.0f, 1.0f, 1.0f};
+Vector3 gRight = {{1.0f, 0.0f, 0.0f}};
+Vector3 gUp = {{0.0f, 1.0f, 0.0f}};
+Vector3 gForward = {{0.0f, 0.0f, 1.0f}};
+Vector3 gZeroVec = {{0.0f, 0.0f, 0.0f}};
+Vector3 gOneVec = {{1.0f, 1.0f, 1.0f}};
 
 void vector3Copy(Vector3* source, Vector3* target){
     target->x = source->x;

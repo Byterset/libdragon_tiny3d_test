@@ -1,8 +1,9 @@
 #ifndef _MATH_VECTOR2_H
 #define _MATH_VECTOR2_H
 
-typedef struct Vector2 {
-    float x, y;
+typedef union Vector2 {
+    struct {float x, y;};
+    float data[2];
 } Vector2;
 
 extern Vector2 gRight2;
@@ -10,7 +11,7 @@ extern Vector2 gUp2;
 extern Vector2 gZeroVec2;
 extern Vector2 gOneVec2;
 
-typedef struct Vector3 Vector3;
+typedef union Vector3 Vector3;
 
 void vector2ComplexMul(Vector2* a, Vector2* b, Vector2* out);
 void vector2ComplexConj(Vector2* a, Vector2* out);

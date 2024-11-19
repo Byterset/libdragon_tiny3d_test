@@ -17,15 +17,15 @@ void sphere_support_function(void* data, Vector3* direction, Vector3* output) {
     output->z = 0.0f;
 
     for (int i = 1; i < 3; ++i) {
-        float distanceCheck = fabsf(VECTOR3_AS_ARRAY(direction)[i]);
+        float distanceCheck = fabsf(direction->data[i]);
 
         if (distanceCheck > distance) {
             distance = distanceCheck;
             *output = gZeroVec;
-            if (VECTOR3_AS_ARRAY(direction)[i] > 0.0f) {
-                VECTOR3_AS_ARRAY(output)[i] = radius;
+            if (direction->data[i] > 0.0f) {
+                output->data[i] = radius;
             } else {
-                VECTOR3_AS_ARRAY(output)[i] = -radius;
+                output->data[i] = -radius;
             }
         }
     }

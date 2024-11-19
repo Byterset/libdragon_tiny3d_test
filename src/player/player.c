@@ -13,8 +13,8 @@
 #include "../collectables/collectable.h"
 
 #define PLAYER_MAX_SPEED    10.0f
-#define PLAYER_MAX_ACC       30.0f
-#define PLAYER_MAX_ACC_AIR   5.0f
+#define PLAYER_MAX_ACC       50.0f
+#define PLAYER_MAX_ACC_AIR   15.0f
 #define PLAYER_MAX_ANGLE_GROUND 40.0f
 #define PLAYER_MAX_ANGLE_GROUND_DOT cosf(T3D_DEG_TO_RAD(PLAYER_MAX_ANGLE_GROUND))
 #define PLAYER_JUMP_HEIGHT  4.2f
@@ -224,7 +224,7 @@ void player_update(struct player* player) {
 
     float max_speed = held.r ? PLAYER_MAX_SPEED * 8.0f : PLAYER_MAX_SPEED;
 
-    player->desired_velocity = (Vector3){directionWorld.x * max_speed, 0.0f, directionWorld.z * max_speed};
+    player->desired_velocity = (Vector3){{directionWorld.x * max_speed, 0.0f, directionWorld.z * max_speed}};
 
 }
 
@@ -241,7 +241,7 @@ void player_init(struct player* player, struct player_definition* definition, Tr
 
     
     player->skelBlend = t3d_skeleton_clone(&player->renderable.model->skeleton, false);
-    player->transform.scale = (Vector3){1, 1, 1};
+    player->transform.scale = (Vector3){{1, 1, 1}};
     player->camera_transform = camera_transform;
     player->desired_velocity = gZeroVec;
     player->is_on_ground = false;

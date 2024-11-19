@@ -66,8 +66,8 @@ void map_init(struct map* map) {
     renderable_init(&map->renderable, &map->transform, "rom:/models/map/map.t3dm");
 
 
-    map->transform.position = (Vector3){0,0,0};
-    map->transform.scale = (Vector3){5.0f, 5.0f, 5.0f};
+    map->transform.position = (Vector3){{0,0,0}};
+    map->transform.scale = (Vector3){{5.0f, 5.0f, 5.0f}};
     map->tileOffset = 0.0f;
 
     map->model = model_cache_load("rom:/models/map/map.t3dm");

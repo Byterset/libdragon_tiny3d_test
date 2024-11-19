@@ -2,16 +2,19 @@
 #ifndef _VECTOR3_H
 #define _VECTOR3_H
 
-typedef struct Vector3i32 {
-    int x, y, z;
+typedef union Vector3i32 {
+    struct {int x, y, z;};
+    int data[3];
 } Vector3i32;
 
-typedef struct Vector3 {
-    float x, y, z;
+typedef union Vector3 {
+    struct {float x, y, z;};
+    float data[3];
 } Vector3;
 
-typedef struct Vector3u8 {
-    char x, y, z;
+typedef union Vector3u8 {
+    struct {char x, y, z;};
+    char data[3];
 } Vector3u8;
 
 extern Vector3 gRight;
@@ -19,10 +22,6 @@ extern Vector3 gUp;
 extern Vector3 gForward;
 extern Vector3 gZeroVec;
 extern Vector3 gOneVec;
-
-#define VECTOR3I_AS_ARRRAY(vector) ((int*)(vector))
-#define VECTOR3U8_AS_ARRRAY(vector) ((unsigned char*)(vector))
-#define VECTOR3_AS_ARRAY(vector) ((float*)(vector))
 
 void vector3Copy(Vector3* source, Vector3* target);
 void vector3Abs(Vector3* in, Vector3* out);

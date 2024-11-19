@@ -48,7 +48,7 @@ static uint8_t next_frame_memoy_pool;
 
 uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
-T3DVec3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
+Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
 #define NUM_BOXES 5
 #define NUM_COINS 5
@@ -71,31 +71,31 @@ struct camera_controller camera_controller;
 float waiting_sec = 0.0f;
 
 struct player_definition playerDef = {
-    (Vector3){0, 0.15f, 0},
-    (Vector2){1, 0}
+    (Vector3){{0, 0.15f, 0}},
+    (Vector2){{1, 0}}
 };
 
 struct box_definition box_def = {
-    (Vector3){-6, 5, 5}
+    (Vector3){{-6, 5, 5}}
 };
 
 struct cone_definition cone_def = {
-    (Vector3){6, 0, -15}
+    (Vector3){{6, 0, -15}}
 };
 
 struct collectable_definition collectableDef = {
-    (Vector3){-10, 1, -25},
-    (Vector2){1, 0},
+    (Vector3){{-10, 1, -25}},
+    (Vector2){{1, 0}},
     COLLECTABLE_TYPE_COIN,
     0
 };
 
 struct cylinder_definition cyl_def = {
-    (Vector3){-10, 0, -10}
+    (Vector3){{-10, 0, -10}}
 };
 
 struct platform_definition plat_def = {
-    (Vector3){9, 2, 7}
+    (Vector3){{9, 2, 7}}
 };
 
 void on_vi_interrupt()
@@ -178,7 +178,7 @@ void render3d()
         t3d_screen_clear_depth();
 
         t3d_light_set_ambient(colorAmbient);
-        t3d_light_set_directional(0, colorDir, &lightDirVec);
+        t3d_light_set_directional(0, colorDir, (T3DVec3*)&lightDirVec);
         t3d_light_set_count(1);
 
         struct frame_memory_pool *pool = &frame_memory_pools[next_frame_memoy_pool];
@@ -254,7 +254,7 @@ int main()
 
     register_VI_handler(on_vi_interrupt);
 
-    t3d_vec3_norm(&lightDirVec);
+    t3d_vec3_norm((T3DVec3*)&lightDirVec);
     const int64_t l_fixed_dt_ticks = TICKS_FROM_US(SEC_TO_USEC(FIXED_DELTATIME));
 
     debugf("Completed Initialization!\n");

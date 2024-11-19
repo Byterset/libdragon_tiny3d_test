@@ -11,14 +11,14 @@ void capsule_support_function(void* data, Vector3* direction, Vector3* output) {
 
     // Determine the point along the capsule's central axis that is furthest in `direction`
     float sign = (direction->y > 0.0f) ? 1.0f : -1.0f;
-    Vector3 axis_point = { 0.0f, sign * shape_data->capsule.inner_half_height, 0.0f };
+    Vector3 axis_point = (Vector3){{ 0.0f, sign * shape_data->capsule.inner_half_height, 0.0f }};
 
     // Offset by the capsule's radius in the direction of `direction`
-    Vector3 radius_offset = {
+    Vector3 radius_offset = (Vector3){{
         direction->x * shape_data->capsule.radius,
         direction->y * shape_data->capsule.radius,
         direction->z * shape_data->capsule.radius
-    };
+    }};
 
     // Combine the endpoint on the capsule's axis with the radius offset
     output->x = axis_point.x + radius_offset.x;
@@ -38,8 +38,8 @@ void capsule_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     float half_height_plus_radius = half_height + radius;
 
     // Define the capsule's central axis in local space
-    Vector3 axis_min = { 0.0f, -half_height, 0.0f };
-    Vector3 axis_max = { 0.0f,  half_height, 0.0f };
+    Vector3 axis_min = (Vector3){{ 0.0f, -half_height, 0.0f }};
+    Vector3 axis_max = (Vector3){{ 0.0f,  half_height, 0.0f }};
 
     // Rotate the axis endpoints
     Vector3 rotated_min, rotated_max;

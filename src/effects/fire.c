@@ -20,7 +20,7 @@
 
 
 void fire_apply_transform(struct fire* fire) {
-    fire->position = (Vector3){-2.0f, 1.0f, 0.0f};
+    fire->position = (Vector3){{-2.0f, 1.0f, 0.0f}};
 
     fire->rotation = gZeroVec2;
 }
@@ -66,7 +66,7 @@ void fire_render(struct fire* fire, struct render_batch* batch) {
         if (final_index >= MAX_FIRE_PARTICLE_COUNT) {
             final_index -= MAX_FIRE_PARTICLE_COUNT;
         }
-        vector3AddScaled(&fire->position, &(Vector3){0, 1, 0}, particle_time * FIRE_LENGTH, &sprite->position);
+        vector3AddScaled(&fire->position, &(Vector3){{0, 1, 0}}, particle_time * FIRE_LENGTH, &sprite->position);
         vector3AddScaled(&sprite->position, &fire->particle_offset[final_index], particle_time, &sprite->position);
 
         if (particle_time > START_FADE) {

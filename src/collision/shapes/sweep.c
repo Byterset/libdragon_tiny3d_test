@@ -27,7 +27,7 @@ void sweep_support_function(void* data, Vector3* direction, Vector3* output) {
     }
 
     if (dir_2d.y > distance) {
-        result_2d = (Vector2){0.0f, 1.0f};
+        result_2d = (Vector2){{0.0f, 1.0f}};
     }
 
     output->x = result_2d.x * shape_data->sweep.radius;

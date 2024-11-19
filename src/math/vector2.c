@@ -3,10 +3,10 @@
 #include "vector3.h"
 #include "mathf.h"
 
-Vector2 gRight2 = {1.0f, 0.0f};
-Vector2 gUp2 = {0.0f, 1.0f};
-Vector2 gZeroVec2 = {0.0f, 0.0f};
-Vector2 gOneVec2 = {1.0f, 1.0f};
+Vector2 gRight2 = {{1.0f, 0.0f}};
+Vector2 gUp2 = {{0.0f, 1.0f}};
+Vector2 gZeroVec2 = {{0.0f, 0.0f}};
+Vector2 gOneVec2 = {{1.0f, 1.0f}};
 
 void vector2ComplexMul(Vector2* a, Vector2* b, Vector2* out) {
     float x = a->x * b->x - a->y * b->y;
@@ -25,7 +25,7 @@ void vector2ComplexFromAngleRad(float radians, Vector2* out) {
 }
 
 int vector2RotateTowards(Vector2* from, Vector2* towards, Vector2* max, Vector2* out) {
-    Vector2 fromInv = {from->x, -from->y};
+    Vector2 fromInv = {{from->x, -from->y}};
     Vector2 diff;
     vector2ComplexMul(&fromInv, towards, &diff);
 

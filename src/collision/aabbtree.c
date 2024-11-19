@@ -102,7 +102,7 @@ NodeProxy AABBTreeNode_createNode(AABBTree *tree, AABB bounds, void* data)
 
     //fatten the aabb by a margin
     tree->nodes[newNode].bounds = bounds;
-    Vector3 bounds_margin = {AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN};
+    Vector3 bounds_margin = {{AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN}};
     vector3Add(&tree->nodes[newNode].bounds.max, &bounds_margin, &tree->nodes[newNode].bounds.max);
     vector3Sub(&tree->nodes[newNode].bounds.min, &bounds_margin, &tree->nodes[newNode].bounds.min);
     tree->nodes[newNode].data = data;
@@ -167,7 +167,7 @@ int AABBTree_moveNode(AABBTree *tree, NodeProxy node, AABB aabb, Vector3 *displa
     }
 
     //fatten the aabb to potentially reduce the number of moves/leaf inserts
-    Vector3 bounds_margin = {AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN};
+    Vector3 bounds_margin = {{AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN}};
     vector3AddToSelf(&aabb.max, &bounds_margin);
     vector3SubFromSelf(&aabb.min, &bounds_margin);
 

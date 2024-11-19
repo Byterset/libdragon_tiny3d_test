@@ -14,7 +14,7 @@ static struct physics_object_collision_data box_collision = {
     .bounding_box_calculator = box_bounding_box,
     .shape_data = {
         .box = {
-            .half_size = {1.0f, 1.0f, 1.0f}
+            .half_size = {{1.0f, 1.0f, 1.0f}}
         }
     },
     .shape_type = COLLISION_SHAPE_BOX,
@@ -24,7 +24,7 @@ void box_init(struct box* box, struct box_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&box->transform);
 
-    box->transform.scale = (Vector3){2.0f, 2.0f, 2.0f};
+    box->transform.scale = (Vector3){{2.0f, 2.0f, 2.0f}};
     vector3Add(&box->transform.position, &def->position, &box->transform.position);
     // quatRotateAxisEuler(&box->transform.rotation, &gUp, T3D_DEG_TO_RAD(45.0f), &box->transform.rotation);
 

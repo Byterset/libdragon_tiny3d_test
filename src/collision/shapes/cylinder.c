@@ -3,6 +3,7 @@
 #include "../physics_object.h"
 #include "../../math/matrix.h"
 #include <math.h>
+#include <libdragon.h>
 
 #define SQRT_1_2   0.707106781f
 #define SQRT_2 1.41421356237f
@@ -35,8 +36,8 @@ void cylinder_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     float radius = shape_data->cylinder.radius;
 
     // Define the cylinders local aabb
-    box->min = (Vector3){ -radius, -half_height, -radius };
-    box->max = (Vector3){  radius,  half_height,  radius };
+    box->min = (Vector3){{ -radius, -half_height, -radius }};
+    box->max = (Vector3){{  radius,  half_height,  radius }};
 
 
     // Rotate the local aabb if needed with Arvo's method
@@ -50,11 +51,11 @@ void cylinder_bounding_box(void* data, Quaternion* rotation, AABB* box) {
             // Form extent by summing smaller and larger terms respectively
             for (int j = 0; j < 3; j++)
             {
-                float a = rotMat[i][j] * (VECTOR3_AS_ARRAY(&box->min)[j]);
-                float b = rotMat[i][j] * (VECTOR3_AS_ARRAY(&box->max)[j]);
+                float a = rotMat[i][j] * box->min.data[j];
+                float b = rotMat[i][j] * box->max.data[j];
                 
-                VECTOR3_AS_ARRAY(&aabb_rotated.min)[i] += (a < b) ? a : b;
-                VECTOR3_AS_ARRAY(&aabb_rotated.max)[i] += (a < b) ? b : a;
+                aabb_rotated.min.data[i] += (a < b) ? a : b;
+                aabb_rotated.max.data[i] += (a < b) ? b : a;
             }
             
         }
@@ -62,7 +63,20 @@ void cylinder_bounding_box(void* data, Quaternion* rotation, AABB* box) {
         box->max = aabb_rotated.max;
     }
 
-    
+    typedef union vec3combined {
+        struct {
+            float x;
+            float y;
+            float z;
+        };
+        float arr[3];
+    } vec3combined;
+
+    vec3combined test = {{0,0,0}};
+    test.x = 5.0f;
+    test.arr[1] = 5.0f;
+
+    debugf("Test: %f %f %f\n", test.x, test.y, test.z);
 
 
     // // Get capsule dimensions

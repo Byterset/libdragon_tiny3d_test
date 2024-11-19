@@ -11,13 +11,10 @@ void camera_init(struct camera* camera, float fov, float near, float far) {
 
 void camera_apply(struct camera* camera, T3DViewport* viewport, struct camera_controller* cam_controller) {
     t3d_viewport_set_projection(viewport, T3D_DEG_TO_RAD(camera->fov), camera->near * SCENE_SCALE, camera->far * SCENE_SCALE);
-    T3DVec3 camPos, camTarget;
-    camPos.v[0] = camera->transform.position.x * SCENE_SCALE;
-    camPos.v[1] = (camera->transform.position.y) * SCENE_SCALE;
-    camPos.v[2] = camera->transform.position.z * SCENE_SCALE;
+    Vector3 camPos, camTarget;
+    vector3Scale(&camera->transform.position, &camPos, SCENE_SCALE);
+    vector3Scale(&cam_controller->target, &camTarget, SCENE_SCALE);
+    camTarget.y += CAMERA_FOLLOW_HEIGHT * SCENE_SCALE;
 
-    camTarget.v[0] = cam_controller->target.x * SCENE_SCALE;
-    camTarget.v[1] = (cam_controller->target.y + CAMERA_FOLLOW_HEIGHT) * SCENE_SCALE;
-    camTarget.v[2] = cam_controller->target.z * SCENE_SCALE;
-    t3d_viewport_look_at(viewport, &camPos, &camTarget, &(T3DVec3){{0, 1, 0}});
+    t3d_viewport_look_at(viewport, (T3DVec3*)&camPos, (T3DVec3*)&camTarget, (T3DVec3*)&gUp);
 }

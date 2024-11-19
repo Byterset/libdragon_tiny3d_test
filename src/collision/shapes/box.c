@@ -18,9 +18,9 @@ void box_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     Vector3* half_size = &shape_data->box.half_size;
 
     // Define the local basis vectors for the oriented box
-    Vector3 world_x = { half_size->x, 0.0f, 0.0f };
-    Vector3 world_y = { 0.0f, half_size->y, 0.0f };
-    Vector3 world_z = { 0.0f, 0.0f, half_size->z };
+    Vector3 world_x = (Vector3){{ half_size->x, 0.0f, 0.0f }};
+    Vector3 world_y = (Vector3){{ 0.0f, half_size->y, 0.0f }};
+    Vector3 world_z = (Vector3){{ 0.0f, 0.0f, half_size->z }};
 
     // Rotate the basis vectors according to the given rotation
 

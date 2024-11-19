@@ -3,17 +3,14 @@
 
 #include "vector3.h"
 
-typedef struct Vector2s16 {
-    union {
-        struct {
-            short x;
-            short y;
-        };
-        int equalTest;
+typedef union Vector2s16 {
+    struct
+    {
+        short x;
+        short y;
     };
+    short data[2];
 } Vector2s16;
-
-#define VECTOR2s16_AS_ARRAY(vector) ((s16*)(vector))
 
 void vector2s16Add(Vector2s16* a, Vector2s16* b, Vector2s16* output);
 void vector2s16Sub(Vector2s16* a, Vector2s16* b, Vector2s16* output);

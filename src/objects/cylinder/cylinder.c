@@ -27,7 +27,7 @@ void cylinder_init(struct cylinder* cylinder, struct cylinder_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&cylinder->transform);
 
-    cylinder->transform.scale = (Vector3){6.0f, 5.0f, 6.0f};
+    cylinder->transform.scale = (Vector3){{6.0f, 5.0f, 6.0f}};
     cylinder->transform.position = def->position;
     // quatRotateAxisEuler(&cylinder->transform.rotation, &gRight, T3D_DEG_TO_RAD(45.0f), &cylinder->transform.rotation);
 
