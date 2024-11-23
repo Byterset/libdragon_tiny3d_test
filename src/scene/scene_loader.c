@@ -261,7 +261,7 @@ struct scene *scene_load(const char *filename)
     //     model_cache_load(&scene->static_entities[i].model, file);
     // }
 
-    mesh_collider_load(&scene->mesh_collider, file);
+    mesh_collider_load(&scene->mesh_collider, filename);
     collision_scene_use_static_collision(&scene->mesh_collider);
 
     uint16_t strings_length;

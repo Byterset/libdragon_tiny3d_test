@@ -256,7 +256,7 @@ void collision_scene_step() {
     {
         element = &g_scene.elements[i];
 
-        if (g_scene.mesh_collider && !element->object->is_sleeping && element->object->collision_layers & COLLISION_LAYER_TANGIBLE)
+        if (g_scene.mesh_collider && !element->object->is_sleeping && !element->object->is_fixed && element->object->collision_layers & COLLISION_LAYER_TANGIBLE)
         {
             collision_scene_collide_single(element->object, &element->object->_prev_step_pos);
         }
@@ -306,9 +306,9 @@ struct contact* collision_scene_new_contact() {
 #ifdef DEBUG_COLLIDERS_RAYLIB
 /// @brief Renders the collision scene colliders in debug mode using raylib.
 void collision_scene_render_debug_raylib(){
-    if(g_scene.mesh_collider){ 
-        DrawModelWires(g_scene.mesh_collider->raylib_mesh_model, (Raylib_Vector3){0, 0, 0}, SCENE_SCALE, YELLOW);   
-    }
+    // if(g_scene.mesh_collider){ 
+    //     DrawModelWires(g_scene.mesh_collider->raylib_mesh_model, (Raylib_Vector3){0, 0, 0}, SCENE_SCALE, YELLOW);   
+    // }
     for (int i = 0; i < g_scene.count; ++i) {
         struct collision_scene_element* element = &g_scene.elements[i];
         struct physics_object* object = element->object;
@@ -331,7 +331,7 @@ void collision_scene_render_debug_raylib(){
             float radius = object->collision->shape_data.capsule.radius;
 
             // Define the capsule's central axis in local space
-            Vector3 local_axis = {0.0f, half_height, 0.0f};
+            Vector3 local_axis = {{0.0f, half_height, 0.0f}};
 
             // Rotate the central axis by the given rotation to get its orientation in world space
             Vector3 world_axis;
@@ -392,7 +392,7 @@ void collision_scene_render_debug_raylib(){
             float radius = object->collision->shape_data.cylinder.radius;
 
             // Define the capsule's central axis in local space
-            Vector3 local_axis = {0.0f, half_height, 0.0f};
+            Vector3 local_axis = {{0.0f, half_height, 0.0f}};
 
             // Rotate the central axis by the given rotation to get its orientation in world space
             Vector3 world_axis;
@@ -427,7 +427,7 @@ void collision_scene_render_debug_raylib(){
             float radius = object->collision->shape_data.cone.radius;
 
             // Define the capsule's central axis in local space
-            Vector3 local_axis = {0.0f, half_height, 0.0f};
+            Vector3 local_axis = {{0.0f, half_height, 0.0f}};
 
             // Rotate the central axis by the given rotation to get its orientation in world space
             Vector3 world_axis;

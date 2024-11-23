@@ -71,31 +71,31 @@ struct camera_controller camera_controller;
 float waiting_sec = 0.0f;
 
 struct player_definition playerDef = {
-    (Vector3){{0, 0.15f, 0}},
+    (Vector3){{95, 0.0f, -127}},
     (Vector2){{1, 0}}
 };
 
 struct box_definition box_def = {
-    (Vector3){{-6, 5, 5}}
+    (Vector3){{85, 5, -127}}
 };
 
 struct cone_definition cone_def = {
-    (Vector3){{6, 0, -15}}
+    (Vector3){{120, -2, -141}}
 };
 
 struct collectable_definition collectableDef = {
-    (Vector3){{-10, 1, -25}},
+    (Vector3){{86, 0, -144}},
     (Vector2){{1, 0}},
     COLLECTABLE_TYPE_COIN,
     0
 };
 
 struct cylinder_definition cyl_def = {
-    (Vector3){{-10, 0, -10}}
+    (Vector3){{60, 0, -95}}
 };
 
 struct platform_definition plat_def = {
-    (Vector3){{9, 2, 7}}
+    (Vector3){{61, 12, -36}}
 };
 
 void on_vi_interrupt()
@@ -110,7 +110,7 @@ void setup()
     update_reset();
     collision_scene_reset();
     collectable_assets_load();
-    camera_init(&camera, 70.0f, 1.0f, 150.0f);
+    camera_init(&camera, 70.0f, 1.0f, 120.0f);
     skybox_flat_init(&skybox_flat);
     map_init(&map);
     for(int i = 0; i < NUM_BOXES; i++){
@@ -133,7 +133,8 @@ void setup()
     camera_controller_init(&camera_controller, &camera, &player);
     
     //TODO: write scene file format & collision file format
-    mesh_collider_load_test(&test_mesh_collider);
+    // mesh_collider_load_test(&test_mesh_collider);
+    mesh_collider_load(&test_mesh_collider, "rom:/maps/bob_omb_battlefield/bob_map.cmsh");
     collision_scene_use_static_collision(&test_mesh_collider);
     
 }
@@ -169,10 +170,10 @@ void render3d()
 
         // TODO: maybe move this into scene structure later so levels can have their own fog settings
         struct render_fog_params fog = {
-            .enabled = false,
-            .start = 2.0f * SCENE_SCALE,
-            .end = 40.0f * SCENE_SCALE,
-            .color = RGBA32(150, 150, 120, 0xFF)};
+            .enabled = true,
+            .start = 30.0f * SCENE_SCALE,
+            .end = 150.0f * SCENE_SCALE,
+            .color = RGBA32(230, 230, 230, 0xFF)};
 
         t3d_screen_clear_color(fog.enabled ? fog.color : RGBA32(0, 0, 0, 0xFF));
         t3d_screen_clear_depth();

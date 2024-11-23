@@ -4,70 +4,59 @@
 #include "../../render/render_scene.h"
 #include "../../collision/collision_scene.h"
 #include "../../collision/shapes/box.h"
-#include "../../collision/shapes/cylinder.h"
 #include "../../time/time.h"
 #include "../../entity/entity_id.h"
 #include "../../render/defs.h"
 
-
-// static struct physics_object_collision_data platform_collision = {
-//     .gjk_support_function = box_support_function,
-//     .bounding_box_calculator = box_bounding_box,
-//     .shape_data = {
-//         .box = {
-//             .half_size = {6.0f, 0.5f, 3.0f}
-//         }
-//     },
-//     .shape_type = COLLISION_SHAPE_BOX,
-// };
+#define ROTATION_DURATION 9.0f
 
 static struct physics_object_collision_data platform_collision = {
-    .gjk_support_function = cylinder_support_function,
-    .bounding_box_calculator = cylinder_bounding_box,
+    .gjk_support_function = box_support_function,
+    .bounding_box_calculator = box_bounding_box,
     .shape_data = {
-        .cylinder = {
-            .half_height = 6,
-            .radius = 3
+        .box = {
+            .half_size = {{12.5f, 1.0f, 5.0f}}
         }
     },
-    .shape_type = COLLISION_SHAPE_CYLINDER,
+    .shape_type = COLLISION_SHAPE_BOX,
 };
 
 void platform_update(struct platform* platform){
-    // platform->rot_x = 0.8f * deltatime_sec;
-    platform->rot_y = 0.3f * deltatime_sec;
-    // if(platform->rot_x > 360.0f) platform->rot_x -= 360.0f;
-    // if(platform->rot_y > 360.0f) platform->rot_y -= 360.0f;
-    // quatRotateAxisEuler(&platform->transform.rotation, &gForward, platform->rot_x, &platform->transform.rotation);
-    quatRotateAxisEuler(&platform->transform.rotation, &gUp, platform->rot_y, &platform->transform.rotation);
+    platform->rot_elapsed_time += deltatime_sec;
+    platform->rot_y = sinf((platform->rot_elapsed_time / ROTATION_DURATION) * 2.0f * PI) * T3D_DEG_TO_RAD(45);
+    Quaternion rot;
+    quatIdent(&rot);
+    quatRotateAxisEuler(&rot, &gUp, T3D_DEG_TO_RAD(-45.0f), &rot);
+    quatRotateAxisEuler(&rot, &gForward, platform->rot_y, &platform->transform.rotation);
+    if(platform->rot_elapsed_time > ROTATION_DURATION){
+        platform->rot_elapsed_time = 0.0f;
+    }
 }
 
 void platform_init(struct platform* platform, struct platform_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&platform->transform);
-    platform->transform.scale = (Vector3){{3.0f, 12.0f, 3.0f}};
+    platform->transform.scale = (Vector3){{25.0f, 2.0f, 10.0f}};
     platform->transform.position = def->position;
-    platform->rot_x = 0.0f;
-    quatRotateAxisEuler(&platform->transform.rotation, &gRight, T3D_DEG_TO_RAD(90.0f), &platform->transform.rotation);
+    quatRotateAxisEuler(&platform->transform.rotation, &gUp, T3D_DEG_TO_RAD(-45.0f), &platform->transform.rotation);
 
 
-    renderable_init(&platform->renderable, &platform->transform, "rom:/models/cylinder/cylinder.t3dm");
+    renderable_init(&platform->renderable, &platform->transform, "rom:/models/box/box.t3dm");
 
-    render_scene_add_renderable(&platform->renderable, 12.0f);
+    render_scene_add_renderable(&platform->renderable, 25.0f);
 
 
     physics_object_init(
         entity_id,
         &platform->physics,
         &platform_collision,
-        COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_TERRAIN_LIKE,
+        COLLISION_LAYER_TANGIBLE,
         &platform->transform.position,
         &platform->transform.rotation,
         10.0f
     );
-
-    // platform->collision.center_offset.y = platform_collision.shape_data.box.half_size.y;
-    platform->physics.center_offset.y = platform_collision.shape_data.cylinder.half_height;
+    
+    platform->physics.center_offset.y = platform_collision.shape_data.box.half_size.y;
 
     platform->physics.has_gravity = 0;
     platform->physics.is_fixed = 1;
@@ -79,5 +68,6 @@ void platform_init(struct platform* platform, struct platform_definition* def){
 void platform_destroy(struct platform* platform){
     render_scene_remove(&platform->renderable);
     renderable_destroy(&platform->renderable);
+    update_remove(platform);
     collision_scene_remove(&platform->physics);
 }

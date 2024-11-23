@@ -12,12 +12,12 @@
 #include "../render/defs.h"
 #include "../collectables/collectable.h"
 
-#define PLAYER_MAX_SPEED    10.0f
-#define PLAYER_MAX_ACC       50.0f
-#define PLAYER_MAX_ACC_AIR   15.0f
-#define PLAYER_MAX_ANGLE_GROUND 40.0f
+#define PLAYER_MAX_SPEED    16.0f
+#define PLAYER_MAX_ACC       60.0f
+#define PLAYER_MAX_ACC_AIR   20.0f
+#define PLAYER_MAX_ANGLE_GROUND 45.0f
 #define PLAYER_MAX_ANGLE_GROUND_DOT cosf(T3D_DEG_TO_RAD(PLAYER_MAX_ANGLE_GROUND))
-#define PLAYER_JUMP_HEIGHT  4.2f
+#define PLAYER_JUMP_HEIGHT  5.2f
 
 static Vector2 player_max_rotation;
 
@@ -40,7 +40,7 @@ void player_handle_contacts(struct player* player){
         struct physics_object *other = collision_scene_find_object(contact->other_object); 
         if (contact->other_object != 0)
         {
-            debugf("Collision with %d\n", contact->other_object);
+            // debugf("Collision with %d\n", contact->other_object);
         }
         if (collectable)
         {
@@ -157,7 +157,7 @@ void player_update(struct player* player) {
         t3d_anim_set_time(&player->animations.jump, 0.0f);
         player->is_jumping = true;
     }
-    if (pressed.b && player->is_on_ground){
+    if (pressed.b){
         float jumpVelocity = sqrtf(-2.0f * (GRAVITY_CONSTANT * player->physics.gravity_scalar) * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
         player->physics.velocity.y = jumpVelocity;
     }
@@ -222,7 +222,7 @@ void player_update(struct player* player) {
     quatAxisComplex(&gUp, &player->look_direction, &player->transform.rotation);
 
 
-    float max_speed = held.r ? PLAYER_MAX_SPEED * 8.0f : PLAYER_MAX_SPEED;
+    float max_speed = held.r ? PLAYER_MAX_SPEED * 2.0f : PLAYER_MAX_SPEED;
 
     player->desired_velocity = (Vector3){{directionWorld.x * max_speed, 0.0f, directionWorld.z * max_speed}};
 

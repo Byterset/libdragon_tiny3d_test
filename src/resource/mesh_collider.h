@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 void mesh_collider_load_test(struct mesh_collider* into);
-void mesh_collider_load(struct mesh_collider* into, FILE* meshFile);
+void mesh_collider_load(struct mesh_collider* into, const char* filename);
 void mesh_collider_release(struct mesh_collider* mesh);
 
 #endif

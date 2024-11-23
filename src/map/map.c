@@ -63,14 +63,14 @@ void map_update(struct map* map) {
 
 void map_init(struct map* map) {
     transformInitIdentity(&map->transform);
-    renderable_init(&map->renderable, &map->transform, "rom:/models/map/map.t3dm");
+    renderable_init(&map->renderable, &map->transform, "rom:/maps/bob_omb_battlefield/bob_map.t3dm");
 
 
     map->transform.position = (Vector3){{0,0,0}};
-    map->transform.scale = (Vector3){{5.0f, 5.0f, 5.0f}};
+    map->transform.scale = (Vector3){{1.0f, 1.0f, 1.0f}};
     map->tileOffset = 0.0f;
 
-    map->model = model_cache_load("rom:/models/map/map.t3dm");
+    // map->model = model_cache_load("rom:/models/map/map.t3dm");
 
     // render_scene_add_renderable(&map->renderable, 1.0f);
     render_scene_add_callback(NULL, 0, render_scene_render_renderable, &map->renderable);

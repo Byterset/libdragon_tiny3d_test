@@ -7,7 +7,7 @@ include $(T3D_INST)/t3d.mk
 
 MK_ASSET=$(N64_INST)/bin/mkasset
 
-N64_CFLAGS += -std=gnu2x -Og
+N64_CFLAGS += -std=gnu2x -O2
 # N64_ASSET_FLAGS += -c 2 -w 256
 
 PROJECT_NAME=t3d_test
@@ -54,16 +54,35 @@ filesystem/%.font64: assets/%.ttf
 #----------------
 
 MESH_SOURCES := $(shell find assets/models -type f -name '*.glb' | sort)
+MESH_SOURCES += $(shell find assets/maps -type f -name '*.glb' | sort)
 
-T3DMESHES := $(MESH_SOURCES:assets/models/%.glb=filesystem/models/%.t3dm)
+T3DMESHES := $(MESH_SOURCES:assets/%.glb=filesystem/%.t3dm)
 
 #base-scale option should be the same as SCENE_SCALE in the defs.h file. Default is 64, here we use 16 because of matrix conversion limitations
-filesystem/models/%.t3dm: assets/models/%.glb
+filesystem/%.t3dm: assets/%.glb
 	@mkdir -p $(dir $@)
-	@mkdir -p $(dir $(@:filesystem/models/%.t3dm=build/assets/models/%.t3dm))
+	@mkdir -p $(dir $(@:filesystem/%.t3dm=build/assets/%.t3dm))
 	@echo "    [T3DMODEL] $@"
 	$(T3D_GLTF_TO_3D) "$<" $@ --base-scale=16 
 	$(N64_BINDIR)/mkasset -o $(dir $@) -w 256
+
+#----------------
+# Maps
+#----------------
+
+MAP_SOURCES := $(shell find assets/maps -type f -name '*.blend' | sort)
+
+COLLISION_EXPORT_FILE := $(shell find tools/collision_export/ -type f -name '*.py' | sort)
+BLENDER_4 := blender
+
+COLLISION_MESHES := $(MAP_SOURCES:assets/maps/%.blend=filesystem/maps/%.cmsh)
+
+filesystem/maps/%.cmsh: assets/maps/%.blend $(COLLISION_EXPORT_FILE)
+	@mkdir -p $(dir $@)
+	@mkdir -p $(dir $(@:filesystem/%.cmsh=build/assets/%.cmsh))
+	@echo "    [COLL_MESH] $@"
+	$(BLENDER_4) $< --background --python-exit-code 1 --python tools/collision_export/collision_export.py -- $(@:filesystem/maps/%.cmsh=build/assets/maps/%.cmsh)
+	$(N64_BINDIR)/mkasset -o $(dir $@) -w 256 $(@:filesystem/maps/%.cmsh=build/assets/maps/%.cmsh)
 
 
 #----------------
@@ -97,9 +116,9 @@ DEPS := $(SOURCE_OBJS:.o=.d)
 # Filesystem & Linking
 #----------------	
 
-filesystem/: $(SPRITES) $(T3DMESHES) $(FONTS) $(MATERIALS)
+filesystem/: $(SPRITES) $(T3DMESHES) $(FONTS) $(MATERIALS) $(COLLISION_MESHES)
 
-$(BUILD_DIR)/$(PROJECT_NAME).dfs: filesystem/ $(SPRITES) $(T3DMESHES) $(FONTS) $(MATERIALS)
+$(BUILD_DIR)/$(PROJECT_NAME).dfs: filesystem/ $(SPRITES) $(T3DMESHES) $(FONTS) $(MATERIALS) $(COLLISION_MESHES)
 $(BUILD_DIR)/$(PROJECT_NAME).elf: $(SOURCE_OBJS)
 
 $(PROJECT_NAME).z64: N64_ROM_TITLE="Tiny3D Playground"

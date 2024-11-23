@@ -96,26 +96,6 @@ void render_scene_remove(void* data) {
     callback_list_remove(&r_scene_3d.callbacks, (callback_id)data);
 }
 
-/// @brief Test a bounding sphere against the Tiny3D frustum
-/// @param frustum 
-/// @param center 
-/// @param radius 
-/// @return 
-int t3d_frustum_vs_sphere(const T3DFrustum *frustum, Vector3 *center, float radius) {
-    for (int i = 0; i < 6; ++i) {
-        // Calculate the signed distance from the sphere center to the plane
-        float distance = frustum->planes[i].v[0] * (center->x * SCENE_SCALE) +
-                         frustum->planes[i].v[1] * (center->y * SCENE_SCALE) +
-                         frustum->planes[i].v[2] * (center->z * SCENE_SCALE) +
-                         frustum->planes[i].v[3];
-        
-        // If the distance is less than the negative radius, the sphere is outside the frustum
-        if (distance < (-radius * SCENE_SCALE)) {
-            return 0;
-        }
-    }
-    return 1;
-}
 
 /// @brief Render the scene
 ///
@@ -140,11 +120,18 @@ void render_scene_render(struct camera* camera, T3DViewport* viewport, struct fr
     for (int i = 0; i < r_scene_3d.callbacks.count; ++i) {
         struct render_scene_element* el = callback_element_get_data(current);
 
+
+
         // Skip elements outside the frustum, only check if center of Boundingsphere is set
-        if(el->center && !t3d_frustum_vs_sphere(&viewport->viewFrustum, el->center, el->radius)) {
-            current = callback_list_next(&r_scene_3d.callbacks, current);
-            culled++;
-            continue;
+        if(el->center) {
+            Vector3 scaledCenter;
+            vector3Scale(el->center, &scaledCenter, SCENE_SCALE);
+            if (!t3d_frustum_vs_sphere(&viewport->viewFrustum, (T3DVec3*)&scaledCenter, el->radius * SCENE_SCALE))
+            {
+                current = callback_list_next(&r_scene_3d.callbacks, current);
+                culled++;
+                continue;
+            }
         }
 
         ((render_scene_callback)current->callback)(el->data, &batch);

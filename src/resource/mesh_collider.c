@@ -3,6 +3,7 @@
 #include <malloc.h>
 #include <assert.h>
 #include <string.h>
+#include <libdragon.h>
 
 
 // CMSH
@@ -144,34 +145,42 @@ void mesh_collider_load_test(struct mesh_collider* into){
     #endif
 }
 
-void mesh_collider_load(struct mesh_collider* into, FILE* file) {
+void mesh_collider_load(struct mesh_collider* into, const char* filename) {
     int header;
+    FILE *file = asset_fopen(filename, NULL);
     fread(&header, 1, 4, file);
     assert(header == EXPECTED_HEADER);
 
     uint16_t vertex_count;
     fread(&vertex_count, 2, 1, file);
+    into->vertex_count = vertex_count;
+    debugf("Vertex count: %d\n", vertex_count);
 
     into->vertices = malloc(sizeof(Vector3) * vertex_count);
     fread(into->vertices, sizeof(Vector3), vertex_count, file);
 
-    into->vertex_count = vertex_count;
-
     uint16_t triangle_count;
     fread(&triangle_count, 2, 1, file);
     into->triangle_count = triangle_count;
+    debugf("Triangle count: %d\n", triangle_count);
 
     into->triangles = malloc(sizeof(struct mesh_triangle_indices) * triangle_count);
     fread(into->triangles, sizeof(struct mesh_triangle_indices), triangle_count, file);
 
     into->normals = malloc(sizeof(Vector3) * triangle_count);
     fread(into->normals, sizeof(Vector3), triangle_count, file);
+    fclose(file);
 
-    AABBTree_create(&into->aabbtree, triangle_count);
+    AABBTree_create(&into->aabbtree, (2 * triangle_count) + 1);
     AABB triangleAABB;
     for (int i = 0; i < triangle_count; i++)
     {
+
         struct mesh_triangle_indices* triangle = &into->triangles[i];
+        if (i == 0)
+        {
+            debugf("Triangle %d: %.2f, %.2f, %.2f\n", i, into->vertices[triangle->indices[0]].x, into->vertices[triangle->indices[0]].y, into->vertices[triangle->indices[0]].z);
+        }
         Vector3* v0 = &into->vertices[triangle->indices[0]];
         Vector3* v1 = &into->vertices[triangle->indices[1]];
         Vector3* v2 = &into->vertices[triangle->indices[2]];
@@ -180,7 +189,7 @@ void mesh_collider_load(struct mesh_collider* into, FILE* file) {
 
         AABBTreeNode_createNode(&into->aabbtree, triangleAABB, (void *)i);
     }
-    #ifdef DEBUG_COLLIDERS_RAYLIB
+#ifdef DEBUG_COLLIDERS_RAYLIB
     into->raylib_mesh_model = LoadModelFromMesh(mesh_collider_generate_raylib_mesh((struct mesh_collider*)into, vertex_count, triangle_count));
     Image white = GenImageColor(1, 1, WHITE);
     Texture2D texture = LoadTextureFromImage(white);

@@ -432,7 +432,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
         // -------- Skybox Flat Element ----------
         else if (element->type == RENDER_BATCH_SKYBOX)
         {
-            if (!element->skybox.surface || fog->enabled)
+            if (!element->skybox.surface )
             {
                 continue;
             }

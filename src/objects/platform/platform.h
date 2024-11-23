@@ -10,8 +10,8 @@
 #include "../../scene/scene_definition.h"
 
 struct platform {
-    float rot_x;
     float rot_y;
+    float rot_elapsed_time;
     Transform transform;
     struct renderable renderable;
     struct physics_object physics;

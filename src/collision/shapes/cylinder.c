@@ -76,8 +76,6 @@ void cylinder_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     test.x = 5.0f;
     test.arr[1] = 5.0f;
 
-    debugf("Test: %f %f %f\n", test.x, test.y, test.z);
-
 
     // // Get capsule dimensions
     // float half_height = shape_data->cylinder.half_height;
