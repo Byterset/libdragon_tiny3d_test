@@ -110,7 +110,7 @@ void setup()
     update_reset();
     collision_scene_reset();
     collectable_assets_load();
-    camera_init(&camera, 70.0f, 1.0f, 120.0f);
+    camera_init(&camera, 70.0f, 2.0f, 110.0f);
     skybox_flat_init(&skybox_flat);
     map_init(&map);
     for(int i = 0; i < NUM_BOXES; i++){
@@ -218,7 +218,7 @@ void render()
 
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", player.is_attacking);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "fps: %.1f", fps);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "fps: %.1f, dT: %lu", fps, TICKS_TO_MS(deltatime_ticks));
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "mem: %d", ram_used);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree._nodeCount, aabbtree_objects_mem);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree._nodeCount, aabb_tree_mesh_mem);
@@ -305,10 +305,11 @@ int main()
 
         // ======== Render the Game ======== //
 
-        
-        rdpq_attach(display_get(), display_get_zbuf());
+        surface_t* fb = display_get();
+        rdpq_attach(fb, display_get_zbuf());
         render();
-        rdpq_detach_show();
+        rdpq_detach_wait();
+        display_show(fb);
         
     }
 

@@ -63,7 +63,7 @@ filesystem/%.t3dm: assets/%.glb
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(@:filesystem/%.t3dm=build/assets/%.t3dm))
 	@echo "    [T3DMODEL] $@"
-	$(T3D_GLTF_TO_3D) "$<" $@ --base-scale=16 
+	$(T3D_GLTF_TO_3D) "$<" $@ --base-scale=16
 	$(N64_BINDIR)/mkasset -o $(dir $@) -w 256
 
 #----------------
