@@ -16,7 +16,7 @@ struct cone {
     struct physics_object physics;
 };
 
-void cone_init(struct cone* box, struct cone_definition* def);
+void cone_init(struct cone* box, struct generic_object_pos_definition* def);
 
 void cone_destroy(struct cone* box);
 

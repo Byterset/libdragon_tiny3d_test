@@ -23,7 +23,7 @@ static struct physics_object_collision_data cone_collision = {
 };
 
 
-void cone_init(struct cone* cone, struct cone_definition* def){
+void cone_init(struct cone* cone, struct generic_object_pos_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&cone->transform);
 

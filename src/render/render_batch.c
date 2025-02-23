@@ -277,9 +277,19 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
         // -------- Model Element ----------
         if (element->type == RENDER_BATCH_MODEL)
         {
+            rdpq_set_mode_standard();
+            if(fog && fog->enabled){
+                rdpq_mode_fog(RDPQ_FOG_STANDARD);
+                rdpq_set_fog_color(fog->color);
+                t3d_fog_set_enabled(true);
+                t3d_fog_set_range(fog->start, fog->end);
+            } else {
+                t3d_fog_set_enabled(false);
+            }
+            rdpq_mode_zoverride(false, 0, 0);
             rdpq_mode_persp(true);
             rdpq_mode_zbuf(true, true);
-            t3d_state_set_drawflags(T3D_FLAG_DEPTH | T3D_FLAG_SHADED | T3D_FLAG_TEXTURED);
+            t3d_state_set_drawflags(T3D_FLAG_DEPTH | T3D_FLAG_SHADED | T3D_FLAG_TEXTURED | T3D_FLAG_CULL_BACK);
             // Skip if no rspq block
             if (!element->model.block)
             {
@@ -393,6 +403,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                     image_w,
                     image_h);
             }
+            rdpq_mode_zoverride(false, 0, 0);
         }
         // skybox rendered as a physical object
         else if (element->type == RENDER_BATCH_EQUIDISTANT){
@@ -481,16 +492,6 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
 
             rdpq_set_mode_standard();
             rdpq_mode_zoverride(true, 1, 0);
-            // color_t tint = RGBA32(255, 255, 255, 128);
-            // float brightness = 1.0f;
-            // tint.r = (uint8_t)(tint.r * brightness);
-            // tint.g = (uint8_t)(tint.g * brightness);
-            // tint.b = (uint8_t)(tint.b * brightness);
-            // rdpq_set_prim_color(tint);
-            // rdpq_combiner_t cc = RDPQ_COMBINER1((PRIM,0,TEX0,0),    (PRIM,0,TEX0,0));
-            // rdpq_blender_t blend = RDPQ_BLENDER((IN_RGB, IN_ALPHA, MEMORY_RGB, INV_MUX_ALPHA));
-            // rdpq_mode_blender(blend);
-            // rdpq_mode_combiner(cc);
 
             // if the window is within the bounds of the texture, just blit it
             if (texOffsetX + section_width < element->skybox.surface->width)
@@ -535,6 +536,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                                                                 });
                 }
             }
+            rdpq_mode_zoverride(false, 0, 0);
         }
         // -------- Callback Element ----------
         else if (element->type == RENDER_BATCH_CALLBACK)
@@ -544,6 +546,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             {
                 continue;
             }
+            rdpq_set_mode_standard();
             element->callback.callback(element->callback.data, batch);
         }
     }

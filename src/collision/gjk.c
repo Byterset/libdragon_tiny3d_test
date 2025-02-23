@@ -1,13 +1,13 @@
 #include "gjk.h"
 
-#define MAX_GJK_ITERATIONS  18
+#define GJK_MAX_ITERATIONS  18
 
 void simplexInit(struct Simplex* simplex) {
     simplex->nPoints = 0;
 }
 
 Vector3* simplexAddPoint(struct Simplex* simplex, Vector3* aPoint, Vector3* bPoint) {
-    if (simplex->nPoints == MAX_SIMPLEX_SIZE) {
+    if (simplex->nPoints == GJK_MAX_SIMPLEX_SIZE) {
         // SHOULD never happen, but just in case
         return 0;
     }
@@ -58,7 +58,7 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
     Vector3 aToOrigin;
     vector3Negate(lastAdded, &aToOrigin);
 
-    if (simplex->nPoints == 2) {
+    if (simplex->nPoints == 2) { 
         Vector3 lastAddedToOther;
         vector3Sub(&simplex->points[0], lastAdded, &lastAddedToOther);
         vector3TripleProduct(&lastAddedToOther, &aToOrigin, &lastAddedToOther, nextDirection);
@@ -145,10 +145,9 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
             }
         }
 
-        if (isFrontCount == 0) {
-            // enclosed the origin
+        if (isFrontCount == 0) { // origin is enclosed thus the objects overlap
             return 1;
-        } else if (isFrontCount == 1) {
+        } else if (isFrontCount == 1) { // origin is in front of one face so we need to update the simplex
             *nextDirection = normals[lastInFrontIndex];
 
             if (lastInFrontIndex == 1) {
@@ -161,7 +160,7 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
 
             simplexMovePoint(simplex, 2, 3);
             simplex->nPoints = 3;
-        } else if (isFrontCount == 2) {
+        } else if (isFrontCount == 2) { // origin is in front of two faces so we need to update the simplex
             if (lastBehindIndex == 0) {
                 simplexMovePoint(simplex, 0, 2);
             } else if (lastBehindIndex == 2) {
@@ -179,9 +178,8 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
             if (vector3MagSqrd(nextDirection) <= 0.0000001f) {
                 vector3Perp(&ab, nextDirection);
             }
-        } else {
-            // this case shouldn't happen but if it does
-            // this is the correct logic
+        } else { // origin is in front of three faces, should never happen
+            // if it does reset the simplex to a single point and update the direction
             simplexMovePoint(simplex, 0, 3);
             simplex->nPoints = 1;
             *nextDirection = aToOrigin;
@@ -191,7 +189,14 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
     return 0;
 }
 
-
+/// @brief Takes two objects and their support functions and checks if they overlap using the GJK algorithm.
+/// @param simplex pointer to the simplex structure to use for the GJK algorithm and EPA
+/// @param objectA first physics object
+/// @param objectASupport support function for the first object
+/// @param objectB second physics object
+/// @param objectBSupport support function for the second object
+/// @param firstDirection initial direction to search for the origin
+/// @return 1 if the objects overlap, 0 otherwise
 int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSupport, Vector3* firstDirection) {
     Vector3 aPoint;
     Vector3 bPoint;
@@ -199,21 +204,18 @@ int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, gjk_support_funct
 
     simplexInit(simplex);
 
+    // if for whatever reason the first direction is zero, we need to pick a new one
     if (vector3IsZero(firstDirection)) {
-        objectASupport(objectA, &gRight, &aPoint);
-        vector3Negate(&gRight, &nextDirection);
-
-        objectBSupport(objectB, &nextDirection, &bPoint);
-        simplexAddPoint(simplex, &aPoint, &bPoint);
-    } else {
-        objectASupport(objectA, firstDirection, &aPoint);
-        vector3Negate(firstDirection, &nextDirection);
-
-        objectBSupport(objectB, &nextDirection, &bPoint);
-        simplexAddPoint(simplex, &aPoint, &bPoint);
+        *firstDirection = gRight;
     }
 
-    for (int iteration = 0; iteration < MAX_GJK_ITERATIONS; ++iteration) {
+    objectASupport(objectA, firstDirection, &aPoint);
+    vector3Negate(firstDirection, &nextDirection);
+
+    objectBSupport(objectB, &nextDirection, &bPoint);
+    simplexAddPoint(simplex, &aPoint, &bPoint);
+
+    for (int iteration = 0; iteration < GJK_MAX_ITERATIONS; ++iteration) {
         Vector3 reverseDirection;
         vector3Negate(&nextDirection, &reverseDirection);
         objectASupport(objectA, &nextDirection, &aPoint);
@@ -229,12 +231,11 @@ int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, gjk_support_funct
             return 0;
         }
 
-
         if (simplexCheck(simplex, &nextDirection)) {
             return 1;
         }
 
     }
-
+    // if we reach here, we have not found a solution in the maximum number of iterations
     return 0;
 }

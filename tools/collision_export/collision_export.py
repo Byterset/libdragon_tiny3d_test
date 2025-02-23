@@ -2,7 +2,7 @@ import bpy
 import struct
 import sys
 
-def write_collision_data(output_path):
+def write_collision_data(output_path, base_scale):
     # Ensure the collection exists
     collection = bpy.data.collections.get("collision")
     if not collection:
@@ -24,7 +24,7 @@ def write_collision_data(output_path):
 
         # Collect and scale vertices
         # vertices.extend([tuple(vert.co * scale) for vert in mesh.vertices])
-        vertices.extend([(vert.co.x, vert.co.z, -vert.co.y) for vert in mesh.vertices])
+        vertices.extend([(vert.co.x * base_scale, vert.co.z * base_scale, -vert.co.y * base_scale) for vert in mesh.vertices])
 
         # Collect triangles and normals
         for poly in mesh.polygons:
@@ -76,11 +76,17 @@ if __name__ == "__main__":
 
     if len(argv) < 1:
         print(bpy.data.filepath)
-        print("Usage: blender -b <source_file> --python <script.py> -- <output_path>")
+        print("Usage: blender -b <source_file> --python <script.py> -- <output_path> [base_scale]")
         sys.exit(1)
 
     source_file = bpy.data.filepath
     output_path = argv[0]
+    base_scale = int(argv[1]) if len(argv) > 1 else 1  # Default base_scale to 1 if not provided
+    
+    # Print out the arguments
+    print(f"Source file: {source_file}")
+    print(f"Output path: {output_path}")
+    print(f"Base scale: {base_scale}")
     
     # Write the collision data
-    write_collision_data(output_path)
+    write_collision_data(output_path, base_scale)

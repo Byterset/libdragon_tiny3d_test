@@ -12,8 +12,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define GRAVITY_CONSTANT    -9.8f
-#define TERMINAL_VELOCITY   50.0f
+#define GRAVITY_CONSTANT    -9.8f // default earth gravity in m/s^2
+#define PHYS_OBJECT_TERMINAL_Y_VELOCITY   50.0f // terminal y-velocity
+
+#define PHYS_OBJECT_SLEEP_THRESHOLD 0.0001f // the amount the object needs to move in one step to be considered in motion
+#define PHYS_OBJECT_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_SLEEP_THRESHOLD * PHYS_OBJECT_SLEEP_THRESHOLD)
+#define PHYS_OBJECT_SLEEP_STEPS 20 // number of steps the object has to be still before it goes to sleep
 
 enum collision_layers {
     COLLISION_LAYER_TANGIBLE = (1 << 0),

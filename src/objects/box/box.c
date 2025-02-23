@@ -20,7 +20,7 @@ static struct physics_object_collision_data box_collision = {
     .shape_type = COLLISION_SHAPE_BOX,
 };
 
-void box_init(struct box* box, struct box_definition* def){
+void box_init(struct box* box, struct generic_object_pos_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&box->transform);
 

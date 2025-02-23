@@ -133,6 +133,78 @@ void player_fixed_update(struct player* player){
 }
 
 
+
+void player_render_callback(void* data, struct render_batch* batch) {
+    struct player* player = (struct player*)data;
+
+    T3DMat4FP *mtxfp = render_batch_get_transformfp(batch);
+
+    if (!mtxfp)
+    {
+        return;
+    }
+
+    mat4x4 mtx;
+    transformToMatrix(&player->transform, mtx);
+    mtx[3][0] *= SCENE_SCALE;
+    mtx[3][1] *= SCENE_SCALE;
+    mtx[3][2] *= SCENE_SCALE;
+    t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4 *)mtx);
+
+    rdpq_mode_persp(true);
+    t3d_state_set_drawflags(T3D_FLAG_DEPTH | T3D_FLAG_SHADED | T3D_FLAG_TEXTURED | T3D_FLAG_CULL_BACK);
+
+    t3d_matrix_push(mtxfp);
+
+    T3DModelDrawConf conf = {
+        .userData = NULL,
+        .tileCb = NULL,
+        .filterCb = NULL,
+        .matrices = player->renderable.model->skeleton.bufferCount == 1
+                        ? player->renderable.model->skeleton.boneMatricesFP
+                        : (const T3DMat4FP *)t3d_segment_placeholder(T3D_SEGMENT_SKELETON)};
+    T3DModelState state = t3d_model_state_create();
+    state.drawConf = &conf;
+
+
+    rdpq_combiner_t comb = RDPQ_COMBINER1((0,0,0,PRIM),(0,0,0,PRIM));
+    rdpq_blender_t blend = RDPQ_BLENDER((IN_RGB, IN_ALPHA, MEMORY_RGB, INV_MUX_ALPHA));
+    T3DModelIter it = t3d_model_iter_create(player->renderable.model->t3d_model, T3D_CHUNK_TYPE_OBJECT);
+
+    // Draw the player once as a solig colored silhouette, ignoring the z-buffer
+    // rdpq_mode_zbuf(false, false);
+    // rdpq_mode_blender(blend);
+    // rdpq_set_prim_color((color_t){100, 240, 255, 255});
+    // rdpq_mode_combiner(comb);
+    
+    // while (t3d_model_iter_next(&it))
+    // {
+    //     t3d_model_draw_object(it.object, conf.matrices);
+    // }
+
+    // it._idx = 0;
+    // it.chunk = NULL;
+
+    // Draw the player again with the z-buffer enabled, so that the silhouette is overdrawn by the actual model
+    // Thus the silhouette will only be visible where the model is not (e.g. behind walls and objects)
+    rdpq_mode_zbuf(true, true);
+    while (t3d_model_iter_next(&it))
+    {
+        if (it.object->material)
+        {
+            t3d_model_draw_material(it.object->material, &state);
+        }
+        t3d_model_draw_object(it.object, conf.matrices);
+    }
+
+    t3d_matrix_pop(1);
+}
+
+void player_custom_render(void* data, struct render_batch* batch) {
+    render_batch_add_callback(batch, NULL, player_render_callback, data);
+}
+
+
 void player_update(struct player* player) {
     Vector3 right;
     Vector3 forward;
@@ -247,7 +319,8 @@ void player_init(struct player* player, struct player_definition* definition, Tr
     player->is_on_ground = false;
 
     player->transform.position = definition->location;
-    render_scene_add_callback(NULL, 0, render_scene_render_renderable, &player->renderable);
+    // render_scene_add_callback(NULL, 0, render_scene_render_renderable, &player->renderable);
+    render_scene_add_callback(NULL, 0.0f, player_custom_render, player);
     // render_scene_add_renderable(&player->renderable, 2.0f);
 
 

@@ -22,7 +22,7 @@
 #include "../collision/collision_scene.h"
 
 static struct entity_definition scene_entity_definitions[] = {
-    ENTITY_DEFINITION(box),
+    // ENTITY_DEFINITION(box),
     // ENTITY_DEFINITION(collectable),
     // ENTITY_DEFINITION(crate),
     // ENTITY_DEFINITION(ground_torch),
@@ -261,7 +261,7 @@ struct scene *scene_load(const char *filename)
     //     model_cache_load(&scene->static_entities[i].model, file);
     // }
 
-    mesh_collider_load(&scene->mesh_collider, filename);
+    mesh_collider_load(&scene->mesh_collider, filename, 1, NULL);
     collision_scene_use_static_collision(&scene->mesh_collider);
 
     uint16_t strings_length;

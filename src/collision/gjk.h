@@ -7,11 +7,11 @@
 
 typedef void (*gjk_support_function)(void* data, Vector3* direction, Vector3* output);
 
-#define MAX_SIMPLEX_SIZE    4
+#define GJK_MAX_SIMPLEX_SIZE    4
 
 struct Simplex {
-    Vector3 points[MAX_SIMPLEX_SIZE];
-    Vector3 objectAPoint[MAX_SIMPLEX_SIZE];
+    Vector3 points[GJK_MAX_SIMPLEX_SIZE];
+    Vector3 objectAPoint[GJK_MAX_SIMPLEX_SIZE];
     short nPoints;
 };
 

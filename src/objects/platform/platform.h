@@ -18,7 +18,7 @@ struct platform {
     Vector2 look_direction;
 };
 
-void platform_init(struct platform* platform, struct platform_definition* def);
+void platform_init(struct platform* platform, struct generic_object_pos_definition* def);
 
 void platform_destroy(struct platform* platform);
 

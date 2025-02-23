@@ -108,8 +108,6 @@ void render_scene_remove(void* data) {
 void render_scene_render(struct camera* camera, T3DViewport* viewport, struct frame_memory_pool* pool, struct render_fog_params* fog) {
     struct render_batch batch;
 
-    t3d_viewport_attach(viewport);
-
     render_batch_init(&batch, &camera->transform, pool);
 
     struct callback_element* current = callback_list_get(&r_scene_3d.callbacks, 0);

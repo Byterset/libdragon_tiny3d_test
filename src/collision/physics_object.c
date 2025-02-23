@@ -47,7 +47,7 @@ void physics_object_update_euler(struct physics_object* object) {
         object->velocity.y += FIXED_DELTATIME * object->time_scalar * GRAVITY_CONSTANT * object->gravity_scalar;
     }
     vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
-    object->velocity.y = clampf(object->velocity.y, -TERMINAL_VELOCITY, TERMINAL_VELOCITY);
+    object->velocity.y = clampf(object->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
 
     object->is_grounded = 0;
 
@@ -61,7 +61,7 @@ void physics_object_update_velocity_verlet_simple(struct physics_object* object)
         return;
     }
     vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
-    object->velocity.y = clampf(object->velocity.y, -TERMINAL_VELOCITY, TERMINAL_VELOCITY);
+    object->velocity.y = clampf(object->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
 
     object->is_grounded = 0;
 

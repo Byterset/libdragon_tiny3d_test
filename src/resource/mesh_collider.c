@@ -145,7 +145,7 @@ void mesh_collider_load_test(struct mesh_collider* into){
     #endif
 }
 
-void mesh_collider_load(struct mesh_collider* into, const char* filename) {
+void mesh_collider_load(struct mesh_collider* into, const char* filename, float scale, Vector3* offset) {
     int header;
     FILE *file = asset_fopen(filename, NULL);
     fread(&header, 1, 4, file);
@@ -158,6 +158,16 @@ void mesh_collider_load(struct mesh_collider* into, const char* filename) {
 
     into->vertices = malloc(sizeof(Vector3) * vertex_count);
     fread(into->vertices, sizeof(Vector3), vertex_count, file);
+
+    for (int i = 0; i < vertex_count; i++)
+    {
+
+        Vector3* vert = &into->vertices[i];
+
+        vert->x *= scale;
+        vert->y *= scale;
+        vert->z *= scale;
+    }
 
     uint16_t triangle_count;
     fread(&triangle_count, 2, 1, file);

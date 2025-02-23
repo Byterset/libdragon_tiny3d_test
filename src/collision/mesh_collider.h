@@ -39,6 +39,8 @@ struct mesh_collider {
     Vector3* normals;
     uint16_t triangle_count;
     uint16_t vertex_count;
+    Vector3* offset;
+    float scale;
 #ifdef DEBUG_COLLIDERS_RAYLIB
     Raylib_Model raylib_mesh_model;
 #endif

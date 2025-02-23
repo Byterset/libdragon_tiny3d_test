@@ -10,7 +10,7 @@ void camera_init(struct camera* camera, float fov, float near, float far) {
 }
 
 void camera_apply(struct camera* camera, T3DViewport* viewport, struct camera_controller* cam_controller) {
-    t3d_viewport_set_projection(viewport, T3D_DEG_TO_RAD(camera->fov), camera->near * SCENE_SCALE, camera->far * SCENE_SCALE);
+    t3d_viewport_set_projection(viewport, T3D_DEG_TO_RAD(camera->fov), camera->near, camera->far);
     Vector3 camPos, camTarget;
     vector3Scale(&camera->transform.position, &camPos, SCENE_SCALE);
     vector3Scale(&cam_controller->target, &camTarget, SCENE_SCALE);

@@ -16,7 +16,7 @@ struct cylinder {
     struct physics_object physics;
 };
 
-void cylinder_init(struct cylinder* box, struct cylinder_definition* def);
+void cylinder_init(struct cylinder* box, struct generic_object_pos_definition* def);
 
 void cylinder_destroy(struct cylinder* box);
 

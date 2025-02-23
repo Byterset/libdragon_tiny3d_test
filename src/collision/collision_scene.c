@@ -200,14 +200,7 @@ void collision_scene_collide_single(struct physics_object* object, Vector3* prev
     // to prevent tunneling just move the object back 
     // to the previous known valid location
     *object->position = *prev_pos;
-
-    
-
 }
-
-#define SLEEP_THRESHOLD 0.0001f
-#define SLEEP_THRESHOLD_SQ (SLEEP_THRESHOLD * SLEEP_THRESHOLD)
-#define SLEEP_STEPS 20
 
 /// @brief performs a physics step on all objects in the scene, updating their positions and velocities and performing collision detection
 void collision_scene_step() {
@@ -273,12 +266,12 @@ void collision_scene_step() {
             element->object->_prev_step_rot = *element->object->rotation;
         }
 
-        if (displacement_dist < SLEEP_THRESHOLD && rot_same)
+        if (displacement_dist < PHYS_OBJECT_SLEEP_THRESHOLD && rot_same)
         {
             element->object->_sleep_counter += 1;
-            if (element->object->_sleep_counter > SLEEP_STEPS)
+            if (element->object->_sleep_counter > PHYS_OBJECT_SLEEP_STEPS)
             {
-                element->object->_sleep_counter = SLEEP_STEPS;
+                element->object->_sleep_counter = PHYS_OBJECT_SLEEP_STEPS;
                 element->object->is_sleeping = 1;
                 
             }

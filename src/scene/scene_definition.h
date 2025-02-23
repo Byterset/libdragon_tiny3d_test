@@ -6,15 +6,9 @@
 // #include "../cutscene/expression.h"
 #include <stdint.h>
 
-struct crate_definition {
-    Vector3 position;
-    Vector2 rotation;
-};
-
 enum collectable_type {
     COLLECTABLE_TYPE_COIN,
 };
-
 
 struct collectable_definition {
     Vector3 position;
@@ -23,29 +17,18 @@ struct collectable_definition {
     uint32_t collectable_sub_type;
 };
 
-struct coin_definition {
+struct generic_object_pos_definition {
     Vector3 position;
 };
 
-struct training_dummy_definition {
+struct generic_object_pos_rot2d_definition {
     Vector3 position;
     Vector2 rotation;
 };
 
-struct box_definition {
+struct generic_object_pos_rot_definition {
     Vector3 position;
-};
-
-struct cone_definition {
-    Vector3 position;
-};
-
-struct cylinder_definition {
-    Vector3 position;
-};
-
-struct platform_definition {
-    Vector3 position;
+    Vector3 rotation;
 };
 
 

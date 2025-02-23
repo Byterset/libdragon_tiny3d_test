@@ -63,7 +63,7 @@ filesystem/%.t3dm: assets/%.glb
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(@:filesystem/%.t3dm=build/assets/%.t3dm))
 	@echo "    [T3DMODEL] $@"
-	$(T3D_GLTF_TO_3D) "$<" $@ --base-scale=16
+	$(T3D_GLTF_TO_3D) "$<" $@ --base-scale=32
 	$(N64_BINDIR)/mkasset -o $(dir $@) -w 256
 
 #----------------
@@ -81,7 +81,7 @@ filesystem/maps/%.cmsh: assets/maps/%.blend $(COLLISION_EXPORT_FILE)
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(@:filesystem/%.cmsh=build/assets/%.cmsh))
 	@echo "    [COLL_MESH] $@"
-	$(BLENDER_4) $< --background --python-exit-code 1 --python tools/collision_export/collision_export.py -- $(@:filesystem/maps/%.cmsh=build/assets/maps/%.cmsh)
+	$(BLENDER_4) $< --background --python-exit-code 1 --python tools/collision_export/collision_export.py -- $(@:filesystem/maps/%.cmsh=build/assets/maps/%.cmsh) 1
 	$(N64_BINDIR)/mkasset -o $(dir $@) -w 256 $(@:filesystem/maps/%.cmsh=build/assets/maps/%.cmsh)
 
 

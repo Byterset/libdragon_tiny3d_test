@@ -33,7 +33,7 @@ void platform_update(struct platform* platform){
     }
 }
 
-void platform_init(struct platform* platform, struct platform_definition* def){
+void platform_init(struct platform* platform, struct generic_object_pos_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&platform->transform);
     platform->transform.scale = (Vector3){{25.0f, 2.0f, 10.0f}};

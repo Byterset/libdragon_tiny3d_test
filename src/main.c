@@ -17,6 +17,7 @@
 #include "objects/box/box.h"
 #include "objects/cone/cone.h"
 #include "objects/cylinder/cylinder.h"
+#include "objects/soda_can/soda_can.h"
 #include "objects/platform/platform.h"
 #include "effects/fire.h"
 #include "skybox/skybox_flat.h"
@@ -60,6 +61,7 @@ struct collectable coins[NUM_COINS];
 struct cone cone;
 struct cylinder cylinder;
 struct platform plat;
+struct soda_can soda_can;
 struct fire fire;
 struct skybox_flat skybox_flat;
 struct mesh_collider test_mesh_collider;
@@ -75,11 +77,11 @@ struct player_definition playerDef = {
     (Vector2){{1, 0}}
 };
 
-struct box_definition box_def = {
+struct generic_object_pos_definition box_def = {
     (Vector3){{85, 5, -127}}
 };
 
-struct cone_definition cone_def = {
+struct generic_object_pos_definition cone_def = {
     (Vector3){{120, -2, -141}}
 };
 
@@ -90,12 +92,16 @@ struct collectable_definition collectableDef = {
     0
 };
 
-struct cylinder_definition cyl_def = {
+struct generic_object_pos_definition cyl_def = {
     (Vector3){{60, 0, -95}}
 };
 
-struct platform_definition plat_def = {
+struct generic_object_pos_definition plat_def = {
     (Vector3){{61, 12, -36}}
+};
+
+struct generic_object_pos_definition can_def = {
+    (Vector3){{64, 4, -90}}
 };
 
 void on_vi_interrupt()
@@ -110,9 +116,9 @@ void setup()
     update_reset();
     collision_scene_reset();
     collectable_assets_load();
-    camera_init(&camera, 70.0f, 2.0f, 110.0f);
+    camera_init(&camera, 70.0f, 80.0f, 2000.0f);
     skybox_flat_init(&skybox_flat);
-    map_init(&map);
+    
     for(int i = 0; i < NUM_BOXES; i++){
         box_init(&boxes[i], &box_def);
         box_def.position.y += 10;
@@ -124,9 +130,12 @@ void setup()
 
     cone_init(&cone, &cone_def);
     cylinder_init(&cylinder, &cyl_def);
+    soda_can_init(&soda_can, &can_def);
+    
+    map_init(&map);
 
     platform_init(&plat, &plat_def);
-    // fire_init(&fire);
+    fire_init(&fire);
 
     player_init(&player, &playerDef, &camera.transform);
 
@@ -134,7 +143,7 @@ void setup()
     
     //TODO: write scene file format & collision file format
     // mesh_collider_load_test(&test_mesh_collider);
-    mesh_collider_load(&test_mesh_collider, "rom:/maps/bob_omb_battlefield/bob_map.cmsh");
+    mesh_collider_load(&test_mesh_collider, "rom:/maps/bob_omb_battlefield/bob_map.cmsh", 1.0f, NULL);
     collision_scene_use_static_collision(&test_mesh_collider);
     
 }
@@ -171,16 +180,12 @@ void render3d()
         // TODO: maybe move this into scene structure later so levels can have their own fog settings
         struct render_fog_params fog = {
             .enabled = true,
-            .start = 30.0f * SCENE_SCALE,
-            .end = 150.0f * SCENE_SCALE,
+            .start = 20.0f * SCENE_SCALE,
+            .end = 100.0f * SCENE_SCALE,
             .color = RGBA32(230, 230, 230, 0xFF)};
 
         t3d_screen_clear_color(fog.enabled ? fog.color : RGBA32(0, 0, 0, 0xFF));
         t3d_screen_clear_depth();
-
-        t3d_light_set_ambient(colorAmbient);
-        t3d_light_set_directional(0, colorDir, (T3DVec3*)&lightDirVec);
-        t3d_light_set_count(1);
 
         struct frame_memory_pool *pool = &frame_memory_pools[next_frame_memoy_pool];
         frame_pool_reset(pool);
@@ -191,6 +196,11 @@ void render3d()
         rdpq_set_mode_standard();
 
         camera_apply(&camera, viewport, &camera_controller);
+        t3d_viewport_attach(viewport);
+
+        t3d_light_set_ambient(colorAmbient);
+        t3d_light_set_directional(0, colorDir, (T3DVec3*)&lightDirVec);
+        t3d_light_set_count(1);
 
         render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool], &fog);
     #ifdef DEBUG_COLLIDERS_RAYLIB
@@ -241,7 +251,7 @@ int main()
     SetTargetFPS(60);
     #endif
 
-    display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS);
+    display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS_DEDITHER);
     display_set_fps_limit(60);
 
     rdpq_init();
@@ -310,6 +320,7 @@ int main()
         render();
         rdpq_detach_wait();
         display_show(fb);
+        rspq_wait();
         
     }
 

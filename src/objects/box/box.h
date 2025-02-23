@@ -16,7 +16,7 @@ struct box {
     struct physics_object physics;
 };
 
-void box_init(struct box* box, struct box_definition* def);
+void box_init(struct box* box, struct generic_object_pos_definition* def);
 
 void box_destroy(struct box* box);
 

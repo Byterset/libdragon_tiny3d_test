@@ -27,7 +27,7 @@ struct entity_definition {
 
 // we will assume that all enities in the scene will define an init and destroy function,
 // as well as have a enity definition struct define in the form of struct name_definition
-#define ENTITY_DEFINITION(name) {#name, (entity_init)name ## _init, (entity_destroy)name ## _destroy, sizeof(struct name), sizeof(struct name ## _definition)}
+// #define ENTITY_DEFINITION(name) {#name, (entity_init)name ## _init, (entity_destroy)name ## _destroy, sizeof(struct name), sizeof(struct name ## _definition)}
 
 struct entity_data {
     struct entity_definition* definition;

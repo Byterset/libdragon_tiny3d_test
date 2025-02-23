@@ -4,10 +4,10 @@
 #include "../math/plane.h"
 #include "../math/mathf.h"
 
-#define MAX_EPA_ITERATIONS  14
+#define EPA_MAX_ITERATIONS  14
 
-#define MAX_SIMPLEX_POINTS      (4 + MAX_EPA_ITERATIONS)
-#define MAX_SIMPLEX_TRIANGLES   (4 + MAX_EPA_ITERATIONS * 2)
+#define EPA_MAX_SIMPLEX_POINTS      (4 + EPA_MAX_ITERATIONS)
+#define EPA_MAX_SIMPLEX_TRIANGLES   (4 + EPA_MAX_ITERATIONS * 2)
 
 #define NEXT_FACE(index)        ((index) == 2 ? 0 : (index) + 1)
 
@@ -33,12 +33,12 @@ enum SimplexFlags {
 };
 
 struct ExpandingSimplex {
-    Vector3 points[MAX_SIMPLEX_POINTS];
-    Vector3 aPoints[MAX_SIMPLEX_POINTS];
-    struct SimplexTriangle triangles[MAX_SIMPLEX_TRIANGLES];
+    Vector3 points[EPA_MAX_SIMPLEX_POINTS];
+    Vector3 aPoints[EPA_MAX_SIMPLEX_POINTS];
+    struct SimplexTriangle triangles[EPA_MAX_SIMPLEX_TRIANGLES];
     short pointCount;
     short triangleCount;
-    unsigned char triangleHeap[MAX_SIMPLEX_TRIANGLES];
+    unsigned char triangleHeap[EPA_MAX_SIMPLEX_TRIANGLES];
     short flags;
 };
 
@@ -310,7 +310,7 @@ void expandingSimplexTriangleInit(struct ExpandingSimplex* simplex, union Simple
 }
 
 void expandingSimplexAddTriangle(struct ExpandingSimplex* simplex, union SimplexTriangleIndexData* data) {
-    if (simplex->triangleCount == MAX_SIMPLEX_TRIANGLES) {
+    if (simplex->triangleCount == EPA_MAX_SIMPLEX_TRIANGLES) {
         return;
     }
 
@@ -449,7 +449,7 @@ bool epaSolve(struct Simplex* startingSimplex, void* objectA, gjk_support_functi
     struct SimplexTriangle* closestFace = 0;
     float projection = 0.0f;
 
-    for (int i = 0; i < MAX_EPA_ITERATIONS; ++i) {
+    for (int i = 0; i < EPA_MAX_ITERATIONS; ++i) {
         Vector3 reverseNormal;
 
         closestFace = expandingSimplexClosestFace(&simplex);
@@ -531,7 +531,7 @@ int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_fu
     Vector3 raycastDir;
     vector3Sub(bStart, bEnd, &raycastDir);
 
-    for (int i = 0; i < MAX_EPA_ITERATIONS; ++i) {
+    for (int i = 0; i < EPA_MAX_ITERATIONS; ++i) {
         Vector3 reverseNormal;
 
         epaSweptFindFace(&simplex, &raycastDir, &currentTriangle, &currentEdge);

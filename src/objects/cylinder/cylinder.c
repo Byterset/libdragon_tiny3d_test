@@ -23,7 +23,7 @@ static struct physics_object_collision_data cylinder_collision = {
 };
 
 
-void cylinder_init(struct cylinder* cylinder, struct cylinder_definition* def){
+void cylinder_init(struct cylinder* cylinder, struct generic_object_pos_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&cylinder->transform);
 

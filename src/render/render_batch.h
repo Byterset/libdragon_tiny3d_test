@@ -34,8 +34,8 @@ struct render_fog_params {
 enum render_batch_type {
     RENDER_BATCH_SKYBOX, // Skybox consisting of a sub-texture that is blit to the framebuffer
     RENDER_BATCH_MODEL, // Tiny3D model
-    RENDER_BATCH_BILLBOARD, // A collection of Sprites with a custom material block
     RENDER_BATCH_CALLBACK, // A custom render callback that will be executed as is by the renderer
+    RENDER_BATCH_BILLBOARD, // A collection of Sprites with a custom material block
     RENDER_BATCH_EQUIDISTANT, // A physical model that is always rendered at the same position relative to the camera
     
 };
