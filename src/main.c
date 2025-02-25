@@ -116,7 +116,7 @@ void setup()
     update_reset();
     collision_scene_reset();
     collectable_assets_load();
-    camera_init(&camera, 70.0f, 80.0f, 2000.0f);
+    camera_init(&camera, 70.0f, 1.0f, 140.0f);
     skybox_flat_init(&skybox_flat);
     
     for(int i = 0; i < NUM_BOXES; i++){
@@ -154,15 +154,15 @@ void render3d()
     if(render_collision){
 
         Camera3D raylib_cam = {0};
-        raylib_cam.position = (Raylib_Vector3){camera.transform.position.x * SCENE_SCALE, camera.transform.position.y * SCENE_SCALE, camera.transform.position.z * SCENE_SCALE};
+        raylib_cam.position = (Raylib_Vector3){camera.transform.position.x, camera.transform.position.y, camera.transform.position.z};
         raylib_cam.target = (Raylib_Vector3){
-            camera_controller.target.x * SCENE_SCALE, 
-            (camera_controller.target.y + CAMERA_FOLLOW_HEIGHT) * SCENE_SCALE, 
-            camera_controller.target.z * SCENE_SCALE};
+            camera_controller.target.x, 
+            (camera_controller.target.y + CAMERA_FOLLOW_HEIGHT), 
+            camera_controller.target.z};
         raylib_cam.up = (Raylib_Vector3){0.0f, 1.0f, 0.0f};
         raylib_cam.fovy = camera.fov;
         raylib_cam.projection = CAMERA_PERSPECTIVE;
-        rlSetClipPlanes(camera.near * SCENE_SCALE, camera.far * SCENE_SCALE);
+        rlSetClipPlanes(camera.near, camera.far);
         
         BeginDrawing();
         BeginMode3D(raylib_cam);
@@ -180,8 +180,8 @@ void render3d()
         // TODO: maybe move this into scene structure later so levels can have their own fog settings
         struct render_fog_params fog = {
             .enabled = true,
-            .start = 20.0f * SCENE_SCALE,
-            .end = 100.0f * SCENE_SCALE,
+            .start = 20.0f,
+            .end = 100.0f,
             .color = RGBA32(230, 230, 230, 0xFF)};
 
         t3d_screen_clear_color(fog.enabled ? fog.color : RGBA32(0, 0, 0, 0xFF));
