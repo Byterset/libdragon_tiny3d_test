@@ -341,9 +341,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
 
                 // Transform sprite position to view projection space
                 Vector4 transformed;
-                Vector3 scaled;
-                vector3Scale(&sprite.position, &scaled, SCENE_SCALE);
-                matrixVec3Mul(view_proj_matrix, &scaled, &transformed);
+                matrixVec3Mul(view_proj_matrix, &sprite.position, &transformed);
 
                 // w is the homogeneous coordinate, if it is less than 0 the point is behind the camera
                 
@@ -359,7 +357,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 float x = (transformed.x * wInv + 1.0f) * 0.5f * 4.0f;
                 float y = (-transformed.y * wInv + 1.0f) * 0.5f * 4.0f;
                 float z = (transformed.z * wInv + 1.0f) * 0.5f; // Corrected z calculation
-                float billboard_size = sprite.radius * wInv * SCENE_SCALE;
+                float billboard_size = sprite.radius * wInv;
 
                 if (z < 0.0f || z > 1.0f)
                 {
@@ -433,8 +431,6 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
             mtx.m[3][0] = 0;
             mtx.m[3][1] = 0;
             mtx.m[3][2] = 0;
-
-            t3d_mat4_scale(&mtx, SCENE_SCALE, SCENE_SCALE, SCENE_SCALE);
 
             t3d_mat4_to_fixed_3x4(mtxfp, &mtx);
             t3d_matrix_set(mtxfp, false);

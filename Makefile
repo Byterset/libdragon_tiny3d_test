@@ -2,12 +2,14 @@ SOURCE_DIR=src
 BUILD_DIR=build
 T3D_INST=$(shell realpath ./tiny3d)
 
+MODEL_SCALE=32
+
 include $(N64_INST)/include/n64.mk
 include $(T3D_INST)/t3d.mk
 
 MK_ASSET=$(N64_INST)/bin/mkasset
 
-N64_CFLAGS += -std=gnu2x -O2
+N64_CFLAGS += -std=gnu2x -O2 -DMODEL_SCALE=$(MODEL_SCALE)
 # N64_ASSET_FLAGS += -c 2 -w 256
 
 PROJECT_NAME=t3d_test
@@ -63,7 +65,7 @@ filesystem/%.t3dm: assets/%.glb
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(@:filesystem/%.t3dm=build/assets/%.t3dm))
 	@echo "    [T3DMODEL] $@"
-	$(T3D_GLTF_TO_3D) "$<" $@ --base-scale=32
+	$(T3D_GLTF_TO_3D) "$<" $@ --base-scale=$(MODEL_SCALE)
 	$(N64_BINDIR)/mkasset -o $(dir $@) -w 256
 
 #----------------

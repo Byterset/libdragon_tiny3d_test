@@ -23,7 +23,6 @@ static struct physics_object_collision_data box_collision = {
 void box_init(struct box* box, struct generic_object_pos_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&box->transform);
-
     box->transform.scale = (Vector3){{2.0f, 2.0f, 2.0f}};
     vector3Add(&box->transform.position, &def->position, &box->transform.position);
     // quatRotateAxisEuler(&box->transform.rotation, &gUp, T3D_DEG_TO_RAD(45.0f), &box->transform.rotation);

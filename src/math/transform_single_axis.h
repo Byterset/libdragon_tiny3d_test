@@ -8,6 +8,7 @@
 typedef struct TransformSingleAxis {
     Vector3 position;
     Vector2 rotation;
+    Vector3 scale;
 } TransformSingleAxis;
 
 void transformSAToMatrix(TransformSingleAxis* transform, mat4x4 matrix);

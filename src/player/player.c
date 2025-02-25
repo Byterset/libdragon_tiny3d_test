@@ -146,9 +146,7 @@ void player_render_callback(void* data, struct render_batch* batch) {
 
     mat4x4 mtx;
     transformToMatrix(&player->transform, mtx);
-    mtx[3][0] *= SCENE_SCALE;
-    mtx[3][1] *= SCENE_SCALE;
-    mtx[3][2] *= SCENE_SCALE;
+    
     t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4 *)mtx);
 
     rdpq_mode_persp(true);
@@ -313,7 +311,7 @@ void player_init(struct player* player, struct player_definition* definition, Tr
 
     
     player->skelBlend = t3d_skeleton_clone(&player->renderable.model->skeleton, false);
-    player->transform.scale = (Vector3){{1, 1, 1}};
+    player->transform.scale = (Vector3){{1.0f, 1.0f, 1.0f}};
     player->camera_transform = camera_transform;
     player->desired_velocity = gZeroVec;
     player->is_on_ground = false;

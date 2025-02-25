@@ -42,9 +42,6 @@ void render_scene_render_renderable(void* data, struct render_batch* batch) {
 
     mat4x4 mtx;
     transformToMatrix(renderable->transform, mtx);
-    mtx[3][0] *= SCENE_SCALE;
-    mtx[3][1] *= SCENE_SCALE;
-    mtx[3][2] *= SCENE_SCALE;
 
     t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx);
 
@@ -65,9 +62,6 @@ void render_scene_render_renderable_single_axis(void* data, struct render_batch*
 
     mat4x4 mtx;
     transformSAToMatrix(renderable->transform, mtx);
-    mtx[3][0] *= SCENE_SCALE;
-    mtx[3][1] *= SCENE_SCALE;
-    mtx[3][2] *= SCENE_SCALE;
 
     t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx);
 
@@ -118,13 +112,9 @@ void render_scene_render(struct camera* camera, T3DViewport* viewport, struct fr
     for (int i = 0; i < r_scene_3d.callbacks.count; ++i) {
         struct render_scene_element* el = callback_element_get_data(current);
 
-
-
         // Skip elements outside the frustum, only check if center of Boundingsphere is set
         if(el->center) {
-            Vector3 scaledCenter;
-            vector3Scale(el->center, &scaledCenter, SCENE_SCALE);
-            if (!t3d_frustum_vs_sphere(&viewport->viewFrustum, (T3DVec3*)&scaledCenter, el->radius * SCENE_SCALE))
+            if (!t3d_frustum_vs_sphere(&viewport->viewFrustum, (T3DVec3*)el->center, el->radius))
             {
                 current = callback_list_next(&r_scene_3d.callbacks, current);
                 culled++;

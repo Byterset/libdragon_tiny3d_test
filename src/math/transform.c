@@ -1,6 +1,7 @@
 
 #include "transform.h"
 #include <assert.h>
+#include "../render/defs.h"
 
 void transformInitIdentity(Transform* in) {
     in->position = gZeroVec;
@@ -11,9 +12,9 @@ void transformInitIdentity(Transform* in) {
 void transformToMatrix(Transform* in, float mtx[4][4]) {
     quatToMatrix(&in->rotation, mtx);
 
-    mtx[0][0] *= in->scale.x; mtx[0][1] *= in->scale.x; mtx[0][2] *= in->scale.x;
-    mtx[1][0] *= in->scale.y; mtx[1][1] *= in->scale.y; mtx[1][2] *= in->scale.y;
-    mtx[2][0] *= in->scale.z; mtx[2][1] *= in->scale.z; mtx[2][2] *= in->scale.z;
+    mtx[0][0] *= in->scale.x * INV_MODEL_SCALE; mtx[0][1] *= in->scale.x * INV_MODEL_SCALE; mtx[0][2] *= in->scale.x * INV_MODEL_SCALE;
+    mtx[1][0] *= in->scale.y * INV_MODEL_SCALE; mtx[1][1] *= in->scale.y * INV_MODEL_SCALE; mtx[1][2] *= in->scale.y * INV_MODEL_SCALE;
+    mtx[2][0] *= in->scale.z * INV_MODEL_SCALE; mtx[2][1] *= in->scale.z * INV_MODEL_SCALE; mtx[2][2] *= in->scale.z * INV_MODEL_SCALE;
 
     mtx[3][0] = in->position.x;
     mtx[3][1] = in->position.y;

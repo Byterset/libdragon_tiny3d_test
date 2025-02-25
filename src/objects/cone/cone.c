@@ -26,7 +26,6 @@ static struct physics_object_collision_data cone_collision = {
 void cone_init(struct cone* cone, struct generic_object_pos_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&cone->transform);
-
     cone->transform.scale = (Vector3){{7.0f, 5.0f, 7.0f}};
     cone->transform.position = def->position;
     quatRotateAxisEuler(&cone->transform.rotation, &gRight, T3D_DEG_TO_RAD(0.0f), &cone->transform.rotation);

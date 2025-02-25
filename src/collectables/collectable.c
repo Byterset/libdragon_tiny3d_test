@@ -44,6 +44,7 @@ void collectable_init(struct collectable* collectable, struct collectable_defini
     collectable->collectable_sub_type = definition->collectable_sub_type;
     collectable->transform.position = definition->position;
     collectable->transform.rotation = definition->rotation;
+    collectable->transform.scale = (Vector3){{1.0f, 1.0f, 1.0f}};
     
     physics_object_init(
         entity_id_new(), 
