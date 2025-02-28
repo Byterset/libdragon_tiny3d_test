@@ -9,10 +9,6 @@
 #include "../collision/physics_object.h"
 #include <t3d/t3danim.h>
 
-#define PLAYER_MOVE_SPEED 8.0f
-#define PLAYER_TURN_SPEED 20.0f
-
-
 struct player_animations {
     T3DAnim idle;
     T3DAnim walk;
@@ -37,6 +33,7 @@ struct player {
     struct player_animations animations;
     Vector3 desired_velocity;
     bool is_on_ground;
+    bool ray_hit;
     Vector3 ground_normal;
 };
 

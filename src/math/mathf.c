@@ -4,6 +4,7 @@
  */
 
 #include "mathf.h"
+#include <math.h>
 
 unsigned int gRandomSeed = 1; // Seed value for pseudo-random number generation.
 
@@ -262,9 +263,5 @@ char floatTos8norm(float input) {
 }
 
 float safeInvert(float input) {
-    if (input == 0.0f) {
-        return 0.0f;
-    }
-
-    return 1.0f / input;
+    return (input != 0.0f) ? (1.0f / input) : (input > 0.0f ? INFINITY : -INFINITY);
 }

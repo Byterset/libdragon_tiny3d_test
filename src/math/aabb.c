@@ -8,6 +8,7 @@
 
 #include "aabb.h"
 #include <math.h>
+#include <float.h>
 #include "mathf.h"
 
 
@@ -65,62 +66,35 @@ int AABBHasOverlap(AABB* a, AABB* b) {
 /// @param origin Origin of the ray.
 /// @param direction Direction of the ray.
 /// @param max_distance Maximum distance of the ray after which intersections should not be considered.
-/// @return 
-int AABBIntersectsRay(AABB* box, RayCast* ray){
-    float t_near = -FLT_MAX;
-    float t_far = FLT_MAX;
-    float t1, t2;
+int AABBIntersectsRay(AABB *box, RayCast *ray) {
+    if (AABBContainsPoint(box, &ray->origin)) {
+        return 1;
+    }
 
-    // check if ray is parallel to X plane
-    if (fabsf(ray->dir.x) < EPSILON)
-    {
-        // if ray is not between the two x planes of the aabb there can be no intersection
-        if (ray->origin.x < box->min.x || ray->origin.x > box->max.x)
-            return 0;
-    }
-    else
-    {
-        t1 = (box->min.x - ray->origin.x) / ray->dir.x;
-        t2 = (box->max.x - ray->origin.x) / ray->dir.x;
-        t_near = fmaxf(t_near, fminf(t1, t2));
-        t_far = fminf(t_far, fmaxf(t1, t2));
-    }
-    // if the near intersection is further than the far intersection there is no intersection
-    if (t_near > t_far)
-        return 0;
+    float tEnter = -INFINITY, tExit = INFINITY;
 
-    // repeat for y and z planes
-    if (fabsf(ray->dir.y) < EPSILON)
-    {
-        if (ray->origin.y < box->min.y || ray->origin.y > box->max.y)
+    //for each axis
+    for (int i = 0; i < 3; i++) {
+        // if the ray is not parallel to the axis (dir[i] != 0)
+        // calculate the intersection distance of the planes of the box on the axis
+        if (ray->dir.data[i] != 0.0f) {
+            float t1 = (box->min.data[i] - ray->origin.data[i]) * ray->_invDir.data[i];
+            float t2 = (box->max.data[i] - ray->origin.data[i]) * ray->_invDir.data[i];
+            if (t1 > t2) {
+                float temp = t1;
+                t1 = t2;
+                t2 = temp;
+            }
+            tEnter = fmaxf(tEnter, t1);
+            tExit = fminf(tExit, t2);
+        } 
+        // if a ray is parallel to the axis (dir[i] == 0) and outside the box bounds it can not intersect
+        else if (ray->origin.data[i] < box->min.data[i] || ray->origin.data[i] > box->max.data[i]) {
             return 0;
+        }
     }
-    else
-    {
-        t1 = (box->min.y - ray->origin.y) / ray->dir.y;
-        t2 = (box->max.y - ray->origin.y) / ray->dir.y;
-        t_near = fmaxf(t_near, fminf(t1, t2));
-        t_far = fminf(t_far, fmaxf(t1, t2));
-    }
-    if (t_near > t_far)
-        return 0;
-    if (fabsf(ray->dir.z) < EPSILON)
-    {
-        if (ray->origin.z < box->min.z || ray->origin.z > box->max.z)
-            return 0;
-    }
-    else
-    {
-        t1 = (box->min.z - ray->origin.z) / ray->dir.z;
-        t2 = (box->max.z - ray->origin.z) / ray->dir.z;
-        t_near = fmaxf(t_near, fminf(t1, t2));
-        t_far = fminf(t_far, fmaxf(t1, t2));
-    }
-    if (t_near > t_far)
-        return 0;
 
-    // make sure the intersection is within the bounds of the ray
-    return (t_near >= 0 && t_near < ray->maxDistance);
+    return tEnter <= tExit && tExit >= 0.0f && tEnter <= ray->maxDistance;
 }
 
 /**

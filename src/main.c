@@ -6,6 +6,11 @@
 #include <t3d/t3danim.h>
 #include <t3d/t3ddebug.h>
 
+
+#include "debugDraw.h"
+
+#include <stdbool.h>
+
 #include "time/time.h"
 #include "render/frame_alloc.h"
 #include "render/render_scene.h"
@@ -38,9 +43,11 @@
 
 #include <malloc.h>
 
+#ifdef DEBUG_COLLIDERS_RAYLIB
 #include <raylib.h>
 #include <rlgl.h>
 #include <raymath.h>
+#endif
 
 volatile static int frame_happened = 0;
 
@@ -51,7 +58,7 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
-#define NUM_BOXES 5
+#define NUM_BOXES 3
 #define NUM_COINS 5
 
 struct player player;
@@ -78,7 +85,7 @@ struct player_definition playerDef = {
 };
 
 struct generic_object_pos_definition box_def = {
-    (Vector3){{85, 5, -127}}
+    (Vector3){{89, 5, -127}}
 };
 
 struct generic_object_pos_definition cone_def = {
@@ -116,7 +123,7 @@ void setup()
     update_reset();
     collision_scene_reset();
     collectable_assets_load();
-    camera_init(&camera, 70.0f, 1.0f, 140.0f);
+    camera_init(&camera, 70.0f, 3.0f, 140.0f);
     skybox_flat_init(&skybox_flat);
     
     for(int i = 0; i < NUM_BOXES; i++){
@@ -233,11 +240,13 @@ void render()
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree._nodeCount, aabbtree_objects_mem);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree._nodeCount, aabb_tree_mesh_mem);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "grounded? %d", player.is_on_ground);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 90, "rayhit? %d", player.ray_hit);
 
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Vel: %.2f, %.2f, %.2f", player.physics.velocity.x, player.physics.velocity.y, player.physics.velocity.z);
     // rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Grounded: %d",  player.collision.is_grounded);
+
 }
 
 int main()
@@ -318,6 +327,16 @@ int main()
         surface_t* fb = display_get();
         rdpq_attach(fb, display_get_zbuf());
         render();
+        rdpq_set_mode_standard();
+        Vector3 ray_start;
+        Vector3 ray_end;
+        vector3Add(&player.transform.position, &(Vector3){{0, 0, 0}}, &ray_start);
+        vector3Add(&ray_start, &(Vector3){{0, -3, 0}}, &ray_end);
+        uint16_t *buff = (uint16_t*)fb->buffer;
+        T3DVec3 ray_start_view, ray_end_view;
+        t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_start_view, (T3DVec3*)&ray_start);
+        t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_end_view, (T3DVec3*)&ray_end);
+        debugDrawLineVec3(buff, &ray_start_view, &ray_end_view, 0x92ff);
         rdpq_detach_wait();
         display_show(fb);
         rspq_wait();

@@ -9,6 +9,11 @@ void transformInitIdentity(Transform* in) {
     in->scale = gOneVec;
 }
 
+/// @brief This function will convert a Transform consisting of a position, quaternion rotation, and scale into a 4x4 float matrix
+/// The resulting matrix will be scaled by the inverse of the model scale, which is the scale that was applied to the model during conversion from gltf to t3d
+/// This is done to ensure that the model is rendered at its original size
+/// @param in 
+/// @param mtx 
 void transformToMatrix(Transform* in, float mtx[4][4]) {
     quatToMatrix(&in->rotation, mtx);
 
@@ -21,6 +26,9 @@ void transformToMatrix(Transform* in, float mtx[4][4]) {
     mtx[3][2] = in->position.z;
 }
 
+/// @brief Creates an inverted transform from the input transform
+/// @param in 
+/// @param out 
 void transformInvert(Transform* in, Transform* out) {
     assert(in != out);
 

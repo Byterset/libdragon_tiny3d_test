@@ -6,6 +6,7 @@
 #include "../math/math.h"
 #include "material.h"
 #include "defs.h"
+#include <stdbool.h>
 
 T3DVertPacked billboard_vertices[2];
 
@@ -242,7 +243,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
     bool is_sprite_mode = false;
     bool z_write = true;
     bool z_read = true;
-
+    rdpq_mode_persp(true);
     for (int i = 0; i < batch->element_count; ++i)
     {
         int index = order[i];
@@ -267,9 +268,8 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 } else {
                     t3d_fog_set_enabled(false);
                 }
-
                 rdpq_mode_zoverride(false, 0, 0);
-                rdpq_mode_persp(true);
+                
             }
 
             is_sprite_mode = should_sprite_mode;
@@ -278,6 +278,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
         if (element->type == RENDER_BATCH_MODEL)
         {
             rdpq_set_mode_standard();
+            rdpq_mode_persp(true);
             if(fog && fog->enabled){
                 rdpq_mode_fog(RDPQ_FOG_STANDARD);
                 rdpq_set_fog_color(fog->color);
@@ -287,7 +288,6 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 t3d_fog_set_enabled(false);
             }
             rdpq_mode_zoverride(false, 0, 0);
-            rdpq_mode_persp(true);
             rdpq_mode_zbuf(true, true);
             t3d_state_set_drawflags(T3D_FLAG_DEPTH | T3D_FLAG_SHADED | T3D_FLAG_TEXTURED | T3D_FLAG_CULL_BACK);
             // Skip if no rspq block

@@ -1,6 +1,7 @@
 #include "player.h"
 
 #include <libdragon.h>
+#include <t3d/t3d.h>
 
 #include "../render/render_scene.h"
 #include "../collision/collision_scene.h"
@@ -13,11 +14,12 @@
 #include "../collectables/collectable.h"
 
 #define PLAYER_MAX_SPEED    16.0f
-#define PLAYER_MAX_ACC       60.0f
-#define PLAYER_MAX_ACC_AIR   20.0f
+#define PLAYER_MAX_ACC       80.0f
+#define PLAYER_MAX_ACC_AIR   30.0f
 #define PLAYER_MAX_ANGLE_GROUND 45.0f
 #define PLAYER_MAX_ANGLE_GROUND_DOT cosf(T3D_DEG_TO_RAD(PLAYER_MAX_ANGLE_GROUND))
 #define PLAYER_JUMP_HEIGHT  5.2f
+#define PLAYER_TURN_SPEED 20.0f
 
 static Vector2 player_max_rotation;
 
@@ -129,6 +131,22 @@ void player_fixed_update(struct player* player){
     vector3Add(&zAxis, &player->physics.velocity, &player->physics.velocity);
 
     player_reset_state(player);
+
+    struct collision_scene *coll_scene = collision_scene_get();
+    Vector3 ray_origin = player->transform.position;
+    Vector3 ray_dir = (Vector3){{0.0f, -1.0f, 0.0f}};
+    RayCast ray = RayCast_create(ray_origin, ray_dir, 3.0f);
+
+    NodeProxy results[1];
+    int result_count = 0;
+    AABBTree_queryRay(&coll_scene->mesh_collider->aabbtree, &ray, results, &result_count, 1);
+
+    if(result_count > 0){
+        player->ray_hit = true;
+    }
+    else{
+        player->ray_hit = false;
+    }
 
 }
 

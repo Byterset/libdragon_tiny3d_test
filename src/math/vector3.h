@@ -19,6 +19,7 @@ typedef union Vector3u8 {
 
 extern Vector3 gRight;
 extern Vector3 gUp;
+extern Vector3 gDown;
 extern Vector3 gForward;
 extern Vector3 gZeroVec;
 extern Vector3 gOneVec;
