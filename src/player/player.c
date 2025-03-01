@@ -136,21 +136,16 @@ void player_fixed_update(struct player* player){
     Vector3 ray_origin = player->transform.position;
     ray_origin.y += 0.1f;
     Vector3 ray_dir = (Vector3){{0.0f, -1.0f, 0.0f}};
-    raycast ray = raycast_init(ray_origin, ray_dir, 2.0f, RAYCAST_COLLISION_SCENE_MASK_ALL, false);
-    raycast_hit hit;
-    hit.distance = INFINITY;
+    raycast ray = raycast_init(ray_origin, ray_dir, 2.0f, RAYCAST_COLLISION_SCENE_MASK_ALL, false, COLLISION_LAYER_PLAYER);
+    raycast_hit hit;    
 
-    raycast_cast(&ray, &hit, RAYCAST_COLLISION_SCENE_MASK_ALL);
-
-    // NodeProxy results[1];
-    // int result_count = 0;
-    // AABBTree_queryRay(&coll_scene->mesh_collider->aabbtree, &ray, results, &result_count, 1);
-
-    if(hit.distance < ray.maxDistance){
+    if(raycast_cast(&ray, &hit)){
         player->ray_hit = true;
+        player->ray_hit_entity = hit.hit_entity_id;
     }
     else{
         player->ray_hit = false;
+        player->ray_hit_entity = 0;
     }
 
 }
@@ -355,7 +350,7 @@ void player_init(struct player* player, struct player_definition* definition, Tr
         entity_id,
         &player->physics,
         &player_collision,
-        COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_DAMAGE_PLAYER | COLLISION_LAYER_COLLECTABLES,
+        COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_PLAYER | COLLISION_LAYER_COLLECTABLES,
         &player->transform.position,
         &player->transform.rotation,
         50.0f

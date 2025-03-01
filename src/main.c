@@ -233,19 +233,15 @@ void render()
     float aabbtree_objects_mem = (sizeof(AABBTree) + (sizeof(AABBTreeNode)) * collision_scene->object_aabbtree._nodeCount) / 1024.0f;
     float aabb_tree_mesh_mem = (sizeof(AABBTree) + (sizeof(AABBTreeNode)) * collision_scene->mesh_collider->aabbtree._nodeCount) / 1024.0f;
 
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "[A] Attack: %d", player.is_attacking);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "[B] Jump: %d", player.is_jumping);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "fps: %.1f, dT: %lu", fps, TICKS_TO_MS(deltatime_ticks));
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "mem: %d", ram_used);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree._nodeCount, aabbtree_objects_mem);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree._nodeCount, aabb_tree_mesh_mem);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "grounded? %d", player.is_on_ground);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 90, "rayhit? %d", player.ray_hit);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "fps: %.1f, dT: %lu", fps, TICKS_TO_MS(deltatime_ticks));
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "mem: %d", ram_used);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree._nodeCount, aabbtree_objects_mem);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree._nodeCount, aabb_tree_mesh_mem);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "rayhit? %d, entity_id: %d", player.ray_hit, player.ray_hit_entity);
 
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Vel: %.2f, %.2f, %.2f", player.physics.velocity.x, player.physics.velocity.y, player.physics.velocity.z);
-    // rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Grounded: %d",  player.collision.is_grounded);
 
 }
 

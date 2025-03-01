@@ -6,6 +6,7 @@
 #include "../math/mathf.h"
 #include "../entity/entity_id.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 /// @brief The raycast collision scene mask is used to filter what the raycast will test against.
 typedef enum raycast_collision_scene_mask {
@@ -21,23 +22,25 @@ typedef struct raycast {
     Vector3 _invDir;
     float maxDistance;
     raycast_collision_scene_mask mask;
+    uint16_t collision_layer_filter;
     bool interact_trigger;
 } raycast;
 
 /// @brief The raycast hit structure represents the result of a raycast.
 typedef struct raycast_hit {
+
     Vector3 point; // The impact point where the ray intersects the object or surface
     Vector3 normal; // The normal of the object or surface that was hit
     float distance; // The distance from the ray origin to the hit point
     entity_id hit_entity_id; // The entity id of the object that was hit, 0 if no object was hit or the hit was against the static collision scene
 } raycast_hit;
 
-raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_collision_scene_mask mask, bool interact_trigger);
+raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_collision_scene_mask mask, bool interact_trigger, uint16_t collision_layer_filter);
 
 void raycast_transform(Transform* transform, raycast* ray, raycast* output);
 
 float raycast_calc_distance_to_point(raycast* ray, Vector3* point);
 
-int raycast_cast(raycast* ray, raycast_hit* hit, raycast_collision_scene_mask mask);
+bool raycast_cast(raycast* ray, raycast_hit* hit);
 
 #endif

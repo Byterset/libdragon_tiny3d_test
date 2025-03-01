@@ -39,6 +39,7 @@ void vector3Lerp(Vector3* a, Vector3* b, float t, Vector3* out);
 float vector3Dot(Vector3* a, Vector3* b);
 float vector3MagSqrd(Vector3* a);
 float vector3DistSqrd(Vector3* a, Vector3* b);
+float vector3Dist(Vector3* a, Vector3* b);
 void vector3Cross(Vector3* a, Vector3* b, Vector3* out);
 void vector3Perp(Vector3* a, Vector3* out);
 void vector3Project(Vector3* in, Vector3* normal, Vector3* out);

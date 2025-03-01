@@ -34,7 +34,7 @@ void collision_scene_reset() {
     AABBTree_create(&g_scene.object_aabbtree, MIN_PHYSICS_OBJECTS);
     g_scene.elements = malloc(sizeof(struct collision_scene_element) * MIN_PHYSICS_OBJECTS);
     g_scene.capacity = MIN_PHYSICS_OBJECTS;
-    g_scene.count = 0;
+    g_scene.objectCount = 0;
     AABBTree_free(&g_scene.mesh_collider->aabbtree);
     g_scene.mesh_collider = NULL;
     g_scene.all_contacts = malloc(sizeof(struct contact) * MAX_ACTIVE_CONTACTS);
@@ -52,16 +52,16 @@ struct collision_scene* collision_scene_get() {
 }
 
 void collision_scene_add(struct physics_object* object) {
-    if (g_scene.count >= g_scene.capacity) {
+    if (g_scene.objectCount >= g_scene.capacity) {
         g_scene.capacity *= 2;
         g_scene.elements = realloc(g_scene.elements, sizeof(struct collision_scene_element) * g_scene.capacity);
     }
 
-    struct collision_scene_element* next = &g_scene.elements[g_scene.count];
+    struct collision_scene_element* next = &g_scene.elements[g_scene.objectCount];
 
     next->object = object;
 
-    g_scene.count += 1;
+    g_scene.objectCount += 1;
 
     hash_map_set(&g_scene.entity_mapping, object->entity_id, object);
     object->_aabb_tree_node_id = AABBTreeNode_createNode(&g_scene.object_aabbtree, object->bounding_box, object);
@@ -107,7 +107,7 @@ void collision_scene_release_object_contacts(struct physics_object* object) {
 void collision_scene_remove(struct physics_object* object) {
     bool has_found = false;
 
-    for (int i = 0; i < g_scene.count; ++i) {
+    for (int i = 0; i < g_scene.objectCount; ++i) {
         if (object == g_scene.elements[i].object) {
             collision_scene_release_object_contacts(object);
             has_found = true;
@@ -119,7 +119,7 @@ void collision_scene_remove(struct physics_object* object) {
     }
 
     if (has_found) {
-        g_scene.count -= 1;
+        g_scene.objectCount -= 1;
     }
     AABBTree_removeLeaf(&g_scene.object_aabbtree, object->_aabb_tree_node_id, true);
     hash_map_delete(&g_scene.entity_mapping, object->entity_id);
@@ -210,7 +210,7 @@ void collision_scene_step() {
     struct collision_scene_element* element;
 
     // Update the positions of the objects and update the AABB object tree
-    for (int i = 0; i < g_scene.count; ++i) {
+    for (int i = 0; i < g_scene.objectCount; ++i) {
         element = &g_scene.elements[i];
 
         collision_scene_release_object_contacts(element->object);
@@ -235,7 +235,7 @@ void collision_scene_step() {
     }
 
     // Perform collision detection and resolution for phys objects between each other
-    for (int i = 0; i < g_scene.count; ++i)
+    for (int i = 0; i < g_scene.objectCount; ++i)
     {
         element = &g_scene.elements[i];
         if(element->object->is_sleeping){
@@ -247,7 +247,7 @@ void collision_scene_step() {
     }
 
     // Update the sleep state of the objects so they can be put to sleep if they are not moving for a while
-    for (int i = 0; i < g_scene.count; i++)
+    for (int i = 0; i < g_scene.objectCount; i++)
     {
         element = &g_scene.elements[i];
 
@@ -304,7 +304,7 @@ void collision_scene_render_debug_raylib(){
     // if(g_scene.mesh_collider){ 
     //     DrawModelWires(g_scene.mesh_collider->raylib_mesh_model, (Raylib_Vector3){0, 0, 0}, 1, YELLOW);   
     // }
-    for (int i = 0; i < g_scene.count; ++i) {
+    for (int i = 0; i < g_scene.objectCount; ++i) {
         struct collision_scene_element* element = &g_scene.elements[i];
         struct physics_object* object = element->object;
 

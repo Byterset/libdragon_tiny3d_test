@@ -106,6 +106,10 @@ float vector3DistSqrd(Vector3* a, Vector3* b) {
     return x * x + y * y + z * z;
 }
 
+float vector3Dist(Vector3* a, Vector3* b){
+    return sqrtf(vector3DistSqrd(a, b));
+}
+
 void vector3Cross(Vector3* a, Vector3* b, Vector3* out) {
     out->x = a->y * b->z - a->z * b->y;
     out->y = a->z * b->x - a->x * b->z;

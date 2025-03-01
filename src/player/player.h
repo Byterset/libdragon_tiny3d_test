@@ -35,6 +35,7 @@ struct player {
     Vector3 desired_velocity;
     bool is_on_ground;
     bool ray_hit;
+    entity_id ray_hit_entity;
     Vector3 ground_normal;
 };
 

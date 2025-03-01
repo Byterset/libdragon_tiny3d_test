@@ -21,7 +21,7 @@ struct collision_scene {
     struct contact* next_free_contact;
     struct contact* all_contacts;
     struct hash_map entity_mapping;
-    uint16_t count;
+    uint16_t objectCount;
     uint16_t capacity;
     AABBTree object_aabbtree;
     struct mesh_collider* mesh_collider;
