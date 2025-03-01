@@ -56,7 +56,7 @@ bool raycast_triangle_intersection(raycast *ray, raycast_hit* hit, struct mesh_c
     vector3Cross(&ray->dir, &edge2, &h);
     float a = vector3Dot(&edge1, &h);
 
-    if (a == 0)
+    if (fabs(a) < EPSILON)
         return false;  // The ray is parallel to the triangle
 
     float f = 1.0 / a;
@@ -65,19 +65,19 @@ bool raycast_triangle_intersection(raycast *ray, raycast_hit* hit, struct mesh_c
     float u = f * vector3Dot(&s, &h);
 
     // Check if the intersection is outside the triangle
-    if (u < 0.0 || u > 1.0)
+    if (u < -EPSILON || u > 1.0 + EPSILON)
         return false;
 
     Vector3 q;
     vector3Cross(&s, &edge1, &q);
     float v = f * vector3Dot(&ray->dir, &q);
 
-    if (v < 0.0 || u + v > 1.0)
+    if (v < -EPSILON || u + v > 1.0 + EPSILON)
         return false;
 
     float t = f * vector3Dot(&edge2, &q);
 
-    if (t > 0) { // Ray intersects the triangle, t<0 means the triangle is behind the ray
+    if (t > EPSILON) { // Ray intersects the triangle, t<0 means the triangle is behind the ray
         hit->distance = t;
         hit->normal = triangle.normal;
         hit->hit_entity_id = 0;
@@ -134,33 +134,43 @@ bool raycast_object_intersection(raycast* ray, raycast_hit* hit, struct physics_
 /// @return true if the raycast has hit anything, false otherwise
 bool raycast_cast(raycast* ray, raycast_hit* hit){
     struct collision_scene* collision_scene = collision_scene_get();
+    // prepare result structures for AABBTree BVH queries
     int max_results = 8;
-    NodeProxy tri_results[max_results];
-    NodeProxy obj_results[max_results];
-    int tri_result_count = 0;
-    int obj_result_count = 0;
+    NodeProxy results[max_results];
+    int result_count = 0;
     raycast_hit current_hit;
     hit->distance = INFINITY;
     current_hit.distance = INFINITY;
     bool has_intersection = false;
+
+    // check for intersection with the static collision scene if the mask allows it
     if(ray->mask & RAYCAST_COLLISION_SCENE_MASK_STATIC_COLLISION && collision_scene->mesh_collider != NULL){
-        AABBTree_queryRay(&collision_scene->mesh_collider->aabbtree, ray, tri_results, &tri_result_count, max_results);
-        for (size_t i = 0; i < tri_result_count; i++)
+        // query the BVH of mesh triangles for potential intersection candidates
+        AABBTree_queryRay(&collision_scene->mesh_collider->aabbtree, ray, results, &result_count, max_results);
+
+        //iterate over the results and perform the ray-triangle intersection test, update the hit object if the current result is closer
+        for (size_t i = 0; i < result_count; i++)
         {
             current_hit.distance = INFINITY;
-            int triangle_index = (int)AABBTreeNode_getData(&collision_scene->mesh_collider->aabbtree, tri_results[i]);
+            int triangle_index = (int)AABBTreeNode_getData(&collision_scene->mesh_collider->aabbtree, results[i]);
             has_intersection = has_intersection | raycast_triangle_intersection(ray, &current_hit, collision_scene->mesh_collider, triangle_index);
             if(current_hit.distance < hit->distance){
                 *hit = current_hit;
             }
         }
-        
     }
+    result_count = 0;
+    
+    // check for intersection with physics objects if the mask allows it
     if(ray->mask & RAYCAST_COLLISION_SCENE_MASK_PHYSICS_OBJECTS && collision_scene->objectCount > 0){
-        AABBTree_queryRay(&collision_scene->object_aabbtree, ray, obj_results, &obj_result_count, max_results);
-        for (size_t i = 0; i < obj_result_count; i++)
+
+        // query the BVH of physics objects for potential intersection candidates
+        AABBTree_queryRay(&collision_scene->object_aabbtree, ray, results, &result_count, max_results);
+
+        //iterate over the results and perform the ray-object intersection test, update the hit object if the current result is closer
+        for (size_t i = 0; i < result_count; i++)
         {
-            struct physics_object *object = (struct physics_object *)AABBTreeNode_getData(&collision_scene->object_aabbtree, obj_results[i]);
+            struct physics_object *object = (struct physics_object *)AABBTreeNode_getData(&collision_scene->object_aabbtree, results[i]);
             // skip if the node does not contain a physics object or if the object is a trigger and the ray does not interact with triggers
             if (!object || object->collision_layers & ray->collision_layer_filter || (object->is_trigger && !ray->interact_trigger)) continue;
             current_hit.distance = INFINITY;
@@ -171,6 +181,7 @@ bool raycast_cast(raycast* ray, raycast_hit* hit){
             
         }
     }
+
     return has_intersection;
 
 }

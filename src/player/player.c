@@ -134,7 +134,7 @@ void player_fixed_update(struct player* player){
 
     struct collision_scene *coll_scene = collision_scene_get();
     Vector3 ray_origin = player->transform.position;
-    ray_origin.y += 0.1f;
+    ray_origin.y += 0.5f;
     Vector3 ray_dir = (Vector3){{0.0f, -1.0f, 0.0f}};
     raycast ray = raycast_init(ray_origin, ray_dir, 2.0f, RAYCAST_COLLISION_SCENE_MASK_ALL, false, COLLISION_LAYER_PLAYER);
     raycast_hit hit;    
