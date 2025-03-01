@@ -65,13 +65,21 @@ $(function() {
 <div class="textblock">Here is a list of all functions, variables, defines, enums, and typedefs with links to the files they belong to:</div>
 
 <h3><a id="index_p"></a>- p -</h3><ul>
-<li>pack_position_vector()
-: <a class="el" href="defs_8h.html#ace1036a44bd17a4a8f79641311b2de32">defs.h</a>
-, <a class="el" href="defs_8c.html#ace1036a44bd17a4a8f79641311b2de32">defs.c</a>
+<li>PHYS_OBJECT_SLEEP_STEPS
+: <a class="el" href="physics__object_8h.html#ab2b19ac7761786f798e7cf010b81cfd1">physics_object.h</a>
+</li>
+<li>PHYS_OBJECT_SLEEP_THRESHOLD
+: <a class="el" href="physics__object_8h.html#a935436297405872e7fda64a435ab4bdf">physics_object.h</a>
+</li>
+<li>PHYS_OBJECT_SLEEP_THRESHOLD_SQ
+: <a class="el" href="physics__object_8h.html#a241aa8438495d63f5f41028f10f84405">physics_object.h</a>
+</li>
+<li>PHYS_OBJECT_TERMINAL_Y_VELOCITY
+: <a class="el" href="physics__object_8h.html#a5aefdd6728e1a721e820f8ece4bb0ec7">physics_object.h</a>
 </li>
 <li>physics_object_accelerate()
-: <a class="el" href="physics__object_8h.html#a1852f8ccc2f40bfe1dc50bdfa59f9fb7">physics_object.h</a>
-, <a class="el" href="physics__object_8c.html#a1852f8ccc2f40bfe1dc50bdfa59f9fb7">physics_object.c</a>
+: <a class="el" href="physics__object_8c.html#a1852f8ccc2f40bfe1dc50bdfa59f9fb7">physics_object.c</a>
+, <a class="el" href="physics__object_8h.html#a1852f8ccc2f40bfe1dc50bdfa59f9fb7">physics_object.h</a>
 </li>
 <li>physics_object_apply_constraints()
 : <a class="el" href="physics__object_8c.html#a361ca8b6bc848059b6f27f1d75ad7a59">physics_object.c</a>
@@ -96,8 +104,8 @@ $(function() {
 , <a class="el" href="physics__object_8h.html#a8ab9507d5950e9fadecaba5cc4500fde">physics_object.h</a>
 </li>
 <li>physics_object_is_touching()
-: <a class="el" href="physics__object_8c.html#a7fcb557fd238f9bd365d891084edc57b">physics_object.c</a>
-, <a class="el" href="physics__object_8h.html#a7fcb557fd238f9bd365d891084edc57b">physics_object.h</a>
+: <a class="el" href="physics__object_8h.html#a7fcb557fd238f9bd365d891084edc57b">physics_object.h</a>
+, <a class="el" href="physics__object_8c.html#a7fcb557fd238f9bd365d891084edc57b">physics_object.c</a>
 </li>
 <li>physics_object_nearest_contact()
 : <a class="el" href="physics__object_8c.html#aa3e86c2136548098a7b35b8e3599fa8a">physics_object.c</a>
@@ -154,21 +162,24 @@ $(function() {
 : <a class="el" href="main_8c.html#a5e0a8b59267a0142f08d108514e78f1d">main.c</a>
 </li>
 <li>plat_def
-: <a class="el" href="main_8c.html#a49791d6da22e2328903950155c4dd19e">main.c</a>
+: <a class="el" href="main_8c.html#a58a4ad79284b9d0536c1023deddf992e">main.c</a>
 </li>
 <li>platform_destroy()
-: <a class="el" href="platform_8c.html#a1881b843d939d75d7378fd4c2a0d71e0">platform.c</a>
-, <a class="el" href="platform_8h.html#a1881b843d939d75d7378fd4c2a0d71e0">platform.h</a>
+: <a class="el" href="platform_8h.html#a1881b843d939d75d7378fd4c2a0d71e0">platform.h</a>
+, <a class="el" href="platform_8c.html#a1881b843d939d75d7378fd4c2a0d71e0">platform.c</a>
 </li>
 <li>platform_init()
-: <a class="el" href="platform_8c.html#aa78d7201259592da422b12b9c4f2fd5e">platform.c</a>
-, <a class="el" href="platform_8h.html#aa78d7201259592da422b12b9c4f2fd5e">platform.h</a>
+: <a class="el" href="platform_8c.html#a62751cb26e2151430f50cc6b7374a2d2">platform.c</a>
+, <a class="el" href="platform_8h.html#a62751cb26e2151430f50cc6b7374a2d2">platform.h</a>
 </li>
 <li>platform_update()
 : <a class="el" href="platform_8c.html#a6d0833f4351c1d1a15e580a1214f10e1">platform.c</a>
 </li>
 <li>player
 : <a class="el" href="main_8c.html#a17162130f1eeca8018805556745c7464">main.c</a>
+</li>
+<li>player_custom_render()
+: <a class="el" href="player_8c.html#ad9b79120740bc539f59218243f1ffd47">player.c</a>
 </li>
 <li>player_destroy()
 : <a class="el" href="player_8c.html#af70b4352eed410c90498788398ca2588">player.c</a>
@@ -180,6 +191,9 @@ $(function() {
 <li>player_get_move_basis()
 : <a class="el" href="player_8c.html#a9d6809256887c47324e2819ddadac0c4">player.c</a>
 </li>
+<li>player_handle_contacts()
+: <a class="el" href="player_8c.html#ae8da51163d8d2752e3f293e3e810dec7">player.c</a>
+</li>
 <li>player_init()
 : <a class="el" href="player_8c.html#a1adb94cf02af9985c6a57012df8919cd">player.c</a>
 , <a class="el" href="player_8h.html#a1adb94cf02af9985c6a57012df8919cd">player.h</a>
@@ -190,14 +204,26 @@ $(function() {
 <li>PLAYER_MAX_ACC
 : <a class="el" href="player_8c.html#a8d6717cea1716e07dff3aa384a73ba53">player.c</a>
 </li>
+<li>PLAYER_MAX_ACC_AIR
+: <a class="el" href="player_8c.html#a8824e512f5e174f2ed4312d026592fcb">player.c</a>
+</li>
+<li>PLAYER_MAX_ANGLE_GROUND
+: <a class="el" href="player_8c.html#ae9d9531bba7fd0c14780e81e32054ba9">player.c</a>
+</li>
+<li>PLAYER_MAX_ANGLE_GROUND_DOT
+: <a class="el" href="player_8c.html#a02f3c002fe759be8d48da7690ed5327e">player.c</a>
+</li>
 <li>PLAYER_MAX_SPEED
 : <a class="el" href="player_8c.html#a9e5036cddf12afce2f37ae0c25934d9c">player.c</a>
 </li>
-<li>PLAYER_MOVE_SPEED
-: <a class="el" href="player_8h.html#aa7d6456606cb871e7505952566c8d4d4">player.h</a>
+<li>player_render_callback()
+: <a class="el" href="player_8c.html#a9e58e78481ec60d532ee32d7f855658d">player.c</a>
+</li>
+<li>player_reset_state()
+: <a class="el" href="player_8c.html#ad8a9ac976ae23727d7bdc5073c08e1f1">player.c</a>
 </li>
 <li>PLAYER_TURN_SPEED
-: <a class="el" href="player_8h.html#ae70792103dbd4eba86a68e2b9984f6f0">player.h</a>
+: <a class="el" href="player_8c.html#ae70792103dbd4eba86a68e2b9984f6f0">player.c</a>
 </li>
 <li>player_update()
 : <a class="el" href="player_8c.html#ab3738b09bb737c62e2567dd74c5d1ffe">player.c</a>
@@ -207,6 +233,9 @@ $(function() {
 </li>
 <li>powf()
 : <a class="el" href="mathf_8h.html#a03f6d8cf8c48e1ee7b02eecf14e859d2">mathf.h</a>
+</li>
+<li>ProjectOnContactPlane()
+: <a class="el" href="player_8c.html#a7031635469b89841ede28cc5b18d6fd7">player.c</a>
 </li>
 </ul>
 </div><!-- contents -->

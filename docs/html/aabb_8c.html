@@ -77,27 +77,31 @@ $(function() {
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="aabb_8h_source.html">aabb.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="math_8h_source.html">math.h</a>&gt;</code><br />
+<code>#include &lt;float.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="mathf_8h_source.html">mathf.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for aabb.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="aabb_8c__incl.png" border="0" usemap="#asrc_2math_2aabb_8c" alt=""/></div>
 <map name="asrc_2math_2aabb_8c" id="asrc_2math_2aabb_8c">
-<area shape="rect" title="Implementation of the AABB structure and functions to work with Axis Aligned Bounding Boxes." alt="" coords="67,5,194,32"/>
-<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="5,80,72,107"/>
-<area shape="rect" href="math_8h.html" title="This file contains the declaration of commonly used integer math functions." alt="" coords="97,80,165,107"/>
-<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="189,80,261,107"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="33,379,116,405"/>
-<area shape="rect" href="ray_8h.html" title=" " alt="" coords="44,155,97,181"/>
-<area shape="rect" href="transform_8h.html" title=" " alt="" coords="95,229,193,256"/>
-<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="145,304,249,331"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="156,379,239,405"/>
+<area shape="rect" title="Implementation of the AABB structure and functions to work with Axis Aligned Bounding Boxes." alt="" coords="474,5,601,32"/>
+<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="279,80,345,107"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="516,229,639,256"/>
+<area shape="rect" href="math_8h.html" title="This file contains the declaration of commonly used integer math functions." alt="" coords="539,80,607,107"/>
+<area shape="rect" title=" " alt="" coords="631,80,694,107"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="5,379,88,405"/>
+<area shape="rect" href="raycast_8h.html" title=" " alt="" coords="236,155,388,181"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="67,229,215,256"/>
+<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="239,229,385,256"/>
+<area shape="rect" title=" " alt="" coords="409,229,492,256"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="117,304,221,331"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="128,379,211,405"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa9e32cd3518713263a89632d0ee62bbf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#aa9e32cd3518713263a89632d0ee62bbf">AABBContainsPoint</a> (<a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>, <a class="el" href="structVector3.html">Vector3</a> *point)</td></tr>
+<tr class="memitem:aa9e32cd3518713263a89632d0ee62bbf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#aa9e32cd3518713263a89632d0ee62bbf">AABBContainsPoint</a> (<a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>, <a class="el" href="unionVector3.html">Vector3</a> *point)</td></tr>
 <tr class="memdesc:aa9e32cd3518713263a89632d0ee62bbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a point is contained within an Axis-Aligned Bounding Box (<a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a>).  <a href="aabb_8c.html#aa9e32cd3518713263a89632d0ee62bbf">More...</a><br /></td></tr>
 <tr class="separator:aa9e32cd3518713263a89632d0ee62bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab43a0d86fbdc9da047e9752053c760cd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#ab43a0d86fbdc9da047e9752053c760cd">AABBContainsAABB</a> (<a class="el" href="structAABB.html">AABB</a> *a, <a class="el" href="structAABB.html">AABB</a> *b)</td></tr>
@@ -106,23 +110,23 @@ Functions</h2></td></tr>
 <tr class="memitem:a487c37761a59909958cfbff8802e254f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#a487c37761a59909958cfbff8802e254f">AABBHasOverlap</a> (<a class="el" href="structAABB.html">AABB</a> *a, <a class="el" href="structAABB.html">AABB</a> *b)</td></tr>
 <tr class="memdesc:a487c37761a59909958cfbff8802e254f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if two Axis-Aligned Bounding Boxes (<a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a>) overlap.  <a href="aabb_8c.html#a487c37761a59909958cfbff8802e254f">More...</a><br /></td></tr>
 <tr class="separator:a487c37761a59909958cfbff8802e254f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaae4bbe7862989aae12aedf225468561"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#aaae4bbe7862989aae12aedf225468561">AABBIntersectsRay</a> (<a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>, <a class="el" href="structRayCast.html">RayCast</a> *ray)</td></tr>
-<tr class="memdesc:aaae4bbe7862989aae12aedf225468561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if an Axis-Aligned Bounding Box (<a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a>) intersects with a ray.  <a href="aabb_8c.html#aaae4bbe7862989aae12aedf225468561">More...</a><br /></td></tr>
-<tr class="separator:aaae4bbe7862989aae12aedf225468561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb481e3d8868ede7f951a61fbf28d999"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#adb481e3d8868ede7f951a61fbf28d999">AABBIntersectsRay</a> (<a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>, <a class="el" href="structraycast.html">raycast</a> *ray)</td></tr>
+<tr class="memdesc:adb481e3d8868ede7f951a61fbf28d999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if an Axis-Aligned Bounding Box (<a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a>) intersects with a ray.  <a href="aabb_8c.html#adb481e3d8868ede7f951a61fbf28d999">More...</a><br /></td></tr>
+<tr class="separator:adb481e3d8868ede7f951a61fbf28d999"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed3128ee4d12553deb22d71f262af94e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAABB.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#aed3128ee4d12553deb22d71f262af94e">AABBUnion</a> (<a class="el" href="structAABB.html">AABB</a> *a, <a class="el" href="structAABB.html">AABB</a> *b)</td></tr>
 <tr class="memdesc:aed3128ee4d12553deb22d71f262af94e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the union of two axis-aligned bounding boxes (AABBs).  <a href="aabb_8c.html#aed3128ee4d12553deb22d71f262af94e">More...</a><br /></td></tr>
 <tr class="separator:aed3128ee4d12553deb22d71f262af94e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d90745cdd3a390e255ae8819b7a15f7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#a3d90745cdd3a390e255ae8819b7a15f7">AABBGetArea</a> (<a class="el" href="structAABB.html">AABB</a> aabb)</td></tr>
 <tr class="separator:a3d90745cdd3a390e255ae8819b7a15f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1351716ef4165a7363d9762d26461da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAABB.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#ac1351716ef4165a7363d9762d26461da">AABBUnionPoint</a> (<a class="el" href="structAABB.html">AABB</a> *a, <a class="el" href="structVector3.html">Vector3</a> *point)</td></tr>
+<tr class="memitem:ac1351716ef4165a7363d9762d26461da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAABB.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#ac1351716ef4165a7363d9762d26461da">AABBUnionPoint</a> (<a class="el" href="structAABB.html">AABB</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *point)</td></tr>
 <tr class="memdesc:ac1351716ef4165a7363d9762d26461da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the union of an axis-aligned bounding box (<a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a>) and a point.  <a href="aabb_8c.html#ac1351716ef4165a7363d9762d26461da">More...</a><br /></td></tr>
 <tr class="separator:ac1351716ef4165a7363d9762d26461da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fcf2c016b29bf43c3f91e16020d26c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAABB.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#a1fcf2c016b29bf43c3f91e16020d26c1">AABBFromTriangle</a> (<a class="el" href="structVector3.html">Vector3</a> *a, <a class="el" href="structVector3.html">Vector3</a> *b, <a class="el" href="structVector3.html">Vector3</a> *c)</td></tr>
+<tr class="memitem:a1fcf2c016b29bf43c3f91e16020d26c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAABB.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#a1fcf2c016b29bf43c3f91e16020d26c1">AABBFromTriangle</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b, <a class="el" href="unionVector3.html">Vector3</a> *c)</td></tr>
 <tr class="separator:a1fcf2c016b29bf43c3f91e16020d26c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a137db538aeb53089308acbede0558e96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#a137db538aeb53089308acbede0558e96">AABBExtendDirection</a> (<a class="el" href="structAABB.html">AABB</a> *a, <a class="el" href="structVector3.html">Vector3</a> *direction, <a class="el" href="structAABB.html">AABB</a> *out)</td></tr>
+<tr class="memitem:a137db538aeb53089308acbede0558e96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#a137db538aeb53089308acbede0558e96">AABBExtendDirection</a> (<a class="el" href="structAABB.html">AABB</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *direction, <a class="el" href="structAABB.html">AABB</a> *out)</td></tr>
 <tr class="memdesc:a137db538aeb53089308acbede0558e96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extends an axis-aligned bounding box (<a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a>) in a specified direction.  <a href="aabb_8c.html#a137db538aeb53089308acbede0558e96">More...</a><br /></td></tr>
 <tr class="separator:a137db538aeb53089308acbede0558e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2329ef30f72e87dc9510120a6d5bc167"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#a2329ef30f72e87dc9510120a6d5bc167">AABBSupportFunction</a> (<a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>, <a class="el" href="structVector3.html">Vector3</a> *input, <a class="el" href="structVector3.html">Vector3</a> *output)</td></tr>
+<tr class="memitem:a2329ef30f72e87dc9510120a6d5bc167"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="aabb_8c.html#a2329ef30f72e87dc9510120a6d5bc167">AABBSupportFunction</a> (<a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>, <a class="el" href="unionVector3.html">Vector3</a> *input, <a class="el" href="unionVector3.html">Vector3</a> *output)</td></tr>
 <tr class="memdesc:a2329ef30f72e87dc9510120a6d5bc167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the support function for an axis-aligned bounding box (<a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a>).  <a href="aabb_8c.html#a2329ef30f72e87dc9510120a6d5bc167">More...</a><br /></td></tr>
 <tr class="separator:a2329ef30f72e87dc9510120a6d5bc167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -183,7 +187,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>point</em>&#160;</td>
         </tr>
         <tr>
@@ -199,7 +203,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">box</td><td>A pointer to the <a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a> structure that defines the bounding box. </td></tr>
-    <tr><td class="paramname">point</td><td>A pointer to the <a class="el" href="structVector3.html">Vector3</a> structure that defines the point to be checked. </td></tr>
+    <tr><td class="paramname">point</td><td>A pointer to the <a class="el" href="unionVector3.html">Vector3</a> structure that defines the point to be checked. </td></tr>
   </table>
   </dd>
 </dl>
@@ -222,7 +226,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>direction</em>, </td>
         </tr>
         <tr>
@@ -261,19 +265,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structAABB.html">AABB</a> AABBFromTriangle </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>
@@ -343,8 +347,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aaae4bbe7862989aae12aedf225468561"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaae4bbe7862989aae12aedf225468561">&#9670;&nbsp;</a></span>AABBIntersectsRay()</h2>
+<a id="adb481e3d8868ede7f951a61fbf28d999"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb481e3d8868ede7f951a61fbf28d999">&#9670;&nbsp;</a></span>AABBIntersectsRay()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -358,7 +362,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structRayCast.html">RayCast</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structraycast.html">raycast</a> *&#160;</td>
           <td class="paramname"><em>ray</em>&#160;</td>
         </tr>
         <tr>
@@ -379,8 +383,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><br  />
- </dd></dl>
 
 </div>
 </div>
@@ -399,13 +401,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>
@@ -482,7 +484,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>point</em>&#160;</td>
         </tr>
         <tr>

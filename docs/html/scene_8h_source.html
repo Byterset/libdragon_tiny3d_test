@@ -99,7 +99,7 @@ $(function() {
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// we will assume that all enities in the scene will define an init and destroy function,</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// as well as have a enity definition struct define in the form of struct name_definition</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="scene_8h.html#a6bbe680a3e5d6948080da1a68eefbe01">   30</a></span>&#160;<span class="preprocessor">#define ENTITY_DEFINITION(name) {#name, (entity_init)name ## _init, (entity_destroy)name ## _destroy, sizeof(struct name), sizeof(struct name ## _definition)}</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// #define ENTITY_DEFINITION(name) {#name, (entity_init)name ## _init, (entity_destroy)name ## _destroy, sizeof(struct name), sizeof(struct name ## _definition)}</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="structentity__data.html">   32</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structentity__data.html">entity_data</a> {</div>
 <div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structentity__data.html#a9056dd68be645c0e0efa5b57afda22d7">   33</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structentity__definition.html">entity_definition</a>* <a class="code" href="structentity__data.html#a9056dd68be645c0e0efa5b57afda22d7">definition</a>;</div>
@@ -181,7 +181,7 @@ $(function() {
 <div class="ttc" id="astructloading__zone_html_acf752375a5bcc4680b16f5ea0fcd4f68"><div class="ttname"><a href="structloading__zone.html#acf752375a5bcc4680b16f5ea0fcd4f68">loading_zone::bounding_box</a></div><div class="ttdeci">AABB bounding_box</div><div class="ttdef"><b>Definition:</b> scene.h:43</div></div>
 <div class="ttc" id="astructmesh__collider_html"><div class="ttname"><a href="structmesh__collider.html">mesh_collider</a></div><div class="ttdef"><b>Definition:</b> mesh_collider.h:35</div></div>
 <div class="ttc" id="astructmodel_html"><div class="ttname"><a href="structmodel.html">model</a></div><div class="ttdef"><b>Definition:</b> model.h:10</div></div>
-<div class="ttc" id="astructplayer_html"><div class="ttname"><a href="structplayer.html">player</a></div><div class="ttdef"><b>Definition:</b> player.h:28</div></div>
+<div class="ttc" id="astructplayer_html"><div class="ttname"><a href="structplayer.html">player</a></div><div class="ttdef"><b>Definition:</b> player.h:25</div></div>
 <div class="ttc" id="astructrender__batch_html"><div class="ttname"><a href="structrender__batch.html">render_batch</a></div><div class="ttdef"><b>Definition:</b> render_batch.h:71</div></div>
 <div class="ttc" id="astructscene_html"><div class="ttname"><a href="structscene.html">scene</a></div><div class="ttdef"><b>Definition:</b> scene.h:47</div></div>
 <div class="ttc" id="astructscene_html_a11f0928ff360a301fb978749e14ab803"><div class="ttname"><a href="structscene.html#a11f0928ff360a301fb978749e14ab803">scene::static_entity_count</a></div><div class="ttdeci">uint16_t static_entity_count</div><div class="ttdef"><b>Definition:</b> scene.h:62</div></div>

@@ -109,12 +109,12 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a59ccb10c7c0dda5c8b88ee8210b7c1b7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a59ccb10c7c0dda5c8b88ee8210b7c1b7">MAX_EPA_ITERATIONS</a>&#160;&#160;&#160;14</td></tr>
-<tr class="separator:a59ccb10c7c0dda5c8b88ee8210b7c1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a63662f55cb687505d94be7e03b6ada"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a7a63662f55cb687505d94be7e03b6ada">MAX_SIMPLEX_POINTS</a>&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#a59ccb10c7c0dda5c8b88ee8210b7c1b7">MAX_EPA_ITERATIONS</a>)</td></tr>
-<tr class="separator:a7a63662f55cb687505d94be7e03b6ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76db094680bff26d14032901f72cad1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a76db094680bff26d14032901f72cad1c">MAX_SIMPLEX_TRIANGLES</a>&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#a59ccb10c7c0dda5c8b88ee8210b7c1b7">MAX_EPA_ITERATIONS</a> * 2)</td></tr>
-<tr class="separator:a76db094680bff26d14032901f72cad1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea71bad120f57c3a6bd4ab7d15fe4991"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a>&#160;&#160;&#160;14</td></tr>
+<tr class="separator:aea71bad120f57c3a6bd4ab7d15fe4991"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43bc70e13a08ba885f5444e56d3107fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a43bc70e13a08ba885f5444e56d3107fd">EPA_MAX_SIMPLEX_POINTS</a>&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a>)</td></tr>
+<tr class="separator:a43bc70e13a08ba885f5444e56d3107fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a4ad0a9e90d1fef62ae437d3957eed2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2a4ad0a9e90d1fef62ae437d3957eed2">EPA_MAX_SIMPLEX_TRIANGLES</a>&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a> * 2)</td></tr>
+<tr class="separator:a2a4ad0a9e90d1fef62ae437d3957eed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab235c239a6e46cad5248e0d87c8a722e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ab235c239a6e46cad5248e0d87c8a722e">NEXT_FACE</a>(index)&#160;&#160;&#160;((index) == 2 ? 0 : (index) + 1)</td></tr>
 <tr class="separator:ab235c239a6e46cad5248e0d87c8a722e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2960398afbe529123f120fdc076305e0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2960398afbe529123f120fdc076305e0">GET_PARENT_INDEX</a>(heapIndex)&#160;&#160;&#160;(((heapIndex) - 1) &gt;&gt; 1)</td></tr>
@@ -138,7 +138,7 @@ Functions</h2></td></tr>
 <tr class="separator:a49c32da4e2117521983f3d404c3a2665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a7b74e90c3ccc356079d81da21a6c8b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a9a7b74e90c3ccc356079d81da21a6c8b">validateExpandingSimplex</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex)</td></tr>
 <tr class="separator:a9a7b74e90c3ccc356079d81da21a6c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8ca62890a2e069d2140b9d6934d3f1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ab8ca62890a2e069d2140b9d6934d3f1a">expandingSimplexAddPoint</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, <a class="el" href="structVector3.html">Vector3</a> *aPoint, <a class="el" href="structVector3.html">Vector3</a> *pointDiff)</td></tr>
+<tr class="memitem:ab8ca62890a2e069d2140b9d6934d3f1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ab8ca62890a2e069d2140b9d6934d3f1a">expandingSimplexAddPoint</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, <a class="el" href="unionVector3.html">Vector3</a> *aPoint, <a class="el" href="unionVector3.html">Vector3</a> *pointDiff)</td></tr>
 <tr class="separator:ab8ca62890a2e069d2140b9d6934d3f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0fa74102fc937adc2f9a89dcf6b5824"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ab0fa74102fc937adc2f9a89dcf6b5824">expandingSimplexSiftDownHeap</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, int heapIndex)</td></tr>
 <tr class="separator:ab0fa74102fc937adc2f9a89dcf6b5824"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,14 +168,14 @@ Functions</h2></td></tr>
 <tr class="separator:a554560619194b6a49b203c1962c3ff64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb4ed823dbbf84f086b4e66273a6337"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a6fb4ed823dbbf84f086b4e66273a6337">expandingSimplexExpand</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *expandingSimplex, int newPointIndex, int faceToRemoveIndex)</td></tr>
 <tr class="separator:a6fb4ed823dbbf84f086b4e66273a6337"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69431df68139038ef4a2a95fb3a95072"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a69431df68139038ef4a2a95fb3a95072">epaCalculateContact</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *closestFace, <a class="el" href="structVector3.html">Vector3</a> *planePos, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="memitem:a69431df68139038ef4a2a95fb3a95072"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a69431df68139038ef4a2a95fb3a95072">epaCalculateContact</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *closestFace, <a class="el" href="unionVector3.html">Vector3</a> *planePos, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
 <tr class="separator:a69431df68139038ef4a2a95fb3a95072"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d915fe1547382b06cee6ebae14c66b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2d915fe1547382b06cee6ebae14c66b3">epaSolve</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectBSum, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
 <tr class="memdesc:a2d915fe1547382b06cee6ebae14c66b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the Expanding Polytope Algorithm (EPA) to find the penetration depth and contact normal between two objects.  <a href="epa_8c.html#a2d915fe1547382b06cee6ebae14c66b3">More...</a><br /></td></tr>
 <tr class="separator:a2d915fe1547382b06cee6ebae14c66b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aec61053fa2dd19ddace5ebe2f26dff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2aec61053fa2dd19ddace5ebe2f26dff">epaSweptFindFace</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, <a class="el" href="structVector3.html">Vector3</a> *direction, int *startTriangleIndex, int *startFaceEdge)</td></tr>
+<tr class="memitem:a2aec61053fa2dd19ddace5ebe2f26dff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2aec61053fa2dd19ddace5ebe2f26dff">epaSweptFindFace</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, <a class="el" href="unionVector3.html">Vector3</a> *direction, int *startTriangleIndex, int *startFaceEdge)</td></tr>
 <tr class="separator:a2aec61053fa2dd19ddace5ebe2f26dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ab04215e88cfb4b60614d47bfb0db92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2ab04215e88cfb4b60614d47bfb0db92">epaSolveSwept</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectBSum, <a class="el" href="structVector3.html">Vector3</a> *bStart, <a class="el" href="structVector3.html">Vector3</a> *bEnd, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="memitem:a2ab04215e88cfb4b60614d47bfb0db92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2ab04215e88cfb4b60614d47bfb0db92">epaSolveSwept</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectBSum, <a class="el" href="unionVector3.html">Vector3</a> *bStart, <a class="el" href="unionVector3.html">Vector3</a> *bEnd, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
 <tr class="separator:a2ab04215e88cfb4b60614d47bfb0db92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf3e9b77a5cad2a29960a73b2b322d28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#adf3e9b77a5cad2a29960a73b2b322d28">epaSwapResult</a> (struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
 <tr class="separator:adf3e9b77a5cad2a29960a73b2b322d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,6 +186,48 @@ Variables</h2></td></tr>
 <tr class="separator:a3f474261ac8e3caa56746a959b517488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="aea71bad120f57c3a6bd4ab7d15fe4991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea71bad120f57c3a6bd4ab7d15fe4991">&#9670;&nbsp;</a></span>EPA_MAX_ITERATIONS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EPA_MAX_ITERATIONS&#160;&#160;&#160;14</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a43bc70e13a08ba885f5444e56d3107fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43bc70e13a08ba885f5444e56d3107fd">&#9670;&nbsp;</a></span>EPA_MAX_SIMPLEX_POINTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EPA_MAX_SIMPLEX_POINTS&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2a4ad0a9e90d1fef62ae437d3957eed2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a4ad0a9e90d1fef62ae437d3957eed2">&#9670;&nbsp;</a></span>EPA_MAX_SIMPLEX_TRIANGLES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EPA_MAX_SIMPLEX_TRIANGLES&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a> * 2)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a1b3e9a0b40d077216ed6346612a9a6ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1b3e9a0b40d077216ed6346612a9a6ad">&#9670;&nbsp;</a></span>EXPANDING_SIMPLEX_GET_DISTANCE</h2>
 
@@ -254,48 +296,6 @@ Variables</h2></td></tr>
           <td class="paramtype">&#160;</td>
           <td class="paramname">heapIndex</td><td>)</td>
           <td>&#160;&#160;&#160;(((heapIndex) - 1) &gt;&gt; 1)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a59ccb10c7c0dda5c8b88ee8210b7c1b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59ccb10c7c0dda5c8b88ee8210b7c1b7">&#9670;&nbsp;</a></span>MAX_EPA_ITERATIONS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MAX_EPA_ITERATIONS&#160;&#160;&#160;14</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7a63662f55cb687505d94be7e03b6ada"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a63662f55cb687505d94be7e03b6ada">&#9670;&nbsp;</a></span>MAX_SIMPLEX_POINTS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MAX_SIMPLEX_POINTS&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#a59ccb10c7c0dda5c8b88ee8210b7c1b7">MAX_EPA_ITERATIONS</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a76db094680bff26d14032901f72cad1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76db094680bff26d14032901f72cad1c">&#9670;&nbsp;</a></span>MAX_SIMPLEX_TRIANGLES</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MAX_SIMPLEX_TRIANGLES&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#a59ccb10c7c0dda5c8b88ee8210b7c1b7">MAX_EPA_ITERATIONS</a> * 2)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -374,7 +374,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>planePos</em>, </td>
         </tr>
         <tr>
@@ -499,13 +499,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>bStart</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>bEnd</em>, </td>
         </tr>
         <tr>
@@ -557,7 +557,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>direction</em>, </td>
         </tr>
         <tr>
@@ -597,13 +597,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>aPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>pointDiff</em>&#160;</td>
         </tr>
         <tr>

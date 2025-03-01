@@ -90,31 +90,32 @@ Include dependency graph for gjk.c:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ab9353c8da66c2756d3b15d5fee38cc9c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#ab9353c8da66c2756d3b15d5fee38cc9c">MAX_GJK_ITERATIONS</a>&#160;&#160;&#160;18</td></tr>
-<tr class="separator:ab9353c8da66c2756d3b15d5fee38cc9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca7c73020abfbfa5b057429a9d4425b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#aca7c73020abfbfa5b057429a9d4425b1">GJK_MAX_ITERATIONS</a>&#160;&#160;&#160;18</td></tr>
+<tr class="separator:aca7c73020abfbfa5b057429a9d4425b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a3b66502a89a2fe01e80c043ae8ce0c51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#a3b66502a89a2fe01e80c043ae8ce0c51">simplexInit</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex)</td></tr>
 <tr class="separator:a3b66502a89a2fe01e80c043ae8ce0c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a508c231388d385f2a9db54cee8d12a2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#a508c231388d385f2a9db54cee8d12a2d">simplexAddPoint</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, <a class="el" href="structVector3.html">Vector3</a> *aPoint, <a class="el" href="structVector3.html">Vector3</a> *bPoint)</td></tr>
+<tr class="memitem:a508c231388d385f2a9db54cee8d12a2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#a508c231388d385f2a9db54cee8d12a2d">simplexAddPoint</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, <a class="el" href="unionVector3.html">Vector3</a> *aPoint, <a class="el" href="unionVector3.html">Vector3</a> *bPoint)</td></tr>
 <tr class="separator:a508c231388d385f2a9db54cee8d12a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5ca1dc49f749bf05b76ab85772f111a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#aa5ca1dc49f749bf05b76ab85772f111a">simplexMovePoint</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, int to, int from)</td></tr>
 <tr class="separator:aa5ca1dc49f749bf05b76ab85772f111a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32a94eba7a51df7a5344f2f816a85a87"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#a32a94eba7a51df7a5344f2f816a85a87">simplexCheck</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, <a class="el" href="structVector3.html">Vector3</a> *nextDirection)</td></tr>
+<tr class="memitem:a32a94eba7a51df7a5344f2f816a85a87"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#a32a94eba7a51df7a5344f2f816a85a87">simplexCheck</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, <a class="el" href="unionVector3.html">Vector3</a> *nextDirection)</td></tr>
 <tr class="separator:a32a94eba7a51df7a5344f2f816a85a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0ec43b861f31e3a7b7a09e1eae7a151"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#ab0ec43b861f31e3a7b7a09e1eae7a151">gjkCheckForOverlap</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, void *objectA, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectBSupport, <a class="el" href="structVector3.html">Vector3</a> *firstDirection)</td></tr>
+<tr class="memitem:ab0ec43b861f31e3a7b7a09e1eae7a151"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#ab0ec43b861f31e3a7b7a09e1eae7a151">gjkCheckForOverlap</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, void *objectA, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectBSupport, <a class="el" href="unionVector3.html">Vector3</a> *firstDirection)</td></tr>
+<tr class="memdesc:ab0ec43b861f31e3a7b7a09e1eae7a151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes two objects and their support functions and checks if they overlap using the GJK algorithm.  <a href="gjk_8c.html#ab0ec43b861f31e3a7b7a09e1eae7a151">More...</a><br /></td></tr>
 <tr class="separator:ab0ec43b861f31e3a7b7a09e1eae7a151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ab9353c8da66c2756d3b15d5fee38cc9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9353c8da66c2756d3b15d5fee38cc9c">&#9670;&nbsp;</a></span>MAX_GJK_ITERATIONS</h2>
+<a id="aca7c73020abfbfa5b057429a9d4425b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca7c73020abfbfa5b057429a9d4425b1">&#9670;&nbsp;</a></span>GJK_MAX_ITERATIONS</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MAX_GJK_ITERATIONS&#160;&#160;&#160;18</td>
+          <td class="memname">#define GJK_MAX_ITERATIONS&#160;&#160;&#160;18</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -161,7 +162,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>firstDirection</em>&#160;</td>
         </tr>
         <tr>
@@ -172,6 +173,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Takes two objects and their support functions and checks if they overlap using the GJK algorithm. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>pointer to the simplex structure to use for the GJK algorithm and EPA </td></tr>
+    <tr><td class="paramname">objectA</td><td>first physics object </td></tr>
+    <tr><td class="paramname">objectASupport</td><td>support function for the first object </td></tr>
+    <tr><td class="paramname">objectB</td><td>second physics object </td></tr>
+    <tr><td class="paramname">objectBSupport</td><td>support function for the second object </td></tr>
+    <tr><td class="paramname">firstDirection</td><td>initial direction to search for the origin </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if the objects overlap, 0 otherwise </dd></dl>
+
 </div>
 </div>
 <a id="a508c231388d385f2a9db54cee8d12a2d"></a>
@@ -181,7 +196,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structVector3.html">Vector3</a>* simplexAddPoint </td>
+          <td class="memname"><a class="el" href="unionVector3.html">Vector3</a>* simplexAddPoint </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structSimplex.html">Simplex</a> *&#160;</td>
           <td class="paramname"><em>simplex</em>, </td>
@@ -189,13 +204,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>aPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>bPoint</em>&#160;</td>
         </tr>
         <tr>
@@ -223,7 +238,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>nextDirection</em>&#160;</td>
         </tr>
         <tr>

@@ -74,14 +74,16 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="transform_8h_source.html">transform.h</a>&quot;</code><br />
 <code>#include &lt;assert.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="defs_8h_source.html">../render/defs.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for transform.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="transform_8c__incl.png" border="0" usemap="#asrc_2math_2transform_8c" alt=""/></div>
 <map name="asrc_2math_2transform_8c" id="asrc_2math_2transform_8c">
-<area shape="rect" title=" " alt="" coords="66,5,225,32"/>
+<area shape="rect" title=" " alt="" coords="122,5,281,32"/>
 <area shape="rect" href="transform_8h.html" title=" " alt="" coords="41,80,140,107"/>
 <area shape="rect" title=" " alt="" coords="164,80,239,107"/>
+<area shape="rect" href="defs_8h.html" title=" " alt="" coords="263,80,383,107"/>
 <area shape="rect" href="vector3_8h.html" title=" " alt="" coords="5,229,88,256"/>
 <area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="84,155,188,181"/>
 <area shape="rect" href="vector2_8h.html" title=" " alt="" coords="112,229,195,256"/>
@@ -93,14 +95,16 @@ Functions</h2></td></tr>
 <tr class="memitem:ab1fdce3bac300a142e69c44937ad9dad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#ab1fdce3bac300a142e69c44937ad9dad">transformInitIdentity</a> (<a class="el" href="structTransform.html">Transform</a> *in)</td></tr>
 <tr class="separator:ab1fdce3bac300a142e69c44937ad9dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2dcc2b04d051d1eb89c83b582c824dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#ae2dcc2b04d051d1eb89c83b582c824dc">transformToMatrix</a> (<a class="el" href="structTransform.html">Transform</a> *in, float mtx[4][4])</td></tr>
+<tr class="memdesc:ae2dcc2b04d051d1eb89c83b582c824dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will convert a <a class="el" href="structTransform.html">Transform</a> consisting of a position, quaternion rotation, and scale into a 4x4 float matrix The resulting matrix will be scaled by the inverse of the model scale, which is the scale that was applied to the model during conversion from gltf to t3d This is done to ensure that the model is rendered at its original size.  <a href="transform_8c.html#ae2dcc2b04d051d1eb89c83b582c824dc">More...</a><br /></td></tr>
 <tr class="separator:ae2dcc2b04d051d1eb89c83b582c824dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18c8382d87b13a06f02805ceb181c76c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#a18c8382d87b13a06f02805ceb181c76c">transformInvert</a> (<a class="el" href="structTransform.html">Transform</a> *in, <a class="el" href="structTransform.html">Transform</a> *out)</td></tr>
+<tr class="memdesc:a18c8382d87b13a06f02805ceb181c76c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an inverted transform from the input transform.  <a href="transform_8c.html#a18c8382d87b13a06f02805ceb181c76c">More...</a><br /></td></tr>
 <tr class="separator:a18c8382d87b13a06f02805ceb181c76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8626c4b42c4eed39a9196b822eef050f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#a8626c4b42c4eed39a9196b822eef050f">transformPoint</a> (<a class="el" href="structTransform.html">Transform</a> *transform, <a class="el" href="structVector3.html">Vector3</a> *in, <a class="el" href="structVector3.html">Vector3</a> *out)</td></tr>
+<tr class="memitem:a8626c4b42c4eed39a9196b822eef050f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#a8626c4b42c4eed39a9196b822eef050f">transformPoint</a> (<a class="el" href="structTransform.html">Transform</a> *transform, <a class="el" href="unionVector3.html">Vector3</a> *in, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
 <tr class="separator:a8626c4b42c4eed39a9196b822eef050f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f5e37a661543b1e1f81b44fefdf2929"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#a5f5e37a661543b1e1f81b44fefdf2929">transformPointInverse</a> (<a class="el" href="structTransform.html">Transform</a> *transform, <a class="el" href="structVector3.html">Vector3</a> *in, <a class="el" href="structVector3.html">Vector3</a> *out)</td></tr>
+<tr class="memitem:a5f5e37a661543b1e1f81b44fefdf2929"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#a5f5e37a661543b1e1f81b44fefdf2929">transformPointInverse</a> (<a class="el" href="structTransform.html">Transform</a> *transform, <a class="el" href="unionVector3.html">Vector3</a> *in, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
 <tr class="separator:a5f5e37a661543b1e1f81b44fefdf2929"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f6131f5b8dec2329ee52d1f2ee5674f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#a5f6131f5b8dec2329ee52d1f2ee5674f">transformPointInverseNoScale</a> (<a class="el" href="structTransform.html">Transform</a> *transform, <a class="el" href="structVector3.html">Vector3</a> *in, <a class="el" href="structVector3.html">Vector3</a> *out)</td></tr>
+<tr class="memitem:a5f6131f5b8dec2329ee52d1f2ee5674f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#a5f6131f5b8dec2329ee52d1f2ee5674f">transformPointInverseNoScale</a> (<a class="el" href="structTransform.html">Transform</a> *transform, <a class="el" href="unionVector3.html">Vector3</a> *in, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
 <tr class="separator:a5f6131f5b8dec2329ee52d1f2ee5674f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7dab0a4c403f7043437fdf81c485879"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#ad7dab0a4c403f7043437fdf81c485879">transformConcat</a> (<a class="el" href="structTransform.html">Transform</a> *left, <a class="el" href="structTransform.html">Transform</a> *right, <a class="el" href="structTransform.html">Transform</a> *output)</td></tr>
 <tr class="separator:ad7dab0a4c403f7043437fdf81c485879"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,6 +190,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Creates an inverted transform from the input transform. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td></td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a59621cd2a367ba6b4ae6a0d64f31cf6f"></a>
@@ -243,13 +257,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -277,13 +291,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -311,13 +325,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -355,6 +369,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This function will convert a <a class="el" href="structTransform.html">Transform</a> consisting of a position, quaternion rotation, and scale into a 4x4 float matrix The resulting matrix will be scaled by the inverse of the model scale, which is the scale that was applied to the model during conversion from gltf to t3d This is done to ensure that the model is rendered at its original size. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td></td></tr>
+    <tr><td class="paramname">mtx</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
