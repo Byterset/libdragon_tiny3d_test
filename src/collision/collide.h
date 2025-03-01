@@ -2,6 +2,7 @@
 #define __COLLISION_COLLIDE_H__
 
 #include "mesh_collider.h"
+#include "raycast.h"
 #include "physics_object.h"
 #include "epa.h"
 

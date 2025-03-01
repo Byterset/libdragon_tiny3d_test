@@ -686,7 +686,7 @@ void AABBTree_queryPoint(AABBTree *tree, Vector3 point, NodeProxy *results, int 
 /// @param results the pre-initialized array of NodeProxies to store the results
 /// @param result_count the amount of results found
 /// @param max_results the maximum amount of results to find
-void AABBTree_queryRay(AABBTree *tree, RayCast* ray, NodeProxy *results, int *result_count, int max_results){
+void AABBTree_queryRay(AABBTree *tree, raycast* ray, NodeProxy *results, int *result_count, int max_results){
     // return if the tree is empty
     if (tree->root == NULL_NODE)
     {

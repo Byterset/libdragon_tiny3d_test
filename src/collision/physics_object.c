@@ -5,6 +5,14 @@
 #include <math.h>
 #include <stddef.h>
 
+/// @brief Initializes a physics object with the given parameters
+/// @param entity_id 
+/// @param object 
+/// @param collision 
+/// @param collision_layers 
+/// @param position 
+/// @param rotation 
+/// @param mass 
 void physics_object_init(
     entity_id entity_id,
     struct physics_object* object, 
@@ -72,8 +80,8 @@ void physics_object_update_velocity_verlet_simple(struct physics_object* object)
 }
 
 void physics_object_apply_constraints(struct physics_object* object){
-    if (object->position->y <= -300){
-        *object->position = (Vector3){{0, 100, 0}};
+    if (object->position->y <= -20){
+        *object->position = (Vector3){{0, 20, 0}};
         object->velocity = gZeroVec;
     }
     if (object->position->y >= 2000){
@@ -105,15 +113,23 @@ void physics_object_accelerate(struct physics_object* object, Vector3* accelerat
     vector3Add(&object->acceleration, acceleration, &object->acceleration);
 }
 
+/// @brief Set the velocity of the object to the given velocity vector
+/// @param object 
+/// @param velocity 
 void physics_object_set_velocity(struct physics_object* object, Vector3* velocity){
     vector3Copy(velocity, &object->velocity);
 }
 
+/// @brief apply and impulse force to the object
+/// @param object 
+/// @param impulse 
 void physics_object_apply_impulse(struct physics_object* object, Vector3* impulse) {
     vector3AddScaled(&object->velocity, impulse, 1.0f / object->mass, &object->velocity);
 }
 
-
+/// @brief iterate through the active contacts of the object and return the contact with the smallest distance to the object
+/// @param object the physics_object whose contacts are to be checked
+/// @return the contact with the smallest distance to the object
 struct contact* physics_object_nearest_contact(struct physics_object* object) {
     struct contact* nearest_target = NULL;
     struct contact* current = object->active_contacts;
@@ -132,6 +148,10 @@ struct contact* physics_object_nearest_contact(struct physics_object* object) {
     return nearest_target;
 }
 
+/// @brief iterate through the active contacts of the object and check if the given entity id is in the list
+/// @param object the physics_object whose contacts are to be checked
+/// @param id the entity id of the object to check for
+/// @return true if the object is in the list of contacts, false otherwise
 bool physics_object_is_touching(struct physics_object* object, entity_id id) {
     struct contact* current = object->active_contacts;
 
@@ -146,6 +166,10 @@ bool physics_object_is_touching(struct physics_object* object, entity_id id) {
     return false;
 }
 
+/// @brief will transform the given direction vector into the local space of the object and then call the GJK support function associated with the object
+/// @param data expected to be a pointer to a physics_object
+/// @param direction the direction vector in world space
+/// @param output the resulting Support point in world space
 void physics_object_gjk_support_function(void* data, Vector3* direction, Vector3* output) {
     struct physics_object* object = (struct physics_object*)data;
     Vector3 world_center;

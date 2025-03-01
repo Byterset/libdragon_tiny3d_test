@@ -66,7 +66,7 @@ int AABBHasOverlap(AABB* a, AABB* b) {
 /// @param origin Origin of the ray.
 /// @param direction Direction of the ray.
 /// @param max_distance Maximum distance of the ray after which intersections should not be considered.
-int AABBIntersectsRay(AABB *box, RayCast *ray) {
+int AABBIntersectsRay(AABB *box, raycast *ray) {
     if (AABBContainsPoint(box, &ray->origin)) {
         return 1;
     }

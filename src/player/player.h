@@ -8,6 +8,7 @@
 #include "../render/model.h"
 #include "../collision/physics_object.h"
 #include <t3d/t3danim.h>
+#include <stdbool.h>
 
 struct player_animations {
     T3DAnim idle;

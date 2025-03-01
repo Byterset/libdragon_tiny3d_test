@@ -8,7 +8,7 @@
 #define _MATH_BOX3D_H
 
 #include "vector3.h"
-#include "ray.h"
+#include "../collision/raycast.h"
 
 /**
  * @brief The Axis Aligned Bounding Box (AABB) structure.
@@ -25,7 +25,7 @@ int AABBContainsAABB(AABB* a, AABB* b);
 
 int AABBHasOverlap(AABB* a, AABB* b);
 
-int AABBIntersectsRay(AABB* box, RayCast* ray);
+int AABBIntersectsRay(AABB* box, raycast* ray);
 
 float AABBGetArea(AABB aabb);
 

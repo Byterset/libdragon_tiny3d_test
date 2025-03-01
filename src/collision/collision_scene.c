@@ -145,26 +145,25 @@ void collision_scene_remove_static_collision() {
 /// @param element the scene element (phys object) to check for collisions
 void collision_scene_collide_phys_object(struct collision_scene_element* element) {
 
+    //perform a broad phase check to find potential collision candidates by traversing the AABB BVH tree 
+    //and collecting leaf nodes that overlap with the object's bounding box
     int result_count = 0;
-    int max_results = 5;
+    int max_results = 4;
     NodeProxy results[max_results];
-
     AABBTree_queryBounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, max_results);
-    for (size_t j = 0; j < result_count; j++)
+
+    //iterate over the list of candidates and perform detailed collision detection
+    for (size_t i = 0; i < result_count; i++)
     {
-        struct physics_object *other = (struct physics_object *)AABBTreeNode_getData(&g_scene.object_aabbtree, results[j]);
+        struct physics_object *other = (struct physics_object *)AABBTreeNode_getData(&g_scene.object_aabbtree, results[i]);
         // skip narrow phase if there is no physics object associated with the result node
         // or if it is the same object as the one queried
         if (!other || other == element->object)
         {
             continue;
         }
+        collide_object_to_object(element->object, other);
 
-        // only do detailed collision calculation if the bounding boxes overlap
-        if (AABBHasOverlap(&element->object->bounding_box, &other->bounding_box))
-        {
-            collide_object_to_object(element->object, other);
-        }
     }
 }
 

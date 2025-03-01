@@ -101,14 +101,13 @@ void collide_object_to_mesh(struct physics_object* object, struct mesh_collider*
 /// Then it performs a GJK/EPA collision detection and resolution.
 /// @param a physics object a
 /// @param b physics object b
-/// @return returns 1 if an overlap was resolved (NOTE: a 0 return does not mean no collision happened, only that no overlap was resolved)
 void collide_object_to_object(struct physics_object* a, struct physics_object* b) {
     // If the Object don't share any collision layers, don't collide
     if (!(a->collision_layers & b->collision_layers)) {
         return;
     }
 
-    // If the objects are in the same collision group, don't collide (eg. player vs player, or enemy vs enemy)
+    // If the objects are in the same collision group, don't collide (eg. multiple projectiles emmited by enemies)
     if (a->collision_group && (a->collision_group == b->collision_group)) {
         return;
     }

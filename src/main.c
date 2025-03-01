@@ -261,7 +261,7 @@ int main()
     #endif
 
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS_DEDITHER);
-    display_set_fps_limit(60);
+    display_set_fps_limit(30);
 
     rdpq_init();
     joypad_init();
@@ -327,16 +327,27 @@ int main()
         surface_t* fb = display_get();
         rdpq_attach(fb, display_get_zbuf());
         render();
+
+
+        // RENDER DEBUG_RAYCAST
         rdpq_set_mode_standard();
         Vector3 ray_start;
         Vector3 ray_end;
-        vector3Add(&player.transform.position, &(Vector3){{0, 0, 0}}, &ray_start);
-        vector3Add(&ray_start, &(Vector3){{0, -3, 0}}, &ray_end);
+        Vector3 ray_dir;
+        float ray_dist = 2.0f;
+        vector3Add(&player.transform.position, &(Vector3){{0, 0.1f, 0}}, &ray_start);
+        ray_dir = (Vector3){{0, -1, 0}};
+        vector3Normalize(&ray_dir, &ray_dir);
+        vector3Scale(&ray_dir, &ray_end, ray_dist);
+        vector3Add(&ray_start, &ray_end, &ray_end);
         uint16_t *buff = (uint16_t*)fb->buffer;
         T3DVec3 ray_start_view, ray_end_view;
         t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_start_view, (T3DVec3*)&ray_start);
         t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_end_view, (T3DVec3*)&ray_end);
         debugDrawLineVec3(buff, &ray_start_view, &ray_end_view, 0x92ff);
+        
+        
+        
         rdpq_detach_wait();
         display_show(fb);
         rspq_wait();
