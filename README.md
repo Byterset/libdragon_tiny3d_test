@@ -38,6 +38,9 @@ A In-Progress 3D Game & Physics Engine based on [Libdragon](https://github.com/D
 
 > Libdragon and Tiny3D are included as submodules in this repository and pointing to commit versions that are known to be compatible. This Repository relies on Libdragon Preview Features.
 
+> [!IMPORTANT]  
+> some assets where redistribution might be deemed problematic have been omitted from the repository, this may block you from successfully building
+
 1) Init git Submodules
 2) Install Libdragon according to the [installation guide](https://github.com/DragonMinded/libdragon/wiki/Installing-libdragon) (make sure to also read the README if you are not familiar with libdragon already)
 3) Install Tiny3D, should be as easy as running the `build.sh` in the tiny3d submodule
