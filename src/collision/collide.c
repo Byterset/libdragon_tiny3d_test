@@ -102,7 +102,7 @@ void collide_object_to_mesh(struct physics_object* object, struct mesh_collider*
 /// @param a physics object a
 /// @param b physics object b
 void collide_object_to_object(struct physics_object* a, struct physics_object* b) {
-    // If the Object don't share any collision layers, don't collide
+    // If the Objects don't share any collision layers, don't collide
     if (!(a->collision_layers & b->collision_layers)) {
         return;
     }

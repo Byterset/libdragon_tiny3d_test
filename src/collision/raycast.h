@@ -7,6 +7,9 @@
 #include "../entity/entity_id.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include <libdragon.h>
+
+#define RAYCAST_MAX_DISTANCE 1000.0f
 
 /// @brief The raycast collision scene mask is used to filter what the raycast will test against.
 typedef enum raycast_collision_scene_mask {
@@ -17,13 +20,13 @@ typedef enum raycast_collision_scene_mask {
 
 /// @brief The raycast structure represents a raycast in 3D space. Don't create this structure directly, use raycast_init instead.
 typedef struct raycast {
-    Vector3 origin;
-    Vector3 dir;
-    Vector3 _invDir;
-    float maxDistance;
-    raycast_collision_scene_mask mask;
-    uint16_t collision_layer_filter;
-    bool interact_trigger;
+    Vector3 origin; // The origin of the ray
+    Vector3 dir; // The direction of the ray (will be normalized on initialization)
+    Vector3 _invDir; // The inverse direction of the ray, precomputed for repeated testing against BVH nodes
+    float maxDistance; // The maximum distance the ray will travel, limited to 1000.0f, cannot be negative
+    raycast_collision_scene_mask mask; // Determines what the ray will test against (static collision, physics objects, etc.)
+    uint16_t collision_layer_filter; // Filter for collision layers, objects that match this filter will be ignored
+    bool interact_trigger; // If true, the ray will test for hits with trigger colliders
 } raycast;
 
 /// @brief The raycast hit structure represents the result of a raycast.

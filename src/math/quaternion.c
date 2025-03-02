@@ -5,6 +5,7 @@
 #include <math.h>
 
 Quaternion gQuaternionZero = {0.0f, 0.0f, 0.0f, 0.0f};
+Quaternion gQuaternionIdentity = {0.0f, 0.0f, 0.0f, 1.0f};
 
 void quatIdent(Quaternion* q) {
     q->x = 0.0f;
@@ -318,16 +319,6 @@ void quatRotateAxisEuler(Quaternion *q, Vector3 *axis, float angleRad, Quaternio
     *out = tmp;
 }
 
-int quatIsIdentical(Quaternion* a, Quaternion* b){
-    // Calculate the difference between the quaternions
-    float dx = b->x - a->x;
-    float dy = b->y - a->y;
-    float dz = b->z - a->z;
-    float dw = b->w - a->w;
-
-    // Calculate the magnitude of the difference
-    float magnitude = sqrtf(dx * dx + dy * dy + dz * dz + dw * dw);
-
-    // If the magnitude is greater than a small epsilon value, the quaternion has changed
-    return magnitude == 0;
+int quatIsIdentical(Quaternion* a, Quaternion* b) {
+    return (a->x == b->x) && (a->y == b->y) && (a->z == b->z) && (a->w == b->w);
 }

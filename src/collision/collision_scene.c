@@ -204,87 +204,84 @@ void collision_scene_collide_single(struct physics_object* object, Vector3* prev
     *object->position = *prev_pos;
 }
 
-/// @brief performs a physics step on all objects in the scene, updating their positions and velocities and performing collision detection
+/// @brief performs a physics step on all objects in the scene, updating their positions, velocities, Bounding Boxes and performing collision detection
 void collision_scene_step() {
-
     struct collision_scene_element* element;
+    bool moved_flags[g_scene.objectCount];
+    bool rotated_flags[g_scene.objectCount];
 
-    // Update the positions of the objects and update the AABB object tree
+    // First loop: Position updates and AABB maintenance
     for (int i = 0; i < g_scene.objectCount; ++i) {
         element = &g_scene.elements[i];
+        struct physics_object* obj = element->object;
 
-        collision_scene_release_object_contacts(element->object);
+        if (!obj->is_sleeping) {
+            collision_scene_release_object_contacts(obj);
 
-        if (element->object->has_gravity && !element->object->is_sleeping) // don't apply gravity to sleeping objects
-        {
-            element->object->acceleration.y += GRAVITY_CONSTANT * element->object->gravity_scalar;
-        }
-        physics_object_update_velocity_verlet_simple(element->object);
-        int rot_same = 1;
-        if(element->object->rotation){
-            rot_same = quatIsIdentical(element->object->rotation, &element->object->_prev_step_rot);
-        }
-        if (vector3Equals(&element->object->_prev_step_pos, element->object->position) && rot_same)
-        {
-            continue;
-        }
-        physics_object_recalculate_aabb(element->object);
-        Vector3 displacement;
-        vector3Sub(element->object->position, &element->object->_prev_step_pos, &displacement);
-        AABBTree_moveNode(&g_scene.object_aabbtree, element->object->_aabb_tree_node_id, element->object->bounding_box, &displacement);
-    }
-
-    // Perform collision detection and resolution for phys objects between each other
-    for (int i = 0; i < g_scene.objectCount; ++i)
-    {
-        element = &g_scene.elements[i];
-        if(element->object->is_sleeping){
-            continue;
-        }
-
-        collision_scene_collide_phys_object(element);
-
-    }
-
-    // Update the sleep state of the objects so they can be put to sleep if they are not moving for a while
-    for (int i = 0; i < g_scene.objectCount; i++)
-    {
-        element = &g_scene.elements[i];
-
-        if (g_scene.mesh_collider && !element->object->is_sleeping && !element->object->is_fixed && element->object->collision_layers & COLLISION_LAYER_TANGIBLE)
-        {
-            collision_scene_collide_single(element->object, &element->object->_prev_step_pos);
-        }
-
-        physics_object_apply_constraints(element->object);
-        Vector3 displacement_after_collision;
-        vector3Sub(element->object->position, &element->object->_prev_step_pos, &displacement_after_collision);
-        float displacement_dist = sqrtf(vector3MagSqrd(&displacement_after_collision));
-        int rot_same = 1;
-
-        element->object->_prev_step_pos = *element->object->position;
-        if(element->object->rotation){
-            rot_same = quatIsIdentical(element->object->rotation, &element->object->_prev_step_rot);
-            element->object->_prev_step_rot = *element->object->rotation;
-        }
-
-        if (displacement_dist < PHYS_OBJECT_SLEEP_THRESHOLD && rot_same)
-        {
-            element->object->_sleep_counter += 1;
-            if (element->object->_sleep_counter > PHYS_OBJECT_SLEEP_STEPS)
-            {
-                element->object->_sleep_counter = PHYS_OBJECT_SLEEP_STEPS;
-                element->object->is_sleeping = 1;
-                
+            if (obj->has_gravity && !obj->is_fixed) {
+                obj->acceleration.y += GRAVITY_CONSTANT * obj->gravity_scalar;
             }
-
-            continue;
         }
-        element->object->is_sleeping = 0;
-        element->object->_sleep_counter = 0;
+        physics_object_update_velocity_verlet_simple(obj);
 
+        // Track movement for AABB updates
+        const bool has_moved = !vector3Equals(&obj->_prev_step_pos, obj->position);
+        const bool has_rotated = obj->rotation ? !quatIsIdentical(obj->rotation, &obj->_prev_step_rot) : false;
+        moved_flags[i] = has_moved;
+        rotated_flags[i] = has_rotated;
+
+        if (!obj->is_sleeping && (has_moved || has_rotated)) {
+            // would be technically correct to do this after all objects have been updated but this saves a loop
+            collision_scene_collide_phys_object(element);
+
+
+            physics_object_recalculate_aabb(obj);
+            Vector3 displacement;
+            vector3Sub(obj->position, &obj->_prev_step_pos, &displacement);
+            AABBTree_moveNode(&g_scene.object_aabbtree, obj->_aabb_tree_node_id, 
+                            obj->bounding_box, &displacement);
+        }
     }
-    
+
+    // Second loop: Mesh Collision, Constraints and Sleep State Update
+    for (int i = 0; i < g_scene.objectCount; ++i) {
+        element = &g_scene.elements[i];
+        struct physics_object* obj = element->object;
+
+        // Store previous state before any modifications
+        Vector3 pre_constraint_pos = *obj->position;
+        Quaternion pre_constraint_rot = obj->rotation ? *obj->rotation : gQuaternionIdentity;
+
+        // Only do mesh collision if the object is not sleeping, not fixed in place, is tangible and has moved or rotated previously 
+        if (g_scene.mesh_collider && !obj->is_sleeping && !obj->is_fixed && 
+            (obj->collision_layers & COLLISION_LAYER_TANGIBLE) && (moved_flags[i] || rotated_flags[i])) {
+            collision_scene_collide_single(obj, &obj->_prev_step_pos);
+        }
+
+        // Apply physical constraints to the object
+        physics_object_apply_constraints(obj);
+
+        // Update sleep state using comprehensive checks
+        const bool insignificant_movement = vector3DistSqrd(obj->position, &obj->_prev_step_pos) < PHYS_OBJECT_SLEEP_THRESHOLD_SQ;
+        const bool no_rotation = !rotated_flags[i];
+
+        if (insignificant_movement && no_rotation) {
+            if (obj->_sleep_counter < PHYS_OBJECT_SLEEP_STEPS) {
+                obj->_sleep_counter += 1;
+            }
+            else obj->is_sleeping = 1;
+        } else {
+            obj->is_sleeping = 0;
+            obj->_sleep_counter = 0;
+        }
+
+        // Update previous state with current state
+        obj->_prev_step_pos = *obj->position;
+        if (obj->rotation)
+        {
+            obj->_prev_step_rot = *obj->rotation;
+        }
+    }
 }
 
 /// @brief Returns a new contact from the global scene's free contact list, NULL if none are available.

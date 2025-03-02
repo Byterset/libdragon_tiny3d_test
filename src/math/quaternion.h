@@ -10,6 +10,7 @@ typedef struct Quaternion {
 } Quaternion;
 
 extern Quaternion gQuaternionZero;
+extern Quaternion gQuaternionIdentity;
 
 void quatIdent(Quaternion* q);
 void quatAxisAngle(Vector3* axis, float angle, Quaternion* out);

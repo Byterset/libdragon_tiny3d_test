@@ -5,10 +5,11 @@
 #include "epa.h"
 
 raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_collision_scene_mask mask, bool interact_trigger, uint16_t collision_layer_filter) {
+    assertf(maxDistance >= 0.0f, "raycast maxDistance must be positive");
     raycast ray = {
         .origin = origin,
         .dir = dir,
-        .maxDistance = maxDistance,
+        .maxDistance = maxDistance > RAYCAST_MAX_DISTANCE ? RAYCAST_MAX_DISTANCE : maxDistance,
         .mask = mask,
         .interact_trigger = interact_trigger,
         .collision_layer_filter = collision_layer_filter
