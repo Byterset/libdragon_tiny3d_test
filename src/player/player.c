@@ -137,7 +137,7 @@ void player_fixed_update(struct player* player){
     ray_origin.y += 0.5f;
     Vector3 ray_dir = (Vector3){{0.0f, -1.0f, 0.0f}};
     raycast ray = raycast_init(ray_origin, ray_dir, 2.0f, RAYCAST_COLLISION_SCENE_MASK_ALL, false, COLLISION_LAYER_PLAYER);
-    raycast_hit hit;    
+    raycast_hit hit = {0};    
 
     if(raycast_cast(&ray, &hit)){
         player->ray_hit = true;

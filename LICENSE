@@ -1,21 +1,33 @@
-MIT License
+Custom Non-Commercial License
 
-Copyright (c) 2024 Kevin R.
+Copyright (c) 2025 Kevin Reier
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+License Terms:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Permission for Personal Use
+    You are free to:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+    Use, copy, modify, and distribute this software and its documentation for personal, non-commercial purposes.
+
+    Share the software or modified versions with others, provided that this license is included in all copies or substantial portions of the software.
+
+Prohibition of Commercial Use
+    You may not use, copy, modify, or distribute this software or any derivative works for commercial purposes without prior written permission from the copyright holder. Commercial purposes include, but are not limited to:
+
+    Selling the software or any derivative works.
+
+    Using the software in a product or service that is sold, licensed, or monetized.
+
+    Using the software for any business, commercial, or profit-generating activity.
+
+License Inclusion
+    If you distribute or modify this software, you must include a copy of this license in all copies or substantial portions of the software.
+
+Attribution
+    If you distribute or modify this software, you must give appropriate credit to the original author(s) and provide a link to the original source (if applicable).
+
+Disclaimer of Warranty
+    THIS SOFTWARE IS PROVIDED "AS IS," WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Limitation of Liability
+    IN NO EVENT WILL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DAMAGES, INCLUDING BUT NOT LIMITED TO LOST PROFITS, LOST DATA, OR ANY OTHER DIRECT, INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.

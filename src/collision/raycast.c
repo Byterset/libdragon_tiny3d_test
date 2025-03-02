@@ -95,7 +95,7 @@ bool raycast_triangle_intersection(raycast *ray, raycast_hit* hit, struct mesh_c
 /// @param ray 
 /// @param hit 
 /// @param object 
-/// @return 
+/// @return true if the ray intersects the object collider, false otherwise
 bool raycast_object_intersection(raycast* ray, raycast_hit* hit, struct physics_object* object){
     line_segment segment;
     segment.segment_start = ray->origin;
@@ -130,7 +130,6 @@ bool raycast_object_intersection(raycast* ray, raycast_hit* hit, struct physics_
 /// The hit object will contain the raycast hit information of the intersection with the least distance
 /// @param ray pointer to the ray to be cast
 /// @param hit pointer to the resulting hit object
-/// @param mask the pp
 /// @return true if the raycast has hit anything, false otherwise
 bool raycast_cast(raycast* ray, raycast_hit* hit){
     struct collision_scene* collision_scene = collision_scene_get();

@@ -66,7 +66,54 @@ $(function() {
 <div class="title">n64 Game Engine </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>A In-Progress 3D Game &amp; Physics Engine based on <a href="https://github.com/DragonMinded/libdragon">Libdragon</a> and <a href="https://github.com/HailToDodongo/tiny3d">Tiny3D</a> </p>
+<div class="textblock"><p>A In-Progress 3D Game &amp; Physics Engine based on <a href="https://github.com/DragonMinded/libdragon">Libdragon</a> and <a href="https://github.com/HailToDodongo/tiny3d">Tiny3D</a></p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+Features:</h1>
+<ul>
+<li>Game Object based Entity System<ul>
+<li>Objects can register tasks for rendering, physics/collision, or update callbacks</li>
+<li>Easy creation of new Entities and Behaviours</li>
+</ul>
+</li>
+<li>Unity Engine-like Loop Execution Order with framerate independent physics model<ul>
+<li>Fixed Update (registerable callbacks)</li>
+<li>Physics Simulation Step (simplified verlet integration)</li>
+<li>Detection &amp; Resolution of Collisions</li>
+<li>Update (registerable callbacks)</li>
+<li>Batch based Rendering</li>
+</ul>
+</li>
+<li>Dynamic Physics System featuring BVH accelerated static level collision handling and dynamic Object collision<ul>
+<li>Built-In variety of collider shapes (Sphere, <a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a>, OBB, Capsule, Cylinder, Cone)</li>
+<li>Collider Shapes are easily expandable by just defining a GJK Support function for the shape</li>
+<li>All collider shapes are inherently compatible with each other</li>
+<li>Colliders support full optional <a class="el" href="structQuaternion.html">Quaternion</a> based rotation</li>
+<li>Trigger Colliders are supported</li>
+<li>Raycasting</li>
+</ul>
+</li>
+<li>Export of Collision Meshes from Blender in simple expandable binary format</li>
+<li>2D fast approximated Skyboxes</li>
+<li>Features due to implementation with T3D &amp; Libdragon<ul>
+<li>3D Model (.gltf Format) Support with Fast64 Materials</li>
+<li>Skeletal Animation Support</li>
+<li>Particle Systems</li>
+<li>Comprehensive 3D API</li>
+<li>Low level api access rdpq</li>
+<li>File System Support</li>
+<li>Support of multiple modern audio formats</li>
+<li>Video Support</li>
+<li>(for full Feature list visit the repos above, those people are crazy good and helpful!)</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md2"></a>
+How to build</h1>
+<blockquote class="doxtable">
+<p>Libdragon and Tiny3D are included as submodules in this repository and pointing to commit versions that are known to be compatible. This Repository relies on Libdragon Preview Features. </p>
+</blockquote>
+<p>1) Init git Submodules 2) Install Libdragon according to the <a href="https://github.com/DragonMinded/libdragon/wiki/Installing-libdragon">installation guide</a> (make sure to also read the README if you are not familiar with libdragon already) 3) Install Tiny3D, should be as easy as running the <code>build.sh</code> in the tiny3d submodule 4) run the <code>make</code> command from the project root</p>
+<p>This should build the code and convert the assets as well as assemble the filesystem and the final rom. If something is not working as expected try building the libdragon or tiny3d examples first according to the official instructions. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
