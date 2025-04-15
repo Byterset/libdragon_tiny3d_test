@@ -133,20 +133,19 @@ void player_fixed_update(struct player* player){
     player_reset_state(player);
 
     struct collision_scene *coll_scene = collision_scene_get();
+    player->ray_down_hit = (raycast_hit){0};
+    player->ray_fwd_hit = (raycast_hit){0};
     Vector3 ray_origin = player->transform.position;
     ray_origin.y += 0.5f;
     Vector3 ray_dir = (Vector3){{0.0f, -1.0f, 0.0f}};
-    raycast ray = raycast_init(ray_origin, ray_dir, 2.0f, RAYCAST_COLLISION_SCENE_MASK_ALL, false, COLLISION_LAYER_PLAYER);
-    raycast_hit hit = {0};    
-
-    if(raycast_cast(&ray, &hit)){
-        player->ray_hit = true;
-        player->ray_hit_entity = hit.hit_entity_id;
-    }
-    else{
-        player->ray_hit = false;
-        player->ray_hit_entity = 0;
-    }
+    raycast ray_down = raycast_init(ray_origin, ray_dir, 2.0f, RAYCAST_COLLISION_SCENE_MASK_ALL, false, COLLISION_LAYER_PLAYER);
+    ray_origin.y += 1.5f;
+    ray_dir = (Vector3){{0.0f, 0.0f, 1.0f}};
+    quatMultVector(&player->transform.rotation, &ray_dir, &ray_dir);
+    raycast ray_fwd = raycast_init(ray_origin, ray_dir, 5.0f, RAYCAST_COLLISION_SCENE_MASK_ALL, false, COLLISION_LAYER_PLAYER); 
+    
+    raycast_cast(&ray_down, &player->ray_down_hit);
+    raycast_cast(&ray_fwd, &player->ray_fwd_hit);
 
 }
 

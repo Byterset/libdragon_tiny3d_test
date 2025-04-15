@@ -34,8 +34,8 @@ struct player {
     struct player_animations animations;
     Vector3 desired_velocity;
     bool is_on_ground;
-    bool ray_hit;
-    entity_id ray_hit_entity;
+    raycast_hit ray_down_hit;
+    raycast_hit ray_fwd_hit;
     Vector3 ground_normal;
 };
 

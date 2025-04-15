@@ -137,13 +137,14 @@ void setup()
 
     cone_init(&cone, &cone_def);
     cylinder_init(&cylinder, &cyl_def);
-    soda_can_init(&soda_can, &can_def);
+    // soda_can_init(&soda_can, &can_def);
     
     map_init(&map);
 
     platform_init(&plat, &plat_def);
+    fire.position = (Vector3){{playerDef.location.x, playerDef.location.y + 3.0f, playerDef.location.z}};
     fire_init(&fire);
-
+    
     player_init(&player, &playerDef, &camera.transform);
 
     camera_controller_init(&camera_controller, &camera, &player);
@@ -237,8 +238,10 @@ void render()
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "mem: %d", ram_used);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree._nodeCount, aabbtree_objects_mem);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree._nodeCount, aabb_tree_mesh_mem);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "rayhit? %d, entity_id: %d", player.ray_hit, player.ray_hit_entity);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "phys obj sleep? %d", boxes[1].physics.is_sleeping);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "ray dwn dist %.1f, entity_id: %d", player.ray_down_hit.distance, player.ray_down_hit.hit_entity_id);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "ray dwn norm (%.2f, %.2f, %.2f)", player.ray_down_hit.normal.x, player.ray_down_hit.normal.y, player.ray_down_hit.normal.z);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "ray fwd dist %.1f, entity_id: %d", player.ray_fwd_hit.distance, player.ray_fwd_hit.hit_entity_id);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "ray fwd norm (%.2f, %.2f, %.2f)", player.ray_fwd_hit.normal.x, player.ray_fwd_hit.normal.y, player.ray_fwd_hit.normal.z);
 
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
@@ -326,22 +329,33 @@ int main()
         render();
 
 
-        // // RENDER DEBUG_RAYCAST
-        // rdpq_set_mode_standard();
-        // Vector3 ray_start;
-        // Vector3 ray_end;
-        // Vector3 ray_dir;
-        // float ray_dist = 2.0f;
-        // vector3Add(&player.transform.position, &(Vector3){{0, 0.1f, 0}}, &ray_start);
-        // ray_dir = (Vector3){{0, -1, 0}};
-        // vector3Normalize(&ray_dir, &ray_dir);
-        // vector3Scale(&ray_dir, &ray_end, ray_dist);
-        // vector3Add(&ray_start, &ray_end, &ray_end);
-        // uint16_t *buff = (uint16_t*)fb->buffer;
-        // T3DVec3 ray_start_view, ray_end_view;
-        // t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_start_view, (T3DVec3*)&ray_start);
-        // t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_end_view, (T3DVec3*)&ray_end);
-        // debugDrawLineVec3(buff, &ray_start_view, &ray_end_view, 0x92ff);
+        // RENDER DEBUG_RAYCAST
+        rdpq_set_mode_standard();
+        Vector3 ray_start;
+        Vector3 ray_end;
+        Vector3 ray_dir;
+        float ray_dist = 2.0f;
+        vector3Add(&player.transform.position, &(Vector3){{0, 0.1f, 0}}, &ray_start);
+        ray_dir = (Vector3){{0, -1, 0}};
+        vector3Normalize(&ray_dir, &ray_dir);
+        vector3Scale(&ray_dir, &ray_end, ray_dist);
+        vector3Add(&ray_start, &ray_end, &ray_end);
+        uint16_t *buff = (uint16_t*)fb->buffer;
+        T3DVec3 ray_start_view, ray_end_view;
+        t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_start_view, (T3DVec3*)&ray_start);
+        t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_end_view, (T3DVec3*)&ray_end);
+        debugDrawLineVec3(buff, &ray_start_view, &ray_end_view, 0x92ff);
+
+        vector3Add(&player.transform.position, &(Vector3){{0, 2.0f, 0}}, &ray_start);
+        ray_dir = (Vector3){{0, 0, 1}};
+        ray_dist = 5.0f;
+        quatMultVector(&player.transform.rotation, &ray_dir, &ray_dir);
+        vector3Normalize(&ray_dir, &ray_dir);
+        vector3Scale(&ray_dir, &ray_end, ray_dist);
+        vector3Add(&ray_start, &ray_end, &ray_end);
+        t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_start_view, (T3DVec3*)&ray_start);
+        t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_end_view, (T3DVec3*)&ray_end);
+        debugDrawLineVec3(buff, &ray_start_view, &ray_end_view, 0xfd41);
         
         
         

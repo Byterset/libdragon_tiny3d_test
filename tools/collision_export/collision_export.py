@@ -33,7 +33,16 @@ def write_collision_data(output_path, base_scale):
             
             triangles.append([vert_offset + poly.vertices[i] for i in range(3)])
             normal = poly.normal
-            normals.append((normal.x, normal.y, normal.z))
+            # Normalize the normal vector
+            magnitude = (normal.x**2 + normal.y**2 + normal.z**2)**0.5
+            if magnitude > 0:  # Avoid division by zero
+                normal_x = normal.x / magnitude
+                normal_y = normal.y / magnitude
+                normal_z = normal.z / magnitude
+                normals.append((normal_x, normal_z, -normal_y))
+            else:
+                # Fallback for degenerate normals
+                normals.append((0.0, 0.0, 0.0))
 
     print(f"Vertices: {len(vertices)}")
     print(f"Triangles: {len(triangles)}")

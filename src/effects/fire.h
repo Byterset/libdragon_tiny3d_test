@@ -1,5 +1,5 @@
-#ifndef __SPELL_FIRE_H__
-#define __SPELL_FIRE_H__
+#ifndef __EFFECT_FIRE_H__
+#define __EFFECT_FIRE_H__
 
 #include <t3d/t3dmodel.h>
 #include "../math/vector3.h"

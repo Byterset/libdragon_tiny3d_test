@@ -9,7 +9,7 @@
 
 #define FIRE_LENGTH         2.5f
 
-#define MAX_RADIUS          0.8f
+#define MAX_RADIUS          1.3f
 #define MAX_RANDOM_OFFSET   0.3f
 
 #define START_FADE          0.7f
@@ -20,7 +20,7 @@
 
 
 void fire_apply_transform(struct fire* fire) {
-    fire->position = (Vector3){{-2.0f, 1.0f, 0.0f}};
+    // fire->position = (Vector3){{-2.0f, 1.0f, 0.0f}};
 
     fire->rotation = gZeroVec2;
 }
@@ -79,7 +79,7 @@ void fire_render(struct fire* fire, struct render_batch* batch) {
 }
 
 void fire_init(struct fire* fire) {
-    render_scene_add_callback(&fire->position, 3.0f, (render_scene_callback)fire_render, fire);
+    render_scene_add_callback(NULL, 3.0f, (render_scene_callback)fire_render, fire);
 
     fire->cycle_time = 0.0f;
     fire->total_time = 0.0f;

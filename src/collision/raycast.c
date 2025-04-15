@@ -115,9 +115,9 @@ bool raycast_object_intersection(raycast* ray, raycast_hit* hit, struct physics_
             physics_object_gjk_support_function,
             &result))
     {
+        hit->distance  = vector3Dist(&ray->origin, &result.contactB);
         hit->point = result.contactB;
-        hit->distance = vector3Dist(&ray->origin, &result.contactB);
-        hit->normal = result.normal;
+        vector3Scale(&result.normal, &hit->normal, -1.0f);
         hit->hit_entity_id = object->entity_id;
         return true;
     }
@@ -135,8 +135,7 @@ bool raycast_object_intersection(raycast* ray, raycast_hit* hit, struct physics_
 bool raycast_cast(raycast* ray, raycast_hit* hit){
     struct collision_scene* collision_scene = collision_scene_get();
     // prepare result structures for AABBTree BVH queries
-    int max_results = 8;
-    NodeProxy results[max_results];
+    NodeProxy results[RAYCAST_MAX_OBJECT_TESTS > RAYCAST_MAX_TRIANGLE_TESTS ? RAYCAST_MAX_OBJECT_TESTS : RAYCAST_MAX_TRIANGLE_TESTS];
     int result_count = 0;
     raycast_hit current_hit;
     hit->distance = INFINITY;
@@ -146,7 +145,7 @@ bool raycast_cast(raycast* ray, raycast_hit* hit){
     // check for intersection with the static collision scene if the mask allows it
     if(ray->mask & RAYCAST_COLLISION_SCENE_MASK_STATIC_COLLISION && collision_scene->mesh_collider != NULL){
         // query the BVH of mesh triangles for potential intersection candidates
-        AABBTree_queryRay(&collision_scene->mesh_collider->aabbtree, ray, results, &result_count, max_results);
+        AABBTree_queryRay(&collision_scene->mesh_collider->aabbtree, ray, results, &result_count, RAYCAST_MAX_TRIANGLE_TESTS);
 
         //iterate over the results and perform the ray-triangle intersection test, update the hit object if the current result is closer
         for (size_t i = 0; i < result_count; i++)
@@ -154,7 +153,7 @@ bool raycast_cast(raycast* ray, raycast_hit* hit){
             current_hit.distance = INFINITY;
             int triangle_index = (int)AABBTreeNode_getData(&collision_scene->mesh_collider->aabbtree, results[i]);
             has_intersection = has_intersection | raycast_triangle_intersection(ray, &current_hit, collision_scene->mesh_collider, triangle_index);
-            if(current_hit.distance < hit->distance){
+            if(current_hit.distance < hit->distance && current_hit.distance <= ray->maxDistance){
                 *hit = current_hit;
             }
         }
@@ -165,17 +164,18 @@ bool raycast_cast(raycast* ray, raycast_hit* hit){
     if(ray->mask & RAYCAST_COLLISION_SCENE_MASK_PHYSICS_OBJECTS && collision_scene->objectCount > 0){
 
         // query the BVH of physics objects for potential intersection candidates
-        AABBTree_queryRay(&collision_scene->object_aabbtree, ray, results, &result_count, max_results);
+        AABBTree_queryRay(&collision_scene->object_aabbtree, ray, results, &result_count, RAYCAST_MAX_OBJECT_TESTS);
 
         //iterate over the results and perform the ray-object intersection test, update the hit object if the current result is closer
         for (size_t i = 0; i < result_count; i++)
         {
             struct physics_object *object = (struct physics_object *)AABBTreeNode_getData(&collision_scene->object_aabbtree, results[i]);
             // skip if the node does not contain a physics object or if the object is a trigger and the ray does not interact with triggers
-            if (!object || object->collision_layers & ray->collision_layer_filter || (object->is_trigger && !ray->interact_trigger)) continue;
+            if (!object || object->collision_layers & ray->collision_layer_filter || (object->is_trigger && !ray->interact_trigger)) 
+                continue;
             current_hit.distance = INFINITY;
             has_intersection = has_intersection | raycast_object_intersection(ray, &current_hit, object);
-            if(current_hit.distance < hit->distance){
+            if(current_hit.distance < hit->distance && current_hit.distance <= ray->maxDistance){
                 *hit = current_hit;
             }
             

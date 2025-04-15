@@ -354,8 +354,8 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 float wInv = 1.0f / transformed.w;
 
                 // Calculate screen space coordinates
-                float x = (transformed.x * wInv + 1.0f) * 0.5f * 4.0f;
-                float y = (-transformed.y * wInv + 1.0f) * 0.5f * 4.0f;
+                float x = (transformed.x * wInv + 1.0f) * 0.5f ;
+                float y = (-transformed.y * wInv + 1.0f) * 0.5f ;
                 float z = (transformed.z * wInv + 1.0f) * 0.5f; // Corrected z calculation
                 float billboard_size = sprite.radius * wInv;
 
@@ -368,29 +368,29 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
                 rdpq_mode_zoverride(true, z, 0);
 
                 // Convert to screen space coordinates
-                int screen_x = (int)(x * (viewport->size[0])) + viewport->offset[0] * 4;
-                int screen_y = (int)(y * (viewport->size[1])) + viewport->offset[1] * 4;
+                int screen_x = (int)(x * (viewport->size[0])) + viewport->offset[0];
+                int screen_y = (int)(y * (viewport->size[1])) + viewport->offset[1];
 
                 // Calculate half dimensions of the sprite on screen
-                int half_screen_width = (int)(billboard_size * billboard_scale_x * viewport->size[0]);
-                int half_screen_height = (int)(billboard_size * billboard_scale_y * viewport->size[1]);
+                int half_screen_width = (int)(billboard_size * billboard_scale_x * viewport->size[0] * 0.25f);
+                int half_screen_height = (int)(billboard_size * billboard_scale_y * viewport->size[1] * 0.25f);
 
                 // Default image dimensions
-                int image_w = 32;
-                int image_h = 32;
+                int image_w = 1;
+                int image_h = 1;
 
                 // Update image dimensions if material has a sprite
                 if (element->material && element->material->tex0.sprite)
                 {
-                    image_w = element->material->tex0.sprite->width * 32;
-                    image_h = element->material->tex0.sprite->height * 32;
+                    image_w = element->material->tex0.sprite->width;
+                    image_h = element->material->tex0.sprite->height;
                 }
 
                 // Set sprite color
                 rdpq_set_prim_color(sprite.color);
 
                 // Draw the sprite
-                __rdpq_texture_rectangle_scaled_fx(
+                rdpq_texture_rectangle_scaled(
                     TILE0,
                     screen_x - half_screen_width,
                     screen_y - half_screen_height,
