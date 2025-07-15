@@ -51,7 +51,7 @@
 
 volatile static int frame_happened = 0;
 
-static struct frame_memory_pool frame_memory_pools[2];
+static struct frame_memory_pool frame_memory_pools[3];
 static uint8_t next_frame_memoy_pool;
 
 uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
@@ -197,6 +197,9 @@ void render3d()
 
         struct frame_memory_pool *pool = &frame_memory_pools[next_frame_memoy_pool];
         frame_pool_reset(pool);
+
+        // Increment and wrap the pool index for next frame
+        next_frame_memoy_pool = (next_frame_memoy_pool + 1) % 3;
 
         T3DViewport *viewport = frame_malloc(pool, sizeof(T3DViewport));
         *viewport = t3d_viewport_create();

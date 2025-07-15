@@ -97,15 +97,17 @@ bool raycast_triangle_intersection(raycast *ray, raycast_hit* hit, struct mesh_c
 /// @param hit 
 /// @param object 
 /// @return true if the ray intersects the object collider, false otherwise
-bool raycast_object_intersection(raycast* ray, raycast_hit* hit, struct physics_object* object){
+bool raycast_object_intersection(raycast* ray, raycast_hit* hit, struct physics_object* object) {
     line_segment segment;
     segment.segment_start = ray->origin;
     vector3AddScaled(&ray->origin, &ray->dir, ray->maxDistance, &segment.segment_end);
     struct Simplex simplex;
-    if (!gjkCheckForOverlap(&simplex, &segment, lineSegment_support_function, object, physics_object_gjk_support_function, &gRight))
-    {
+    
+    // First check if there's an intersection at all
+    if (!gjkCheckForOverlap(&simplex, &segment, lineSegment_support_function, object, physics_object_gjk_support_function, &gRight)) {
         return false;
     }
+    
     struct EpaResult result;
     if (epaSolve(
             &simplex,
@@ -115,13 +117,49 @@ bool raycast_object_intersection(raycast* ray, raycast_hit* hit, struct physics_
             physics_object_gjk_support_function,
             &result))
     {
-        hit->distance  = vector3Dist(&ray->origin, &result.contactB);
-        hit->point = result.contactB;
-        vector3Scale(&result.normal, &hit->normal, -1.0f);
+        // Get ray parameter for both contact points by projecting onto ray direction
+        Vector3 origin_to_contactA, origin_to_contactB;
+        vector3Sub(&result.contactA, &ray->origin, &origin_to_contactA);
+        vector3Sub(&result.contactB, &ray->origin, &origin_to_contactB);
+        
+        float t_contactA = vector3Dot(&origin_to_contactA, &ray->dir);
+        float t_contactB = vector3Dot(&origin_to_contactB, &ray->dir);
+        
+        // Check if the ray is pointing toward or away from the object
+        float dot_normal_dir = vector3Dot(&result.normal, &ray->dir);
+        
+        // If normal and ray direction are in same hemisphere, we're exiting
+        // If they're in opposite hemispheres, we're entering
+        float entry_t;
+        Vector3 entry_point;
+        Vector3 entry_normal;
+        
+        if (dot_normal_dir >= 0) {
+            // Ray is pointing away from object (or tangent), so contactA is exit point
+            // We need to find entry point by using the smaller of t_contactA and t_contactB
+            entry_t = fminf(t_contactA, t_contactB);
+            
+            if (entry_t < 0 || entry_t > ray->maxDistance) {
+                return false; // Entry point outside ray bounds
+            }
+            
+            vector3AddScaled(&ray->origin, &ray->dir, entry_t, &entry_point);
+            vector3Scale(&result.normal, &entry_normal, -1.0f);
+        } else {
+            // Ray is pointing toward object, normal is correct
+            entry_t = t_contactA; // contactA is on the ray
+            entry_point = result.contactA;
+            entry_normal = result.normal;
+        }
+        
+        hit->distance = entry_t;
+        hit->point = entry_point;
+        hit->normal = entry_normal;
         hit->hit_entity_id = object->entity_id;
+        
         return true;
     }
-
+    
     return false;
 }
 
