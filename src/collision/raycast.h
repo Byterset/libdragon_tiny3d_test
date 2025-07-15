@@ -9,7 +9,7 @@
 #include <stdint.h>
 #include <libdragon.h>
 
-#define RAYCAST_MAX_DISTANCE 2000.0f
+#define RAYCAST_MAX_DISTANCE 2000.0f // Maximum distance that is accepted for raycasts
 #define RAYCAST_MAX_OBJECT_TESTS 10 // The maximum number of object candidates that will be tested against in the collision scene for a single raycast
 #define RAYCAST_MAX_TRIANGLE_TESTS 15 // The maximum number of triangle candidates that will be tested against in the static collision scene for a single raycast
 
@@ -40,12 +40,32 @@ typedef struct raycast_hit {
     entity_id hit_entity_id; // The entity id of the object that was hit, 0 if no object was hit or the hit was against the static collision scene
 } raycast_hit;
 
+/// @brief Initializes a raycast with the given parameters and returns a new raycast struct
+/// @param origin the origin point of the ray in world space
+/// @param dir the direction of the ray (will be normalized during initialization)
+/// @param maxDistance the maximum distance until which hits will be considered. Must be > 0
+/// @param mask decides if the ray will hit physicsObjects, static Collision or both
+/// @param interact_trigger toggle if the raycast will be able to hit physicsObjects that are triggers
+/// @param collision_layer_filter mask of collision layers the raycast will ignore
+/// @return a new initialized raycast structure
 raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_collision_scene_mask mask, bool interact_trigger, uint16_t collision_layer_filter);
 
+/// @brief Applies a given transform to a raycast translating the origin of the ray and rotating the direction
+/// @param transform 
+/// @param ray 
+/// @param output 
 void raycast_transform(Transform* transform, raycast* ray, raycast* output);
+
 
 float raycast_calc_distance_to_point(raycast* ray, Vector3* point);
 
+/// @brief cast a ray into the existing collision scene and return true if an object or static collision triangle fitting
+/// the settings of the raycast is hit.
+///
+/// The hit object will contain the raycast hit information of the intersection with the least distance
+/// @param ray pointer to the ray to be cast
+/// @param hit pointer to the resulting hit object
+/// @return true if the raycast has hit anything mathing the mask & filter, false otherwise
 bool raycast_cast(raycast* ray, raycast_hit* hit);
 
 #endif

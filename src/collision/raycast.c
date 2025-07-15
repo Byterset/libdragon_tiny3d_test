@@ -5,7 +5,7 @@
 #include <math.h>
 
 raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_collision_scene_mask mask, bool interact_trigger, uint16_t collision_layer_filter) {
-    assertf(maxDistance >= 0.0f, "raycast maxDistance must be positive");
+    assertf(maxDistance > 0.0f, "raycast maxDistance must be positive");
     raycast ray = {
         .origin = origin,
         .dir = dir,
@@ -32,12 +32,6 @@ float raycast_calc_distance_to_point(raycast* ray, Vector3* point) {
     return vector3Dot(&relative, &ray->dir);
 }
 
-/// @brief cast a ray into the existing collision scene and return a hit object if one is found
-///
-/// The hit object will contain the raycast hit information of the intersection with the least distance
-/// @param ray pointer to the ray to be cast
-/// @param hit pointer to the resulting hit object
-/// @return true if the raycast has hit anything, false otherwise
 bool raycast_cast(raycast* ray, raycast_hit* hit){
     struct collision_scene* collision_scene = collision_scene_get();
     // prepare result structures for AABBTree BVH queries
