@@ -10,8 +10,8 @@
 #include <libdragon.h>
 
 #define RAYCAST_MAX_DISTANCE 2000.0f
-#define RAYCAST_MAX_OBJECT_TESTS 4 // The maximum number of object candidates that will be tested against in the collision scene for a single raycast
-#define RAYCAST_MAX_TRIANGLE_TESTS 6 // The maximum number of triangle candidates that will be tested against in the static collision scene for a single raycast
+#define RAYCAST_MAX_OBJECT_TESTS 10 // The maximum number of object candidates that will be tested against in the collision scene for a single raycast
+#define RAYCAST_MAX_TRIANGLE_TESTS 15 // The maximum number of triangle candidates that will be tested against in the static collision scene for a single raycast
 
 /// @brief The raycast collision scene mask is used to filter what the raycast will test against.
 typedef enum raycast_collision_scene_mask {
