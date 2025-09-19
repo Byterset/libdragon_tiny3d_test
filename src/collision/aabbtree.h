@@ -8,7 +8,7 @@
 #include <assert.h>
 
 #define NULL_NODE -1
-#define AABBTREE_DISPLACEMENT_MULTIPLIER 8.0f
+#define AABBTREE_DISPLACEMENT_MULTIPLIER 10.0f
 #define AABBTREE_NODE_BOUNDS_MARGIN 1.0f
 
 typedef int16_t NodeProxy;

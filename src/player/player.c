@@ -132,7 +132,6 @@ void player_fixed_update(struct player* player){
 
     player_reset_state(player);
 
-    struct collision_scene *coll_scene = collision_scene_get();
     player->ray_down_hit = (raycast_hit){0};
     player->ray_fwd_hit = (raycast_hit){0};
     Vector3 ray_origin = player->transform.position;

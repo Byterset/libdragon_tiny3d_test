@@ -33,7 +33,7 @@ typedef struct raycast {
 
 /// @brief The raycast hit structure represents the result of a raycast.
 typedef struct raycast_hit {
-
+    bool did_hit;
     Vector3 point; // The impact point where the ray intersects the object or surface
     Vector3 normal; // The normal of the object or surface that was hit
     float distance; // The distance from the ray origin to the hit point

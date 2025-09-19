@@ -83,6 +83,21 @@ void vector3Normalize(Vector3* in, Vector3* out) {
     }
 }
 
+void vector3NormalizeSelf(Vector3* self) {
+    float denom = self->x * self->x + self->y * self->y + self->z * self->z;
+
+    if (denom == 0.0f) {
+        self->x = 0.0f;
+        self->y = 0.0f;
+        self->z = 0.0f;
+    } else {
+        float invSqrt = 1.0f / sqrtf(denom);
+        self->x *= invSqrt;
+        self->y *= invSqrt;
+        self->z *= invSqrt;
+    }
+}
+
 void vector3Lerp(Vector3* a, Vector3* b, float t, Vector3* out) {
     float tFlip = 1.0f - t;
     out->x = a->x * tFlip + b->x * t;
@@ -96,6 +111,10 @@ float vector3Dot(Vector3* a, Vector3* b) {
 
 float vector3MagSqrd(Vector3* a) {
     return a->x * a->x + a->y * a->y + a->z * a->z;
+}
+
+float vector3Mag(Vector3* a) {
+    return sqrtf(vector3MagSqrd(a));
 }
 
 float vector3DistSqrd(Vector3* a, Vector3* b) {

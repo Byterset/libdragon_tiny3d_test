@@ -123,7 +123,7 @@ void setup()
     update_reset();
     collision_scene_reset();
     collectable_assets_load();
-    camera_init(&camera, 70.0f, 3.0f, 140.0f);
+    camera_init(&camera, 70.0f, 1.5f, 140.0f);
     skybox_flat_init(&skybox_flat);
     
     for(int i = 0; i < NUM_BOXES; i++){
@@ -242,9 +242,9 @@ void render()
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree._nodeCount, aabbtree_objects_mem);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree._nodeCount, aabb_tree_mesh_mem);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "ray dwn dist %.1f, entity_id: %d", player.ray_down_hit.distance, player.ray_down_hit.hit_entity_id);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "ray dwn norm (%.2f, %.2f, %.2f)", player.ray_down_hit.normal.x, player.ray_down_hit.normal.y, player.ray_down_hit.normal.z);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "ray fwd dist %.1f, entity_id: %d", player.ray_fwd_hit.distance, player.ray_fwd_hit.hit_entity_id);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "ray fwd norm (%.2f, %.2f, %.2f)", player.ray_fwd_hit.normal.x, player.ray_fwd_hit.normal.y, player.ray_fwd_hit.normal.z);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "ray dwn hit (%.2f, %.2f, %.2f)", player.ray_down_hit.point.x, player.ray_down_hit.point.y, player.ray_down_hit.point.z);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "ray fwd dist %.1f, entity_id: %d, hit?: %s", player.ray_fwd_hit.distance, player.ray_fwd_hit.hit_entity_id, player.ray_fwd_hit.did_hit? "true" : "false");
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "ray fwd hit (%.2f, %.2f, %.2f)", player.ray_fwd_hit.point.x, player.ray_fwd_hit.point.y, player.ray_fwd_hit.point.z);
 
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
@@ -360,7 +360,11 @@ int main()
         t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_end_view, (T3DVec3*)&ray_end);
         debugDrawLineVec3(buff, &ray_start_view, &ray_end_view, 0xfd41);
         
-        
+
+        struct collision_scene *collision_scene = collision_scene_get();
+        // draw the dynamic aabbs of all physics objects in the scene
+        // debugDrawBVTree(buff, &collision_scene->object_aabbtree, t3d_viewport_get(),
+        //     &t3d_viewport_get()->viewFrustum, 1, 0, 15);
         
         rdpq_detach_wait();
         display_show(fb);

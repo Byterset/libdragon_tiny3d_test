@@ -38,9 +38,9 @@ bool raycast_cast(raycast* ray, raycast_hit* hit){
     NodeProxy results[RAYCAST_MAX_OBJECT_TESTS > RAYCAST_MAX_TRIANGLE_TESTS ? RAYCAST_MAX_OBJECT_TESTS : RAYCAST_MAX_TRIANGLE_TESTS];
     int result_count = 0;
     raycast_hit current_hit;
+    hit->did_hit = false;
     hit->distance = INFINITY;
     current_hit.distance = INFINITY;
-    bool has_intersection = false;
 
     // check for intersection with the static collision scene if the mask allows it
     if(ray->mask & RAYCAST_COLLISION_SCENE_MASK_STATIC_COLLISION && collision_scene->mesh_collider != NULL){
@@ -57,7 +57,7 @@ bool raycast_cast(raycast* ray, raycast_hit* hit){
             triangle.normal = collision_scene->mesh_collider->normals[triangle_index];
             triangle.vertices = collision_scene->mesh_collider->vertices;
 
-            has_intersection = has_intersection | ray_triangle_intersection(ray, &current_hit, &triangle);
+            hit->did_hit = hit->did_hit | ray_triangle_intersection(ray, &current_hit, &triangle);
             if(current_hit.distance < hit->distance && current_hit.distance <= ray->maxDistance){
                 *hit = current_hit;
             }
@@ -79,7 +79,7 @@ bool raycast_cast(raycast* ray, raycast_hit* hit){
             if (!object || object->collision_layers & ray->collision_layer_filter || (object->is_trigger && !ray->interact_trigger)) 
                 continue;
             current_hit.distance = INFINITY;
-            has_intersection = has_intersection | ray_physics_object_intersection(ray, object, &current_hit);
+            hit->did_hit = hit->did_hit | ray_physics_object_intersection(ray, object, &current_hit);
             if(current_hit.distance < hit->distance && current_hit.distance <= ray->maxDistance){
                 *hit = current_hit;
             }
@@ -87,6 +87,6 @@ bool raycast_cast(raycast* ray, raycast_hit* hit){
         }
     }
 
-    return has_intersection;
+    return hit->did_hit;
 
 }
