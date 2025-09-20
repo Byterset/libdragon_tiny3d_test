@@ -4,16 +4,17 @@
 #include "../math/mathf.h"
 
 /// @brief Allocate Memory for an AABBTree with an initial node capacity
+/// @param tree
 /// @param nodeCapacity 
 /// @return 
 void AABBTree_create(AABBTree* tree, int nodeCapacity)
 {
-    // AABBTree *tree = malloc(sizeof(AABBTree));
     tree->_nodeCapacity = nodeCapacity;
+    //allocate space for the number of possible nodes and initialize with 0
     tree->nodes = (AABBTreeNode *)calloc(nodeCapacity, sizeof(AABBTreeNode));
     assert(tree->nodes);
 
-    tree->root = NULL_NODE;
+    tree->root = AABBTREE_NULL_NODE;
     tree->_nodeCount = 0;
 
     int i;
@@ -22,7 +23,7 @@ void AABBTree_create(AABBTree* tree, int nodeCapacity)
         tree->nodes[i]._next = i + 1;
         tree->nodes[i]._parent = i;
     }
-    tree->nodes[nodeCapacity - 1]._next = NULL_NODE;
+    tree->nodes[nodeCapacity - 1]._next = AABBTREE_NULL_NODE;
     tree->nodes[nodeCapacity - 1]._parent = nodeCapacity - 1;
 
     tree->_freeList = 0;
@@ -42,18 +43,18 @@ void AABBTree_free(AABBTree *tree)
         tree->nodes = NULL;
         tree->_nodeCount = 0;
         tree->_nodeCapacity = 0;
-        tree->root = NULL_NODE;
+        tree->root = AABBTREE_NULL_NODE;
     }
 }
 
 int AABBTreeNode_isLeaf(AABBTreeNode *node)
 {
-    return node->_left == NULL_NODE;
+    return node->_left == AABBTREE_NULL_NODE;
 }
 
 NodeProxy AABBTree_allocateNode(AABBTree *tree)
 {
-    if (tree->_freeList == NULL_NODE)
+    if (tree->_freeList == AABBTREE_NULL_NODE)
     {
         assert(tree->_nodeCount == tree->_nodeCapacity);
         tree->_nodeCapacity += 20;
@@ -65,16 +66,16 @@ NodeProxy AABBTree_allocateNode(AABBTree *tree)
             tree->nodes[i]._next = i + 1;
             tree->nodes[i]._parent = i;
         }
-        tree->nodes[tree->_nodeCapacity - 1]._next = NULL_NODE;
+        tree->nodes[tree->_nodeCapacity - 1]._next = AABBTREE_NULL_NODE;
         tree->nodes[tree->_nodeCapacity - 1]._parent = tree->_nodeCapacity - 1;
         tree->_freeList = tree->_nodeCount;
     }
 
     NodeProxy node = tree->_freeList;
     tree->_freeList = tree->nodes[node]._next;
-    tree->nodes[node]._parent = NULL_NODE;
-    tree->nodes[node]._left = NULL_NODE;
-    tree->nodes[node]._right = NULL_NODE;
+    tree->nodes[node]._parent = AABBTREE_NULL_NODE;
+    tree->nodes[node]._left = AABBTREE_NULL_NODE;
+    tree->nodes[node]._right = AABBTREE_NULL_NODE;
     tree->nodes[node].data = NULL;
     tree->_nodeCount++;
     return node;
@@ -107,7 +108,7 @@ NodeProxy AABBTreeNode_createNode(AABBTree *tree, AABB bounds, void* data)
     vector3Sub(&tree->nodes[newNode].bounds.min, &bounds_margin, &tree->nodes[newNode].bounds.min);
     tree->nodes[newNode].data = data;
     // tree->nodes[newNode].moved = true;
-    tree->nodes[newNode]._parent = NULL_NODE;
+    tree->nodes[newNode]._parent = AABBTREE_NULL_NODE;
 
     AABBTree_insertLeaf(tree, newNode);
     return newNode;
@@ -138,33 +139,9 @@ int AABBTree_moveNode(AABBTree *tree, NodeProxy node, AABB aabb, Vector3 *displa
 
     // scale the displacement vector by a factor to enlarge the Node Bounds & accommodate for anticipated movement
     // potentially reduces the amount of moves/leaf inserts
-
-    if (displacement->x > 0.0f)
-    {
-        aabb.max.x += displacement->x * AABBTREE_DISPLACEMENT_MULTIPLIER;
-    }
-    else
-    {
-        aabb.min.x += displacement->x * AABBTREE_DISPLACEMENT_MULTIPLIER;
-    }
-
-    if (displacement->y > 0.0f)
-    {
-        aabb.max.y += displacement->y * AABBTREE_DISPLACEMENT_MULTIPLIER;
-    }
-    else
-    {
-        aabb.min.y += displacement->y * AABBTREE_DISPLACEMENT_MULTIPLIER;
-    }
-
-    if (displacement->z > 0.0f)
-    {
-        aabb.max.z += displacement->z * AABBTREE_DISPLACEMENT_MULTIPLIER;
-    }
-    else
-    {
-        aabb.min.z += displacement->z * AABBTREE_DISPLACEMENT_MULTIPLIER;
-    }
+    Vector3 scaled_displacement;
+    vector3Scale(displacement, &scaled_displacement, AABBTREE_DISPLACEMENT_MULTIPLIER);
+    AABBExtendDirection(&aabb, &scaled_displacement, &aabb);
 
     //fatten the aabb to potentially reduce the number of moves/leaf inserts
     Vector3 bounds_margin = {{AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN, AABBTREE_NODE_BOUNDS_MARGIN}};
@@ -317,7 +294,7 @@ void AABBTree_rebuild(AABBTree *tree)
 
         if (AABBTreeNode_isLeaf(&tree->nodes[i]))
         {
-            tree->nodes[i]._parent = NULL_NODE;
+            tree->nodes[i]._parent = AABBTREE_NULL_NODE;
             leaves[count++] = i;
         }
         else
@@ -363,7 +340,7 @@ void AABBTree_rebuild(AABBTree *tree)
         parent->_left = index1;
         parent->_right = index2;
         parent->bounds = AABBUnion(&left->bounds, &right->bounds);
-        parent->_parent = NULL_NODE;
+        parent->_parent = AABBTREE_NULL_NODE;
 
         left->_parent = parentIndex;
         right->_parent = parentIndex;
@@ -383,7 +360,7 @@ NodeProxy AABBTree_insertLeaf(AABBTree *tree, NodeProxy leaf)
     assert(0 <= leaf && leaf < tree->_nodeCapacity);
     assert(AABBTreeNode_isLeaf(&tree->nodes[leaf]));
     
-    if (tree->root == NULL_NODE)
+    if (tree->root == AABBTREE_NULL_NODE)
     {
         tree->root = leaf;
         return leaf;
@@ -448,7 +425,7 @@ NodeProxy AABBTree_insertLeaf(AABBTree *tree, NodeProxy leaf)
     tree->nodes[leaf]._parent = newParent;
     tree->nodes[bestSibling]._parent = newParent;
 
-    if (oldParent != NULL_NODE)
+    if (oldParent != AABBTREE_NULL_NODE)
     {
         if (tree->nodes[oldParent]._left == bestSibling)
         {
@@ -466,7 +443,7 @@ NodeProxy AABBTree_insertLeaf(AABBTree *tree, NodeProxy leaf)
 
     // walk back up the tree fixing heights and areas
     NodeProxy ancestor = newParent;
-    while (ancestor != NULL_NODE)
+    while (ancestor != AABBTREE_NULL_NODE)
     {
         NodeProxy left = tree->nodes[ancestor]._left;
         NodeProxy right = tree->nodes[ancestor]._right;
@@ -492,10 +469,10 @@ void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf, int freeNode)
     assert(AABBTreeNode_isLeaf(&tree->nodes[leaf]));
 
     NodeProxy parent = tree->nodes[leaf]._parent;
-    if (parent == NULL_NODE) // node is root
+    if (parent == AABBTREE_NULL_NODE) // node is root
     {
         assert(tree->root == leaf);
-        tree->root = NULL_NODE;
+        tree->root = AABBTREE_NULL_NODE;
         return;
     }
 
@@ -512,7 +489,7 @@ void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf, int freeNode)
 
     AABBTreeNode_freeNode(tree, parent);
 
-    if (grandParent != NULL_NODE) // node has grandparent
+    if (grandParent != AABBTREE_NULL_NODE) // node has grandparent
     {
         tree->nodes[sibling]._parent = grandParent;
 
@@ -526,7 +503,7 @@ void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf, int freeNode)
         }
 
         NodeProxy ancestor = grandParent;
-        while (ancestor != NULL_NODE)
+        while (ancestor != AABBTREE_NULL_NODE)
         {
             NodeProxy left = tree->nodes[ancestor]._left;
             NodeProxy right = tree->nodes[ancestor]._right;
@@ -541,7 +518,7 @@ void AABBTree_removeLeaf(AABBTree *tree, NodeProxy leaf, int freeNode)
     else // node has no grandparent
     {
         tree->root = sibling;
-        tree->nodes[sibling]._parent = NULL_NODE;
+        tree->nodes[sibling]._parent = AABBTREE_NULL_NODE;
     }
 
     if(freeNode){
@@ -576,7 +553,7 @@ void* AABBTreeNode_getData(AABBTree *tree, NodeProxy node)
 void AABBTree_queryBounds(AABBTree *tree, AABB *query_box, NodeProxy *results, int *result_count, int max_results)
 {
     // return if the tree is empty
-    if (tree->root == NULL_NODE)
+    if (tree->root == AABBTREE_NULL_NODE)
     {
         return;
     }
@@ -590,8 +567,8 @@ void AABBTree_queryBounds(AABBTree *tree, AABB *query_box, NodeProxy *results, i
 
     while (stackSize > 0)
     {
-        NodeProxy current = stack[--stackSize];
-        if (current == NULL_NODE)
+        current = stack[--stackSize];
+        if (current == AABBTREE_NULL_NODE)
             continue;
 
         // if the given AABB does not overlap the bounds of the current node, continue and thus discard all child nodes
@@ -634,7 +611,7 @@ void AABBTree_queryPoint(AABBTree *tree, Vector3 point, NodeProxy *results, int 
 {
 
     // return if the tree is empty
-    if (tree->root == NULL_NODE)
+    if (tree->root == AABBTREE_NULL_NODE)
     {
         return;
     }
@@ -646,8 +623,8 @@ void AABBTree_queryPoint(AABBTree *tree, Vector3 point, NodeProxy *results, int 
     NodeProxy current;
     while (stackSize > 0)
     {
-        NodeProxy current = stack[--stackSize];
-        if (current == NULL_NODE)
+        current = stack[--stackSize];
+        if (current == AABBTREE_NULL_NODE)
             continue;
 
         // if the point is not inside the bounds of the current node, continue and thus discard all child nodes
@@ -688,7 +665,7 @@ void AABBTree_queryPoint(AABBTree *tree, Vector3 point, NodeProxy *results, int 
 /// @param max_results the maximum amount of results to find
 void AABBTree_queryRay(AABBTree *tree, raycast* ray, NodeProxy *results, int *result_count, int max_results){
     // return if the tree is empty
-    if (tree->root == NULL_NODE)
+    if (tree->root == AABBTREE_NULL_NODE)
     {
         return;
     }
@@ -700,8 +677,8 @@ void AABBTree_queryRay(AABBTree *tree, raycast* ray, NodeProxy *results, int *re
     NodeProxy current;
     while (stackSize > 0)
     {
-        NodeProxy current = stack[--stackSize];
-        if (current == NULL_NODE)
+        current = stack[--stackSize];
+        if (current == AABBTREE_NULL_NODE)
             continue;
 
         // if the ray does not intersect the bounds of the current node, continue and thus discard all child nodes

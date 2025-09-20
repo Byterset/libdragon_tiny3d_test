@@ -7,9 +7,9 @@
 #include "../math/vector3.h"
 #include <assert.h>
 
-#define NULL_NODE -1
-#define AABBTREE_DISPLACEMENT_MULTIPLIER 10.0f
-#define AABBTREE_NODE_BOUNDS_MARGIN 1.0f
+#define AABBTREE_NULL_NODE -1
+#define AABBTREE_DISPLACEMENT_MULTIPLIER 10.0f //this will multiply the expansion of the AABB of a Node according to how much it moved
+#define AABBTREE_NODE_BOUNDS_MARGIN 1.0f //this will be added to the bounds of a Node AABB so minor changes might not trigger a Node Movement
 
 typedef int16_t NodeProxy;
 

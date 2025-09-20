@@ -83,7 +83,7 @@ static void debugDrawBVTreeNode(
   NodeProxy node, AABBTree *tree, const T3DFrustum *frustum, float scale, int level, int max_level
 ) {
 
-  if(node != NULL_NODE && level <= max_level) {
+  if(node != AABBTREE_NULL_NODE && level <= max_level) {
     
     if(t3d_frustum_vs_aabb(frustum, (T3DVec3*)(&tree->nodes[node].bounds.min), (T3DVec3*)(&tree->nodes[node].bounds.max))) {
       if(AABBTreeNode_isLeaf(&tree->nodes[node]))debugDrawAABB(fb, &tree->nodes[node].bounds.min, &tree->nodes[node].bounds.max, vp, scale, DEBUG_COLORS[level & 7]);

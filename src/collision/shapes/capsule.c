@@ -35,7 +35,6 @@ void capsule_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     // Get capsule dimensions
     float half_height = shape_data->capsule.inner_half_height;
     float radius = shape_data->capsule.radius;
-    float half_height_plus_radius = half_height + radius;
 
     // Define the capsule's central axis in local space
     Vector3 axis_min = (Vector3){{ 0.0f, -half_height, 0.0f }};

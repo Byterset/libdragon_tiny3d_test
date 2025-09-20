@@ -12,7 +12,6 @@ void soda_can_update(struct soda_can *soda_can){
 
 
 void soda_can_init(struct soda_can* soda_can, struct generic_object_pos_definition* def){
-    entity_id entity_id = entity_id_new();
     transformInitIdentity(&soda_can->transform);
     soda_can->transform.scale = (Vector3){{1.0f, 1.0f, 1.0f}};
     vector3Add(&soda_can->transform.position, &def->position, &soda_can->transform.position);

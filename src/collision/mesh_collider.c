@@ -39,12 +39,7 @@ void mesh_triangle_gjk_support_function(void* data, Vector3* direction, Vector3*
 /// @param point 
 /// @return 
 float mesh_triangle_comparePoint(struct mesh_triangle *triangle, Vector3* point){
-    Vector3 normal, toPoint, vertexA;
-    normal = triangle->normal;
-
-    // normal . (point - triangleVert)
-    // Triangle_getNormal(triangle, &normal);
-    toPoint = *point;
+    Vector3 toPoint = *point;
     vector3SubFromSelf(&toPoint, &triangle->vertices[triangle->triangle.indices[0]]);
     return vector3Dot(&triangle->normal, &toPoint);
 }

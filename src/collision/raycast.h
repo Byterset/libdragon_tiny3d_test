@@ -56,7 +56,10 @@ raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_col
 /// @param output 
 void raycast_transform(Transform* transform, raycast* ray, raycast* output);
 
-
+/// @brief Calculate the distance of a point in space to the line given by the ray origin and direction
+/// @param ray 
+/// @param point 
+/// @return 
 float raycast_calc_distance_to_point(raycast* ray, Vector3* point);
 
 /// @brief cast a ray into the existing collision scene and return true if an object or static collision triangle fitting

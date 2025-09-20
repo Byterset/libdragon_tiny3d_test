@@ -9,7 +9,6 @@
 #include "mesh_collider.h"
 #include "collide.h"
 #include "collide_swept.h"
-#include "contact.h"
 #include "../util/hash_map.h"
 
 #include "../render/defs.h"
@@ -247,10 +246,6 @@ void collision_scene_step() {
     for (int i = 0; i < g_scene.objectCount; ++i) {
         element = &g_scene.elements[i];
         struct physics_object* obj = element->object;
-
-        // Store previous state before any modifications
-        Vector3 pre_constraint_pos = *obj->position;
-        Quaternion pre_constraint_rot = obj->rotation ? *obj->rotation : gQuaternionIdentity;
 
         // Only do mesh collision if the object is not sleeping, not fixed in place, is tangible and has moved or rotated previously 
         if (g_scene.mesh_collider && !obj->is_sleeping && !obj->is_fixed && 
