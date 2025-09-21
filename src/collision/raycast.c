@@ -4,7 +4,7 @@
 #include "../collision/shapes/ray_triangle_intersection.h"
 #include <math.h>
 
-raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_collision_scene_mask mask, bool interact_trigger, uint16_t collision_layer_filter) {
+raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_collision_scene_mask mask, bool interact_trigger, uint16_t collision_layers, uint16_t ignore_layers) {
     assertf(maxDistance > 0.0f, "raycast maxDistance must be positive");
     raycast ray = {
         .origin = origin,
@@ -12,7 +12,8 @@ raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_col
         .maxDistance = maxDistance > RAYCAST_MAX_DISTANCE ? RAYCAST_MAX_DISTANCE : maxDistance,
         .mask = mask,
         .interact_trigger = interact_trigger,
-        .collision_layer_filter = collision_layer_filter
+        .collision_layers = collision_layers,
+        .ignore_layers = ignore_layers
     };
     vector3Normalize(&ray.dir, &ray.dir);
     ray._invDir.x = safeInvert(dir.x);
@@ -76,7 +77,7 @@ bool raycast_cast(raycast* ray, raycast_hit* hit){
         {
             struct physics_object *object = (struct physics_object *)AABBTreeNode_getData(&collision_scene->object_aabbtree, results[i]);
             // skip if the node does not contain a physics object or if the object is a trigger and the ray does not interact with triggers
-            if (!object || object->collision_layers & ray->collision_layer_filter || (object->is_trigger && !ray->interact_trigger)) 
+            if (!object || !(object->collision_layers & ray->collision_layers) || object->collision_layers & ray->ignore_layers || (object->is_trigger && !ray->interact_trigger)) 
                 continue;
             current_hit.distance = INFINITY;
             hit->did_hit = hit->did_hit | ray_physics_object_intersection(ray, object, &current_hit);

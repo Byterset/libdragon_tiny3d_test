@@ -14,5 +14,6 @@ struct object_mesh_collide_data {
 };
 
 bool collide_object_to_mesh_swept(struct physics_object* object, struct mesh_collider* mesh, Vector3* prev_pos);
+void collide_object_to_object_swept(struct physics_object* a, struct physics_object* b);
 
 #endif

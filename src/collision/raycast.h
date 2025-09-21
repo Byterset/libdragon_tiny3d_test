@@ -27,7 +27,8 @@ typedef struct raycast {
     Vector3 _invDir; // The inverse direction of the ray, precomputed for repeated testing against BVH nodes
     float maxDistance; // The maximum distance the ray will travel, limited to 1000.0f, cannot be negative
     raycast_collision_scene_mask mask; // Determines what the ray will test against (static collision, physics objects, etc.)
-    uint16_t collision_layer_filter; // Filter for collision layers, objects that match this filter will be ignored
+    uint16_t collision_layers; // The rays collision layers, the layers the ray will be able to hit
+    uint16_t ignore_layers; // The collision layers the ray will explicily ignore even if they pass the collision layer mask (e.g. hit tangible objects but ignore player even though he's tangible)
     bool interact_trigger; // If true, the ray will test for hits with trigger colliders
 } raycast;
 
@@ -46,9 +47,10 @@ typedef struct raycast_hit {
 /// @param maxDistance the maximum distance until which hits will be considered. Must be > 0
 /// @param mask decides if the ray will hit physicsObjects, static Collision or both
 /// @param interact_trigger toggle if the raycast will be able to hit physicsObjects that are triggers
-/// @param collision_layer_filter mask of collision layers the raycast will ignore
+/// @param collision_layers the mask of the rays collision layers - the layers the ray will be able to hit
+/// @param ignore_layers the mask of the collision layers that will be explicitly ignored by the raycast
 /// @return a new initialized raycast structure
-raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_collision_scene_mask mask, bool interact_trigger, uint16_t collision_layer_filter);
+raycast raycast_init(Vector3 origin, Vector3 dir, float maxDistance, raycast_collision_scene_mask mask, bool interact_trigger, uint16_t collision_layers, uint16_t ignore_layers);
 
 /// @brief Applies a given transform to a raycast translating the origin of the ray and rotating the direction
 /// @param transform 

@@ -47,11 +47,6 @@ void AABBTree_free(AABBTree *tree)
     }
 }
 
-int AABBTreeNode_isLeaf(AABBTreeNode *node)
-{
-    return node->_left == AABBTREE_NULL_NODE;
-}
-
 NodeProxy AABBTree_allocateNode(AABBTree *tree)
 {
     if (tree->_freeList == AABBTREE_NULL_NODE)
@@ -542,6 +537,15 @@ void* AABBTreeNode_getData(AABBTree *tree, NodeProxy node)
     return tree->nodes[node].data;
 }
 
+/// @brief Wrapper as point-aabb query function for generic tree query
+/// @param bounds 
+/// @param ctx void pointer to aabb struct
+/// @return 
+bool _queryAABBOverlap(AABB *bounds, void *ctx) {
+    AABB *query_box = (AABB*)ctx;
+    return AABBHasOverlap(bounds, query_box);
+}
+
 /// @brief Query the AABBTree for (leaf) nodes that overlap with a given AABB
 /// @param tree BVH tree
 /// @param query_box the AABB to query for
@@ -552,53 +556,16 @@ void* AABBTreeNode_getData(AABBTree *tree, NodeProxy node)
 /// @param skipRootCheck if the root node should be checked
 void AABBTree_queryBounds(AABBTree *tree, AABB *query_box, NodeProxy *results, int *result_count, int max_results)
 {
-    // return if the tree is empty
-    if (tree->root == AABBTREE_NULL_NODE)
-    {
-        return;
-    }
+    AABBTree_queryGeneric(tree, _queryAABBOverlap, query_box, results, result_count, max_results);
+}
 
-    // initialize the stack with the root node
-    NodeProxy stack[256];
-    int stackSize = 0;
-    stack[stackSize++] = tree->root;
-
-    NodeProxy current;
-
-    while (stackSize > 0)
-    {
-        current = stack[--stackSize];
-        if (current == AABBTREE_NULL_NODE)
-            continue;
-
-        // if the given AABB does not overlap the bounds of the current node, continue and thus discard all child nodes
-        if (!AABBHasOverlap(&tree->nodes[current].bounds, query_box))
-            continue;
-
-        // if the given AABB overlaps current node and it is a leaf, add it to the results
-        if (AABBTreeNode_isLeaf(&tree->nodes[current]))
-        {
-            results[*result_count] = current;
-            (*result_count)++;
-            // if the maximum of allowed results is reached, break
-            if (*result_count >= max_results)
-            {
-                break;
-            }
-        }
-        else
-        {
-            if (stackSize + 2 > 256)
-            {
-                // Handle stack overflow (e.g., log an error, return an error code, etc.)
-                // For this example, we'll just return to avoid overflow
-                return;
-            }
-            // if the AABB overlaps the current node and it is not a leaf, add the children to the stack
-            stack[stackSize++] = tree->nodes[current]._left;
-            stack[stackSize++] = tree->nodes[current]._right;
-        }
-    }
+/// @brief Wrapper as point-aabb query function for generic tree query
+/// @param bounds 
+/// @param ctx void pointer to vector3 struct
+/// @return 
+bool _queryAABBContainsPoint(AABB *bounds, void *ctx) {
+    Vector3 *point = (Vector3*)ctx;
+    return AABBContainsPoint(bounds, point);
 }
 
 /// @brief Query the AABBTree for (leaf) nodes that contain a point
@@ -609,52 +576,16 @@ void AABBTree_queryBounds(AABBTree *tree, AABB *query_box, NodeProxy *results, i
 /// @param max_results the maximum amount of results to find
 void AABBTree_queryPoint(AABBTree *tree, Vector3 point, NodeProxy *results, int *result_count, int max_results)
 {
+    AABBTree_queryGeneric(tree, _queryAABBContainsPoint, &point, results, result_count, max_results);
+}
 
-    // return if the tree is empty
-    if (tree->root == AABBTREE_NULL_NODE)
-    {
-        return;
-    }
-
-    // initialize the stack with the root node
-    NodeProxy stack[256];
-    int stackSize = 0;
-    stack[stackSize++] = tree->root;
-    NodeProxy current;
-    while (stackSize > 0)
-    {
-        current = stack[--stackSize];
-        if (current == AABBTREE_NULL_NODE)
-            continue;
-
-        // if the point is not inside the bounds of the current node, continue and thus discard all child nodes
-        if (!AABBContainsPoint(&tree->nodes[current].bounds, &point))
-            continue;
-
-        // if the point is inside the current node and it is a leaf, add it to the results
-        if (AABBTreeNode_isLeaf(&tree->nodes[current]))
-        {
-            results[*result_count] = current;
-            (*result_count)++;
-            // if the maximum of allowed results is reached, break
-            if (*result_count >= max_results)
-            {
-                break;
-            }
-        }
-        else
-        {
-            if (stackSize + 2 > 256)
-            {
-                // Handle stack overflow (e.g., log an error, return an error code, etc.)
-                // For this example, we'll just return to avoid overflow
-                return;
-            }
-            // if the AABB overlaps the current node and it is not a leaf, add the children to the stack
-            stack[stackSize++] = tree->nodes[current]._left;
-            stack[stackSize++] = tree->nodes[current]._right;
-        }
-    }
+/// @brief Wrapper as ray-aabb query function for generic tree query
+/// @param bounds 
+/// @param ctx void pointer to raycast struct
+/// @return 
+bool _queryAABBIntersectsRay(AABB *bounds, void *ctx) {
+    raycast *ray = (raycast*)ctx;
+    return AABBIntersectsRay(bounds, ray);
 }
 
 /// @brief Query the AABBTree for (leaf) nodes that are intersected by a given Ray
@@ -664,6 +595,25 @@ void AABBTree_queryPoint(AABBTree *tree, Vector3 point, NodeProxy *results, int 
 /// @param result_count the amount of results found
 /// @param max_results the maximum amount of results to find
 void AABBTree_queryRay(AABBTree *tree, raycast* ray, NodeProxy *results, int *result_count, int max_results){
+    AABBTree_queryGeneric(tree, _queryAABBIntersectsRay, ray, results, result_count, max_results);
+}
+
+
+/// @brief Query the AABBTree for (leaf) nodes that are intersected by a given Ray
+/// @param tree BVH tree
+/// @param query_function the test function for the AABB test the query should perform
+/// @param ctx the context for the query function
+/// @param results the pre-initialized array of NodeProxies to store the results
+/// @param result_count the amount of results found
+/// @param max_results the maximum amount of results to find
+void AABBTree_queryGeneric(
+    AABBTree *tree,
+    AABBQueryFunction query_function, 
+    void* ctx, 
+    NodeProxy *results, 
+    int *result_count, 
+    int max_results)
+{
     // return if the tree is empty
     if (tree->root == AABBTREE_NULL_NODE)
     {
@@ -671,44 +621,36 @@ void AABBTree_queryRay(AABBTree *tree, raycast* ray, NodeProxy *results, int *re
     }
 
     // initialize the stack with the root node
-    NodeProxy stack[256];
-    int stackSize = 0;
-    stack[stackSize++] = tree->root;
-    NodeProxy current;
-    while (stackSize > 0)
+    NodeQueryStack stack = {.top = 1};
+    stack.stack[0] = tree->root;
+
+    AABBTreeNode *nodes = tree->nodes;
+    int count = 0;
+
+    while (stack.top > 0 && count < max_results)
     {
-        current = stack[--stackSize];
-        if (current == AABBTREE_NULL_NODE)
+        NodeProxy current = node_stack_pop(&stack);
+
+        // if the point is not inside the bounds of the current node, continue and thus discard all child nodes
+        AABBTreeNode *node = &nodes[current];
+        if (!query_function(&node->bounds, ctx))
             continue;
 
-        // if the ray does not intersect the bounds of the current node, continue and thus discard all child nodes
-        if (!AABBIntersectsRay(&tree->nodes[current].bounds, ray))
-            continue;
-
-        // if the ray intersects the current node and it is a leaf, add it to the results
-        if (AABBTreeNode_isLeaf(&tree->nodes[current]))
+        // Check if leaf using cached node
+        if (AABBTreeNode_isLeaf(node))
         {
-            results[*result_count] = current;
-            (*result_count)++;
-            // if the maximum of allowed results is reached, break
-            if (*result_count >= max_results)
-            {
-                break;
-            }
+            results[count++] = current;
         }
-        // if the ray intersects the current node and it is not a leaf, add the children to the stack
         else
         {
+            //guard for stack overflow
+            if(stack.top + 2 > AABBTREE_NODE_QUERY_STACK_SIZE) break;
 
-            if (stackSize + 2 > 256)
-            {
-                // Handle stack overflow (e.g., log an error, return an error code, etc.)
-                // For this example, we'll just return to avoid overflow
-                return;
-            }
-            // if the AABB overlaps the current node and it is not a leaf, add the children to the stack
-            stack[stackSize++] = tree->nodes[current]._left;
-            stack[stackSize++] = tree->nodes[current]._right;
+            // Order matters for cache locality - push right first so left is processed first
+            node_stack_push(&stack, node->_right);
+            node_stack_push(&stack, node->_left);
         }
     }
+
+    *result_count = count;
 }

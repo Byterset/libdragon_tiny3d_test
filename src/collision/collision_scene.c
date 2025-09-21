@@ -168,7 +168,7 @@ void collision_scene_collide_phys_object(struct collision_scene_element* element
 
 #define MAX_SWEPT_ITERATIONS    5
 
-void collision_scene_collide_single(struct physics_object* object, Vector3* prev_pos) {
+void collision_scene_collide_object_to_static(struct physics_object* object, Vector3* prev_pos) {
 
     for (int i = 0; i < MAX_SWEPT_ITERATIONS; i += 1)
     {
@@ -249,8 +249,8 @@ void collision_scene_step() {
 
         // Only do mesh collision if the object is not sleeping, not fixed in place, is tangible and has moved or rotated previously 
         if (g_scene.mesh_collider && !obj->is_sleeping && !obj->is_fixed && 
-            (obj->collision_layers & COLLISION_LAYER_TANGIBLE) && (moved_flags[i] || rotated_flags[i])) {
-            collision_scene_collide_single(obj, &obj->_prev_step_pos);
+            (obj->collision_layers & (COLLISION_LAYER_TANGIBLE)) && (moved_flags[i] || rotated_flags[i])) {
+            collision_scene_collide_object_to_static(obj, &obj->_prev_step_pos);
         }
 
         // Apply physical constraints to the object

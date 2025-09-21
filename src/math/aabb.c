@@ -20,9 +20,9 @@
  *
  * @param box A pointer to the AABB structure that defines the bounding box.
  * @param point A pointer to the Vector3 structure that defines the point to be checked.
- * @return Returns 1 if the point is within the AABB, otherwise returns 0.
+ * @return Returns true if the point is within the AABB, otherwise returns false.
  */
-int AABBContainsPoint(AABB* box, Vector3* point) {
+bool AABBContainsPoint(AABB* box, Vector3* point) {
     return box->min.x < point->x &&
         box->min.y < point->y &&
         box->min.z < point->z &&
@@ -39,7 +39,7 @@ int AABBContainsPoint(AABB* box, Vector3* point) {
  * @param b 
  * @return int 
  */
-int AABBContainsAABB(AABB *a, AABB *b)
+bool AABBContainsAABB(AABB *a, AABB *b)
 {
     return (a->min.x <= b->min.x && a->min.y <= b->min.y && a->min.z <= b->min.z &&
             a->max.x >= b->max.x && a->max.y >= b->max.y && a->max.z >= b->max.z);
@@ -55,7 +55,7 @@ int AABBContainsAABB(AABB *a, AABB *b)
  * @param b Pointer to the second AABB structure.
  * @return int Returns 1 if the AABBs overlap, 0 otherwise.
  */
-int AABBHasOverlap(AABB* a, AABB* b) {
+bool AABBHasOverlap(AABB* a, AABB* b) {
     return a->min.x <= b->max.x && a->max.x >= b->min.x &&
         a->min.y <= b->max.y && a->max.y >= b->min.y &&
         a->min.z <= b->max.z && a->max.z >= b->min.z;
@@ -66,9 +66,9 @@ int AABBHasOverlap(AABB* a, AABB* b) {
 /// @param origin Origin of the ray.
 /// @param direction Direction of the ray.
 /// @param max_distance Maximum distance of the ray after which intersections should not be considered.
-int AABBIntersectsRay(AABB *box, raycast *ray) {
+bool AABBIntersectsRay(AABB *box, raycast *ray) {
     if (AABBContainsPoint(box, &ray->origin)) {
-        return 1;
+        return true;
     }
 
     float tEnter = -INFINITY, tExit = INFINITY;
@@ -90,7 +90,7 @@ int AABBIntersectsRay(AABB *box, raycast *ray) {
         } 
         // if a ray is parallel to the axis (dir[i] == 0) and outside the box bounds it can not intersect
         else if (ray->origin.data[i] < box->min.data[i] || ray->origin.data[i] > box->max.data[i]) {
-            return 0;
+            return false;
         }
     }
 

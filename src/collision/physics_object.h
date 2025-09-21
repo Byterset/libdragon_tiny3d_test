@@ -19,17 +19,21 @@
 #define PHYS_OBJECT_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_SLEEP_THRESHOLD * PHYS_OBJECT_SLEEP_THRESHOLD)
 #define PHYS_OBJECT_SLEEP_STEPS 20 // number of steps the object has to be still before it goes to sleep
 
-enum collision_layers {
+enum collision_layer {
+    COLLISION_LAYER_NONE = 0,
     COLLISION_LAYER_TANGIBLE = (1 << 0),
     COLLISION_LAYER_PLAYER = (1 << 1),
     COLLISION_LAYER_DAMAGE_ENEMY = (1 << 2),
     COLLISION_LAYER_COLLECTABLES = (1 << 3),
     COLLISION_LAYER_TERRAIN_LIKE = (1 << 4),
+    COLLISION_LAYER_ALL = 0xff
 };
 
 enum collision_group {
+    COLLISION_GROUP_NONE = 0,
     COLLISION_GROUP_PLAYER = 1,
     COLLISION_GROUP_COLLECTABLE = 2,
+    COLLISION_GROUP_ALL = 0xff
 };
 
 typedef void (*bounding_box_calculator)(void* data, Quaternion* rotation, AABB* box);

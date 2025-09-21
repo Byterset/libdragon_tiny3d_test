@@ -10,8 +10,22 @@
 #define AABBTREE_NULL_NODE -1
 #define AABBTREE_DISPLACEMENT_MULTIPLIER 10.0f //this will multiply the expansion of the AABB of a Node according to how much it moved
 #define AABBTREE_NODE_BOUNDS_MARGIN 1.0f //this will be added to the bounds of a Node AABB so minor changes might not trigger a Node Movement
-
+#define AABBTREE_NODE_QUERY_STACK_SIZE 256
 typedef int16_t NodeProxy;
+
+typedef struct NodeQueryStack {
+    NodeProxy stack[AABBTREE_NODE_QUERY_STACK_SIZE];
+    int top;
+} NodeQueryStack;
+
+static inline void node_stack_push(NodeQueryStack* s, NodeProxy node) {
+    s->stack[s->top++] = node;
+};
+
+static inline NodeProxy node_stack_pop(NodeQueryStack* s) {
+    return s->stack[--s->top];
+};
+
 
 /// @brief A node in the AABBTree structure. Holds the bounds of the node, the parent, 
 /// left and right children, the next node, a flag to indicate if the node has moved, 
@@ -42,7 +56,10 @@ void AABBTree_create(AABBTree* tree, int nodeCapacity);
 
 void AABBTree_free(AABBTree *tree);
 
-int AABBTreeNode_isLeaf(AABBTreeNode *node);
+static inline int AABBTreeNode_isLeaf(AABBTreeNode *node)
+{
+    return node->_left == AABBTREE_NULL_NODE;
+};
 
 NodeProxy AABBTree_allocateNode(AABBTree *tree);
 
@@ -77,5 +94,13 @@ void AABBTree_queryBounds(AABBTree *tree, AABB *query_box, NodeProxy *results, i
 void AABBTree_queryPoint(AABBTree *tree, Vector3 point, NodeProxy *results, int *result_count, int max_results);
 
 void AABBTree_queryRay(AABBTree *tree, raycast *ray, NodeProxy *results, int *result_count, int max_results);
+
+void AABBTree_queryGeneric(
+    AABBTree *tree,
+    AABBQueryFunction query_function, 
+    void* ctx, 
+    NodeProxy *results, 
+    int *result_count, 
+    int max_results);
 
 #endif // _AABBTREE_H_
