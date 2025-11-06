@@ -2,19 +2,13 @@
 #ifndef _VECTOR3_H
 #define _VECTOR3_H
 
-typedef union Vector3i32 {
-    struct {int x, y, z;};
-    int data[3];
-} Vector3i32;
+#include <libdragon.h>
 
-typedef union Vector3 {
-    struct {float x, y, z;};
-    float data[3];
-} Vector3;
+typedef fm_vec3_t Vector3;
 
 typedef union Vector3u8 {
     struct {char x, y, z;};
-    char data[3];
+    char v[3];
 } Vector3u8;
 
 extern Vector3 gRight;

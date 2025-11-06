@@ -4,10 +4,9 @@
 
 #include "vector3.h"
 #include "vector2.h"
+#include <stdbool.h>
 
-typedef struct Quaternion {
-    float x, y, z, w;
-} Quaternion;
+typedef fm_quat_t Quaternion;
 
 extern Quaternion gQuaternionZero;
 extern Quaternion gQuaternionIdentity;
@@ -31,7 +30,7 @@ void quatLerp(Quaternion* a, Quaternion* b, float t, Quaternion* out);
 void quatApplyAngularVelocity(Quaternion* input, Vector3* w, float timeStep, Quaternion* output);
 void quatDecompose(Quaternion* input, Vector3* axis, float* angle);
 void quatRotateAxisEuler(Quaternion* q, Vector3* axis, float angle, Quaternion* out);
-int quatIsIdentical(Quaternion* a, Quaternion* b);
+bool quatIsIdentical(Quaternion* a, Quaternion* b);
 
 float quatDot(Quaternion* a, Quaternion* b);
 

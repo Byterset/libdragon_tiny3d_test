@@ -3,7 +3,6 @@
 #include "../util/sort.h"
 #include "../time/time.h"
 #include "../math/mathf.h"
-#include "../math/math.h"
 #include "material.h"
 #include "defs.h"
 #include <stdbool.h>
@@ -113,9 +112,9 @@ struct render_batch_billboard_element render_batch_get_sprites(struct render_bat
     return result;
 }
 
-mat4x4 *render_batch_get_transform(struct render_batch *batch)
+Matrix4x4 *render_batch_get_transform(struct render_batch *batch)
 {
-    return frame_malloc(batch->pool, sizeof(mat4x4));
+    return frame_malloc(batch->pool, sizeof(Matrix4x4));
 }
 
 T3DMat4FP *render_batch_get_transformfp(struct render_batch *batch)
@@ -216,7 +215,7 @@ static bool element_type_2d[] = {
     
 };
 
-void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T3DViewport *viewport, struct render_fog_params *fog)
+void render_batch_execute(struct render_batch *batch, Matrix4x4 view_proj_matrix, T3DViewport *viewport, struct render_fog_params *fog)
 {
     uint16_t order[RENDER_BATCH_MAX_SIZE];
 
@@ -227,15 +226,15 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
 
     // used to scale billboard sprites
     float billboard_scale_x = sqrtf(
-                        view_proj_matrix[0][0] * view_proj_matrix[0][0] +
-                        view_proj_matrix[0][1] * view_proj_matrix[0][1] +
-                        view_proj_matrix[0][2] * view_proj_matrix[0][2]) *
+                        view_proj_matrix.m[0][0] * view_proj_matrix.m[0][0] +
+                        view_proj_matrix.m[0][1] * view_proj_matrix.m[0][1] +
+                        view_proj_matrix.m[0][2] * view_proj_matrix.m[0][2]) *
                     0.5f * 4;
 
     float billboard_scale_y = sqrtf(
-                        view_proj_matrix[1][0] * view_proj_matrix[1][0] +
-                        view_proj_matrix[1][1] * view_proj_matrix[1][1] +
-                        view_proj_matrix[1][2] * view_proj_matrix[1][2]) *
+                        view_proj_matrix.m[1][0] * view_proj_matrix.m[1][0] +
+                        view_proj_matrix.m[1][1] * view_proj_matrix.m[1][1] +
+                        view_proj_matrix.m[1][2] * view_proj_matrix.m[1][2]) *
                     0.5f * 4;
 
     sort_indices(order, batch->element_count, batch, (sort_compare)render_batch_compare_element);
@@ -341,7 +340,7 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
 
                 // Transform sprite position to view projection space
                 Vector4 transformed;
-                matrixVec3Mul(view_proj_matrix, &sprite.position, &transformed);
+                matrixVec3Mul(view_proj_matrix.m, &sprite.position, &transformed);
 
                 // w is the homogeneous coordinate, if it is less than 0 the point is behind the camera
                 
@@ -484,7 +483,9 @@ void render_batch_execute(struct render_batch *batch, mat4x4 view_proj_matrix, T
 
             texOffsetX = texOffsetX < 0 ? element->skybox.surface->width + texOffsetX : texOffsetX;
             // since we are not wrapping the image in the vertical direction, we need to clamp the offset
-            texOffsetY = clampi(texOffsetY, 0, element->skybox.surface->height - 1 - section_height);
+            int off_max = element->skybox.surface->height - 1 - section_height;
+            texOffsetY = ((texOffsetY) < (0) ? (0) : ((texOffsetY) > (off_max) ? (off_max) : (texOffsetY)));
+            // texOffsetY = clampi(texOffsetY, 0, element->skybox.surface->height - 1 - section_height);
 
             rdpq_set_mode_standard();
             rdpq_mode_zoverride(true, 1, 0);

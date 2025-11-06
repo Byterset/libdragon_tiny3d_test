@@ -173,17 +173,17 @@ bool ray_box_intersection(
     
     // Check intersection with each pair of planes
     for (int i = 0; i < 3; i++) {
-        if (fabsf(local_ray.dir.data[i]) < EPSILON) {
+        if (fabsf(local_ray.dir.v[i]) < EPSILON) {
             // Ray is parallel to the slab, check if ray origin is within the slab
-            if (local_ray.origin.data[i] < local_box.min.data[i] || 
-                local_ray.origin.data[i] > local_box.max.data[i]) {
+            if (local_ray.origin.v[i] < local_box.min.v[i] || 
+                local_ray.origin.v[i] > local_box.max.v[i]) {
                 return false;
             }
         } else {
             // Compute intersection with the two planes
-            float ood = 1.0f / local_ray.dir.data[i];
-            float t1 = (local_box.min.data[i] - local_ray.origin.data[i]) * ood;
-            float t2 = (local_box.max.data[i] - local_ray.origin.data[i]) * ood;
+            float ood = 1.0f / local_ray.dir.v[i];
+            float t1 = (local_box.min.v[i] - local_ray.origin.v[i]) * ood;
+            float t2 = (local_box.max.v[i] - local_ray.origin.v[i]) * ood;
             
             // Ensure t1 <= t2
             if (t1 > t2) {

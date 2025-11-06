@@ -13,7 +13,6 @@ struct map {
     Transform transform;
     struct renderable renderable;
     struct model* model;
-    float tileOffset;
 };
 
 void map_init(struct map* map);

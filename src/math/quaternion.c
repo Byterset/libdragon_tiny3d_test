@@ -4,8 +4,8 @@
 #include "mathf.h"
 #include <math.h>
 
-Quaternion gQuaternionZero = {0.0f, 0.0f, 0.0f, 0.0f};
-Quaternion gQuaternionIdentity = {0.0f, 0.0f, 0.0f, 1.0f};
+Quaternion gQuaternionZero = {{0.0f, 0.0f, 0.0f, 0.0f}};
+Quaternion gQuaternionIdentity = {{0.0f, 0.0f, 0.0f, 1.0f}};
 
 void quatIdent(Quaternion* q) {
     q->x = 0.0f;
@@ -201,48 +201,46 @@ void quatRandom(Quaternion* q) {
 }
 
 void quatLook(Vector3* lookDir, Vector3* up, Quaternion* out) {
-    // calculate orthonormal basis
+    // Build orthonormal basis
     Vector3 zDir;
     vector3Normalize(lookDir, &zDir);
     vector3Negate(&zDir, &zDir);
 
-    Vector3 yDir;
-    vector3AddScaled(up, &zDir, -vector3Dot(&zDir, up), &yDir);
-    vector3Normalize(&yDir, &yDir);
-
     Vector3 xDir;
-    vector3Cross(&yDir, &zDir, &xDir);
+    vector3Cross(up, &zDir, &xDir);
+    vector3Normalize(&xDir, &xDir);
 
-    // convert orthonormal basis to a quaternion
+    Vector3 yDir;
+    vector3Cross(&zDir, &xDir, &yDir);
+
+    // Matrix-to-quaternion conversion
     float trace = xDir.x + yDir.y + zDir.z;
+    float s;
+    
     if (trace > 0) { 
-        float sqrtResult = sqrtf(trace+1.0f) * 2.0f;
-        float invSqrtResult = 1.0f / sqrtResult;
-        out->w = 0.25 * sqrtResult;
-        out->x = (yDir.z - zDir.y) * invSqrtResult;
-        out->y = (zDir.x - xDir.z) * invSqrtResult; 
-        out->z = (xDir.y - yDir.x) * invSqrtResult; 
-    } else if ((xDir.x > yDir.y) && (xDir.x > zDir.z)) { 
-        float sqrtResult = sqrtf(1.0 + xDir.x - yDir.y - zDir.z) * 2.0f;
-        float invSqrtResult = 1.0f / sqrtResult;
-        out->w = (yDir.z - zDir.y) * invSqrtResult;
-        out->x = 0.25 * sqrtResult;
-        out->y = (yDir.x + xDir.y) * invSqrtResult; 
-        out->z = (zDir.x + xDir.z) * invSqrtResult; 
+        s = sqrtf(trace + 1.0f) * 2.0f;
+        out->w = 0.25f * s;
+        out->x = (yDir.z - zDir.y) / s;
+        out->y = (zDir.x - xDir.z) / s; 
+        out->z = (xDir.y - yDir.x) / s; 
+    } else if (xDir.x > yDir.y && xDir.x > zDir.z) { 
+        s = sqrtf(1.0f + xDir.x - yDir.y - zDir.z) * 2.0f;
+        out->w = (yDir.z - zDir.y) / s;
+        out->x = 0.25f * s;
+        out->y = (yDir.x + xDir.y) / s; 
+        out->z = (zDir.x + xDir.z) / s; 
     } else if (yDir.y > zDir.z) { 
-        float sqrtResult = sqrtf(1.0 + yDir.y - xDir.x - zDir.z) * 2.0f;
-        float invSqrtResult = 1.0f / sqrtResult;
-        out->w = (zDir.x - xDir.z) * invSqrtResult;
-        out->x = (yDir.x + xDir.y) * invSqrtResult; 
-        out->y = 0.25 * sqrtResult;
-        out->z = (zDir.y + yDir.z) * invSqrtResult; 
+        s = sqrtf(1.0f + yDir.y - xDir.x - zDir.z) * 2.0f;
+        out->w = (zDir.x - xDir.z) / s;
+        out->x = (yDir.x + xDir.y) / s; 
+        out->y = 0.25f * s;
+        out->z = (zDir.y + yDir.z) / s; 
     } else { 
-        float sqrtResult = sqrtf(1.0 + zDir.z - xDir.x - yDir.y) * 2.0f;
-        float invSqrtResult = 1.0f / sqrtResult;
-        out->w = (xDir.y - yDir.x) * invSqrtResult;
-        out->x = (zDir.x + xDir.z) * invSqrtResult;
-        out->y = (zDir.y + yDir.z) * invSqrtResult;
-        out->z = 0.25 * sqrtResult;
+        s = sqrtf(1.0f + zDir.z - xDir.x - yDir.y) * 2.0f;
+        out->w = (xDir.y - yDir.x) / s;
+        out->x = (zDir.x + xDir.z) / s;
+        out->y = (zDir.y + yDir.z) / s;
+        out->z = 0.25f * s;
     }
 }
 
@@ -319,6 +317,6 @@ void quatRotateAxisEuler(Quaternion *q, Vector3 *axis, float angleRad, Quaternio
     *out = tmp;
 }
 
-int quatIsIdentical(Quaternion* a, Quaternion* b) {
+bool quatIsIdentical(Quaternion* a, Quaternion* b) {
     return (a->x == b->x) && (a->y == b->y) && (a->z == b->z) && (a->w == b->w);
 }

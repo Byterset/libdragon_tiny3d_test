@@ -88,9 +88,9 @@ void render_batch_add_equidistant(struct render_batch* batch, rspq_block_t* bloc
 void render_batch_add_skybox_flat(struct render_batch* batch, surface_t* surface);
 
 struct render_batch_billboard_element render_batch_get_sprites(struct render_batch* batch, int count);
-mat4x4* render_batch_get_transform(struct render_batch* batch);
+Matrix4x4* render_batch_get_transform(struct render_batch* batch);
 T3DMat4FP* render_batch_get_transformfp(struct render_batch* batch);
 
-void render_batch_execute(struct render_batch* batch, mat4x4 view_proj, T3DViewport* viewport, struct render_fog_params* fog);
+void render_batch_execute(struct render_batch* batch, Matrix4x4 view_proj, T3DViewport* viewport, struct render_fog_params* fog);
 
 #endif

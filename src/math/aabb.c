@@ -77,9 +77,9 @@ bool AABBIntersectsRay(AABB *box, raycast *ray) {
     for (int i = 0; i < 3; i++) {
         // if the ray is not parallel to the axis (dir[i] != 0)
         // calculate the intersection distance of the planes of the box on the axis
-        if (ray->dir.data[i] != 0.0f) {
-            float t1 = (box->min.data[i] - ray->origin.data[i]) * ray->_invDir.data[i];
-            float t2 = (box->max.data[i] - ray->origin.data[i]) * ray->_invDir.data[i];
+        if (ray->dir.v[i] != 0.0f) {
+            float t1 = (box->min.v[i] - ray->origin.v[i]) * ray->_invDir.v[i];
+            float t2 = (box->max.v[i] - ray->origin.v[i]) * ray->_invDir.v[i];
             if (t1 > t2) {
                 float temp = t1;
                 t1 = t2;
@@ -89,7 +89,7 @@ bool AABBIntersectsRay(AABB *box, raycast *ray) {
             tExit = fminf(tExit, t2);
         } 
         // if a ray is parallel to the axis (dir[i] == 0) and outside the box bounds it can not intersect
-        else if (ray->origin.data[i] < box->min.data[i] || ray->origin.data[i] > box->max.data[i]) {
+        else if (ray->origin.v[i] < box->min.v[i] || ray->origin.v[i] > box->max.v[i]) {
             return false;
         }
     }

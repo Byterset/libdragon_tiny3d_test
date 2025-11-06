@@ -40,10 +40,10 @@ void render_scene_render_renderable(void* data, struct render_batch* batch) {
         return;
     }
 
-    mat4x4 mtx;
-    transformToMatrix(renderable->transform, mtx);
+    Matrix4x4 mtx;
+    transformToMatrix(renderable->transform, mtx.m);
 
-    t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx);
+    t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx.m);
 
     render_batch_add_t3dmodel(batch, renderable->model, mtxfp);
 }
@@ -60,10 +60,10 @@ void render_scene_render_renderable_single_axis(void* data, struct render_batch*
         return;
     }
 
-    mat4x4 mtx;
-    transformSAToMatrix(renderable->transform, mtx);
+    Matrix4x4 mtx;
+    transformSAToMatrix(renderable->transform, mtx.m);
 
-    t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx);
+    t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx.m);
 
     render_batch_add_t3dmodel(batch, renderable->model, mtxfp);
 }
@@ -127,6 +127,6 @@ void render_scene_render(struct camera* camera, T3DViewport* viewport, struct fr
     }
 
     // Execute drawing of batch elements
-    render_batch_execute(&batch, viewport->matCamProj.m, viewport, fog);
+    render_batch_execute(&batch, viewport->matCamProj, viewport, fog);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, 16, 104, "culled: %d", culled);
 }

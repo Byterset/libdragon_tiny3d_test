@@ -9,7 +9,7 @@ typedef union Vector2s16 {
         short x;
         short y;
     };
-    short data[2];
+    short v[2];
 } Vector2s16;
 
 void vector2s16Add(Vector2s16* a, Vector2s16* b, Vector2s16* output);

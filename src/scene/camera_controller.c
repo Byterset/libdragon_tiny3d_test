@@ -127,8 +127,8 @@ void camera_controller_update(struct camera_controller* controller) {
 void camera_controller_init(struct camera_controller* controller, struct camera* camera, struct player* player) {
     controller->camera = camera;
     controller->player = player;
-
-    update_add(controller, (update_callback)camera_controller_update, UPDATE_PRIORITY_CAMERA, UPDATE_LAYER_WORLD);
+    //use fixed_update with less priority than UPDATE_PRIORITY_PLAYER to make camera controller update after player position is final
+    fixed_update_add(controller, (update_callback)camera_controller_update, UPDATE_PRIORITY_CAMERA, UPDATE_LAYER_WORLD);
 
     controller->target = player->transform.position;
     controller->follow_distace = 3.0f;

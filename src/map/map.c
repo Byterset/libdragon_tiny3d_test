@@ -15,7 +15,6 @@ void map_init(struct map* map) {
 
     map->transform.position = (Vector3){{0,0,0}};
     map->transform.scale = (Vector3){{1.0f, 1.0f, 1.0f}};
-    map->tileOffset = 0.0f;
 
     render_scene_add_callback(NULL, 0, render_scene_render_renderable, &map->renderable);
 }

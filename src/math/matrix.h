@@ -13,7 +13,7 @@
  * @brief The 4x4 matrix structure.
  * 
  */
-typedef float mat4x4[4][4];
+typedef fm_mat4_t Matrix4x4;
 
 void matrixPerspective(float matrix[4][4], float l, float r, float top, float b, float near, float far);
 

@@ -11,6 +11,6 @@ typedef struct TransformSingleAxis {
     Vector3 scale;
 } TransformSingleAxis;
 
-void transformSAToMatrix(TransformSingleAxis* transform, mat4x4 matrix);
+void transformSAToMatrix(TransformSingleAxis* transform, float mtx[4][4]);
 
 #endif

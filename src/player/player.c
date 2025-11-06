@@ -160,10 +160,10 @@ void player_render_callback(void* data, struct render_batch* batch) {
         return;
     }
 
-    mat4x4 mtx;
-    transformToMatrix(&player->transform, mtx);
+    Matrix4x4 mtx;
+    transformToMatrix(&player->transform, mtx.m);
     
-    t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4 *)mtx);
+    t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4 *)mtx.m);
 
     rdpq_mode_persp(true);
     t3d_state_set_drawflags(T3D_FLAG_DEPTH | T3D_FLAG_SHADED | T3D_FLAG_TEXTURED | T3D_FLAG_CULL_BACK);
@@ -267,7 +267,7 @@ void player_update(struct player* player) {
     // We now blend the walk animation with the idle/attack one
     t3d_skeleton_blend(&player->renderable.model->skeleton, &player->renderable.model->skeleton, &player->skelBlend, animBlend);
 
-    t3d_skeleton_update(&player->renderable.model->skeleton);
+    // t3d_skeleton_update(&player->renderable.model->skeleton);
 
 
     // Update Player Rotation and desired Velocity based on the camera and input
@@ -311,6 +311,51 @@ void player_update(struct player* player) {
     float max_speed = held.r ? PLAYER_MAX_SPEED * 2.0f : PLAYER_MAX_SPEED;
 
     player->desired_velocity = (Vector3){{directionWorld.x * max_speed, 0.0f, directionWorld.z * max_speed}};
+
+
+    Vector3 snakeLookTarget = {{87, 10, -127}}; // target in world space
+    
+    Vector3 lookDir;
+
+    t3d_skeleton_update(&player->renderable.model->skeleton);
+
+    int head_index = t3d_skeleton_find_bone(&player->renderable.model->skeleton, "Mouth");
+    T3DBone* head = &player->renderable.model->skeleton.bones[head_index];
+
+    // Get head position in world space using the skeleton's transform matrix
+    // (You may need to call t3d_skeleton_update first if not already done this frame)
+    Vector3 snakeHeadPos_world;
+    // Assuming the skeleton has computed world matrices:
+    // snakeHeadPos_world = extract position from skeleton.bones[head_index].matrixWorld
+    // OR build it manually from the bone hierarchy
+    T3DMat4* headMatrix = &head->matrix;
+    
+    snakeHeadPos_world = (Vector3){{headMatrix->m[3][0], // Adjust based on your fixed-point format
+                                    headMatrix->m[3][1],
+                                    headMatrix->m[3][2]}};
+    quatMultVector(&player->transform.rotation, &snakeHeadPos_world, &snakeHeadPos_world);
+    vector3Add(&snakeHeadPos_world, &player->transform.position, &snakeHeadPos_world);
+
+    vector3Sub(&snakeLookTarget, &snakeHeadPos_world, &lookDir);
+    vector3NormalizeSelf(&lookDir);
+
+    // Transform to player-local space
+    Quaternion inverse_player_rot;
+    quatConjugate(&player->transform.rotation, &inverse_player_rot);
+    Vector3 dir_local;
+    quatMultVector(&inverse_player_rot, &lookDir, &dir_local);
+
+    // Create look-at rotation
+    Quaternion lookAtQuat;
+    quatLook(&dir_local, &gUp, &lookAtQuat);
+
+    Quaternion head_orig_rot = (Quaternion)player->renderable.model->skeleton.bones[head_index].rotation;
+
+    // Set the bone rotation (replace original, don't multiply)
+    player->renderable.model->skeleton.bones[head_index].rotation = lookAtQuat;
+    player->renderable.model->skeleton.bones[head_index].hasChanged = true;
+
+    t3d_skeleton_update(&player->renderable.model->skeleton);
 
 }
 

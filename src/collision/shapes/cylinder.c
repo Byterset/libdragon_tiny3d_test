@@ -55,20 +55,20 @@ void cylinder_bounding_box(void* data, Quaternion* rotation, AABB* box) {
 
     // Rotate the local aabb if needed with Arvo's method
     if (rotation) {
-        mat4x4 rotMat;
+        Matrix4x4 rotMat;
         AABB aabb_rotated = {0};
-        quatToMatrix(rotation, rotMat);
+        quatToMatrix(rotation, rotMat.m);
         
         //for all three axes
         for(int i = 0; i < 3; i++){
             // Form extent by summing smaller and larger terms respectively
             for (int j = 0; j < 3; j++)
             {
-                float a = rotMat[i][j] * box->min.data[j];
-                float b = rotMat[i][j] * box->max.data[j];
+                float a = rotMat.m[i][j] * box->min.v[j];
+                float b = rotMat.m[i][j] * box->max.v[j];
                 
-                aabb_rotated.min.data[i] += (a < b) ? a : b;
-                aabb_rotated.max.data[i] += (a < b) ? b : a;
+                aabb_rotated.min.v[i] += (a < b) ? a : b;
+                aabb_rotated.max.v[i] += (a < b) ? b : a;
             }
             
         }
