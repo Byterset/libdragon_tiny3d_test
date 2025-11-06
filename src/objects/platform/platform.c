@@ -41,7 +41,7 @@ void platform_init(struct platform* platform, struct generic_object_pos_definiti
     quatRotateAxisEuler(&platform->transform.rotation, &gUp, T3D_DEG_TO_RAD(-45.0f), &platform->transform.rotation);
 
 
-    renderable_init(&platform->renderable, &platform->transform, "rom:/models/box/box.t3dm");
+    renderable_init(&platform->renderable, &platform->transform, "rom:/models/crate/crate.t3dm");
 
     render_scene_add_renderable(&platform->renderable, 25.0f);
 
@@ -58,8 +58,8 @@ void platform_init(struct platform* platform, struct generic_object_pos_definiti
     
     platform->physics.center_offset.y = platform_collision.shape_data.box.half_size.y;
 
-    platform->physics.has_gravity = 0;
-    platform->physics.is_fixed = 1;
+    platform->physics.has_gravity = false;
+    platform->physics.is_fixed = true;
 
     update_add(platform, (update_callback)platform_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
     collision_scene_add(&platform->physics);

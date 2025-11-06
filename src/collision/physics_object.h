@@ -12,7 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define GRAVITY_CONSTANT    -9.8f // default earth gravity in m/s^2
+#define PHYS_GLOBAL_GRAVITY_MULT 2.0f
+#define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default earth gravity in m/s^2
 #define PHYS_OBJECT_TERMINAL_Y_VELOCITY   50.0f // terminal y-velocity
 
 #define PHYS_OBJECT_SLEEP_THRESHOLD 0.0001f // the amount the object needs to move in one step to be considered in motion
@@ -81,17 +82,21 @@ struct physics_object {
     float time_scalar; // a scalar to adjust the time step for the object, default is 1.0
     float mass; // the mass of the object, cannot be zero
     float gravity_scalar; // how much gravity affects the object, default is 1.0
-    uint8_t has_gravity: 1;
-    uint8_t is_trigger: 1;
-    uint8_t is_fixed: 1;
-    uint8_t is_grounded: 1;
-    uint8_t is_out_of_bounds: 1;
-    uint8_t is_sleeping: 1;
+    bool has_gravity: true;
+    bool is_trigger: true;
+    bool is_fixed: true;
+    bool is_rotation_fixed: true;
+    bool is_grounded: true;
+    bool is_sleeping: true;
     uint16_t _sleep_counter;
     uint16_t collision_layers; // objects that share at least one layer can collide
     uint16_t collision_group; // objects of the same group do not collide
     struct contact* active_contacts; // contacts with other objects from the last physics step
     NodeProxy _aabb_tree_node_id; // the node id of the object in the phys-object AABB tree of the collision scene
+    Vector3 angular_velocity;
+    Vector3 torque_accumulator;
+    Vector3 local_inertia_tensor;
+    float angular_damping;
 };
 
 void physics_object_init(
@@ -105,7 +110,8 @@ void physics_object_init(
 );
 
 void physics_object_update_euler(struct physics_object* object);
-void physics_object_update_velocity_verlet_simple(struct physics_object* object);
+void physics_object_update_velocity_verlet(struct physics_object* object);
+void physics_object_update_angular_velocity(struct physics_object* object);
 
 struct contact* physics_object_nearest_contact(struct physics_object* object);
 bool physics_object_is_touching(struct physics_object* object, entity_id id);
@@ -113,7 +119,6 @@ bool physics_object_is_touching(struct physics_object* object, entity_id id);
 void physics_object_accelerate(struct physics_object* object, Vector3* acceleration);
 void physics_object_translate_no_force(struct physics_object* object, Vector3* translation);
 void physics_object_position_no_force(struct physics_object* object, Vector3* position);
-Vector3 physics_object_get_velocity_verlet(struct physics_object* object);
 void physics_object_set_velocity(struct physics_object* object, Vector3* velocity);
 void physics_object_apply_impulse(struct physics_object* object, Vector3* impulse);
 

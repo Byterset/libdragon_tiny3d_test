@@ -218,10 +218,11 @@ void collision_scene_step() {
             collision_scene_release_object_contacts(obj);
 
             if (obj->has_gravity && !obj->is_fixed) {
-                obj->acceleration.y += GRAVITY_CONSTANT * obj->gravity_scalar;
+                obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar;
             }
         }
-        physics_object_update_velocity_verlet_simple(obj);
+        physics_object_update_velocity_verlet(obj);
+        physics_object_update_angular_velocity(obj);
 
         // Track movement for AABB updates
         const bool has_moved = !vector3Equals(&obj->_prev_step_pos, obj->position);
@@ -264,9 +265,9 @@ void collision_scene_step() {
             if (obj->_sleep_counter < PHYS_OBJECT_SLEEP_STEPS) {
                 obj->_sleep_counter += 1;
             }
-            else obj->is_sleeping = 1;
+            else obj->is_sleeping = true;
         } else {
-            obj->is_sleeping = 0;
+            obj->is_sleeping = false;
             obj->_sleep_counter = 0;
         }
 

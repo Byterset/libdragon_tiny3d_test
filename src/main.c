@@ -19,7 +19,7 @@
 
 #include "player/player.h"
 #include "map/map.h"
-#include "objects/box/box.h"
+#include "objects/crate/crate.h"
 #include "objects/cone/cone.h"
 #include "objects/cylinder/cylinder.h"
 #include "objects/soda_can/soda_can.h"
@@ -58,12 +58,12 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
-#define NUM_BOXES 3
+#define NUM_CRATES 3
 #define NUM_COINS 5
 
 struct player player;
 struct map map;
-struct box boxes[NUM_BOXES];
+struct crate crates[NUM_CRATES];
 struct collectable coins[NUM_COINS];
 struct cone cone;
 struct cylinder cylinder;
@@ -84,7 +84,7 @@ struct player_definition playerDef = {
     (Vector2){{1, 0}}
 };
 
-struct generic_object_pos_definition box_def = {
+struct generic_object_pos_definition crate_def = {
     (Vector3){{89, 5, -127}}
 };
 
@@ -126,9 +126,13 @@ void setup()
     camera_init(&camera, 70.0f, 1.5f, 140.0f);
     skybox_flat_init(&skybox_flat);
     
-    for(int i = 0; i < NUM_BOXES; i++){
-        box_init(&boxes[i], &box_def);
-        box_def.position.y += 10;
+    for(int i = 0; i < NUM_CRATES; i++){
+        crate_init(&crates[i], &crate_def);
+        crate_def.position.y += 10;
+        if( i == 0){
+            crates[i].physics.angular_velocity = (Vector3){{1.0f, 1.0f, 0.0f}};
+            crates[i].physics.is_fixed = true;
+        }
     }
     for(int i = 0; i < NUM_COINS; i++){
         collectable_init(&coins[i], &collectableDef);

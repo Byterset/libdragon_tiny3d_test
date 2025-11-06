@@ -14,7 +14,7 @@
 // // #include "../npc/npc.h"
 
 // // #include "../objects/collectable.h"
-#include "../objects/box/box.h"
+#include "../objects/crate/crate.h"
 // // #include "../objects/ground_torch.h"
 // // #include "../objects/training_dummy.h"
 // // #include "../objects/treasure_chest.h"

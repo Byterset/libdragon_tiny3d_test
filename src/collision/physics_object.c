@@ -34,15 +34,18 @@ void physics_object_init(
     object->time_scalar = 1.0f;
     object->gravity_scalar = 1.0f;
     object->mass = mass;
-    object->has_gravity = 1;
-    object->is_trigger = 0;
-    object->is_fixed = 0;
-    object->is_out_of_bounds = 0;
-    object->is_grounded = 0;
-    object->is_sleeping = 0;
+    object->has_gravity = true;
+    object->is_trigger = false;
+    object->is_fixed = false;
+    object->is_rotation_fixed = false;
+    object->is_grounded = false;
+    object->is_sleeping = false;
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
+    object->angular_damping = 0;
+    object->angular_velocity = gZeroVec;
+    object->torque_accumulator = gZeroVec;
     physics_object_recalculate_aabb(object);
 }
 
@@ -52,30 +55,36 @@ void physics_object_update_euler(struct physics_object* object) {
     }
 
     if (object->has_gravity) {
-        object->velocity.y += FIXED_DELTATIME * object->time_scalar * GRAVITY_CONSTANT * object->gravity_scalar;
+        object->velocity.y += FIXED_DELTATIME * object->time_scalar * PHYS_GRAVITY_CONSTANT * object->gravity_scalar;
     }
     vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
     object->velocity.y = clampf(object->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
 
-    object->is_grounded = 0;
+    object->is_grounded = false;
 
     vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
     object->acceleration = gZeroVec;
 
 }
 
-void physics_object_update_velocity_verlet_simple(struct physics_object* object) {
-    if (object->is_trigger | object->is_fixed) {
+void physics_object_update_velocity_verlet(struct physics_object* o) {
+    if (o->is_trigger || o->is_fixed) return;
+
+    vector3AddScaled(o->position, &o->velocity, FIXED_DELTATIME, o->position);
+    vector3AddScaled(o->position, &o->acceleration, 0.5f * FIXED_DELTATIME * FIXED_DELTATIME, o->position);
+
+    vector3AddScaled(&o->velocity, &o->acceleration, FIXED_DELTATIME, &o->velocity);
+    o->velocity.y = clampf(o->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
+
+    o->acceleration = gZeroVec;
+    o->is_grounded = false;
+}
+
+void physics_object_update_angular_velocity(struct physics_object* object) {
+    if (object->is_trigger | object->is_rotation_fixed | (object->rotation == NULL)) {
         return;
     }
-    vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
-    object->velocity.y = clampf(object->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
-
-    object->is_grounded = 0;
-
-    vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
-    vector3AddScaled(object->position, &object->acceleration, FIXED_DELTATIME * FIXED_DELTATIME * object->time_scalar * 0.5f, object->position);
-    object->acceleration = gZeroVec;
+    quatApplyAngularVelocity(object->rotation, &object->angular_velocity, FIXED_DELTATIME * object->time_scalar, object->rotation);
 
 }
 

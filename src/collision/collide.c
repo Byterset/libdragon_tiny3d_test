@@ -147,7 +147,7 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
 
         return;
     }
-    b->is_sleeping = 0;
+    b->is_sleeping = false;
     b->_sleep_counter = 0;
 
     struct EpaResult result;

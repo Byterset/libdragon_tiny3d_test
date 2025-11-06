@@ -244,7 +244,7 @@ void player_update(struct player* player) {
         player->is_jumping = true;
     }
     if (pressed.b){
-        float jumpVelocity = sqrtf(-2.0f * (GRAVITY_CONSTANT * player->physics.gravity_scalar) * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
+        float jumpVelocity = sqrtf(-2.0f * (PHYS_GRAVITY_CONSTANT * player->physics.gravity_scalar) * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
         player->physics.velocity.y = jumpVelocity;
     }
 
@@ -401,7 +401,7 @@ void player_init(struct player* player, struct player_definition* definition, Tr
 
     player->physics.collision_group = COLLISION_GROUP_PLAYER;
     player->physics.gravity_scalar = 1.9f;
-    player->physics.has_gravity = 1;
+    player->physics.has_gravity = true;
     player->physics.collision->friction = 0.0f;
     
 

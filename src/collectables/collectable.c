@@ -30,7 +30,7 @@ struct collectable_information {
 
 static struct collectable_information collectable_information[] = {
     [COLLECTABLE_TYPE_COIN] = {
-        .mesh_filename = "rom:/models/box/box.t3dm",
+        .mesh_filename = "rom:/models/crate/crate.t3dm",
     },
 
 };
@@ -56,9 +56,9 @@ void collectable_init(struct collectable* collectable, struct collectable_defini
         1.0f
     );
     collectable->physics.collision_group = COLLISION_GROUP_COLLECTABLE;
-    collectable->physics.is_fixed = 1;
-    collectable->physics.is_trigger = 1;
-    collectable->physics.has_gravity = 0;
+    collectable->physics.is_fixed = true;
+    collectable->physics.is_trigger = true;
+    collectable->physics.has_gravity = false;
 
     struct collectable_information* type = &collectable_information[definition->collectable_type];
 

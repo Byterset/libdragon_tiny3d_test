@@ -50,8 +50,8 @@ void cylinder_init(struct cylinder* cylinder, struct generic_object_pos_definiti
     cylinder->physics.center_offset.y = cylinder_collision.shape_data.cylinder.half_height;
 
 
-    cylinder->physics.has_gravity = 1;
-    cylinder->physics.is_fixed = 0;
+    cylinder->physics.has_gravity = true;
+    cylinder->physics.is_fixed = false;
 
     collision_scene_add(&cylinder->physics);
 }

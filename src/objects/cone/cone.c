@@ -50,8 +50,8 @@ void cone_init(struct cone* cone, struct generic_object_pos_definition* def){
     cone->physics.center_offset.y = cone_collision.shape_data.cone.half_height;
 
 
-    cone->physics.has_gravity = 0;
-    cone->physics.is_fixed = 1;
+    cone->physics.has_gravity = false;
+    cone->physics.is_fixed = true;
 
     collision_scene_add(&cone->physics);
 }
