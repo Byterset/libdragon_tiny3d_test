@@ -12,13 +12,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define PHYS_GLOBAL_GRAVITY_MULT 2.0f
+#define PHYS_GLOBAL_GRAVITY_MULT 1.0f
 #define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default earth gravity in m/s^2
 #define PHYS_OBJECT_TERMINAL_Y_VELOCITY   50.0f // terminal y-velocity
 
 #define PHYS_OBJECT_SLEEP_THRESHOLD 0.0001f // the amount the object needs to move in one step to be considered in motion
 #define PHYS_OBJECT_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_SLEEP_THRESHOLD * PHYS_OBJECT_SLEEP_THRESHOLD)
 #define PHYS_OBJECT_SLEEP_STEPS 20 // number of steps the object has to be still before it goes to sleep
+
+#define PHYS_OBJECT_ANGULAR_SLEEP_THRESHOLD 0.001f // angular velocity threshold for sleep (rad/s)
+#define PHYS_OBJECT_ANGULAR_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_ANGULAR_SLEEP_THRESHOLD * PHYS_OBJECT_ANGULAR_SLEEP_THRESHOLD)
 
 enum collision_layer {
     COLLISION_LAYER_NONE = 0,
@@ -38,6 +41,7 @@ enum collision_group {
 };
 
 typedef void (*bounding_box_calculator)(void* data, Quaternion* rotation, AABB* box);
+typedef void (*inertia_calculator)(void* data, float mass, Vector3* out);
 
 typedef enum physics_object_collision_shape_type {
     COLLISION_SHAPE_SPHERE,
@@ -61,6 +65,7 @@ union physics_object_collision_shape_data
 struct physics_object_collision_data {
     gjk_support_function gjk_support_function;
     bounding_box_calculator bounding_box_calculator;
+    inertia_calculator inertia_calculator;
     union physics_object_collision_shape_data shape_data;
     Vector3 collider_world_center;
     physics_object_collision_shape_type shape_type;
@@ -106,6 +111,7 @@ void physics_object_init(
     uint16_t collision_layers,
     Vector3* position, 
     Quaternion* rotation,
+    Vector3 center_offset,
     float mass
 );
 
@@ -121,6 +127,11 @@ void physics_object_translate_no_force(struct physics_object* object, Vector3* t
 void physics_object_position_no_force(struct physics_object* object, Vector3* position);
 void physics_object_set_velocity(struct physics_object* object, Vector3* velocity);
 void physics_object_apply_impulse(struct physics_object* object, Vector3* impulse);
+
+void physics_object_apply_torque(struct physics_object* object, Vector3* torque);
+void physics_object_apply_angular_impulse(struct physics_object* object, Vector3* angular_impulse);
+void physics_object_apply_force_at_point(struct physics_object* object, Vector3* force, Vector3* world_point);
+void physics_object_set_angular_velocity(struct physics_object* object, Vector3* angular_velocity);
 
 void physics_object_apply_constraints(struct physics_object* object);
 

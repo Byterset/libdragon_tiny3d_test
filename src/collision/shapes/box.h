@@ -8,5 +8,6 @@
 
 void box_support_function(void* data, Vector3* direction, Vector3* output);
 void box_bounding_box(void* data, Quaternion* rotation, AABB* box);
+void box_inertia_tensor(void* data, float mass, Vector3* out);
 
 #endif

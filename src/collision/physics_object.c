@@ -20,6 +20,7 @@ void physics_object_init(
     uint16_t collision_layers,
     Vector3* position, 
     Quaternion* rotation,
+    Vector3 center_offset,
     float mass
 ) {
     assert(mass > 0.0f);
@@ -30,7 +31,7 @@ void physics_object_init(
     object->rotation = rotation;
     object->_prev_step_rot = gQuaternionZero;
     object->velocity = gZeroVec;
-    object->center_offset = gZeroVec;
+    object->center_offset = center_offset;
     object->time_scalar = 1.0f;
     object->gravity_scalar = 1.0f;
     object->mass = mass;
@@ -43,9 +44,19 @@ void physics_object_init(
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
-    object->angular_damping = 0;
+    object->angular_damping = 0.02f; // Default 2% damping per frame
     object->angular_velocity = gZeroVec;
     object->torque_accumulator = gZeroVec;
+
+    // Calculate inertia tensor if inertia calculator is provided
+    if (collision->inertia_calculator) {
+        collision->inertia_calculator(object, mass, &object->local_inertia_tensor);
+    } else {
+        // Fallback: treat as unit sphere if no calculator provided
+        float default_inertia = 0.4f * mass;
+        object->local_inertia_tensor = (Vector3){{default_inertia, default_inertia, default_inertia}};
+    }
+
     physics_object_recalculate_aabb(object);
 }
 
@@ -81,11 +92,58 @@ void physics_object_update_velocity_verlet(struct physics_object* o) {
 }
 
 void physics_object_update_angular_velocity(struct physics_object* object) {
-    if (object->is_trigger | object->is_rotation_fixed | (object->rotation == NULL)) {
+    if (object->is_trigger || object->is_rotation_fixed || !object->rotation) {
         return;
     }
-    quatApplyAngularVelocity(object->rotation, &object->angular_velocity, FIXED_DELTATIME * object->time_scalar, object->rotation);
 
+    // Skip if no angular motion
+    if (vector3IsZero(&object->angular_velocity) && vector3IsZero(&object->torque_accumulator)) {
+        return;
+    }
+
+    // Calculate angular acceleration: α = I^-1 * τ
+    // Since we store diagonal inertia tensor, inverse is just 1/Ixx, 1/Iyy, 1/Izz
+    if (!vector3IsZero(&object->torque_accumulator)) {
+        Vector3 angular_acceleration;
+        angular_acceleration.x = object->torque_accumulator.x / object->local_inertia_tensor.x;
+        angular_acceleration.y = object->torque_accumulator.y / object->local_inertia_tensor.y;
+        angular_acceleration.z = object->torque_accumulator.z / object->local_inertia_tensor.z;
+
+        // Update angular velocity: ω = ω + α * dt
+        vector3AddScaled(&object->angular_velocity, &angular_acceleration,
+                        FIXED_DELTATIME * object->time_scalar, &object->angular_velocity);
+
+        // Clear torque accumulator
+        object->torque_accumulator = gZeroVec;
+    }
+
+    // Apply angular damping
+    if (object->angular_damping > 0.0f) {
+        float damping_factor = 1.0f - object->angular_damping;
+        if (damping_factor < 0.0f) damping_factor = 0.0f;
+        vector3Scale(&object->angular_velocity, &object->angular_velocity, damping_factor);
+    }
+
+    // Calculate center of mass before rotation
+    Vector3 center_of_mass_old;
+    quatMultVector(object->rotation, &object->center_offset, &center_of_mass_old);
+    vector3Add(object->position, &center_of_mass_old, &center_of_mass_old);
+
+    // Apply angular velocity to rotation quaternion
+    quatApplyAngularVelocity(object->rotation, &object->angular_velocity,
+                            FIXED_DELTATIME * object->time_scalar, object->rotation);
+    quatNormalize(object->rotation, object->rotation);
+
+    // Calculate center of mass after rotation
+    Vector3 center_of_mass_new;
+    quatMultVector(object->rotation, &object->center_offset, &center_of_mass_new);
+    vector3Add(object->position, &center_of_mass_new, &center_of_mass_new);
+
+    // Adjust position so center of mass stays in same location
+    // (rotation should happen around center of mass, not object origin)
+    Vector3 position_correction;
+    vector3Sub(&center_of_mass_old, &center_of_mass_new, &position_correction);
+    vector3Add(object->position, &position_correction, object->position);
 }
 
 void physics_object_apply_constraints(struct physics_object* object){
@@ -130,10 +188,70 @@ void physics_object_set_velocity(struct physics_object* object, Vector3* velocit
 }
 
 /// @brief apply and impulse force to the object
-/// @param object 
-/// @param impulse 
+/// @param object
+/// @param impulse
 void physics_object_apply_impulse(struct physics_object* object, Vector3* impulse) {
     vector3AddScaled(&object->velocity, impulse, 1.0f / object->mass, &object->velocity);
+}
+
+/// @brief Apply torque to the object (accumulated and applied during physics update)
+/// @param object
+/// @param torque the torque vector in world space (N⋅m)
+void physics_object_apply_torque(struct physics_object* object, Vector3* torque) {
+    vector3Add(&object->torque_accumulator, torque, &object->torque_accumulator);
+}
+
+/// @brief Apply an angular impulse directly to angular velocity
+/// @param object
+/// @param angular_impulse angular impulse in world space (N⋅m⋅s)
+void physics_object_apply_angular_impulse(struct physics_object* object, Vector3* angular_impulse) {
+    if (object->is_rotation_fixed || !object->rotation) {
+        return;
+    }
+
+    // Δω = I^-1 * angular_impulse
+    // Since we store diagonal inertia tensor, inverse is just 1/Ixx, 1/Iyy, 1/Izz
+    Vector3 angular_velocity_change;
+    angular_velocity_change.x = angular_impulse->x / object->local_inertia_tensor.x;
+    angular_velocity_change.y = angular_impulse->y / object->local_inertia_tensor.y;
+    angular_velocity_change.z = angular_impulse->z / object->local_inertia_tensor.z;
+
+    vector3Add(&object->angular_velocity, &angular_velocity_change, &object->angular_velocity);
+}
+
+/// @brief Apply a force at a specific world point, generating both linear and angular effects
+/// @param object
+/// @param force the force vector in world space
+/// @param world_point the point in world space where the force is applied
+void physics_object_apply_force_at_point(struct physics_object* object, Vector3* force, Vector3* world_point) {
+    // Apply linear force
+    vector3AddScaled(&object->acceleration, force, 1.0f / object->mass, &object->acceleration);
+
+    // Calculate torque: τ = r × F
+    // r is the vector from center of mass to the point of application
+    Vector3 center_of_mass;
+    if (object->rotation) {
+        Vector3 rotated_offset;
+        quatMultVector(object->rotation, &object->center_offset, &rotated_offset);
+        vector3Add(object->position, &rotated_offset, &center_of_mass);
+    } else {
+        vector3Add(object->position, &object->center_offset, &center_of_mass);
+    }
+
+    Vector3 r;
+    vector3Sub(world_point, &center_of_mass, &r);
+
+    Vector3 torque;
+    vector3Cross(&r, force, &torque);
+
+    physics_object_apply_torque(object, &torque);
+}
+
+/// @brief Set the angular velocity of the object
+/// @param object
+/// @param angular_velocity the angular velocity in world space (rad/s)
+void physics_object_set_angular_velocity(struct physics_object* object, Vector3* angular_velocity) {
+    vector3Copy(angular_velocity, &object->angular_velocity);
 }
 
 /// @brief iterate through the active contacts of the object and return the contact with the smallest distance to the object

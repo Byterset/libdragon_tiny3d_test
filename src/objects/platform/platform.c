@@ -13,6 +13,7 @@
 static struct physics_object_collision_data platform_collision = {
     .gjk_support_function = box_support_function,
     .bounding_box_calculator = box_bounding_box,
+    .inertia_calculator = box_inertia_tensor,
     .shape_data = {
         .box = {
             .half_size = {{12.5f, 1.0f, 5.0f}}
@@ -53,10 +54,10 @@ void platform_init(struct platform* platform, struct generic_object_pos_definiti
         COLLISION_LAYER_TANGIBLE,
         &platform->transform.position,
         &platform->transform.rotation,
+        (Vector3){{0,platform_collision.shape_data.box.half_size.y,0}},
         10.0f
     );
-    
-    platform->physics.center_offset.y = platform_collision.shape_data.box.half_size.y;
+
 
     platform->physics.has_gravity = false;
     platform->physics.is_fixed = true;

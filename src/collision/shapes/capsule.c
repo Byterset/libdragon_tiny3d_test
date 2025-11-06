@@ -59,3 +59,42 @@ void capsule_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     box->max.y = fmaxf(rotated_min.y + radius, rotated_max.y + radius);
     box->max.z = fmaxf(rotated_min.z + radius, rotated_max.z + radius);
 }
+
+void capsule_inertia_tensor(void* data, float mass, Vector3* out) {
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
+
+    float radius = shape_data->capsule.radius;
+    float inner_half_height = shape_data->capsule.inner_half_height;
+    float cylinder_height = 2.0f * inner_half_height;
+
+    // Calculate volumes to distribute mass
+    float pi = 3.14159265359f;
+    float cylinder_volume = pi * radius * radius * cylinder_height;
+    float sphere_volume = (4.0f / 3.0f) * pi * radius * radius * radius;
+    float total_volume = cylinder_volume + sphere_volume;
+
+    float cylinder_mass = mass * (cylinder_volume / total_volume);
+    float sphere_mass = mass * (sphere_volume / total_volume);
+
+    // Cylinder inertia (oriented along y-axis)
+    float r_sq = radius * radius;
+    float h_sq = cylinder_height * cylinder_height;
+    float cyl_perp = cylinder_mass * (3.0f * r_sq + h_sq) / 12.0f;
+    float cyl_axial = 0.5f * cylinder_mass * r_sq;
+
+    // Sphere inertia (centered at origin, but the hemispheres are offset)
+    float sphere_inertia = 0.4f * sphere_mass * r_sq;
+
+    // Parallel axis theorem for the two hemisphere caps offset by ±inner_half_height
+    // I_parallel = I_cm + m * d² where d is the distance from center of mass
+    // Each hemisphere has mass sphere_mass/2 and is offset by inner_half_height
+    float offset_sq = inner_half_height * inner_half_height;
+    float hemisphere_mass = sphere_mass * 0.5f;
+    float sphere_perp = sphere_inertia + 2.0f * hemisphere_mass * offset_sq;
+
+    // Combine cylinder and sphere contributions
+    out->x = cyl_perp + sphere_perp;
+    out->y = cyl_axial + sphere_inertia;
+    out->z = cyl_perp + sphere_perp;
+}

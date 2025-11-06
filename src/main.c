@@ -130,7 +130,7 @@ void setup()
         crate_init(&crates[i], &crate_def);
         crate_def.position.y += 10;
         if( i == 0){
-            crates[i].physics.angular_velocity = (Vector3){{1.0f, 1.0f, 0.0f}};
+            // crates[i].physics.angular_velocity = (Vector3){{17.0f, 23.0f, -8.0f}};
             crates[i].physics.is_fixed = true;
         }
     }
@@ -141,6 +141,7 @@ void setup()
 
     cone_init(&cone, &cone_def);
     cylinder_init(&cylinder, &cyl_def);
+    cylinder.physics.is_fixed = true;
     // soda_can_init(&soda_can, &can_def);
     
     map_init(&map);
@@ -313,6 +314,12 @@ int main()
         if(joypad_get_buttons_pressed(0).start){
             render_collision = !render_collision;
             // render_collision ? update_pause_layers(UPDATE_LAYER_WORLD) : update_unpause_layers(UPDATE_LAYER_WORLD);
+        }
+
+        if(joypad_get_buttons_pressed(0).d_left){
+            Vector3 torque = (Vector3){{100,-200,50}};
+            physics_object_apply_torque(&crates[0].physics, &torque);
+            physics_object_apply_torque(&cylinder.physics, &torque);
         }
 
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //

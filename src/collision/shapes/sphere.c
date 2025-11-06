@@ -38,3 +38,17 @@ void sphere_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     vector3Scale(&gOneVec, &box->max, shape_data->sphere.radius);
     vector3Scale(&gOneVec, &box->min, -shape_data->sphere.radius);
 }
+
+void sphere_inertia_tensor(void* data, float mass, Vector3* out) {
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
+    float radius = shape_data->sphere.radius;
+
+    // Inertia tensor for a solid sphere: I = (2/5) * mass * r²
+    // Same for all axes due to rotational symmetry
+    float inertia = 0.4f * mass * radius * radius;
+
+    out->x = inertia;
+    out->y = inertia;
+    out->z = inertia;
+}

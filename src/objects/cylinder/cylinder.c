@@ -13,6 +13,7 @@
 static struct physics_object_collision_data cylinder_collision = {
     .gjk_support_function = cylinder_support_function,
     .bounding_box_calculator = cylinder_bounding_box,
+    .inertia_calculator = cylinder_inertia_tensor,
     .shape_data = {
         .cylinder = {
             .half_height = 2.5f,
@@ -42,13 +43,10 @@ void cylinder_init(struct cylinder* cylinder, struct generic_object_pos_definiti
         &cylinder_collision,
         COLLISION_LAYER_TANGIBLE,
         &cylinder->transform.position,
-        NULL,
-        50.0f
+        &cylinder->transform.rotation,
+        (Vector3){{0,cylinder_collision.shape_data.cylinder.half_height,0}},
+        20.0f
     );
-
-    // cylinder->collision.center_offset.y = cylinder_collision.shape_data.cylinder.half_height;
-    cylinder->physics.center_offset.y = cylinder_collision.shape_data.cylinder.half_height;
-
 
     cylinder->physics.has_gravity = true;
     cylinder->physics.is_fixed = false;

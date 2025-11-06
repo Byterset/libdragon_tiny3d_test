@@ -61,3 +61,25 @@ void cone_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     box->min = new_min;
     box->max = new_max;
 }
+
+void cone_inertia_tensor(void* data, float mass, Vector3* out) {
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
+
+    float radius = shape_data->cone.radius;
+    float half_height = shape_data->cone.half_height;
+    float height = 2.0f * half_height;
+
+    // Inertia tensor for a solid cone oriented along y-axis:
+    // Ixx = Izz = (3/80) * mass * (4*r² + h²)  (perpendicular to cone axis)
+    // Iyy = (3/10) * mass * r²  (along cone axis)
+    float r_sq = radius * radius;
+    float h_sq = height * height;
+
+    float perpendicular_inertia = (3.0f / 80.0f) * mass * (4.0f * r_sq + h_sq);
+    float axial_inertia = 0.3f * mass * r_sq;
+
+    out->x = perpendicular_inertia;
+    out->y = axial_inertia;
+    out->z = perpendicular_inertia;
+}

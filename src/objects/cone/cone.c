@@ -13,6 +13,7 @@
 static struct physics_object_collision_data cone_collision = {
     .gjk_support_function = cone_support_function,
     .bounding_box_calculator = cone_bounding_box,
+    .inertia_calculator = cone_inertia_tensor,
     .shape_data = {
         .cone = {
             .half_height = 2.5f,
@@ -43,12 +44,9 @@ void cone_init(struct cone* cone, struct generic_object_pos_definition* def){
         COLLISION_LAYER_TANGIBLE,
         &cone->transform.position,
         &cone->transform.rotation,
+        (Vector3){{0,cone_collision.shape_data.cone.half_height,0}},
         10.0f
     );
-
-    // cone->collision.center_offset.y = cone_collision.shape_data.cylinder.half_height;
-    cone->physics.center_offset.y = cone_collision.shape_data.cone.half_height;
-
 
     cone->physics.has_gravity = false;
     cone->physics.is_fixed = true;

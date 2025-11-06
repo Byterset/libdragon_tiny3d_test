@@ -26,6 +26,7 @@ static Vector2 player_max_rotation;
 static struct physics_object_collision_data player_collision = {
     .gjk_support_function = capsule_support_function,
     .bounding_box_calculator = capsule_bounding_box,
+    .inertia_calculator = capsule_inertia_tensor,
     .shape_data = {
         .capsule = {
             .radius = 1.0f,
@@ -33,6 +34,17 @@ static struct physics_object_collision_data player_collision = {
         }},
     .shape_type = COLLISION_SHAPE_CAPSULE,
 };
+
+// static struct physics_object_collision_data player_collision = {
+//     .gjk_support_function = sphere_support_function,
+//     .bounding_box_calculator = sphere_bounding_box,
+//     .inertia_calculator = sphere_inertia_tensor,
+//     .shape_data = {
+//         .sphere = {
+//             .radius = 1.0f,
+//         }},
+//     .shape_type = COLLISION_SHAPE_SPHERE,
+// };
 
 void player_handle_contacts(struct player* player){
     struct contact *contact = player->physics.active_contacts;
@@ -396,6 +408,7 @@ void player_init(struct player* player, struct player_definition* definition, Tr
         COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_PLAYER | COLLISION_LAYER_COLLECTABLES,
         &player->transform.position,
         &player->transform.rotation,
+        (Vector3){{0,player_collision.shape_data.capsule.inner_half_height + player_collision.shape_data.capsule.radius,0}},
         50.0f
     );
 
@@ -404,10 +417,6 @@ void player_init(struct player* player, struct player_definition* definition, Tr
     player->physics.has_gravity = true;
     player->physics.collision->friction = 0.0f;
     
-
-    player->physics.center_offset.y = player_collision.shape_data.capsule.inner_half_height + player_collision.shape_data.capsule.radius;
-    // player->collision.center_offset.y = player_collision.shape_data.sphere.radius;
-
     collision_scene_add(&player->physics);
 
     player->animations.jump = t3d_anim_create(player->renderable.model->t3d_model, "Snake_Jump");

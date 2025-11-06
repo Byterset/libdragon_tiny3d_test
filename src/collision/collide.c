@@ -9,6 +9,11 @@
 
 
 void correct_velocity(struct physics_object* object, struct EpaResult* result, float ratio, float friction, float bounce) {
+    // Fixed objects don't have their velocity corrected
+    if (object->is_fixed) {
+        return;
+    }
+
     // Calculate the component of velocity along the normal
     float velocityDot = vector3Dot(&object->velocity, &result->normal);
 
@@ -152,13 +157,20 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
 
     struct EpaResult result;
 
-    epaSolve(
-        &simplex, 
-        a, 
-        physics_object_gjk_support_function, 
-        b, 
-        physics_object_gjk_support_function, 
+    bool epa_success = epaSolve(
+        &simplex,
+        a,
+        physics_object_gjk_support_function,
+        b,
+        physics_object_gjk_support_function,
         &result);
+
+    if (!epa_success) {
+        debugf("EPA FAILED for collision between objects at (%.2f,%.2f,%.2f) and (%.2f,%.2f,%.2f)\n",
+               a->position->x, a->position->y, a->position->z,
+               b->position->x, b->position->y, b->position->z);
+        return; // Skip collision resolution if EPA fails
+    }
 
     float friction = a->collision->friction < b->collision->friction ? a->collision->friction : b->collision->friction;
     float bounce = a->collision->friction > b->collision->friction ? a->collision->friction : b->collision->friction;

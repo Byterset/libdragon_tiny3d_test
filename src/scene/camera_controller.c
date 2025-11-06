@@ -40,7 +40,7 @@ void camera_controller_update_position(struct camera_controller* controller, Tra
     vector3NormalizeSelf(&ray_dir);
     
     raycast ray_to_cam = raycast_init(ray_origin, ray_dir, desired_distance, 
-                                    RAYCAST_COLLISION_SCENE_MASK_ALL, false, COLLISION_LAYER_TANGIBLE, COLLISION_LAYER_PLAYER); 
+                                    RAYCAST_COLLISION_SCENE_MASK_STATIC_COLLISION, false, COLLISION_LAYER_TANGIBLE, COLLISION_LAYER_PLAYER); 
                                     
     raycast_cast(&ray_to_cam, &ray_hit);
 

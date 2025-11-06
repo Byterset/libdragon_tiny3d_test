@@ -45,3 +45,23 @@ void box_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     box->max.y = extent_y;
     box->max.z = extent_z;
 }
+
+void box_inertia_tensor(void* data, float mass, Vector3* out) {
+    struct physics_object* object = (struct physics_object*)data;
+    union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
+    Vector3* half_size = &shape_data->box.half_size;
+
+    // Inertia tensor for a box with half-sizes (hx, hy, hz):
+    // Ixx = (1/3) * mass * (hy² + hz²)
+    // Iyy = (1/3) * mass * (hx² + hz²)
+    // Izz = (1/3) * mass * (hx² + hy²)
+    float hx_sq = half_size->x * half_size->x;
+    float hy_sq = half_size->y * half_size->y;
+    float hz_sq = half_size->z * half_size->z;
+
+    float scale = mass / 3.0f;
+
+    out->x = scale * (hy_sq + hz_sq);
+    out->y = scale * (hx_sq + hz_sq);
+    out->z = scale * (hx_sq + hy_sq);
+}

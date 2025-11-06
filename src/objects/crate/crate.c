@@ -12,6 +12,7 @@
 static struct physics_object_collision_data crate_collision = {
     .gjk_support_function = box_support_function,
     .bounding_box_calculator = box_bounding_box,
+    .inertia_calculator = box_inertia_tensor,
     .shape_data = {
         .box = {
             .half_size = {{1.0f, 1.0f, 1.0f}}
@@ -38,6 +39,7 @@ void crate_init(struct crate* crate, struct generic_object_pos_definition* def){
         COLLISION_LAYER_TANGIBLE,
         &crate->transform.position,
         &crate->transform.rotation,
+        gZeroVec,
         10.0f
     );
     // crate->physics.center_offset.y = crate_collision.shape_data.box.half_size.y;

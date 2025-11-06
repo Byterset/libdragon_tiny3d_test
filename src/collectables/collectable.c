@@ -12,6 +12,7 @@
 static struct physics_object_collision_data collectable_collision = {
     .gjk_support_function = sphere_support_function,
     .bounding_box_calculator = sphere_bounding_box,
+    .inertia_calculator = sphere_inertia_tensor,
     .shape_data = {
         .sphere = {
             .radius = COLLECTABLE_RADIUS,
@@ -53,6 +54,7 @@ void collectable_init(struct collectable* collectable, struct collectable_defini
         COLLISION_LAYER_COLLECTABLES,
         &collectable->transform.position, 
         NULL,
+        gZeroVec,
         1.0f
     );
     collectable->physics.collision_group = COLLISION_GROUP_COLLECTABLE;
