@@ -11,23 +11,20 @@ void sphere_support_function(void* data, Vector3* direction, Vector3* output) {
 
     float radius = shape_data->sphere.radius;
 
-    float distance = fabsf(direction->x);
-    output->x = direction->x > 0.0f ? radius : -radius;
-    output->y = 0.0f;
-    output->z = 0.0f;
+    // For a sphere, the support point is along the direction at distance radius
+    // support(d) = normalize(d) * radius
+    float magnitude = sqrtf(vector3MagSqrd(direction));
 
-    for (int i = 1; i < 3; ++i) {
-        float distanceCheck = fabsf(direction->v[i]);
-
-        if (distanceCheck > distance) {
-            distance = distanceCheck;
-            *output = gZeroVec;
-            if (direction->v[i] > 0.0f) {
-                output->v[i] = radius;
-            } else {
-                output->v[i] = -radius;
-            }
-        }
+    if (magnitude > 0.0001f) {
+        float scale = radius / magnitude;
+        output->x = direction->x * scale;
+        output->y = direction->y * scale;
+        output->z = direction->z * scale;
+    } else {
+        // If direction is zero, return any point on sphere (use radius along x-axis)
+        output->x = radius;
+        output->y = 0.0f;
+        output->z = 0.0f;
     }
 }
 

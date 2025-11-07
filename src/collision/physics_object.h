@@ -102,7 +102,7 @@ struct physics_object {
     Vector3 _torque_accumulator;
     Vector3 _local_inertia_tensor;
     Vector3 _inv_local_intertia_tensor;
-    float angular_damping;
+    float angular_drag;
 };
 
 void physics_object_init(

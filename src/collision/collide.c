@@ -152,10 +152,11 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
                     Vector3 rCrossT;
                     vector3Cross(&r, &tangentDir, &rCrossT);
 
+                    // I^-1 (r × t) - apply inverse inertia tensor (same as normal impulse calculation)
                     Vector3 torquePerImpulse;
-                    torquePerImpulse.x = rCrossT.x / object->_local_inertia_tensor.x;
-                    torquePerImpulse.y = rCrossT.y / object->_local_inertia_tensor.y;
-                    torquePerImpulse.z = rCrossT.z / object->_local_inertia_tensor.z;
+                    torquePerImpulse.x = rCrossT.x * object->_inv_local_intertia_tensor.x;
+                    torquePerImpulse.y = rCrossT.y * object->_inv_local_intertia_tensor.y;
+                    torquePerImpulse.z = rCrossT.z * object->_inv_local_intertia_tensor.z;
 
                     float angularEffect = vector3Dot(&rCrossT, &torquePerImpulse);
                     frictionDenominator += angularEffect;

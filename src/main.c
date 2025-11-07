@@ -58,7 +58,7 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
-#define NUM_CRATES 5
+#define NUM_CRATES 2
 #define NUM_COINS 5
 
 struct player player;
@@ -129,6 +129,7 @@ void setup()
     for(int i = 0; i < NUM_CRATES; i++){
         crate_init(&crates[i], &crate_def);
         crate_def.position.y += 10;
+        crate_def.position.z += 2;
     }
     // crates[0].physics.is_kinematic = true;
     for(int i = 0; i < NUM_COINS; i++){
@@ -310,6 +311,10 @@ int main()
         if(joypad_get_buttons_pressed(0).start){
             render_collision = !render_collision;
             // render_collision ? update_pause_layers(UPDATE_LAYER_WORLD) : update_unpause_layers(UPDATE_LAYER_WORLD);
+        }
+
+        if(joypad_get_buttons_held(0).d_left){
+            physics_object_apply_torque(&crates[0].physics, &(Vector3){{400,550,700}});
         }
 
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //

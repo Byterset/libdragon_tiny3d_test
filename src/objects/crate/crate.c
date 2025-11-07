@@ -19,8 +19,8 @@ static struct physics_object_collision_data crate_collision = {
         }
     },
     .shape_type = COLLISION_SHAPE_BOX,
-    .friction = 0.4,
-    .bounce = 0.1
+    .friction = 0.6f,
+    .bounce = 0.0f
 };
 
 // static struct physics_object_collision_data crate_collision = {
@@ -29,11 +29,12 @@ static struct physics_object_collision_data crate_collision = {
 //     .inertia_calculator = sphere_inertia_tensor,
 //     .shape_data = {
 //         .sphere = {
-//             .radius = 1.5f
+//             .radius = 2.0f
 //         }
 //     },
 //     .shape_type = COLLISION_SHAPE_SPHERE,
-//     .friction = 0.2
+//     .friction = 0.2,
+//     .bounce = 0.4
 // };
 
 void crate_init(struct crate* crate, struct generic_object_pos_definition* def){

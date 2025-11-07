@@ -44,7 +44,7 @@ void physics_object_init(
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
-    object->angular_damping = 0.01f;
+    object->angular_drag = 0.02f;
     object->angular_velocity = gZeroVec;
     object->_torque_accumulator = gZeroVec;
 
@@ -124,7 +124,7 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
     float angularMagSq = vector3MagSqrd(&object->angular_velocity);
 
     // More aggressive damping for slow rotations (prevents jitter)
-    if (angularMagSq < 0.01f) {
+    if (angularMagSq < 0.005f) {
         vector3Scale(&object->angular_velocity, &object->angular_velocity, 0.9f);
 
         // Clamp very small angular velocities to zero
@@ -132,9 +132,9 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
             object->angular_velocity = gZeroVec;
             return; // No rotation to apply
         }
-    } else if (object->angular_damping > 0.0f) {
+    } else if (object->angular_drag > 0.0f) {
         // Normal damping for faster rotations
-        float damping_factor = 1.0f - object->angular_damping;
+        float damping_factor = 1.0f - object->angular_drag;
         if (damping_factor < 0.0f) damping_factor = 0.0f;
         vector3Scale(&object->angular_velocity, &object->angular_velocity, damping_factor);
     }
