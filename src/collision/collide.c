@@ -94,8 +94,8 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         float baumgarteBias = 0.0f;
         if (result->penetration > 0.005f) {
             // Baumgarte factor: how aggressively to correct penetration
-            const float baumgarteSlop = 0.01f;  // Allow small penetration
-            const float baumgarteFactor = 0.3f; // Correction strength
+            const float baumgarteSlop = 0.02f;  // Allow small penetration
+            const float baumgarteFactor = 0.15f; // Correction strength
 
             float penetrationError = maxf(result->penetration - baumgarteSlop, 0.0f);
             baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * penetrationError;

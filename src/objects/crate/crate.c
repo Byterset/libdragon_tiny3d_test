@@ -45,7 +45,7 @@ void crate_init(struct crate* crate, struct generic_object_pos_definition* def){
 
     renderable_init(&crate->renderable, &crate->transform, "rom:/models/crate/crate.t3dm");
 
-    render_scene_add_renderable(&crate->renderable, 2.0f);
+    render_scene_add_renderable(&crate->renderable, 4.0f);
 
 
     physics_object_init(

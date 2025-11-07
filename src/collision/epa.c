@@ -4,7 +4,7 @@
 #include "../math/plane.h"
 #include "../math/mathf.h"
 
-#define EPA_MAX_ITERATIONS  14
+#define EPA_MAX_ITERATIONS  12
 
 #define EPA_MAX_SIMPLEX_POINTS      (4 + EPA_MAX_ITERATIONS)
 #define EPA_MAX_SIMPLEX_TRIANGLES   (4 + EPA_MAX_ITERATIONS * 2)
@@ -488,7 +488,7 @@ bool epaSolve(struct Simplex* startingSimplex, void* objectA, gjk_support_functi
     return false;
 }
 
-#define MAX_SWEPT_ITERATIONS    20
+#define MAX_SWEPT_ITERATIONS    15
 
 void epaSweptFindFace(struct ExpandingSimplex* simplex, Vector3* direction, int* startTriangleIndex, int* startFaceEdge) {
     int currentFace = NEXT_FACE(*startFaceEdge);
