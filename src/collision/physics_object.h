@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define PHYS_GLOBAL_GRAVITY_MULT 1.0f
+#define PHYS_GLOBAL_GRAVITY_MULT 2.5f
 #define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default earth gravity in m/s^2
 #define PHYS_OBJECT_TERMINAL_Y_VELOCITY   50.0f // terminal y-velocity
 

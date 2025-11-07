@@ -44,7 +44,7 @@ void physics_object_init(
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
-    object->angular_damping = 0.02f; // Default 2% damping per frame
+    object->angular_damping = 0.01f;
     object->angular_velocity = gZeroVec;
     object->torque_accumulator = gZeroVec;
 

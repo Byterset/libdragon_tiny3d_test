@@ -4,8 +4,10 @@
 
 #include "collision_scene.h"
 #include "../util/flags.h"
+#include "../math/matrix.h"
 #include <stdio.h>
 #include <math.h>
+
 
 
 void correct_velocity(struct physics_object* object, struct EpaResult* result, float ratio, float friction, float bounce) {
@@ -25,6 +27,62 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         // Calculate normal and tangential components of velocity
         vector3Scale(&result->normal, &normalVelocity, velocityDot);
         vector3Sub(&object->velocity, &normalVelocity, &tangentVelocity);
+
+        // Apply torque from collision if object can rotate
+        if (!object->is_rotation_fixed && object->rotation) {
+            // Get contact point (use contactA if ratio > 0, contactB if ratio < 0)
+            Vector3* contactPoint = (ratio > 0) ? &result->contactA : &result->contactB;
+
+            // Calculate center of mass in world space
+            Vector3 centerOfMass;
+            Vector3 rotatedOffset;
+            quatMultVector(object->rotation, &object->center_offset, &rotatedOffset);
+            vector3Add(object->position, &rotatedOffset, &centerOfMass);
+
+            // Calculate r = contact point - center of mass
+            Vector3 r;
+            vector3Sub(contactPoint, &centerOfMass, &r);
+
+            // Calculate velocity at contact point: v_contact = v_linear + ω × r
+            Vector3 angularContribution;
+            vector3Cross(&object->angular_velocity, &r, &angularContribution);
+            Vector3 contactVelocity;
+            vector3Add(&object->velocity, &angularContribution, &contactVelocity);
+
+            // Get normal and tangent components of contact velocity
+            float contactNormalVel = vector3Dot(&contactVelocity, &result->normal);
+            Vector3 contactNormalVelocity, contactTangentVelocity;
+            vector3Scale(&result->normal, &contactNormalVelocity, contactNormalVel);
+            vector3Sub(&contactVelocity, &contactNormalVelocity, &contactTangentVelocity);
+
+            // Apply normal impulse torque (from bounce)
+            float normalImpulseMag = -contactNormalVel * (1.0f + bounce) * object->mass;
+            Vector3 normalImpulse;
+            vector3Scale(&result->normal, &normalImpulse, normalImpulseMag);
+            Vector3 normalTorque;
+            vector3Cross(&r, &normalImpulse, &normalTorque);
+            vector3Scale(&normalTorque, &normalTorque, 3); // TODO: calculate all this correctly with inertia tensor
+            physics_object_apply_torque(object, &normalTorque);
+
+            // Apply tangential friction torque
+            float tangentSpeed = sqrtf(vector3MagSqrd(&contactTangentVelocity));
+            if (tangentSpeed > 0.0001f) {
+                // Friction force opposes tangential motion
+                Vector3 frictionDirection;
+                vector3Scale(&contactTangentVelocity, &frictionDirection, -1.0f / tangentSpeed);
+
+                // Friction impulse magnitude (Coulomb friction model)
+                float frictionImpulseMag = friction * fabsf(normalImpulseMag);
+                Vector3 frictionImpulse;
+                vector3Scale(&frictionDirection, &frictionImpulse, frictionImpulseMag);
+
+                // Apply friction torque
+                Vector3 frictionTorque;
+                vector3Cross(&r, &frictionImpulse, &frictionTorque);
+                vector3Scale(&frictionTorque, &frictionTorque, 3); // TODO
+                physics_object_apply_torque(object, &frictionTorque);
+            }
+        }
 
         // Apply bounce: invert the normal velocity component and scale by bounce factor
         vector3Scale(&normalVelocity, &normalVelocity, -bounce);

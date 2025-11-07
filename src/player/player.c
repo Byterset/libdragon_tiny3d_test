@@ -33,6 +33,7 @@ static struct physics_object_collision_data player_collision = {
             .inner_half_height = 0.7f,
         }},
     .shape_type = COLLISION_SHAPE_CAPSULE,
+    .friction = 0.1f
 };
 
 // static struct physics_object_collision_data player_collision = {
@@ -44,6 +45,7 @@ static struct physics_object_collision_data player_collision = {
 //             .radius = 1.0f,
 //         }},
 //     .shape_type = COLLISION_SHAPE_SPHERE,
+//     .friction = 0.2f
 // };
 
 void player_handle_contacts(struct player* player){
@@ -409,13 +411,11 @@ void player_init(struct player* player, struct player_definition* definition, Tr
         &player->transform.position,
         &player->transform.rotation,
         (Vector3){{0,player_collision.shape_data.capsule.inner_half_height + player_collision.shape_data.capsule.radius,0}},
-        50.0f
+        70.0f
     );
 
     player->physics.collision_group = COLLISION_GROUP_PLAYER;
-    player->physics.gravity_scalar = 1.9f;
-    player->physics.has_gravity = true;
-    player->physics.collision->friction = 0.0f;
+    player->physics.is_rotation_fixed = true;
     
     collision_scene_add(&player->physics);
 

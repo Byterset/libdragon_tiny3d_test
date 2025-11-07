@@ -58,7 +58,7 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
-#define NUM_CRATES 3
+#define NUM_CRATES 5
 #define NUM_COINS 5
 
 struct player player;
@@ -129,10 +129,6 @@ void setup()
     for(int i = 0; i < NUM_CRATES; i++){
         crate_init(&crates[i], &crate_def);
         crate_def.position.y += 10;
-        if( i == 0){
-            // crates[i].physics.angular_velocity = (Vector3){{17.0f, 23.0f, -8.0f}};
-            crates[i].physics.is_fixed = true;
-        }
     }
     for(int i = 0; i < NUM_COINS; i++){
         collectable_init(&coins[i], &collectableDef);
@@ -141,7 +137,6 @@ void setup()
 
     cone_init(&cone, &cone_def);
     cylinder_init(&cylinder, &cyl_def);
-    cylinder.physics.is_fixed = true;
     // soda_can_init(&soda_can, &can_def);
     
     map_init(&map);
@@ -314,12 +309,6 @@ int main()
         if(joypad_get_buttons_pressed(0).start){
             render_collision = !render_collision;
             // render_collision ? update_pause_layers(UPDATE_LAYER_WORLD) : update_unpause_layers(UPDATE_LAYER_WORLD);
-        }
-
-        if(joypad_get_buttons_pressed(0).d_left){
-            Vector3 torque = (Vector3){{100,-200,50}};
-            physics_object_apply_torque(&crates[0].physics, &torque);
-            physics_object_apply_torque(&cylinder.physics, &torque);
         }
 
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //

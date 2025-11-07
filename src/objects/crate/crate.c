@@ -19,7 +19,22 @@ static struct physics_object_collision_data crate_collision = {
         }
     },
     .shape_type = COLLISION_SHAPE_BOX,
+    .friction = 0.2,
+    .bounce = 0.2
 };
+
+// static struct physics_object_collision_data crate_collision = {
+//     .gjk_support_function = sphere_support_function,
+//     .bounding_box_calculator = sphere_bounding_box,
+//     .inertia_calculator = sphere_inertia_tensor,
+//     .shape_data = {
+//         .sphere = {
+//             .radius = 1.5f
+//         }
+//     },
+//     .shape_type = COLLISION_SHAPE_SPHERE,
+//     .friction = 0.2
+// };
 
 void crate_init(struct crate* crate, struct generic_object_pos_definition* def){
     entity_id entity_id = entity_id_new();
@@ -40,12 +55,8 @@ void crate_init(struct crate* crate, struct generic_object_pos_definition* def){
         &crate->transform.position,
         &crate->transform.rotation,
         gZeroVec,
-        10.0f
+        100.0f
     );
-    // crate->physics.center_offset.y = crate_collision.shape_data.box.half_size.y;
-    crate->physics.has_gravity = true;
-    crate->physics.collision->friction = 0.1f;
-
     collision_scene_add(&crate->physics);
 }
 

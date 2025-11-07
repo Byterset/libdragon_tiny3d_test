@@ -54,13 +54,12 @@ void platform_init(struct platform* platform, struct generic_object_pos_definiti
         COLLISION_LAYER_TANGIBLE,
         &platform->transform.position,
         &platform->transform.rotation,
-        (Vector3){{0,platform_collision.shape_data.box.half_size.y,0}},
+        gZeroVec,
         10.0f
     );
 
-
     platform->physics.has_gravity = false;
-    platform->physics.is_fixed = true;
+    platform->physics.is_rotation_fixed = false;
 
     update_add(platform, (update_callback)platform_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
     collision_scene_add(&platform->physics);
