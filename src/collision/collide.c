@@ -5,6 +5,8 @@
 #include "collision_scene.h"
 #include "../util/flags.h"
 #include "../math/matrix.h"
+#include "../math/mathf.h"
+#include "../time/time.h"
 #include <stdio.h>
 #include <math.h>
 
@@ -21,77 +23,155 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
 
     // Only proceed if the object is moving toward the collision surface (velocityDot < 0)
     if ((velocityDot < 0) == (ratio < 0)) {
-        Vector3 normalVelocity;
-        Vector3 tangentVelocity;
 
-        // Calculate normal and tangential components of velocity
-        vector3Scale(&result->normal, &normalVelocity, velocityDot);
-        vector3Sub(&object->velocity, &normalVelocity, &tangentVelocity);
+        // Get contact point (use contactA if ratio > 0, contactB if ratio < 0)
+        Vector3* contactPoint = (ratio > 0) ? &result->contactA : &result->contactB;
 
-        // Apply torque from collision if object can rotate
-        if (!object->is_rotation_fixed && object->rotation) {
-            // Get contact point (use contactA if ratio > 0, contactB if ratio < 0)
-            Vector3* contactPoint = (ratio > 0) ? &result->contactA : &result->contactB;
-
-            // Calculate center of mass in world space
-            Vector3 centerOfMass;
+        // Calculate center of mass in world space
+        Vector3 centerOfMass;
+        if (object->rotation) {
             Vector3 rotatedOffset;
             quatMultVector(object->rotation, &object->center_offset, &rotatedOffset);
             vector3Add(object->position, &rotatedOffset, &centerOfMass);
-
-            // Calculate r = contact point - center of mass
-            Vector3 r;
-            vector3Sub(contactPoint, &centerOfMass, &r);
-
-            // Calculate velocity at contact point: v_contact = v_linear + ω × r
-            Vector3 angularContribution;
-            vector3Cross(&object->angular_velocity, &r, &angularContribution);
-            Vector3 contactVelocity;
-            vector3Add(&object->velocity, &angularContribution, &contactVelocity);
-
-            // Get normal and tangent components of contact velocity
-            float contactNormalVel = vector3Dot(&contactVelocity, &result->normal);
-            Vector3 contactNormalVelocity, contactTangentVelocity;
-            vector3Scale(&result->normal, &contactNormalVelocity, contactNormalVel);
-            vector3Sub(&contactVelocity, &contactNormalVelocity, &contactTangentVelocity);
-
-            // Apply normal impulse torque (from bounce)
-            float normalImpulseMag = -contactNormalVel * (1.0f + bounce) * object->mass;
-            Vector3 normalImpulse;
-            vector3Scale(&result->normal, &normalImpulse, normalImpulseMag);
-            Vector3 normalTorque;
-            vector3Cross(&r, &normalImpulse, &normalTorque);
-            vector3Scale(&normalTorque, &normalTorque, 3); // TODO: calculate all this correctly with inertia tensor
-            physics_object_apply_torque(object, &normalTorque);
-
-            // Apply tangential friction torque
-            float tangentSpeed = sqrtf(vector3MagSqrd(&contactTangentVelocity));
-            if (tangentSpeed > 0.0001f) {
-                // Friction force opposes tangential motion
-                Vector3 frictionDirection;
-                vector3Scale(&contactTangentVelocity, &frictionDirection, -1.0f / tangentSpeed);
-
-                // Friction impulse magnitude (Coulomb friction model)
-                float frictionImpulseMag = friction * fabsf(normalImpulseMag);
-                Vector3 frictionImpulse;
-                vector3Scale(&frictionDirection, &frictionImpulse, frictionImpulseMag);
-
-                // Apply friction torque
-                Vector3 frictionTorque;
-                vector3Cross(&r, &frictionImpulse, &frictionTorque);
-                vector3Scale(&frictionTorque, &frictionTorque, 3); // TODO
-                physics_object_apply_torque(object, &frictionTorque);
-            }
+        } else {
+            vector3Add(object->position, &object->center_offset, &centerOfMass);
         }
 
-        // Apply bounce: invert the normal velocity component and scale by bounce factor
-        vector3Scale(&normalVelocity, &normalVelocity, -bounce);
+        // Calculate r = contact point - center of mass
+        Vector3 r;
+        vector3Sub(contactPoint, &centerOfMass, &r);
 
-        // Apply friction: scale the tangent velocity by (1 - friction)
-        vector3Scale(&tangentVelocity, &tangentVelocity, 1.0f - friction);
+        // Calculate velocity at contact point: v_contact = v_linear + ω × r
+        Vector3 contactVelocity = object->velocity;
+        if (!object->is_rotation_fixed && object->rotation) {
+            Vector3 angularContribution;
+            vector3Cross(&object->angular_velocity, &r, &angularContribution);
+            vector3Add(&contactVelocity, &angularContribution, &contactVelocity);
+        }
 
-        // Combine normal and tangential components to get the corrected velocity
-        vector3Add(&normalVelocity, &tangentVelocity, &object->velocity);
+        // Get normal component of contact velocity
+        float vRel = vector3Dot(&contactVelocity, &result->normal);
+
+        // Reduce bounce for low-velocity impacts (stabilizes resting contacts)
+        float effectiveBounce = bounce;
+        if (fabsf(vRel) < 0.5f) {
+            // Gradually reduce bounce as velocity approaches zero
+            effectiveBounce = bounce * (fabsf(vRel) / 0.5f);
+        }
+
+        // Calculate the denominator for impulse calculation
+        // j = -(1 + e) * vRel / (1/m + (r × n) · (I^-1 (r × n)))
+        float denominator = 1.0f / object->mass;
+
+        if (!object->is_rotation_fixed && object->rotation) {
+            // r × n
+            Vector3 rCrossN;
+            vector3Cross(&r, &result->normal, &rCrossN);
+
+            // I^-1 (r × n) - apply inverse inertia tensor
+            Vector3 torquePerImpulse;
+            torquePerImpulse.x = rCrossN.x * object->_inv_local_intertia_tensor.x;
+            torquePerImpulse.y = rCrossN.y * object->_inv_local_intertia_tensor.y;
+            torquePerImpulse.z = rCrossN.z * object->_inv_local_intertia_tensor.z;
+
+            // (r × n) · (I^-1 (r × n))
+            float angularEffect = vector3Dot(&rCrossN, &torquePerImpulse);
+            denominator += angularEffect;
+        }
+
+        // Add Baumgarte stabilization to correct penetration
+        // This adds a small bias velocity proportional to penetration depth
+        float baumgarteBias = 0.0f;
+        if (result->penetration > 0.005f) {
+            // Baumgarte factor: how aggressively to correct penetration
+            const float baumgarteSlop = 0.01f;  // Allow small penetration
+            const float baumgarteFactor = 0.3f; // Correction strength
+
+            float penetrationError = maxf(result->penetration - baumgarteSlop, 0.0f);
+            baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * penetrationError;
+        }
+
+        // Calculate normal impulse magnitude
+        float jN = -(1.0f + effectiveBounce) * vRel / denominator + baumgarteBias;
+
+        // Don't apply impulse if objects are separating
+        if (jN < 0.0f) {
+            return;
+        }
+
+        // Apply normal impulse to linear velocity
+        Vector3 normalImpulse;
+        vector3Scale(&result->normal, &normalImpulse, jN * fabsf(ratio) / object->mass);
+        vector3Add(&object->velocity, &normalImpulse, &object->velocity);
+
+        // Apply normal impulse to angular velocity
+        if (!object->is_rotation_fixed && object->rotation) {
+            Vector3 rCrossN;
+            vector3Cross(&r, &result->normal, &rCrossN);
+            vector3Scale(&rCrossN, &rCrossN, jN * fabsf(ratio));
+            physics_object_apply_angular_impulse(object, &rCrossN);
+        }
+
+        // Now handle friction
+        if (friction > 0.0f) {
+            // Recalculate contact velocity after normal impulse
+            contactVelocity = object->velocity;
+            if (!object->is_rotation_fixed && object->rotation) {
+                Vector3 angularContribution;
+                vector3Cross(&object->angular_velocity, &r, &angularContribution);
+                vector3Add(&contactVelocity, &angularContribution, &contactVelocity);
+            }
+
+            // Get tangent velocity (perpendicular to normal)
+            float vN = vector3Dot(&contactVelocity, &result->normal);
+            Vector3 normalPart;
+            vector3Scale(&result->normal, &normalPart, vN);
+            Vector3 tangentVelocity;
+            vector3Sub(&contactVelocity, &normalPart, &tangentVelocity);
+
+            float tangentSpeed = sqrtf(vector3MagSqrd(&tangentVelocity));
+            if (tangentSpeed > 0.0001f) {
+                // Friction direction (opposite to tangent velocity)
+                Vector3 tangentDir;
+                vector3Scale(&tangentVelocity, &tangentDir, -1.0f / tangentSpeed);
+
+                // Calculate friction impulse denominator
+                float frictionDenominator = 1.0f / object->mass;
+
+                if (!object->is_rotation_fixed && object->rotation) {
+                    Vector3 rCrossT;
+                    vector3Cross(&r, &tangentDir, &rCrossT);
+
+                    Vector3 torquePerImpulse;
+                    torquePerImpulse.x = rCrossT.x / object->_local_inertia_tensor.x;
+                    torquePerImpulse.y = rCrossT.y / object->_local_inertia_tensor.y;
+                    torquePerImpulse.z = rCrossT.z / object->_local_inertia_tensor.z;
+
+                    float angularEffect = vector3Dot(&rCrossT, &torquePerImpulse);
+                    frictionDenominator += angularEffect;
+                }
+
+                // Coulomb friction: jT = min(μ * jN, tangent impulse needed to stop sliding)
+                float jT = tangentSpeed / frictionDenominator;
+                float maxFriction = friction * jN;
+                if (jT > maxFriction) {
+                    jT = maxFriction;
+                }
+
+                // Apply friction impulse to linear velocity
+                Vector3 frictionImpulse;
+                vector3Scale(&tangentDir, &frictionImpulse, jT * fabsf(ratio) / object->mass);
+                vector3Add(&object->velocity, &frictionImpulse, &object->velocity);
+
+                // Apply friction impulse to angular velocity
+                if (!object->is_rotation_fixed && object->rotation) {
+                    Vector3 rCrossT;
+                    vector3Cross(&r, &tangentDir, &rCrossT);
+                    vector3Scale(&rCrossT, &rCrossT, jT * fabsf(ratio));
+                    physics_object_apply_angular_impulse(object, &rCrossT);
+                }
+            }
+        }
     }
 }
 
@@ -100,7 +180,10 @@ void correct_overlap(struct physics_object* object, struct EpaResult* result, fl
         return;
     }
 
-    vector3AddScaled(object->position, &result->normal, result->penetration * ratio, object->position);
+    // Apply position correction with slight over-correction for faster convergence
+    // This helps resolve stacking penetration more quickly
+    const float POSITION_CORRECTION_SCALE = 1.0f; // Can increase to 1.1-1.2 for more aggressive correction
+    vector3AddScaled(object->position, &result->normal, result->penetration * ratio * POSITION_CORRECTION_SCALE, object->position);
 
 }
 
@@ -231,7 +314,7 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     }
 
     float friction = a->collision->friction < b->collision->friction ? a->collision->friction : b->collision->friction;
-    float bounce = a->collision->friction > b->collision->friction ? a->collision->friction : b->collision->friction;
+    float bounce = a->collision->bounce > b->collision->bounce ? a->collision->bounce : b->collision->bounce;
 
     float massRatio = a->mass / (a->mass + b->mass);
     if(a->is_fixed){

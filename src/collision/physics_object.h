@@ -99,8 +99,9 @@ struct physics_object {
     struct contact* active_contacts; // contacts with other objects from the last physics step
     NodeProxy _aabb_tree_node_id; // the node id of the object in the phys-object AABB tree of the collision scene
     Vector3 angular_velocity;
-    Vector3 torque_accumulator;
-    Vector3 local_inertia_tensor;
+    Vector3 _torque_accumulator;
+    Vector3 _local_inertia_tensor;
+    Vector3 _inv_local_intertia_tensor;
     float angular_damping;
 };
 

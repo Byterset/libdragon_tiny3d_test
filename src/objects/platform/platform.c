@@ -59,7 +59,8 @@ void platform_init(struct platform* platform, struct generic_object_pos_definiti
     );
 
     platform->physics.has_gravity = false;
-    platform->physics.is_rotation_fixed = false;
+    platform->physics.is_fixed = true;
+    platform->physics.is_rotation_fixed = true;
 
     update_add(platform, (update_callback)platform_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
     collision_scene_add(&platform->physics);

@@ -215,11 +215,32 @@ void collision_scene_step() {
         struct physics_object* obj = element->object;
 
         if (!obj->is_sleeping) {
-            collision_scene_release_object_contacts(obj);
-
             if (obj->has_gravity && !obj->is_fixed) {
-                obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar;
+                // Check if object has ground contact
+                bool hasGroundContact = false;
+                if (obj->active_contacts) {
+                    struct contact* c = obj->active_contacts;
+                    while (c) {
+                        // If contact normal points significantly upward, it's ground
+                        if (c->normal.y > 0.7f) {
+                            hasGroundContact = true;
+                            break;
+                        }
+                        c = c->next;
+                    }
+                }
+
+                // Only apply full gravity if not grounded, or apply reduced gravity for stability
+                if (!hasGroundContact) {
+                    obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar;
+                } else {
+                    // Apply minimal gravity to grounded objects (maintains contact pressure)
+                    // but not enough to cause jitter
+                    obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * 0.10f;
+                }
             }
+
+            collision_scene_release_object_contacts(obj);
         }
         physics_object_update_velocity_verlet(obj);
         physics_object_update_angular_velocity(obj);
@@ -238,7 +259,7 @@ void collision_scene_step() {
             physics_object_recalculate_aabb(obj);
             Vector3 displacement;
             vector3Sub(obj->position, &obj->_prev_step_pos, &displacement);
-            AABBTree_moveNode(&g_scene.object_aabbtree, obj->_aabb_tree_node_id, 
+            AABBTree_moveNode(&g_scene.object_aabbtree, obj->_aabb_tree_node_id,
                             obj->bounding_box, &displacement);
         }
     }

@@ -46,16 +46,19 @@ void physics_object_init(
     object->active_contacts = 0;
     object->angular_damping = 0.01f;
     object->angular_velocity = gZeroVec;
-    object->torque_accumulator = gZeroVec;
+    object->_torque_accumulator = gZeroVec;
 
     // Calculate inertia tensor if inertia calculator is provided
     if (collision->inertia_calculator) {
-        collision->inertia_calculator(object, mass, &object->local_inertia_tensor);
+        collision->inertia_calculator(object, mass, &object->_local_inertia_tensor);
     } else {
         // Fallback: treat as unit sphere if no calculator provided
         float default_inertia = 0.4f * mass;
-        object->local_inertia_tensor = (Vector3){{default_inertia, default_inertia, default_inertia}};
+        object->_local_inertia_tensor = (Vector3){{default_inertia, default_inertia, default_inertia}};
     }
+    object->_inv_local_intertia_tensor.x = 1 / object->_local_inertia_tensor.x;
+    object->_inv_local_intertia_tensor.y = 1 / object->_local_inertia_tensor.y;
+    object->_inv_local_intertia_tensor.z = 1 / object->_local_inertia_tensor.z;
 
     physics_object_recalculate_aabb(object);
 }
@@ -97,28 +100,40 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
     }
 
     // Skip if no angular motion
-    if (vector3IsZero(&object->angular_velocity) && vector3IsZero(&object->torque_accumulator)) {
+    if (vector3IsZero(&object->angular_velocity) && vector3IsZero(&object->_torque_accumulator)) {
         return;
     }
 
     // Calculate angular acceleration: α = I^-1 * τ
     // Since we store diagonal inertia tensor, inverse is just 1/Ixx, 1/Iyy, 1/Izz
-    if (!vector3IsZero(&object->torque_accumulator)) {
+    if (!vector3IsZero(&object->_torque_accumulator)) {
         Vector3 angular_acceleration;
-        angular_acceleration.x = object->torque_accumulator.x / object->local_inertia_tensor.x;
-        angular_acceleration.y = object->torque_accumulator.y / object->local_inertia_tensor.y;
-        angular_acceleration.z = object->torque_accumulator.z / object->local_inertia_tensor.z;
+        angular_acceleration.x = object->_torque_accumulator.x * object->_inv_local_intertia_tensor.x;
+        angular_acceleration.y = object->_torque_accumulator.y * object->_inv_local_intertia_tensor.y;
+        angular_acceleration.z = object->_torque_accumulator.z * object->_inv_local_intertia_tensor.z;
 
         // Update angular velocity: ω = ω + α * dt
         vector3AddScaled(&object->angular_velocity, &angular_acceleration,
                         FIXED_DELTATIME * object->time_scalar, &object->angular_velocity);
 
         // Clear torque accumulator
-        object->torque_accumulator = gZeroVec;
+        object->_torque_accumulator = gZeroVec;
     }
 
     // Apply angular damping
-    if (object->angular_damping > 0.0f) {
+    float angularMagSq = vector3MagSqrd(&object->angular_velocity);
+
+    // More aggressive damping for slow rotations (prevents jitter)
+    if (angularMagSq < 0.01f) {
+        vector3Scale(&object->angular_velocity, &object->angular_velocity, 0.9f);
+
+        // Clamp very small angular velocities to zero
+        if (angularMagSq < 0.0001f) {
+            object->angular_velocity = gZeroVec;
+            return; // No rotation to apply
+        }
+    } else if (object->angular_damping > 0.0f) {
+        // Normal damping for faster rotations
         float damping_factor = 1.0f - object->angular_damping;
         if (damping_factor < 0.0f) damping_factor = 0.0f;
         vector3Scale(&object->angular_velocity, &object->angular_velocity, damping_factor);
@@ -198,7 +213,7 @@ void physics_object_apply_impulse(struct physics_object* object, Vector3* impuls
 /// @param object
 /// @param torque the torque vector in world space (N⋅m)
 void physics_object_apply_torque(struct physics_object* object, Vector3* torque) {
-    vector3Add(&object->torque_accumulator, torque, &object->torque_accumulator);
+    vector3Add(&object->_torque_accumulator, torque, &object->_torque_accumulator);
 }
 
 /// @brief Apply an angular impulse directly to angular velocity
@@ -212,9 +227,9 @@ void physics_object_apply_angular_impulse(struct physics_object* object, Vector3
     // Δω = I^-1 * angular_impulse
     // Since we store diagonal inertia tensor, inverse is just 1/Ixx, 1/Iyy, 1/Izz
     Vector3 angular_velocity_change;
-    angular_velocity_change.x = angular_impulse->x / object->local_inertia_tensor.x;
-    angular_velocity_change.y = angular_impulse->y / object->local_inertia_tensor.y;
-    angular_velocity_change.z = angular_impulse->z / object->local_inertia_tensor.z;
+    angular_velocity_change.x = angular_impulse->x * object->_inv_local_intertia_tensor.x;
+    angular_velocity_change.y = angular_impulse->y * object->_inv_local_intertia_tensor.y;
+    angular_velocity_change.z = angular_impulse->z * object->_inv_local_intertia_tensor.z;
 
     vector3Add(&object->angular_velocity, &angular_velocity_change, &object->angular_velocity);
 }
