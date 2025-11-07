@@ -130,7 +130,7 @@ void setup()
         crate_init(&crates[i], &crate_def);
         crate_def.position.y += 10;
     }
-    crates[0].physics.is_kinematic = true;
+    // crates[0].physics.is_kinematic = true;
     for(int i = 0; i < NUM_COINS; i++){
         collectable_init(&coins[i], &collectableDef);
         collectableDef.position.x += 5;

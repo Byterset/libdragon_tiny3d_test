@@ -18,11 +18,21 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         return;
     }
 
-    // Calculate the component of velocity along the normal
-    float velocityDot = vector3Dot(&object->velocity, &result->normal);
+    // EPA normal points from A to B
+    // For object A (ratio > 0), we need normal pointing from B to A (flip it)
+    // For object B (ratio < 0), we need normal pointing from A to B (keep it)
+    Vector3 effectiveNormal;
+    if (ratio > 0) {
+        vector3Negate(&result->normal, &effectiveNormal);
+    } else {
+        effectiveNormal = result->normal;
+    }
+
+    // Calculate the component of velocity along the effective normal
+    float velocityDot = vector3Dot(&object->velocity, &effectiveNormal);
 
     // Only proceed if the object is moving toward the collision surface (velocityDot < 0)
-    if ((velocityDot < 0) == (ratio < 0)) {
+    if (velocityDot < 0) {
 
         // Get contact point (use contactA if ratio > 0, contactB if ratio < 0)
         Vector3* contactPoint = (ratio > 0) ? &result->contactA : &result->contactB;
@@ -50,7 +60,7 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         }
 
         // Get normal component of contact velocity
-        float vRel = vector3Dot(&contactVelocity, &result->normal);
+        float vRel = vector3Dot(&contactVelocity, &effectiveNormal);
 
         // Reduce bounce for low-velocity impacts (stabilizes resting contacts)
         float effectiveBounce = bounce;
@@ -66,7 +76,7 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         if (!object->is_rotation_fixed && object->rotation) {
             // r × n
             Vector3 rCrossN;
-            vector3Cross(&r, &result->normal, &rCrossN);
+            vector3Cross(&r, &effectiveNormal, &rCrossN);
 
             // I^-1 (r × n) - apply inverse inertia tensor
             Vector3 torquePerImpulse;
@@ -101,13 +111,13 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
 
         // Apply normal impulse to linear velocity
         Vector3 normalImpulse;
-        vector3Scale(&result->normal, &normalImpulse, jN * fabsf(ratio) / object->mass);
+        vector3Scale(&effectiveNormal, &normalImpulse, jN * fabsf(ratio) / object->mass);
         vector3Add(&object->velocity, &normalImpulse, &object->velocity);
 
         // Apply normal impulse to angular velocity
         if (!object->is_rotation_fixed && object->rotation) {
             Vector3 rCrossN;
-            vector3Cross(&r, &result->normal, &rCrossN);
+            vector3Cross(&r, &effectiveNormal, &rCrossN);
             vector3Scale(&rCrossN, &rCrossN, jN * fabsf(ratio));
             physics_object_apply_angular_impulse(object, &rCrossN);
         }
@@ -123,9 +133,9 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
             }
 
             // Get tangent velocity (perpendicular to normal)
-            float vN = vector3Dot(&contactVelocity, &result->normal);
+            float vN = vector3Dot(&contactVelocity, &effectiveNormal);
             Vector3 normalPart;
-            vector3Scale(&result->normal, &normalPart, vN);
+            vector3Scale(&effectiveNormal, &normalPart, vN);
             Vector3 tangentVelocity;
             vector3Sub(&contactVelocity, &normalPart, &tangentVelocity);
 
@@ -180,10 +190,20 @@ void correct_overlap(struct physics_object* object, struct EpaResult* result, fl
         return;
     }
 
+    // EPA normal points from A to B
+    // For object A (ratio > 0), we need normal pointing from B to A (flip it)
+    // For object B (ratio < 0), we need normal pointing from A to B (keep it)
+    Vector3 effectiveNormal;
+    if (ratio > 0) {
+        vector3Negate(&result->normal, &effectiveNormal);
+    } else {
+        effectiveNormal = result->normal;
+    }
+
     // Apply position correction with slight over-correction for faster convergence
     // This helps resolve stacking penetration more quickly
-    const float POSITION_CORRECTION_SCALE = 1.0f; // Can increase to 1.1-1.2 for more aggressive correction
-    vector3AddScaled(object->position, &result->normal, result->penetration * ratio * POSITION_CORRECTION_SCALE, object->position);
+    const float POSITION_CORRECTION_SCALE = 1.05f; // Can increase to 1.1-1.2 for more aggressive correction
+    vector3AddScaled(object->position, &effectiveNormal, -result->penetration * fabsf(ratio) * POSITION_CORRECTION_SCALE, object->position);
 
 }
 
@@ -318,16 +338,16 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
 
     float massRatio = a->mass / (a->mass + b->mass);
     if(a->is_kinematic){
-        massRatio = 1.0f;
-    }
-    if(b->is_kinematic){
         massRatio = 0.0f;
     }
+    if(b->is_kinematic){
+        massRatio = 1.0f;
+    }
 
-    correct_overlap(b, &result, -massRatio);
-    correct_velocity(b, &result, -massRatio, friction, bounce);
-    correct_overlap(a, &result, (1.0f - massRatio));
-    correct_velocity(a, &result, (1.0f - massRatio), friction, bounce);
+    correct_overlap(b, &result, -(1.0f - massRatio));
+    correct_velocity(b, &result, -(1.0f - massRatio), friction, bounce);
+    correct_overlap(a, &result, massRatio);
+    correct_velocity(a, &result, massRatio, friction, bounce);
 
     struct contact* contact = collision_scene_new_contact();
 
