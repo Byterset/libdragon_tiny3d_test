@@ -49,7 +49,7 @@ void cone_init(struct cone* cone, struct generic_object_pos_definition* def){
     );
 
     cone->physics.has_gravity = false;
-    cone->physics.is_fixed = true;
+    cone->physics.is_kinematic = true;
 
     collision_scene_add(&cone->physics);
 }

@@ -13,8 +13,8 @@
 
 
 void correct_velocity(struct physics_object* object, struct EpaResult* result, float ratio, float friction, float bounce) {
-    // Fixed objects don't have their velocity corrected
-    if (object->is_fixed) {
+    // Fixed objects don't have their velocity corrected (they're kinematic)
+    if (object->is_kinematic) {
         return;
     }
 
@@ -176,7 +176,7 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
 }
 
 void correct_overlap(struct physics_object* object, struct EpaResult* result, float ratio) {
-    if (object->is_fixed) {
+    if (object->is_kinematic) {
         return;
     }
 
@@ -317,10 +317,10 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     float bounce = a->collision->bounce > b->collision->bounce ? a->collision->bounce : b->collision->bounce;
 
     float massRatio = a->mass / (a->mass + b->mass);
-    if(a->is_fixed){
+    if(a->is_kinematic){
         massRatio = 1.0f;
     }
-    if(b->is_fixed){
+    if(b->is_kinematic){
         massRatio = 0.0f;
     }
 

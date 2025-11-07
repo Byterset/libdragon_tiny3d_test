@@ -89,7 +89,7 @@ struct physics_object {
     float gravity_scalar; // how much gravity affects the object, default is 1.0
     bool has_gravity: true;
     bool is_trigger: true;
-    bool is_fixed: true;
+    bool is_kinematic: true;
     bool is_rotation_fixed: true;
     bool is_grounded: true;
     bool is_sleeping: true;

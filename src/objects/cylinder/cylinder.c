@@ -50,7 +50,7 @@ void cylinder_init(struct cylinder* cylinder, struct generic_object_pos_definiti
     );
 
     cylinder->physics.has_gravity = true;
-    cylinder->physics.is_fixed = false;
+    cylinder->physics.is_kinematic = false;
 
     collision_scene_add(&cylinder->physics);
 }

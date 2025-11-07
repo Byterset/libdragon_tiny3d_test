@@ -215,14 +215,16 @@ void collision_scene_step() {
         struct physics_object* obj = element->object;
 
         if (!obj->is_sleeping) {
-            if (obj->has_gravity && !obj->is_fixed) {
+            if (obj->has_gravity && !obj->is_kinematic) {
                 // Check if object has ground contact
                 bool hasGroundContact = false;
                 if (obj->active_contacts) {
                     struct contact* c = obj->active_contacts;
                     while (c) {
-                        // If contact normal points significantly upward, it's ground
-                        if (c->normal.y > 0.7f) {
+                        // If contact normal points upward (more lenient threshold)
+                        // 0.5 = surfaces up to 60° from horizontal
+                        // This prevents issues with rotating platforms or numerical precision
+                        if (c->normal.y > 0.5f) {
                             hasGroundContact = true;
                             break;
                         }
@@ -270,7 +272,7 @@ void collision_scene_step() {
         struct physics_object* obj = element->object;
 
         // Only do mesh collision if the object is not sleeping, not fixed in place, is tangible and has moved or rotated previously 
-        if (g_scene.mesh_collider && !obj->is_sleeping && !obj->is_fixed && 
+        if (g_scene.mesh_collider && !obj->is_sleeping && !obj->is_kinematic && 
             (obj->collision_layers & (COLLISION_LAYER_TANGIBLE)) && (moved_flags[i] || rotated_flags[i])) {
             collision_scene_collide_object_to_static(obj, &obj->_prev_step_pos);
         }

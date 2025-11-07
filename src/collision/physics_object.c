@@ -37,7 +37,7 @@ void physics_object_init(
     object->mass = mass;
     object->has_gravity = true;
     object->is_trigger = false;
-    object->is_fixed = false;
+    object->is_kinematic = false;
     object->is_rotation_fixed = false;
     object->is_grounded = false;
     object->is_sleeping = false;
@@ -64,7 +64,7 @@ void physics_object_init(
 }
 
 void physics_object_update_euler(struct physics_object* object) {
-    if (object->is_trigger | object->is_fixed) {
+    if (object->is_trigger | object->is_kinematic) {
         return;
     }
 
@@ -82,7 +82,7 @@ void physics_object_update_euler(struct physics_object* object) {
 }
 
 void physics_object_update_velocity_verlet(struct physics_object* o) {
-    if (o->is_trigger || o->is_fixed) return;
+    if (o->is_trigger || o->is_kinematic) return;
 
     vector3AddScaled(o->position, &o->velocity, FIXED_DELTATIME, o->position);
     vector3AddScaled(o->position, &o->acceleration, 0.5f * FIXED_DELTATIME * FIXED_DELTATIME, o->position);
@@ -95,7 +95,7 @@ void physics_object_update_velocity_verlet(struct physics_object* o) {
 }
 
 void physics_object_update_angular_velocity(struct physics_object* object) {
-    if (object->is_trigger || object->is_rotation_fixed || !object->rotation) {
+    if (object->is_trigger || object->is_kinematic || object->is_rotation_fixed || !object->rotation) {
         return;
     }
 
@@ -220,7 +220,7 @@ void physics_object_apply_torque(struct physics_object* object, Vector3* torque)
 /// @param object
 /// @param angular_impulse angular impulse in world space (N⋅m⋅s)
 void physics_object_apply_angular_impulse(struct physics_object* object, Vector3* angular_impulse) {
-    if (object->is_rotation_fixed || !object->rotation) {
+    if (object->is_kinematic || object->is_rotation_fixed || !object->rotation) {
         return;
     }
 

@@ -58,7 +58,7 @@ void collectable_init(struct collectable* collectable, struct collectable_defini
         1.0f
     );
     collectable->physics.collision_group = COLLISION_GROUP_COLLECTABLE;
-    collectable->physics.is_fixed = true;
+    collectable->physics.is_kinematic = true;
     collectable->physics.is_trigger = true;
     collectable->physics.has_gravity = false;
 
