@@ -6,6 +6,7 @@
 #define MODEL_SCALE 1.0f
 #endif
 #define INV_MODEL_SCALE (1.0f / MODEL_SCALE)
+#define FRAMEBUFFER_COUNT 3 // The number of Framebuffers for the game, should be at least 3
 
 // #define DEBUG_COLLIDERS_RAYLIB = 1
 

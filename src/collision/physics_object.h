@@ -90,9 +90,14 @@ struct physics_object {
     bool has_gravity: true;
     bool is_trigger: true;
     bool is_kinematic: true;
-    bool is_rotation_fixed: true;
     bool is_grounded: true;
-    bool is_sleeping: true;
+    bool _is_sleeping: true;
+    bool constrain_movement_x: true;
+    bool constrain_movement_y: true;
+    bool constrain_movement_z: true;
+    bool constrain_rotation_x: true;
+    bool constrain_rotation_y: true;
+    bool constrain_rotation_z: true;
     uint16_t _sleep_counter;
     uint16_t collision_layers; // objects that share at least one layer can collide
     uint16_t collision_group; // objects of the same group do not collide

@@ -53,7 +53,9 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
 
         // Calculate velocity at contact point: v_contact = v_linear + ω × r
         Vector3 contactVelocity = object->velocity;
-        if (!object->is_rotation_fixed && object->rotation) {
+        bool has_rotation = object->rotation &&
+                           !(object->constrain_rotation_x && object->constrain_rotation_y && object->constrain_rotation_z);
+        if (has_rotation) {
             Vector3 angularContribution;
             vector3Cross(&object->angular_velocity, &r, &angularContribution);
             vector3Add(&contactVelocity, &angularContribution, &contactVelocity);
@@ -73,7 +75,7 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         // j = -(1 + e) * vRel / (1/m + (r × n) · (I^-1 (r × n)))
         float denominator = 1.0f / object->mass;
 
-        if (!object->is_rotation_fixed && object->rotation) {
+        if (has_rotation) {
             // r × n
             Vector3 rCrossN;
             vector3Cross(&r, &effectiveNormal, &rCrossN);
@@ -83,6 +85,11 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
             torquePerImpulse.x = rCrossN.x * object->_inv_local_intertia_tensor.x;
             torquePerImpulse.y = rCrossN.y * object->_inv_local_intertia_tensor.y;
             torquePerImpulse.z = rCrossN.z * object->_inv_local_intertia_tensor.z;
+
+            // Apply per-axis rotation constraints
+            if (object->constrain_rotation_x) torquePerImpulse.x = 0.0f;
+            if (object->constrain_rotation_y) torquePerImpulse.y = 0.0f;
+            if (object->constrain_rotation_z) torquePerImpulse.z = 0.0f;
 
             // (r × n) · (I^-1 (r × n))
             float angularEffect = vector3Dot(&rCrossN, &torquePerImpulse);
@@ -115,7 +122,7 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         vector3Add(&object->velocity, &normalImpulse, &object->velocity);
 
         // Apply normal impulse to angular velocity
-        if (!object->is_rotation_fixed && object->rotation) {
+        if (has_rotation) {
             Vector3 rCrossN;
             vector3Cross(&r, &effectiveNormal, &rCrossN);
             vector3Scale(&rCrossN, &rCrossN, jN * fabsf(ratio));
@@ -126,7 +133,7 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         if (friction > 0.0f) {
             // Recalculate contact velocity after normal impulse
             contactVelocity = object->velocity;
-            if (!object->is_rotation_fixed && object->rotation) {
+            if (has_rotation) {
                 Vector3 angularContribution;
                 vector3Cross(&object->angular_velocity, &r, &angularContribution);
                 vector3Add(&contactVelocity, &angularContribution, &contactVelocity);
@@ -148,7 +155,7 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
                 // Calculate friction impulse denominator
                 float frictionDenominator = 1.0f / object->mass;
 
-                if (!object->is_rotation_fixed && object->rotation) {
+                if (has_rotation) {
                     Vector3 rCrossT;
                     vector3Cross(&r, &tangentDir, &rCrossT);
 
@@ -157,6 +164,11 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
                     torquePerImpulse.x = rCrossT.x * object->_inv_local_intertia_tensor.x;
                     torquePerImpulse.y = rCrossT.y * object->_inv_local_intertia_tensor.y;
                     torquePerImpulse.z = rCrossT.z * object->_inv_local_intertia_tensor.z;
+
+                    // Apply per-axis rotation constraints
+                    if (object->constrain_rotation_x) torquePerImpulse.x = 0.0f;
+                    if (object->constrain_rotation_y) torquePerImpulse.y = 0.0f;
+                    if (object->constrain_rotation_z) torquePerImpulse.z = 0.0f;
 
                     float angularEffect = vector3Dot(&rCrossT, &torquePerImpulse);
                     frictionDenominator += angularEffect;
@@ -175,7 +187,7 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
                 vector3Add(&object->velocity, &frictionImpulse, &object->velocity);
 
                 // Apply friction impulse to angular velocity
-                if (!object->is_rotation_fixed && object->rotation) {
+                if (has_rotation) {
                     Vector3 rCrossT;
                     vector3Cross(&r, &tangentDir, &rCrossT);
                     vector3Scale(&rCrossT, &rCrossT, jT * fabsf(ratio));
@@ -314,7 +326,7 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
 
         return;
     }
-    b->is_sleeping = false;
+    b->_is_sleeping = false;
     b->_sleep_counter = 0;
 
     struct EpaResult result;

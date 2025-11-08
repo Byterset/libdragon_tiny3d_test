@@ -38,9 +38,14 @@ void physics_object_init(
     object->has_gravity = true;
     object->is_trigger = false;
     object->is_kinematic = false;
-    object->is_rotation_fixed = false;
     object->is_grounded = false;
-    object->is_sleeping = false;
+    object->_is_sleeping = false;
+    object->constrain_movement_x = false;
+    object->constrain_movement_y = false;
+    object->constrain_movement_z = false;
+    object->constrain_rotation_x = false;
+    object->constrain_rotation_y = false;
+    object->constrain_rotation_z = false;
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
@@ -74,6 +79,11 @@ void physics_object_update_euler(struct physics_object* object) {
     vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
     object->velocity.y = clampf(object->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
 
+    // Apply movement constraints
+    if (object->constrain_movement_x) object->velocity.x = 0.0f;
+    if (object->constrain_movement_y) object->velocity.y = 0.0f;
+    if (object->constrain_movement_z) object->velocity.z = 0.0f;
+
     object->is_grounded = false;
 
     vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
@@ -90,12 +100,23 @@ void physics_object_update_velocity_verlet(struct physics_object* o) {
     vector3AddScaled(&o->velocity, &o->acceleration, FIXED_DELTATIME, &o->velocity);
     o->velocity.y = clampf(o->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
 
+    // Apply movement constraints
+    if (o->constrain_movement_x) o->velocity.x = 0.0f;
+    if (o->constrain_movement_y) o->velocity.y = 0.0f;
+    if (o->constrain_movement_z) o->velocity.z = 0.0f;
+
     o->acceleration = gZeroVec;
     o->is_grounded = false;
 }
 
 void physics_object_update_angular_velocity(struct physics_object* object) {
-    if (object->is_trigger || object->is_kinematic || object->is_rotation_fixed || !object->rotation) {
+    // Skip if trigger, kinematic, or no rotation quaternion
+    if (object->is_trigger || object->is_kinematic || !object->rotation) {
+        return;
+    }
+
+    // Skip if all rotation axes are constrained
+    if (object->constrain_rotation_x && object->constrain_rotation_y && object->constrain_rotation_z) {
         return;
     }
 
@@ -112,6 +133,11 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
         angular_acceleration.y = object->_torque_accumulator.y * object->_inv_local_intertia_tensor.y;
         angular_acceleration.z = object->_torque_accumulator.z * object->_inv_local_intertia_tensor.z;
 
+        // Apply per-axis constraints to angular acceleration
+        if (object->constrain_rotation_x) angular_acceleration.x = 0.0f;
+        if (object->constrain_rotation_y) angular_acceleration.y = 0.0f;
+        if (object->constrain_rotation_z) angular_acceleration.z = 0.0f;
+
         // Update angular velocity: ω = ω + α * dt
         vector3AddScaled(&object->angular_velocity, &angular_acceleration,
                         FIXED_DELTATIME * object->time_scalar, &object->angular_velocity);
@@ -119,6 +145,11 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
         // Clear torque accumulator
         object->_torque_accumulator = gZeroVec;
     }
+
+    // Apply per-axis constraints to angular velocity
+    if (object->constrain_rotation_x) object->angular_velocity.x = 0.0f;
+    if (object->constrain_rotation_y) object->angular_velocity.y = 0.0f;
+    if (object->constrain_rotation_z) object->angular_velocity.z = 0.0f;
 
     // Apply angular damping
     float angularMagSq = vector3MagSqrd(&object->angular_velocity);
@@ -220,7 +251,12 @@ void physics_object_apply_torque(struct physics_object* object, Vector3* torque)
 /// @param object
 /// @param angular_impulse angular impulse in world space (N⋅m⋅s)
 void physics_object_apply_angular_impulse(struct physics_object* object, Vector3* angular_impulse) {
-    if (object->is_kinematic || object->is_rotation_fixed || !object->rotation) {
+    if (object->is_kinematic || !object->rotation) {
+        return;
+    }
+
+    // Skip if all rotation axes are constrained
+    if (object->constrain_rotation_x && object->constrain_rotation_y && object->constrain_rotation_z) {
         return;
     }
 
@@ -230,6 +266,11 @@ void physics_object_apply_angular_impulse(struct physics_object* object, Vector3
     angular_velocity_change.x = angular_impulse->x * object->_inv_local_intertia_tensor.x;
     angular_velocity_change.y = angular_impulse->y * object->_inv_local_intertia_tensor.y;
     angular_velocity_change.z = angular_impulse->z * object->_inv_local_intertia_tensor.z;
+
+    // Apply per-axis constraints
+    if (object->constrain_rotation_x) angular_velocity_change.x = 0.0f;
+    if (object->constrain_rotation_y) angular_velocity_change.y = 0.0f;
+    if (object->constrain_rotation_z) angular_velocity_change.z = 0.0f;
 
     vector3Add(&object->angular_velocity, &angular_velocity_change, &object->angular_velocity);
 }

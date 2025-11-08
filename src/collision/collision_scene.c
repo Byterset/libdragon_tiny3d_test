@@ -214,7 +214,7 @@ void collision_scene_step() {
         element = &g_scene.elements[i];
         struct physics_object* obj = element->object;
 
-        if (!obj->is_sleeping) {
+        if (!obj->_is_sleeping) {
             if (obj->has_gravity && !obj->is_kinematic) {
                 // Check if object has ground contact
                 bool hasGroundContact = false;
@@ -253,7 +253,7 @@ void collision_scene_step() {
         moved_flags[i] = has_moved;
         rotated_flags[i] = has_rotated;
 
-        if (!obj->is_sleeping && (has_moved || has_rotated)) {
+        if (!obj->_is_sleeping && (has_moved || has_rotated)) {
             // would be technically correct to do this after all objects have been updated but this saves a loop
             collision_scene_collide_phys_object(element);
 
@@ -272,7 +272,7 @@ void collision_scene_step() {
         struct physics_object* obj = element->object;
 
         // Only do mesh collision if the object is not sleeping, not fixed in place, is tangible and has moved or rotated previously 
-        if (g_scene.mesh_collider && !obj->is_sleeping && !obj->is_kinematic && 
+        if (g_scene.mesh_collider && !obj->_is_sleeping && !obj->is_kinematic && 
             (obj->collision_layers & (COLLISION_LAYER_TANGIBLE)) && (moved_flags[i] || rotated_flags[i])) {
             collision_scene_collide_object_to_static(obj, &obj->_prev_step_pos);
         }
@@ -288,9 +288,9 @@ void collision_scene_step() {
             if (obj->_sleep_counter < PHYS_OBJECT_SLEEP_STEPS) {
                 obj->_sleep_counter += 1;
             }
-            else obj->is_sleeping = true;
+            else obj->_is_sleeping = true;
         } else {
-            obj->is_sleeping = false;
+            obj->_is_sleeping = false;
             obj->_sleep_counter = 0;
         }
 

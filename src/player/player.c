@@ -45,7 +45,8 @@ static struct physics_object_collision_data player_collision = {
 //             .radius = 1.0f,
 //         }},
 //     .shape_type = COLLISION_SHAPE_SPHERE,
-//     .friction = 0.2f
+//     .friction = 0.1f,
+//     .bounce = 0
 // };
 
 void player_handle_contacts(struct player* player){
@@ -95,7 +96,7 @@ void player_get_move_basis(Transform* transform, Vector3* forward, Vector3* righ
 }
 
 void player_reset_state(struct player* player){
-    if (!player->physics.is_sleeping)
+    if (!player->physics._is_sleeping)
     {
         player->is_on_ground = false;
     }
@@ -415,8 +416,10 @@ void player_init(struct player* player, struct player_definition* definition, Tr
     );
 
     player->physics.collision_group = COLLISION_GROUP_PLAYER;
-    player->physics.is_rotation_fixed = true;
-    
+    player->physics.constrain_rotation_x = true;
+    player->physics.constrain_rotation_y = true;
+    player->physics.constrain_rotation_z = true;
+
     collision_scene_add(&player->physics);
 
     player->animations.jump = t3d_anim_create(player->renderable.model->t3d_model, "Snake_Jump");
