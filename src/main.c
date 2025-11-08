@@ -51,14 +51,14 @@
 
 volatile static int frame_happened = 0;
 
-static struct frame_memory_pool frame_memory_pools[3];
-static uint8_t next_frame_memoy_pool;
+static struct frame_memory_pool frame_memory_pools[FRAMEBUFFER_COUNT];
+static uint8_t frame_index;
 
 uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
-#define NUM_CRATES 2
+#define NUM_CRATES 5
 #define NUM_COINS 5
 
 struct player player;
@@ -76,6 +76,8 @@ int render_collision = 0;
 
 struct camera camera;
 struct camera_controller camera_controller;
+
+T3DViewport viewport;
 
 float waiting_sec = 0.0f;
 
@@ -123,13 +125,13 @@ void setup()
     update_reset();
     collision_scene_reset();
     collectable_assets_load();
+    viewport = t3d_viewport_create_buffered(FRAMEBUFFER_COUNT);
     camera_init(&camera, 70.0f, 1.5f, 140.0f);
     skybox_flat_init(&skybox_flat);
     
     for(int i = 0; i < NUM_CRATES; i++){
         crate_init(&crates[i], &crate_def);
-        crate_def.position.y += 10;
-        crate_def.position.z += 2;
+        crate_def.position.y += 5;
     }
     // crates[0].physics.is_kinematic = true;
     for(int i = 0; i < NUM_COINS; i++){
@@ -197,25 +199,22 @@ void render3d()
         t3d_screen_clear_color(fog.enabled ? fog.color : RGBA32(0, 0, 0, 0xFF));
         t3d_screen_clear_depth();
 
-        struct frame_memory_pool *pool = &frame_memory_pools[next_frame_memoy_pool];
-        frame_pool_reset(pool);
+        struct frame_memory_pool *memory_pool = &frame_memory_pools[frame_index];
+        frame_pool_reset(memory_pool);
 
         // Increment and wrap the pool index for next frame
-        next_frame_memoy_pool = (next_frame_memoy_pool + 1) % 3;
-
-        T3DViewport *viewport = frame_malloc(pool, sizeof(T3DViewport));
-        *viewport = t3d_viewport_create();
+        frame_index = (frame_index + 1) % FRAMEBUFFER_COUNT;
 
         rdpq_set_mode_standard();
 
-        camera_apply(&camera, viewport, &camera_controller);
-        t3d_viewport_attach(viewport);
+        camera_apply(&camera, &viewport, &camera_controller);
+        t3d_viewport_attach(&viewport);
 
         t3d_light_set_ambient(colorAmbient);
         t3d_light_set_directional(0, colorDir, (T3DVec3*)&lightDirVec);
         t3d_light_set_count(1);
 
-        render_scene_render(&camera, viewport, &frame_memory_pools[next_frame_memoy_pool], &fog);
+        render_scene_render(&camera, &viewport, &frame_memory_pools[frame_index], &fog);
     #ifdef DEBUG_COLLIDERS_RAYLIB
     }
     #endif
@@ -265,7 +264,7 @@ int main()
     SetTargetFPS(60);
     #endif
 
-    display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS_DEDITHER);
+    display_init(RESOLUTION_320x240, DEPTH_16_BPP, FRAMEBUFFER_COUNT, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS_DEDITHER);
     display_set_fps_limit(60);
 
     rdpq_init();
@@ -273,7 +272,6 @@ int main()
 
     t3d_init((T3DInitParams){});
     rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
-    
     setup();
     
 
@@ -369,8 +367,8 @@ int main()
 
         struct collision_scene *collision_scene = collision_scene_get();
         // draw the dynamic aabbs of all physics objects in the scene
-        // debugDrawBVTree(buff, &collision_scene->object_aabbtree, t3d_viewport_get(),
-        //     &t3d_viewport_get()->viewFrustum, 1, 0, 15);
+        // debugDrawBVTree(buff, &collision_scene->mesh_collider->aabbtree, t3d_viewport_get(),
+        //     &t3d_viewport_get()->viewFrustum, 1, 3, 15);
         
         rdpq_detach_wait();
         display_show(fb);
