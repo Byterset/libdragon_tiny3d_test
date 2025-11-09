@@ -43,14 +43,7 @@
 
 #include <malloc.h>
 
-#ifdef DEBUG_COLLIDERS_RAYLIB
-#include <raylib.h>
-#include <rlgl.h>
-#include <raymath.h>
-#endif
-
-volatile static int frame_happened = 0;
-
+//alocate a memory pool for every frame buffer so we don't override frame data (e.g. model matrices) that the RSP is still using 
 static struct frame_memory_pool frame_memory_pools[FRAMEBUFFER_COUNT];
 static uint8_t frame_index;
 
@@ -78,8 +71,6 @@ struct camera camera;
 struct camera_controller camera_controller;
 
 T3DViewport viewport;
-
-float waiting_sec = 0.0f;
 
 struct player_definition playerDef = {
     (Vector3){{95, 0.0f, -127}},
@@ -112,11 +103,6 @@ struct generic_object_pos_definition plat_def = {
 struct generic_object_pos_definition can_def = {
     (Vector3){{64, 4, -90}}
 };
-
-void on_vi_interrupt()
-{
-    frame_happened = 1;
-}
 
 void setup()
 {
@@ -162,63 +148,36 @@ void setup()
 
 void render3d()
 {
-    #ifdef DEBUG_COLLIDERS_RAYLIB
-    if(render_collision){
 
-        Camera3D raylib_cam = {0};
-        raylib_cam.position = (Raylib_Vector3){camera.transform.position.x, camera.transform.position.y, camera.transform.position.z};
-        raylib_cam.target = (Raylib_Vector3){
-            camera_controller.target.x, 
-            (camera_controller.target.y + CAMERA_FOLLOW_HEIGHT), 
-            camera_controller.target.z};
-        raylib_cam.up = (Raylib_Vector3){0.0f, 1.0f, 0.0f};
-        raylib_cam.fovy = camera.fov;
-        raylib_cam.projection = CAMERA_PERSPECTIVE;
-        rlSetClipPlanes(camera.near, camera.far);
-        
-        BeginDrawing();
-        BeginMode3D(raylib_cam);
-        ClearBackground(BLACK);
-        collision_scene_render_debug_raylib();
-        EndMode3D();
+    // ======== Draw (3D) ======== //
+    t3d_frame_start();
 
-        EndDrawing();
-    }
-    else{
-    #endif
-        // ======== Draw (3D) ======== //
-        t3d_frame_start();
+    // TODO: maybe move this into scene structure later so levels can have their own fog settings
+    struct render_fog_params fog = {
+        .enabled = true,
+        .start = 20.0f,
+        .end = 100.0f,
+        .color = RGBA32(230, 230, 230, 0xFF)};
 
-        // TODO: maybe move this into scene structure later so levels can have their own fog settings
-        struct render_fog_params fog = {
-            .enabled = true,
-            .start = 20.0f,
-            .end = 100.0f,
-            .color = RGBA32(230, 230, 230, 0xFF)};
+    t3d_screen_clear_color(fog.enabled ? fog.color : RGBA32(0, 0, 0, 0xFF));
+    t3d_screen_clear_depth();
 
-        t3d_screen_clear_color(fog.enabled ? fog.color : RGBA32(0, 0, 0, 0xFF));
-        t3d_screen_clear_depth();
+    struct frame_memory_pool *memory_pool = &frame_memory_pools[frame_index];
+    frame_pool_reset(memory_pool);
 
-        struct frame_memory_pool *memory_pool = &frame_memory_pools[frame_index];
-        frame_pool_reset(memory_pool);
+    // Increment and wrap the pool index for next frame
+    frame_index = (frame_index + 1) % FRAMEBUFFER_COUNT;
 
-        // Increment and wrap the pool index for next frame
-        frame_index = (frame_index + 1) % FRAMEBUFFER_COUNT;
+    rdpq_set_mode_standard();
 
-        rdpq_set_mode_standard();
+    camera_apply(&camera, &viewport, &camera_controller);
+    t3d_viewport_attach(&viewport);
 
-        camera_apply(&camera, &viewport, &camera_controller);
-        t3d_viewport_attach(&viewport);
+    t3d_light_set_ambient(colorAmbient);
+    t3d_light_set_directional(0, colorDir, (T3DVec3 *)&lightDirVec);
+    t3d_light_set_count(1);
 
-        t3d_light_set_ambient(colorAmbient);
-        t3d_light_set_directional(0, colorDir, (T3DVec3*)&lightDirVec);
-        t3d_light_set_count(1);
-
-        render_scene_render(&camera, &viewport, &frame_memory_pools[frame_index], &fog);
-    #ifdef DEBUG_COLLIDERS_RAYLIB
-    }
-    #endif
-    
+    render_scene_render(&camera, &viewport, &frame_memory_pools[frame_index], &fog);
 }
 
 void render()
@@ -240,12 +199,10 @@ void render()
 
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "fps: %.1f, dT: %lu", fps, TICKS_TO_MS(deltatime_ticks));
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "mem: %d", ram_used);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "BVH dyn, n: %d, mem: %.2fKB", collision_scene->object_aabbtree._nodeCount, aabbtree_objects_mem);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "BVH mesh, n: %d, mem: %.2fKB", collision_scene->mesh_collider->aabbtree._nodeCount, aabb_tree_mesh_mem);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "ray dwn dist %.1f, entity_id: %d", player.ray_down_hit.distance, player.ray_down_hit.hit_entity_id);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "ray dwn hit (%.2f, %.2f, %.2f)", player.ray_down_hit.point.x, player.ray_down_hit.point.y, player.ray_down_hit.point.z);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "ray fwd dist %.1f, entity_id: %d, hit?: %s", player.ray_fwd_hit.distance, player.ray_fwd_hit.hit_entity_id, player.ray_fwd_hit.did_hit? "true" : "false");
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "ray fwd hit (%.2f, %.2f, %.2f)", player.ray_fwd_hit.point.x, player.ray_fwd_hit.point.y, player.ray_fwd_hit.point.z);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "ray dwn dist %.1f, entity_id: %d", player.ray_down_hit.distance, player.ray_down_hit.hit_entity_id);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "ray dwn hit (%.2f, %.2f, %.2f)", player.ray_down_hit.point.x, player.ray_down_hit.point.y, player.ray_down_hit.point.z);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "ray fwd dist %.1f, entity_id: %d", player.ray_fwd_hit.distance, player.ray_fwd_hit.hit_entity_id);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "ray fwd hit (%.2f, %.2f, %.2f)", player.ray_fwd_hit.point.x, player.ray_fwd_hit.point.y, player.ray_fwd_hit.point.z);
 
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
@@ -259,11 +216,6 @@ int main()
     debug_init_usblog();
     dfs_init(DFS_DEFAULT_LOCATION);
 
-    #ifdef DEBUG_COLLIDERS_RAYLIB
-    InitWindow(320, 240, "raylib test");
-    SetTargetFPS(60);
-    #endif
-
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, FRAMEBUFFER_COUNT, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS_DEDITHER);
     display_set_fps_limit(60);
 
@@ -273,9 +225,6 @@ int main()
     t3d_init((T3DInitParams){});
     rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
     setup();
-    
-
-    register_VI_handler(on_vi_interrupt);
 
     t3d_vec3_norm((T3DVec3*)&lightDirVec);
     const int64_t l_fixed_dt_ticks = TICKS_FROM_US(SEC_TO_USEC(FIXED_DELTATIME));
@@ -285,19 +234,6 @@ int main()
     // ======== GAME LOOP ======== //
     for (;;)
     {
-        waiting_sec = 0;
-        uint64_t wait_ticks = TICKS_READ();
-        // ======== Wait for the next frame ======== //
-        while (!frame_happened)
-        {
-
-            // TODO: do something useful while waiting for the next frame
-        }
-        frame_happened = 0;
-        wait_ticks = TICKS_READ() - wait_ticks;
-
-        waiting_sec = (float)TICKS_TO_MS(wait_ticks) / 1000.0f;
-
         // ======== Update the Time ======== //
 
         update_time();
@@ -314,7 +250,7 @@ int main()
         if(joypad_get_buttons_held(0).d_left){
             physics_object_apply_torque(&crates[0].physics, &(Vector3){{400,550,700}});
         }
-
+        
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //
         while (accumulator_ticks >= l_fixed_dt_ticks)
         {
@@ -334,7 +270,6 @@ int main()
         surface_t* fb = display_get();
         rdpq_attach(fb, display_get_zbuf());
         render();
-
 
         // RENDER DEBUG_RAYCAST
         rdpq_set_mode_standard();

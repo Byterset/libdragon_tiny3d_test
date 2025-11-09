@@ -9,11 +9,6 @@
 #include "aabbtree.h"
 #include "../render/defs.h"
 
-#ifdef DEBUG_COLLIDERS_RAYLIB
-#include <raylib.h>
-#include <rlgl.h>
-#endif
-
 struct mesh_triangle_indices {
     uint16_t indices[3];
 };
@@ -27,9 +22,6 @@ struct mesh_collider {
     uint16_t vertex_count;
     Vector3* offset;
     float scale;
-#ifdef DEBUG_COLLIDERS_RAYLIB
-    Raylib_Model raylib_mesh_model;
-#endif
 };
 
 struct mesh_triangle {

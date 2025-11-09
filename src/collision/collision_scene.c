@@ -14,13 +14,6 @@
 #include "../render/defs.h"
 #include "../game/gamestate.h"
 
-#ifdef DEBUG_COLLIDERS_RAYLIB
-#include <raylib.h>
-#include <rlgl.h>
-#include <raymath.h>
-#endif
-
-
 struct collision_scene g_scene;
 
 void collision_scene_reset() {
@@ -280,25 +273,50 @@ void collision_scene_step() {
         // Apply physical constraints to the object
         physics_object_apply_constraints(obj);
 
-        // Update sleep state using comprehensive checks
-        const bool insignificant_movement = vector3DistSqrd(obj->position, &obj->_prev_step_pos) < PHYS_OBJECT_SLEEP_THRESHOLD_SQ;
-        const bool no_rotation = !rotated_flags[i];
+        // Update sleep state
 
-        if (insignificant_movement && no_rotation) {
-            if (obj->_sleep_counter < PHYS_OBJECT_SLEEP_STEPS) {
-                obj->_sleep_counter += 1;
-            }
-            else obj->_is_sleeping = true;
-        } else {
-            obj->_is_sleeping = false;
-            obj->_sleep_counter = 0;
-        }
+        // Check for external position changes (non-physics movement)
+        const bool position_changed = vector3DistSqrd(obj->position, &obj->_prev_step_pos) > PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD_SQ;
 
-        // Update previous state with current state
-        obj->_prev_step_pos = *obj->position;
+        // Check for external rotation changes (non-physics rotation)
+        // Use quaternion dot product - values close to ±1.0 indicate similar rotations
+        bool rotation_changed = false;
         if (obj->rotation)
         {
-            obj->_prev_step_rot = *obj->rotation;
+            float quat_similarity = fabsf(quatDot(obj->rotation, &obj->_prev_step_rot));
+            rotation_changed = quat_similarity < PHYS_OBJECT_ROT_SIMILARITY_SLEEP_THRESHOLD; // Allow tiny rotational drift
+        }
+
+        // Check physics-driven motion via velocities
+        const bool has_linear_velocity = vector3MagSqrd(&obj->velocity) > PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD_SQ;
+        const bool has_angular_velocity = obj->rotation &&
+                                          vector3MagSqrd(&obj->angular_velocity) > PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ;
+
+        // Object is at rest if: no external changes AND no physics velocities
+        const bool is_at_rest = !position_changed && !rotation_changed &&
+                                !has_linear_velocity && !has_angular_velocity;
+
+        if (is_at_rest)
+        {
+            if (obj->_sleep_counter < PHYS_OBJECT_SLEEP_STEPS)
+            {
+                obj->_sleep_counter += 1;
+            }
+            else
+            {
+                obj->_is_sleeping = true;
+            }
+        }
+        else
+        {
+            // Update previous state with current state
+            obj->_prev_step_pos = *obj->position;
+            if (obj->rotation)
+            {
+                obj->_prev_step_rot = *obj->rotation;
+            }
+            obj->_is_sleeping = false;
+            obj->_sleep_counter = 0;
         }
     }
 }
@@ -313,157 +331,3 @@ struct contact* collision_scene_new_contact() {
     g_scene.next_free_contact = result->next;
     return result;
 }
-
-#ifdef DEBUG_COLLIDERS_RAYLIB
-/// @brief Renders the collision scene colliders in debug mode using raylib.
-void collision_scene_render_debug_raylib(){
-    // if(g_scene.mesh_collider){ 
-    //     DrawModelWires(g_scene.mesh_collider->raylib_mesh_model, (Raylib_Vector3){0, 0, 0}, 1, YELLOW);   
-    // }
-    for (int i = 0; i < g_scene.objectCount; ++i) {
-        struct collision_scene_element* element = &g_scene.elements[i];
-        struct physics_object* object = element->object;
-
-        Vector3 center_offset_rotated;
-
-        DrawBoundingBox(
-            (BoundingBox){
-                (Raylib_Vector3){object->bounding_box.min.x, object->bounding_box.min.y, object->bounding_box.min.z},
-                (Raylib_Vector3){object->bounding_box.max.x, object->bounding_box.max.y, object->bounding_box.max.z}},
-            RED);
-        if (object->rotation)
-            quatMultVector(object->rotation, &object->center_offset, &center_offset_rotated);
-        else
-            vector3Copy(&object->center_offset, &center_offset_rotated);
-
-        if(object->collision->shape_type == COLLISION_SHAPE_CAPSULE){
-            // Get capsule dimensions
-            float half_height = object->collision->shape_data.capsule.inner_half_height;
-            float radius = object->collision->shape_data.capsule.radius;
-
-            // Define the capsule's central axis in local space
-            Vector3 local_axis = {{0.0f, half_height, 0.0f}};
-
-            // Rotate the central axis by the given rotation to get its orientation in world space
-            Vector3 world_axis;
-            
-            if (object->rotation)
-                quatMultVector(object->rotation, &local_axis, &world_axis);
-            else
-                vector3Copy(&local_axis, &world_axis);
-
-            Vector3 start;
-            Vector3 end;
-            vector3Copy(&world_axis, &start);
-            vector3Copy(&world_axis, &end);
-            vector3Scale(&end, &end, -1.0f);
-            vector3Add(&start, object->position, &start);
-            vector3Add(&end, object->position, &end);
-            vector3Add(&end, &center_offset_rotated, &end);
-            vector3Add(&start, &center_offset_rotated, &start);
-
-            DrawCapsuleWires(
-                (Raylib_Vector3){start.x, start.y, start.z},
-                (Raylib_Vector3){end.x, end.y, end.z},
-                radius,
-                4,
-                2,
-                PINK
-            );
-        }
-        else if(object->collision->shape_type == COLLISION_SHAPE_BOX){
-            // Get capsule dimensions
-            Vector3 half_size = object->collision->shape_data.box.half_size;
-            Vector3 worldPos;
-
-            Raylib_Mesh cubeMesh = GenMeshCube(half_size.x * 2, half_size.y * 2, half_size.z * 2);
-
-            Raylib_Model cubeModel = LoadModelFromMesh(cubeMesh);
-
-            Raylib_Quaternion q = {.x = object->rotation->x, .y = object->rotation->y, .z = object->rotation->z, .w = object->rotation->w};
-            Matrix m = QuaternionToMatrix(q);
-            cubeModel.transform = MatrixMultiply(m, cubeModel.transform);
-            vector3Add(object->position, &center_offset_rotated, &worldPos);
-            
-            Raylib_Vector3 pos = {worldPos.x, worldPos.y, worldPos.z};
-
-            DrawModelWires(cubeModel, pos, 1, GREEN);
-            UnloadModel(cubeModel);
-        }        
-        else if(object->collision->shape_type == COLLISION_SHAPE_SPHERE){
-            float radius = object->collision->shape_data.sphere.radius;
-            Vector3 worldPos;
-            vector3Add(object->position, &center_offset_rotated, &worldPos);
-            Raylib_Vector3 pos = {worldPos.x, worldPos.y, worldPos.z};
-            DrawSphereWires(pos, radius, 5, 5, PINK);
-        }
-        else if(object->collision->shape_type == COLLISION_SHAPE_CYLINDER){
-            // Get capsule dimensions
-            float half_height = object->collision->shape_data.cylinder.half_height;
-            float radius = object->collision->shape_data.cylinder.radius;
-
-            // Define the capsule's central axis in local space
-            Vector3 local_axis = {{0.0f, half_height, 0.0f}};
-
-            // Rotate the central axis by the given rotation to get its orientation in world space
-            Vector3 world_axis;
-            
-            if (object->rotation)
-                quatMultVector(object->rotation, &local_axis, &world_axis);
-            else
-                vector3Copy(&local_axis, &world_axis);
-
-            Vector3 start;
-            Vector3 end;
-            vector3Copy(&world_axis, &start);
-            vector3Copy(&world_axis, &end);
-            vector3Scale(&end, &end, -1.0f);
-            vector3Add(&start, object->position, &start);
-            vector3Add(&end, object->position, &end);
-            vector3Add(&end, &center_offset_rotated, &end);
-            vector3Add(&start, &center_offset_rotated, &start);
-
-            DrawCylinderWiresEx(
-                (Raylib_Vector3){start.x, start.y, start.z},
-                (Raylib_Vector3){end.x, end.y, end.z},
-                radius,
-                radius,
-                8,
-                BLUE
-            );
-        }
-        else if(object->collision->shape_type == COLLISION_SHAPE_CONE){
-            // Get capsule dimensions
-            float half_height = object->collision->shape_data.cone.half_height;
-            float radius = object->collision->shape_data.cone.radius;
-
-            // Define the capsule's central axis in local space
-            Vector3 local_axis = {{0.0f, half_height, 0.0f}};
-
-            // Rotate the central axis by the given rotation to get its orientation in world space
-            Vector3 world_axis;
-            
-            if (object->rotation)
-                quatMultVector(object->rotation, &local_axis, &world_axis);
-            else
-                vector3Copy(&local_axis, &world_axis);
-
-            Vector3 start;
-            Vector3 end;
-            vector3Copy(&world_axis, &start);
-            vector3Copy(&world_axis, &end);
-            vector3Scale(&end, &end, -1.0f);
-            vector3Add(&start, object->position, &start);
-            vector3Add(&end, object->position, &end);
-            vector3Add(&end, &center_offset_rotated, &end);
-            vector3Add(&start, &center_offset_rotated, &start);
-
-            DrawLine3D(
-                (Raylib_Vector3){start.x, start.y, start.z},
-                (Raylib_Vector3){end.x, end.y, end.z},
-                VIOLET
-            );
-        }
-    }
-}
-#endif

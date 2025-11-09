@@ -44,7 +44,7 @@ void cylinder_init(struct cylinder* cylinder, struct generic_object_pos_definiti
         &cylinder_collision,
         COLLISION_LAYER_TANGIBLE,
         &cylinder->transform.position,
-        &cylinder->transform.rotation,
+        NULL,//&cylinder->transform.rotation,
         (Vector3){{0,cylinder_collision.shape_data.cylinder.half_height,0}},
         50.0f
     );

@@ -16,8 +16,6 @@ PROJECT_NAME=t3d_test
 
 src = src/main.c
 
-LDFLAGS += -lraylib
-
 all: $(PROJECT_NAME).z64
 
 #----------------

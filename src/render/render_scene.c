@@ -106,7 +106,6 @@ void render_scene_render(struct camera* camera, T3DViewport* viewport, struct fr
 
     struct callback_element* current = callback_list_get(&r_scene_3d.callbacks, 0);
 
-    int culled = 0;
 
     // Run all the callbacks that will add something to the batch or render directly
     for (int i = 0; i < r_scene_3d.callbacks.count; ++i) {
@@ -117,7 +116,6 @@ void render_scene_render(struct camera* camera, T3DViewport* viewport, struct fr
             if (!t3d_frustum_vs_sphere(&viewport->viewFrustum, (T3DVec3*)el->center, el->radius))
             {
                 current = callback_list_next(&r_scene_3d.callbacks, current);
-                culled++;
                 continue;
             }
         }
@@ -128,5 +126,4 @@ void render_scene_render(struct camera* camera, T3DViewport* viewport, struct fr
 
     // Execute drawing of batch elements
     render_batch_execute(&batch, viewport->matCamProj, viewport, fog);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, 16, 104, "culled: %d", culled);
 }

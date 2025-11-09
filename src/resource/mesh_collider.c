@@ -9,43 +9,6 @@
 // CMSH
 #define EXPECTED_HEADER 0x434D5348
 
-#ifdef DEBUG_COLLIDERS_RAYLIB
-Raylib_Mesh mesh_collider_generate_raylib_mesh(struct mesh_collider* mesh, int vertex_count, int triangle_count) {
-    Raylib_Mesh raylib_mesh = {0};
-
-    raylib_mesh.vertexCount = vertex_count;
-    raylib_mesh.triangleCount = triangle_count;
-    raylib_mesh.vertices = malloc(sizeof(float) * vertex_count * 3);
-    raylib_mesh.texcoords = malloc(sizeof(float) * vertex_count * 2);
-
-    raylib_mesh.normals = malloc(sizeof(float) * vertex_count * 3);
-
-    raylib_mesh.indices = malloc(sizeof(unsigned short) * triangle_count * 3);
-
-    for (int i = 0; i < vertex_count; i++)
-    {
-        raylib_mesh.vertices[i * 3] = mesh->vertices[i].x;
-        raylib_mesh.vertices[i * 3 + 1] = mesh->vertices[i].y;
-        raylib_mesh.vertices[i * 3 + 2] = mesh->vertices[i].z;
-        raylib_mesh.normals[i * 3] = 0;
-        raylib_mesh.normals[i * 3 + 1] = 1;
-        raylib_mesh.normals[i * 3 + 2] = 0;
-        raylib_mesh.texcoords[i * 2] = 0;
-        raylib_mesh.texcoords[i * 2 + 1] = 0;
-    }
-
-    for (int i = 0; i < triangle_count; i++)
-    {
-        raylib_mesh.indices[i * 3] = mesh->triangles[i].indices[2];
-        raylib_mesh.indices[i * 3 + 1] = mesh->triangles[i].indices[1];
-        raylib_mesh.indices[i * 3 + 2] = mesh->triangles[i].indices[0];
-    }
-
-    UploadMesh(&raylib_mesh, false);
-    return raylib_mesh;
-}
-#endif
-
 void mesh_collider_load_test(struct mesh_collider* into){
     int vertex_count = 8;
     int triangle_count = 10;
@@ -136,13 +99,6 @@ void mesh_collider_load_test(struct mesh_collider* into){
 
         AABBTreeNode_createNode(&into->aabbtree, triangleAABB, (void *)i);
     }
-#ifdef DEBUG_COLLIDERS_RAYLIB
-    into->raylib_mesh_model = LoadModelFromMesh(mesh_collider_generate_raylib_mesh((struct mesh_collider*)into, vertex_count, triangle_count));
-    Image white = GenImageColor(1, 1, WHITE);
-    Texture2D texture = LoadTextureFromImage(white);
-
-    into->raylib_mesh_model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
-    #endif
 }
 
 void mesh_collider_load(struct mesh_collider* into, const char* filename, float scale, Vector3* offset) {
@@ -199,23 +155,10 @@ void mesh_collider_load(struct mesh_collider* into, const char* filename, float 
 
         AABBTreeNode_createNode(&into->aabbtree, triangleAABB, (void *)i);
     }
-#ifdef DEBUG_COLLIDERS_RAYLIB
-    into->raylib_mesh_model = LoadModelFromMesh(mesh_collider_generate_raylib_mesh((struct mesh_collider*)into, vertex_count, triangle_count));
-    Image white = GenImageColor(1, 1, WHITE);
-    Texture2D texture = LoadTextureFromImage(white);
-
-    into->raylib_mesh_model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
-    #endif
-
 }
 
 void mesh_collider_release(struct mesh_collider* mesh){
     free(mesh->vertices);
     free(mesh->triangles);
     AABBTree_free(&mesh->aabbtree);
-#ifdef DEBUG_COLLIDERS_RAYLIB
-    UnloadTexture(mesh->raylib_mesh_model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture);
-    UnloadModel(mesh->raylib_mesh_model);
-    #endif
 }
-

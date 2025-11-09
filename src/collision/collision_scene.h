@@ -41,6 +41,4 @@ void collision_scene_step();
 
 struct contact* collision_scene_new_contact();
 
-void collision_scene_render_debug_raylib();
-
 #endif
