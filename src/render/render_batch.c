@@ -452,11 +452,6 @@ void render_batch_execute(struct render_batch *batch, Matrix4x4 view_proj_matrix
             float inv_yaw = -atan2f(forward.x, forward.z);
             float pitch = asinf(forward.y);
 
-            if (pitch >= -(0.001) && pitch <= 0.001)
-            {
-                pitch = 0; // Prevent floating point errors from making the skybox flicker up and down ever so slightly at rest
-            }
-
             // basically what the following does:
             // when using a 960:720 texture the window into the tex will be the size of the display
             // for other texture sizes the window will be scaled accordingly

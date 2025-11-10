@@ -20,6 +20,7 @@
 #include "player/player.h"
 #include "map/map.h"
 #include "objects/crate/crate.h"
+#include "objects/ball/ball.h"
 #include "objects/cone/cone.h"
 #include "objects/cylinder/cylinder.h"
 #include "objects/soda_can/soda_can.h"
@@ -51,12 +52,14 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
-#define NUM_CRATES 5
-#define NUM_COINS 5
+#define NUM_CRATES 3
+#define NUM_BALLS 3
+#define NUM_COINS 4
 
 struct player player;
 struct map map;
 struct crate crates[NUM_CRATES];
+struct ball balls[NUM_BALLS];
 struct collectable coins[NUM_COINS];
 struct cone cone;
 struct cylinder cylinder;
@@ -79,6 +82,10 @@ struct player_definition playerDef = {
 
 struct generic_object_pos_definition crate_def = {
     (Vector3){{89, 5, -127}}
+};
+
+struct generic_object_pos_definition ball_def = {
+    (Vector3){{94, 5, -122}}
 };
 
 struct generic_object_pos_definition cone_def = {
@@ -119,7 +126,12 @@ void setup()
         crate_init(&crates[i], &crate_def);
         crate_def.position.y += 5;
     }
-    // crates[0].physics.is_kinematic = true;
+
+    for(int i = 0; i < NUM_BALLS; i++){
+        ball_init(&balls[i], &ball_def);
+        ball_def.position.y += 6;
+    }
+
     for(int i = 0; i < NUM_COINS; i++){
         collectable_init(&coins[i], &collectableDef);
         collectableDef.position.x += 5;
@@ -193,9 +205,6 @@ void render()
 
     struct mallinfo mall_inf = mallinfo();
     int ram_used = mall_inf.uordblks + ((uint32_t)HEAP_START_ADDR) - 0x80000000 - 0x10000;
-    struct collision_scene *collision_scene = collision_scene_get();
-    float aabbtree_objects_mem = (sizeof(AABBTree) + (sizeof(AABBTreeNode)) * collision_scene->object_aabbtree._nodeCount) / 1024.0f;
-    float aabb_tree_mesh_mem = (sizeof(AABBTree) + (sizeof(AABBTreeNode)) * collision_scene->mesh_collider->aabbtree._nodeCount) / 1024.0f;
 
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "fps: %.1f, dT: %lu", fps, TICKS_TO_MS(deltatime_ticks));
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "mem: %d", ram_used);
@@ -300,7 +309,7 @@ int main()
         debugDrawLineVec3(buff, &ray_start_view, &ray_end_view, 0xfd41);
         
 
-        struct collision_scene *collision_scene = collision_scene_get();
+        // struct collision_scene *collision_scene = collision_scene_get();
         // draw the dynamic aabbs of all physics objects in the scene
         // debugDrawBVTree(buff, &collision_scene->mesh_collider->aabbtree, t3d_viewport_get(),
         //     &t3d_viewport_get()->viewFrustum, 1, 3, 15);

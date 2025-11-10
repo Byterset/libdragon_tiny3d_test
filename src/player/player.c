@@ -33,7 +33,7 @@ static struct physics_object_collision_data player_collision = {
             .inner_half_height = 0.7f,
         }},
     .shape_type = COLLISION_SHAPE_CAPSULE,
-    .friction = 0.1f
+    .friction = 0.5f
 };
 
 // static struct physics_object_collision_data player_collision = {

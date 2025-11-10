@@ -58,7 +58,7 @@ MESH_SOURCES += $(shell find assets/maps -type f -name '*.glb' | sort)
 
 T3DMESHES := $(MESH_SOURCES:assets/%.glb=filesystem/%.t3dm)
 
-#base-scale option should be the same as SCENE_SCALE in the defs.h file. Default is 64, here we use 16 because of matrix conversion limitations
+# inverse Model Scale will be applied to model transforms in game before rendering
 filesystem/%.t3dm: assets/%.glb
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(@:filesystem/%.t3dm=build/assets/%.t3dm))

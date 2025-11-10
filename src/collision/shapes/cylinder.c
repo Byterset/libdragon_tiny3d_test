@@ -14,7 +14,6 @@ void cylinder_support_function(void* data, Vector3* direction, Vector3* output) 
     float abs_x = fabsf(direction->x);
     float abs_z = fabsf(direction->z);
     float angle_dot = (abs_x + abs_z) * SQRT_1_2;
-    bool use_angle = false;
 
     if (abs_x < angle_dot && abs_z < angle_dot) {
         output->x = direction->x > 0.0f ? SQRT_1_2 * shape_data->cylinder.radius : -SQRT_1_2 * shape_data->cylinder.radius;

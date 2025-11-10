@@ -98,6 +98,4 @@ static void debugDrawBVTreeNode(
 static void debugDrawBVTree(uint16_t *fb, AABBTree *tree, T3DViewport *vp, const T3DFrustum *frustum, float scale, int start_level, int max_level)
 {
   debugDrawBVTreeNode(fb, vp, tree->root, tree, frustum, scale, start_level, max_level);
-
-
 }
