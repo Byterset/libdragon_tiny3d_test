@@ -9,8 +9,7 @@
 
 typedef int collision_id;
 
-#define MIN_PHYSICS_OBJECTS 64
-#define MAX_ACTIVE_CONTACTS 128
+#define MAX_PHYSICS_OBJECTS 64
 
 struct collision_scene_element {
     struct physics_object* object;
@@ -18,13 +17,15 @@ struct collision_scene_element {
 
 struct collision_scene {
     struct collision_scene_element* elements;
-    struct contact* next_free_contact;
     struct contact* all_contacts;
     struct hash_map entity_mapping;
     uint16_t objectCount;
     uint16_t capacity;
     AABBTree object_aabbtree;
     struct mesh_collider* mesh_collider;
+    bool moved_flags[MAX_PHYSICS_OBJECTS];
+    bool rotated_flags[MAX_PHYSICS_OBJECTS];
+    uint8_t contact_allocator_head;     // Next contact index to allocate (ring buffer)
 };
 
 void collision_scene_reset();

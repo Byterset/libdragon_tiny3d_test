@@ -22,21 +22,15 @@ void collision_scene_reset() {
     AABBTree_free(&g_scene.object_aabbtree);
     hash_map_destroy(&g_scene.entity_mapping);
 
-    hash_map_init(&g_scene.entity_mapping, MIN_PHYSICS_OBJECTS);
-    AABBTree_create(&g_scene.object_aabbtree, MIN_PHYSICS_OBJECTS);
-    g_scene.elements = malloc(sizeof(struct collision_scene_element) * MIN_PHYSICS_OBJECTS);
-    g_scene.capacity = MIN_PHYSICS_OBJECTS;
+    hash_map_init(&g_scene.entity_mapping, MAX_PHYSICS_OBJECTS);
+    AABBTree_create(&g_scene.object_aabbtree, MAX_PHYSICS_OBJECTS);
+    g_scene.elements = malloc(sizeof(struct collision_scene_element) * MAX_PHYSICS_OBJECTS);
+    g_scene.capacity = MAX_PHYSICS_OBJECTS;
     g_scene.objectCount = 0;
     AABBTree_free(&g_scene.mesh_collider->aabbtree);
     g_scene.mesh_collider = NULL;
     g_scene.all_contacts = malloc(sizeof(struct contact) * MAX_ACTIVE_CONTACTS);
-    g_scene.next_free_contact = &g_scene.all_contacts[0];
-
-    for (int i = 0; i + 1 < MAX_ACTIVE_CONTACTS; ++i) {
-        g_scene.all_contacts[i].next = &g_scene.all_contacts[i + 1];
-    }
-
-    g_scene.all_contacts[MAX_ACTIVE_CONTACTS - 1].next = NULL;
+    g_scene.contact_allocator_head = 0;
 }
 
 struct collision_scene* collision_scene_get() {
@@ -69,26 +63,16 @@ struct physics_object* collision_scene_find_object(entity_id id) {
 }
 
 /**
- * @brief Returns the active contacts of a physics object to the global scene's free contact list.
+ * @brief Clears the active contacts of a physics object.
  *
- * This function iterates through the active contacts of the given physics object and appends
- * them to the global scene's free contact list. It ensures that the active contacts of the
- * object are properly returned and the object's active contact list is cleared.
+ * With the new linear allocator, contacts are released all at once at the start of the physics
+ * step via collision_scene_reset_contacts(). This function just clears the object's contact list.
  *
- * @param object Pointer to the physics object whose active contacts are to be returned.
+ * @param object Pointer to the physics object whose active contacts are to be cleared.
  */
 void collision_scene_release_object_contacts(struct physics_object* object) {
-    struct contact* last_contact = object->active_contacts;
-
-    while (last_contact && last_contact->next) {
-        last_contact = last_contact->next;
-    }
-
-    if (last_contact) {
-        last_contact->next = g_scene.next_free_contact;
-        g_scene.next_free_contact = object->active_contacts;
-        object->active_contacts = NULL;
-    }
+    // Simply clear the contact list - actual memory is reused via linear allocator reset
+    object->active_contacts = NULL;
 }
 
 /// @brief Removes a physics object from the collision scene. 
@@ -140,7 +124,7 @@ void collision_scene_collide_phys_object(struct collision_scene_element* element
     //perform a broad phase check to find potential collision candidates by traversing the AABB BVH tree 
     //and collecting leaf nodes that overlap with the object's bounding box
     int result_count = 0;
-    int max_results = 4;
+    int max_results = 10;
     NodeProxy results[max_results];
     AABBTree_queryBounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, max_results);
 
@@ -199,8 +183,9 @@ void collision_scene_collide_object_to_static(struct physics_object* object, Vec
 /// @brief performs a physics step on all objects in the scene, updating their positions, velocities, Bounding Boxes and performing collision detection
 void collision_scene_step() {
     struct collision_scene_element* element;
-    bool moved_flags[g_scene.objectCount];
-    bool rotated_flags[g_scene.objectCount];
+
+    // Reset contact allocator - all contacts from previous frame are now invalid
+    g_scene.contact_allocator_head = 0;
 
     // First loop: Position updates and AABB maintenance
     for (int i = 0; i < g_scene.objectCount; ++i) {
@@ -243,8 +228,8 @@ void collision_scene_step() {
         // Track movement for AABB updates
         const bool has_moved = !vector3Equals(&obj->_prev_step_pos, obj->position);
         const bool has_rotated = obj->rotation ? !quatIsIdentical(obj->rotation, &obj->_prev_step_rot) : false;
-        moved_flags[i] = has_moved;
-        rotated_flags[i] = has_rotated;
+        g_scene.moved_flags[i] = has_moved;
+        g_scene.rotated_flags[i] = has_rotated;
 
         if (!obj->_is_sleeping && (has_moved || has_rotated)) {
             // would be technically correct to do this after all objects have been updated but this saves a loop
@@ -266,7 +251,7 @@ void collision_scene_step() {
 
         // Only do mesh collision if the object is not sleeping, not fixed in place, is tangible and has moved or rotated previously 
         if (g_scene.mesh_collider && !obj->_is_sleeping && !obj->is_kinematic && 
-            (obj->collision_layers & (COLLISION_LAYER_TANGIBLE)) && (moved_flags[i] || rotated_flags[i])) {
+            (obj->collision_layers & (COLLISION_LAYER_TANGIBLE)) && (g_scene.moved_flags[i] || g_scene.rotated_flags[i])) {
             collision_scene_collide_object_to_static(obj, &obj->_prev_step_pos);
         }
 
@@ -321,13 +306,13 @@ void collision_scene_step() {
     }
 }
 
-/// @brief Returns a new contact from the global scene's free contact list, NULL if none are available.
+/// @brief Returns a new contact from the global scene's contact pool, NULL if pool is exhausted.
 struct contact* collision_scene_new_contact() {
-    if (!g_scene.next_free_contact) {
+    // Check if we've exhausted the contact pool
+    if (g_scene.contact_allocator_head >= MAX_ACTIVE_CONTACTS) {
         return NULL;
     }
 
-    struct contact* result = g_scene.next_free_contact;
-    g_scene.next_free_contact = result->next;
-    return result;
+    // Return next available contact and increment head
+    return &g_scene.all_contacts[g_scene.contact_allocator_head++];
 }

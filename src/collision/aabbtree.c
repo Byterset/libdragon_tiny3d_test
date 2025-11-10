@@ -373,13 +373,14 @@ NodeProxy AABBTree_insertLeaf(AABBTree *tree, NodeProxy leaf)
         float inheritedCost;
     };
 
-    vec_t *stack = vec_with_capacity(256, sizeof(struct Candidate));
-    vec_push(stack, &(struct Candidate){tree->root, 0.0f});
+    // initialize the stack with the root node
+    struct Candidate stack[AABBTREE_NODE_QUERY_STACK_SIZE];
+    int stack_top = 0;
+    stack[stack_top++] = (struct Candidate){tree->root, 0.0f};
 
-    while (stack->len != 0)
+    while (stack_top > 0)
     {
-        struct Candidate currentCandidate;
-        vec_pop(stack, &currentCandidate);
+        struct Candidate currentCandidate = stack[--stack_top];
         NodeProxy current = currentCandidate.node;
         float inheritedCost = currentCandidate.inheritedCost;
         AABB combined = AABBUnion(&aabb, &tree->nodes[current].bounds);
@@ -400,12 +401,14 @@ NodeProxy AABBTree_insertLeaf(AABBTree *tree, NodeProxy leaf)
         {
             if (AABBTreeNode_isLeaf(&tree->nodes[current]) == false)
             {
-                vec_push(stack, &(struct Candidate){tree->nodes[current]._left, inheritedCost});
-                vec_push(stack, &(struct Candidate){tree->nodes[current]._right, inheritedCost});
+                stack[stack_top++] = (struct Candidate){tree->nodes[current]._left, inheritedCost};
+                stack[stack_top++] = (struct Candidate){tree->nodes[current]._right, inheritedCost};
+                // vec_push(stack, &(struct Candidate){tree->nodes[current]._left, inheritedCost});
+                // vec_push(stack, &(struct Candidate){tree->nodes[current]._right, inheritedCost});
             }
         }
     }
-    vec_drop(stack);
+    // vec_drop(stack);
 
     // create a new Parent
     NodeProxy oldParent = tree->nodes[bestSibling]._parent;

@@ -4,6 +4,8 @@
 #include "../math/vector3.h"
 #include "../entity/entity_id.h"
 
+#define MAX_ACTIVE_CONTACTS 128
+
 struct physics_object;
 
 struct contact {
