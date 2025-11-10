@@ -38,7 +38,8 @@ struct ExpandingSimplex {
     struct SimplexTriangle triangles[EPA_MAX_SIMPLEX_TRIANGLES];
     short pointCount;
     short triangleCount;
-    unsigned char triangleHeap[EPA_MAX_SIMPLEX_TRIANGLES];
+    unsigned char triangleHeap[EPA_MAX_SIMPLEX_TRIANGLES];           // heap[heapIndex] = triangleIndex
+    unsigned char triangleToHeapIndex[EPA_MAX_SIMPLEX_TRIANGLES];    // inverse mapping: triangle[triangleIndex] -> heapIndex
     short flags;
 };
 
@@ -112,6 +113,10 @@ int expandingSimplexSiftDownHeap(struct ExpandingSimplex* simplex, int heapIndex
         simplex->triangleHeap[heapIndex] = simplex->triangleHeap[parentHeapIndex];
         simplex->triangleHeap[parentHeapIndex] = tmp;
 
+        // update inverse mapping
+        simplex->triangleToHeapIndex[simplex->triangleHeap[heapIndex]] = heapIndex;
+        simplex->triangleToHeapIndex[simplex->triangleHeap[parentHeapIndex]] = parentHeapIndex;
+
         // move up to the parent
         heapIndex = parentHeapIndex;
         parentHeapIndex = GET_PARENT_INDEX(heapIndex);
@@ -157,6 +162,10 @@ int expandingSimplexSiftUpHeap(struct ExpandingSimplex* simplex, int heapIndex) 
         simplex->triangleHeap[heapIndex] = simplex->triangleHeap[swapWithChild];
         simplex->triangleHeap[swapWithChild] = tmp;
 
+        // update inverse mapping
+        simplex->triangleToHeapIndex[simplex->triangleHeap[heapIndex]] = heapIndex;
+        simplex->triangleToHeapIndex[simplex->triangleHeap[swapWithChild]] = swapWithChild;
+
         heapIndex = swapWithChild;
     }
 
@@ -171,16 +180,6 @@ void expandingSimplexFixHeap(struct ExpandingSimplex* simplex, int heapIndex) {
     }
 
     expandingSimplexSiftDownHeap(simplex, nextHeapIndex);
-}
-
-int expandingSimplexFindHeapIndex(struct ExpandingSimplex* simplex, int value) {
-    for (int i = 0; i < simplex->triangleCount; ++i) {
-        if (simplex->triangleHeap[i] == value) {
-            return i;
-        }
-    }
-
-    return 0;
 }
 
 void expandingSimplexTriangleInitNormal(struct ExpandingSimplex* simplex, struct SimplexTriangle* triangle) {
@@ -282,7 +281,7 @@ void expandingSimplexRotateEdge(struct ExpandingSimplex* simplex, struct Simplex
     expandingSimplexTriangleInitNormal(simplex, triangleB);
     if (!(simplex->flags & SimplexFlagsSkipDistance)) {
         expandingSimplexTriangleDetermineDistance(simplex, triangleB);
-        expandingSimplexFixHeap(simplex, expandingSimplexFindHeapIndex(simplex, triangleBIndex));
+        expandingSimplexFixHeap(simplex, simplex->triangleToHeapIndex[triangleBIndex]);
     }
 }
 
@@ -325,6 +324,7 @@ void expandingSimplexAddTriangle(struct ExpandingSimplex* simplex, union Simplex
     expandingSimplexTriangleDetermineDistance(simplex, &simplex->triangles[result]);
 
     simplex->triangleHeap[result] = result;
+    simplex->triangleToHeapIndex[result] = result;  // initialize inverse mapping
     expandingSimplexSiftDownHeap(simplex, result);
 }
 
@@ -400,6 +400,7 @@ void expandingSimplexExpand(struct ExpandingSimplex* expandingSimplex, int newPo
 
         if (i != 0) {
             expandingSimplex->triangleHeap[triangleIndex] = triangleIndex;
+            expandingSimplex->triangleToHeapIndex[triangleIndex] = triangleIndex;  // initialize inverse mapping
             ++expandingSimplex->triangleCount;
         }
 

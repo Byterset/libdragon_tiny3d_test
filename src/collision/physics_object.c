@@ -170,26 +170,25 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
         vector3Scale(&object->angular_velocity, &object->angular_velocity, damping_factor);
     }
 
-    // Calculate center of mass before rotation
-    Vector3 center_of_mass_old;
-    quatMultVector(object->rotation, &object->center_offset, &center_of_mass_old);
-    vector3Add(object->position, &center_of_mass_old, &center_of_mass_old);
+    // Calculate rotated center offset before rotation
+    Vector3 center_offset_old;
+    quatMultVector(object->rotation, &object->center_offset, &center_offset_old);
 
     // Apply angular velocity to rotation quaternion
     quatApplyAngularVelocity(object->rotation, &object->angular_velocity,
                             FIXED_DELTATIME * object->time_scalar, object->rotation);
     quatNormalize(object->rotation, object->rotation);
 
-    // Calculate center of mass after rotation
-    Vector3 center_of_mass_new;
-    quatMultVector(object->rotation, &object->center_offset, &center_of_mass_new);
-    vector3Add(object->position, &center_of_mass_new, &center_of_mass_new);
+    // Calculate rotated center offset after rotation
+    Vector3 center_offset_new;
+    quatMultVector(object->rotation, &object->center_offset, &center_offset_new);
 
-    // Adjust position so center of mass stays in same location
-    // (rotation should happen around center of mass, not object origin)
-    Vector3 position_correction;
-    vector3Sub(&center_of_mass_old, &center_of_mass_new, &position_correction);
-    vector3Add(object->position, &position_correction, object->position);
+    // Adjust position so center of mass stays in same world location
+    // This makes rotation happen around center of mass, not object origin
+    // position_adjustment = old_offset - new_offset
+    Vector3 position_adjustment;
+    vector3Sub(&center_offset_old, &center_offset_new, &position_adjustment);
+    vector3Add(object->position, &position_adjustment, object->position);
 }
 
 void physics_object_apply_constraints(struct physics_object* object){

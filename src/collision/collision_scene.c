@@ -184,7 +184,30 @@ void collision_scene_collide_object_to_static(struct physics_object* object, Vec
 void collision_scene_step() {
     struct collision_scene_element* element;
 
-    // Reset contact allocator - all contacts from previous frame are now invalid
+    // Pre-pass: Check ground contacts from PREVIOUS frame before clearing
+    // Store results in a temporary array to avoid use-after-free
+    bool hasGroundContact[MAX_PHYSICS_OBJECTS] = {false};
+    for (int i = 0; i < g_scene.objectCount; ++i) {
+        struct physics_object* obj = g_scene.elements[i].object;
+        if (!obj->_is_sleeping && obj->has_gravity && !obj->is_kinematic && obj->active_contacts) {
+            struct contact* c = obj->active_contacts;
+            while (c) {
+                // If contact normal points upward (more lenient threshold)
+                if (c->normal.y > 0.5f) {
+                    hasGroundContact[i] = true;
+                    break;
+                }
+                c = c->next;
+            }
+        }
+    }
+
+    // Clear all contacts from previous frame
+    for (int i = 0; i < g_scene.objectCount; ++i) {
+        collision_scene_release_object_contacts(g_scene.elements[i].object);
+    }
+
+    // Reset allocator - safe now since all contacts are cleared
     g_scene.contact_allocator_head = 0;
 
     // First loop: Position updates and AABB maintenance
@@ -194,33 +217,14 @@ void collision_scene_step() {
 
         if (!obj->_is_sleeping) {
             if (obj->has_gravity && !obj->is_kinematic) {
-                // Check if object has ground contact
-                bool hasGroundContact = false;
-                if (obj->active_contacts) {
-                    struct contact* c = obj->active_contacts;
-                    while (c) {
-                        // If contact normal points upward (more lenient threshold)
-                        // 0.5 = surfaces up to 60° from horizontal
-                        // This prevents issues with rotating platforms or numerical precision
-                        if (c->normal.y > 0.5f) {
-                            hasGroundContact = true;
-                            break;
-                        }
-                        c = c->next;
-                    }
-                }
-
-                // Only apply full gravity if not grounded, or apply reduced gravity for stability
-                if (!hasGroundContact) {
+                // Use ground contact result from pre-pass
+                if (!hasGroundContact[i]) {
                     obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar;
                 } else {
                     // Apply minimal gravity to grounded objects (maintains contact pressure)
-                    // but not enough to cause jitter
                     obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * 0.10f;
                 }
             }
-
-            collision_scene_release_object_contacts(obj);
         }
         physics_object_update_velocity_verlet(obj);
         physics_object_update_angular_velocity(obj);
