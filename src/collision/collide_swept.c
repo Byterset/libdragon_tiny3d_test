@@ -118,7 +118,7 @@ void collide_object_swept_bounce(
     vector3Add(object->position, &move_amount_normal, object->position);
     vector3Add(object->position, &move_amount_tangent, object->position);
     // don't include friction on a bounce
-    correct_velocity(object, &collide_data->hit_result, -1.0f, 0.0f, object->collision->bounce);
+    correct_velocity(object, NULL, &collide_data->hit_result, -1.0f, 0.0f, object->collision->bounce);
 
     vector3Sub(object->position, start_pos, &move_amount);
     vector3Add(&move_amount, &object->bounding_box.min, &object->bounding_box.min);

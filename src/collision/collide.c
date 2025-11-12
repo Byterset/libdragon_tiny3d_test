@@ -12,7 +12,7 @@
 
 
 
-void correct_velocity(struct physics_object* object, struct EpaResult* result, float ratio, float friction, float bounce) {
+void correct_velocity(struct physics_object* object, struct physics_object* other, struct EpaResult* result, float ratio, float friction, float bounce) {
     // Fixed objects don't have their velocity corrected (they're kinematic)
     if (object->is_kinematic) {
         return;
@@ -150,14 +150,46 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
 
         // Now handle friction
         if (friction > 0.0f) {
-            // contactVelocity is now up-to-date with the impulse changes
+            // Calculate RELATIVE velocity for friction
+            // - For dynamic-dynamic collisions: relative velocity between two moving objects
+            // - For kinematic-dynamic collisions: dynamic object relative to kinematic (e.g., ball vs player)
+            // - For static collisions (other == NULL): use absolute velocity (e.g., ball vs ground mesh)
+            Vector3 relativeContactVelocity = contactVelocity;
 
-            // Get tangent velocity (perpendicular to normal)
-            float vN = vector3Dot(&contactVelocity, &effectiveNormal);
+            Vector3 rOther = gZeroVec;
+            if (other) {
+                // Calculate other object's contact velocity (even if kinematic)
+                // We need this for proper relative motion calculation
+                Vector3 otherCenterOfMass;
+                if (other->rotation) {
+                    Vector3 rotatedOffset;
+                    quatMultVector(other->rotation, &other->center_offset, &rotatedOffset);
+                    vector3Add(other->position, &rotatedOffset, &otherCenterOfMass);
+                } else {
+                    vector3Add(other->position, &other->center_offset, &otherCenterOfMass);
+                }
+
+                vector3Sub(contactPoint, &otherCenterOfMass, &rOther);
+
+                Vector3 otherContactVelocity = other->velocity;
+                bool other_has_rotation = other->rotation &&
+                                          !(other->constrain_rotation_x && other->constrain_rotation_y && other->constrain_rotation_z);
+                if (other_has_rotation) {
+                    Vector3 otherAngularContribution;
+                    vector3Cross(&other->angular_velocity, &rOther, &otherAngularContribution);
+                    vector3Add(&otherContactVelocity, &otherAngularContribution, &otherContactVelocity);
+                }
+
+                // Subtract other's velocity to get relative sliding velocity
+                vector3Sub(&relativeContactVelocity, &otherContactVelocity, &relativeContactVelocity);
+            }
+
+            // Get tangent velocity (perpendicular to normal) using relative velocity
+            float vN = vector3Dot(&relativeContactVelocity, &effectiveNormal);
             Vector3 normalPart;
             vector3Scale(&effectiveNormal, &normalPart, vN);
             Vector3 tangentVelocity;
-            vector3Sub(&contactVelocity, &normalPart, &tangentVelocity);
+            vector3Sub(&relativeContactVelocity, &normalPart, &tangentVelocity);
 
             float tangentSpeed = sqrtf(vector3MagSqrd(&tangentVelocity));
             if (tangentSpeed > 0.0001f) {
@@ -165,14 +197,21 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
                 Vector3 tangentDir;
                 vector3Scale(&tangentVelocity, &tangentDir, -1.0f / tangentSpeed);
 
-                // Calculate friction impulse denominator
+                // Calculate friction impulse denominator for TWO-BODY friction
+                // Proper formula: 1/m_a + 1/m_b + (r_a × t)·(I_a^-1 (r_a × t)) + (r_b × t)·(I_b^-1 (r_b × t))
                 float frictionDenominator = 1.0f / object->mass;
 
+                // Add OTHER object's mass contribution (for dynamic-dynamic collisions)
+                if (other && !other->is_kinematic) {
+                    frictionDenominator += 1.0f / other->mass;
+                }
+
+                // Add THIS object's rotational inertia term
                 if (has_rotation) {
                     Vector3 rCrossT;
                     vector3Cross(&r, &tangentDir, &rCrossT);
 
-                    // I^-1 (r × t) - apply inverse inertia tensor (same as normal impulse calculation)
+                    // I^-1 (r × t) - apply inverse inertia tensor
                     Vector3 torquePerImpulse;
                     torquePerImpulse.x = rCrossT.x * object->_inv_local_intertia_tensor.x;
                     torquePerImpulse.y = rCrossT.y * object->_inv_local_intertia_tensor.y;
@@ -185,6 +224,32 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
 
                     float angularEffect = vector3Dot(&rCrossT, &torquePerImpulse);
                     frictionDenominator += angularEffect;
+                }
+
+                // Add OTHER object's rotational inertia term (for dynamic-dynamic collisions)
+                if (other && !other->is_kinematic && other->rotation) {
+                    bool other_has_rotation = !(other->constrain_rotation_x &&
+                                                other->constrain_rotation_y &&
+                                                other->constrain_rotation_z);
+                    if (other_has_rotation) {
+                        Vector3 rOtherCrossT;
+                        vector3Cross(&rOther, &tangentDir, &rOtherCrossT);
+
+                        Vector3 otherTorquePerImpulse;
+                        otherTorquePerImpulse.x = rOtherCrossT.x * other->_inv_local_intertia_tensor.x;
+                        otherTorquePerImpulse.y = rOtherCrossT.y * other->_inv_local_intertia_tensor.y;
+                        otherTorquePerImpulse.z = rOtherCrossT.z * other->_inv_local_intertia_tensor.z;
+
+                        // Apply constraints
+                        if (other->constrain_rotation_x) otherTorquePerImpulse.x = 0.0f;
+                        if (other->constrain_rotation_y) otherTorquePerImpulse.y = 0.0f;
+                        if (other->constrain_rotation_z) otherTorquePerImpulse.z = 0.0f;
+
+                        float otherAngularEffect = vector3Dot(&rOtherCrossT, &otherTorquePerImpulse);
+                        frictionDenominator += otherAngularEffect;
+                    }
+                    // If other can't rotate, its inertia term is 0 (infinite inertia)
+                    // This naturally increases the friction impulse, creating more spin
                 }
 
                 // Coulomb friction: jT = min(μ * jN, tangent impulse needed to stop sliding)
@@ -200,11 +265,29 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
                 vector3Add(&object->velocity, &frictionImpulse, &object->velocity);
 
                 // Apply friction impulse to angular velocity
-                if (has_rotation) {
-                    Vector3 rCrossT;
-                    vector3Cross(&r, &tangentDir, &rCrossT);
-                    vector3Scale(&rCrossT, &rCrossT, jT * fabsf(ratio));
-                    physics_object_apply_angular_impulse(object, &rCrossT);
+                // Note: Angular friction is applied in the FIRST call only (when ratio < 0)
+                // to avoid double-application, and uses FULL jT (not scaled by ratio)
+                if (ratio < 0.0f) {
+                    if (has_rotation) {
+                        Vector3 rCrossT;
+                        vector3Cross(&r, &tangentDir, &rCrossT);
+                        vector3Scale(&rCrossT, &rCrossT, jT);
+                        physics_object_apply_angular_impulse(object, &rCrossT);
+                    }
+
+                    // Apply friction impulse to OTHER object's angular velocity (Newton's 3rd law)
+                    if (other && !other->is_kinematic && other->rotation) {
+                        bool other_has_rotation = !(other->constrain_rotation_x &&
+                                                    other->constrain_rotation_y &&
+                                                    other->constrain_rotation_z);
+                        if (other_has_rotation) {
+                            Vector3 rOtherCrossT;
+                            vector3Cross(&rOther, &tangentDir, &rOtherCrossT);
+                            // Opposite direction (Newton's 3rd law)
+                            vector3Scale(&rOtherCrossT, &rOtherCrossT, -jT);
+                            physics_object_apply_angular_impulse(other, &rOtherCrossT);
+                        }
+                    }
                 }
             }
         }
@@ -212,6 +295,7 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
 }
 
 void correct_overlap(struct physics_object* object, struct EpaResult* result, float ratio) {
+
     if (object->is_kinematic) {
         return;
     }
@@ -225,6 +309,10 @@ void correct_overlap(struct physics_object* object, struct EpaResult* result, fl
     } else {
         effectiveNormal = result->normal;
     }
+
+    if(object->constrain_movement_x) effectiveNormal.x = 0;
+    if(object->constrain_movement_y) effectiveNormal.y = 0;
+    if(object->constrain_movement_z) effectiveNormal.z = 0;
 
     // Apply position correction with slight over-correction for faster convergence
     // This helps resolve stacking penetration more quickly
@@ -260,7 +348,7 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
             &result))
     {
         correct_overlap(object, &result, -1.0f);
-        correct_velocity(object, &result, -1.0f, object->collision->friction, object->collision->bounce);
+        correct_velocity(object, NULL, &result, -1.0f, object->collision->friction, object->collision->bounce);
         collide_add_contact(object, &result);
         return true;
     }
@@ -310,9 +398,28 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     }
 
     struct Simplex simplex;
-    if (!gjkCheckForOverlap(&simplex, a, physics_object_gjk_support_function, b, physics_object_gjk_support_function, &gRight)) {
-        return;
+    struct EpaResult result;
+
+    Vector3 delta;
+    float dist_sq;
+    float radii_sum;
+    bool is_sphere_sphere = a->collision->shape_type == COLLISION_SHAPE_SPHERE && b->collision->shape_type == COLLISION_SHAPE_SPHERE;
+    //Sphere-Sphere Optimization
+    if(is_sphere_sphere){
+        vector3Sub(b->position, a->position, &delta);
+        dist_sq = vector3MagSqrd(&delta);
+        radii_sum = a->collision->shape_data.sphere.radius + b->collision->shape_data.sphere.radius;
+        float radii_sum_sq = radii_sum * radii_sum;
+        if(dist_sq >= radii_sum_sq)
+            return;
     }
+    else{
+        if (!gjkCheckForOverlap(&simplex, a, physics_object_gjk_support_function, b, physics_object_gjk_support_function, &gRight))
+        {
+            return;
+        }
+    }
+
 
     if (a->is_trigger || b->is_trigger) {
         struct contact* contact = collision_scene_new_contact();
@@ -342,21 +449,35 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     b->_is_sleeping = false;
     b->_sleep_counter = 0;
 
-    struct EpaResult result;
+    if(is_sphere_sphere){
 
-    bool epa_success = epaSolve(
-        &simplex,
-        a,
-        physics_object_gjk_support_function,
-        b,
-        physics_object_gjk_support_function,
-        &result);
+        float dist = sqrtf(dist_sq);
+        float penetration = radii_sum - dist;
+        result.penetration = -penetration;
+        if (dist > EPSILON)
+            vector3Normalize(&delta, &result.normal);
+        else
+            result.normal = gUp;
 
-    if (!epa_success) {
-        debugf("EPA FAILED for collision between objects at (%.2f,%.2f,%.2f) and (%.2f,%.2f,%.2f)\n",
-               a->position->x, a->position->y, a->position->z,
-               b->position->x, b->position->y, b->position->z);
-        return; // Skip collision resolution if EPA fails
+        vector3AddScaled(a->position, &result.normal, a->collision->shape_data.sphere.radius, &result.contactA);
+        vector3AddScaled(b->position, &result.normal, -b->collision->shape_data.sphere.radius, &result.contactB);
+    }
+    else{
+        bool epa_success = epaSolve(
+            &simplex,
+            a,
+            physics_object_gjk_support_function,
+            b,
+            physics_object_gjk_support_function,
+            &result);
+
+        if (!epa_success)
+        {
+            debugf("EPA FAILED for collision between objects at (%.2f,%.2f,%.2f) and (%.2f,%.2f,%.2f)\n",
+                   a->position->x, a->position->y, a->position->z,
+                   b->position->x, b->position->y, b->position->z);
+            return; // Skip collision resolution if EPA fails
+        }
     }
 
     float friction = a->collision->friction < b->collision->friction ? a->collision->friction : b->collision->friction;
@@ -364,16 +485,16 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
 
     float massRatio = a->mass / (a->mass + b->mass);
     if(a->is_kinematic){
-        massRatio = 0.0f;
-    }
-    if(b->is_kinematic){
         massRatio = 1.0f;
     }
+    if(b->is_kinematic){
+        massRatio = 0.0f;
+    }
 
-    correct_overlap(b, &result, -(1.0f - massRatio));
-    correct_velocity(b, &result, -(1.0f - massRatio), friction, bounce);
-    correct_overlap(a, &result, massRatio);
-    correct_velocity(a, &result, massRatio, friction, bounce);
+    correct_overlap(b, &result, -massRatio);
+    correct_overlap(a, &result, (1.0f - massRatio));
+    correct_velocity(b, a, &result, -massRatio, friction, bounce);
+    correct_velocity(a, b, &result, (1.0f - massRatio), friction, bounce);
 
     struct contact* contact = collision_scene_new_contact();
 

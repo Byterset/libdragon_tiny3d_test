@@ -174,18 +174,7 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
     if (object->constrain_rotation_z) object->angular_velocity.z = 0.0f;
 
     // Apply angular damping
-    float angularMagSq = vector3MagSqrd(&object->angular_velocity);
-
-    // More aggressive damping for slow rotations (prevents jitter)
-    if (angularMagSq < 0.005f) {
-        vector3Scale(&object->angular_velocity, &object->angular_velocity, 0.9f);
-
-        // Clamp very small angular velocities to zero
-        if (angularMagSq < 0.0001f) {
-            object->angular_velocity = gZeroVec;
-            return; // No rotation to apply
-        }
-    } else if (object->angular_drag > 0.0f) {
+    if (object->angular_drag > 0.0f) {
         // Normal damping for faster rotations
         float damping_factor = 1.0f - object->angular_drag;
         if (damping_factor < 0.0f) damping_factor = 0.0f;

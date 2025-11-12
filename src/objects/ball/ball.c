@@ -19,7 +19,7 @@ static struct physics_object_collision_data ball_collision = {
         }
     },
     .shape_type = COLLISION_SHAPE_SPHERE,
-    .friction = 0.6,
+    .friction = 0.5,
     .bounce = 0.4
 };
 
@@ -42,7 +42,7 @@ void ball_init(struct ball* ball, struct generic_object_pos_definition* def){
         &ball->transform.position,
         &ball->transform.rotation,
         gZeroVec,
-        100.0f
+        20.0f
     );
     collision_scene_add(&ball->physics);
 }
