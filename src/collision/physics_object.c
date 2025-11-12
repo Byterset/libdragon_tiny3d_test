@@ -70,7 +70,7 @@ void physics_object_init(
 }
 
 void physics_object_update_euler(struct physics_object* object) {
-    if (object->is_trigger | object->is_kinematic) {
+    if (object->is_trigger || object->is_kinematic) {
         return;
     }
 
@@ -100,13 +100,14 @@ void physics_object_update_implicit_euler(struct physics_object* o) {
     vector3AddScaled(&o->velocity, &o->acceleration, FIXED_DELTATIME, &o->velocity);
     o->velocity.y = clampf(o->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
 
-    // Update position using new velocity
-    vector3AddScaled(o->position, &o->velocity, FIXED_DELTATIME, o->position);
-
     // Apply movement constraints
     if (o->constrain_movement_x) o->velocity.x = 0.0f;
     if (o->constrain_movement_y) o->velocity.y = 0.0f;
     if (o->constrain_movement_z) o->velocity.z = 0.0f;
+
+    // Update position using new velocity
+    vector3AddScaled(o->position, &o->velocity, FIXED_DELTATIME, o->position);
+
 
     o->acceleration = gZeroVec;
     o->is_grounded = false;

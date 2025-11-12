@@ -138,7 +138,7 @@ void collision_scene_remove_static_collision() {
 /// @param element the scene element (phys object) to check for collisions
 void collision_scene_collide_phys_object(struct collision_scene_element* element) {
 
-    //perform a broad phase check to find potential collision candidates by traversing the AABB BVH tree 
+    //perform a broad phase check to find potential collision candidates by traversing the AABB BVH tree
     //and collecting leaf nodes that overlap with the object's bounding box
     int result_count = 0;
     int max_results = 10;
@@ -240,9 +240,8 @@ void collision_scene_step() {
                     obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * 0.2f;
                 }
             }
-
-            collision_scene_release_object_contacts(obj);
         }
+        collision_scene_release_object_contacts(obj);
         // physics_object_update_velocity_verlet(obj);
         physics_object_update_implicit_euler(obj);
         physics_object_update_angular_velocity(obj);
@@ -311,6 +310,9 @@ void collision_scene_step() {
             else
             {
                 obj->_is_sleeping = true;
+                //get rid of any residual velocity so object is actually at rest
+                obj->velocity = gZeroVec; 
+                obj->angular_velocity = gZeroVec;
             }
         }
         else

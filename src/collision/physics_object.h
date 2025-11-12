@@ -28,7 +28,7 @@
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD 0.1f // angular velocity threshold for sleep (rad/s)
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD * PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD)
 
-#define PHYS_OBJECT_SLEEP_STEPS 10 // number of steps the object has to be still before it goes to sleep
+#define PHYS_OBJECT_SLEEP_STEPS 20 // number of steps the object has to be still before it goes to sleep
 
 enum collision_layer {
     COLLISION_LAYER_NONE = 0,
