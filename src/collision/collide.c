@@ -54,7 +54,7 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         // Calculate velocity at contact point: v_contact = v_linear + ω × r
         Vector3 contactVelocity = object->velocity;
         bool has_rotation = object->rotation &&
-                           !(object->constrain_rotation_x && object->constrain_rotation_y && object->constrain_rotation_z);
+                            !(object->constrain_rotation_x && object->constrain_rotation_y && object->constrain_rotation_z);
         if (has_rotation) {
             Vector3 angularContribution;
             vector3Cross(&object->angular_velocity, &r, &angularContribution);
@@ -121,23 +121,36 @@ void correct_velocity(struct physics_object* object, struct EpaResult* result, f
         vector3Scale(&effectiveNormal, &normalImpulse, jN * fabsf(ratio) / object->mass);
         vector3Add(&object->velocity, &normalImpulse, &object->velocity);
 
+        // Update contact velocity with linear impulse contribution
+        vector3Add(&contactVelocity, &normalImpulse, &contactVelocity);
+
         // Apply normal impulse to angular velocity
         if (has_rotation) {
             Vector3 rCrossN;
             vector3Cross(&r, &effectiveNormal, &rCrossN);
             vector3Scale(&rCrossN, &rCrossN, jN * fabsf(ratio));
             physics_object_apply_angular_impulse(object, &rCrossN);
+
+            // Update contact velocity with angular impulse contribution
+            // Δω = I^-1 * impulse, so Δv_contact = (Δω) × r
+            Vector3 deltaAngularVelocity;
+            deltaAngularVelocity.x = rCrossN.x * object->_inv_local_intertia_tensor.x;
+            deltaAngularVelocity.y = rCrossN.y * object->_inv_local_intertia_tensor.y;
+            deltaAngularVelocity.z = rCrossN.z * object->_inv_local_intertia_tensor.z;
+
+            // Apply rotation constraints
+            if (object->constrain_rotation_x) deltaAngularVelocity.x = 0.0f;
+            if (object->constrain_rotation_y) deltaAngularVelocity.y = 0.0f;
+            if (object->constrain_rotation_z) deltaAngularVelocity.z = 0.0f;
+
+            Vector3 deltaContactVelocity;
+            vector3Cross(&deltaAngularVelocity, &r, &deltaContactVelocity);
+            vector3Add(&contactVelocity, &deltaContactVelocity, &contactVelocity);
         }
 
         // Now handle friction
         if (friction > 0.0f) {
-            // Recalculate contact velocity after normal impulse
-            contactVelocity = object->velocity;
-            if (has_rotation) {
-                Vector3 angularContribution;
-                vector3Cross(&object->angular_velocity, &r, &angularContribution);
-                vector3Add(&contactVelocity, &angularContribution, &contactVelocity);
-            }
+            // contactVelocity is now up-to-date with the impulse changes
 
             // Get tangent velocity (perpendicular to normal)
             float vN = vector3Dot(&contactVelocity, &effectiveNormal);

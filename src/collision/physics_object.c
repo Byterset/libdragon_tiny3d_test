@@ -12,6 +12,7 @@
 /// @param collision_layers 
 /// @param position 
 /// @param rotation 
+/// @param center_offset
 /// @param mass 
 void physics_object_init(
     entity_id entity_id,
@@ -73,9 +74,6 @@ void physics_object_update_euler(struct physics_object* object) {
         return;
     }
 
-    if (object->has_gravity) {
-        object->velocity.y += FIXED_DELTATIME * object->time_scalar * PHYS_GRAVITY_CONSTANT * object->gravity_scalar;
-    }
     vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
     object->velocity.y = clampf(object->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
 
@@ -89,6 +87,29 @@ void physics_object_update_euler(struct physics_object* object) {
     vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
     object->acceleration = gZeroVec;
 
+}
+
+void physics_object_update_implicit_euler(struct physics_object* o) {
+    if (o->is_trigger || o->is_kinematic) return;
+
+    // Implicit Euler: v_{t+1} = v_t + a_{t+1} * dt
+    //                 x_{t+1} = x_t + v_{t+1} * dt
+    // Here we assume acceleration is based on known forces at current step.
+
+    // Update velocity first
+    vector3AddScaled(&o->velocity, &o->acceleration, FIXED_DELTATIME, &o->velocity);
+    o->velocity.y = clampf(o->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
+
+    // Update position using new velocity
+    vector3AddScaled(o->position, &o->velocity, FIXED_DELTATIME, o->position);
+
+    // Apply movement constraints
+    if (o->constrain_movement_x) o->velocity.x = 0.0f;
+    if (o->constrain_movement_y) o->velocity.y = 0.0f;
+    if (o->constrain_movement_z) o->velocity.z = 0.0f;
+
+    o->acceleration = gZeroVec;
+    o->is_grounded = false;
 }
 
 void physics_object_update_velocity_verlet(struct physics_object* o) {
@@ -366,8 +387,8 @@ void physics_object_gjk_support_function(void* data, Vector3* direction, Vector3
         vector3Copy(direction, &localDir);
         vector3Copy(&object->center_offset, &world_center);
     }
-    vector3Normalize(&localDir, &localDir);
 
+    vector3Normalize(&localDir, &localDir);
     object->collision->gjk_support_function(object, &localDir, output);
 
     if(object->rotation){

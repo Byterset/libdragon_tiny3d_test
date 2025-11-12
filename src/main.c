@@ -52,9 +52,9 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
-#define NUM_CRATES 3
-#define NUM_BALLS 3
-#define NUM_COINS 4
+#define NUM_CRATES 4
+#define NUM_BALLS 4
+#define NUM_COINS 5
 
 struct player player;
 struct map map;
@@ -89,7 +89,7 @@ struct generic_object_pos_definition ball_def = {
 };
 
 struct generic_object_pos_definition cone_def = {
-    (Vector3){{120, -2, -141}}
+    (Vector3){{120, 0, -141}}
 };
 
 struct collectable_definition collectableDef = {
@@ -100,7 +100,7 @@ struct collectable_definition collectableDef = {
 };
 
 struct generic_object_pos_definition cyl_def = {
-    (Vector3){{60, 0, -95}}
+    (Vector3){{45, -0.2f, -80}}
 };
 
 struct generic_object_pos_definition plat_def = {
@@ -205,6 +205,7 @@ void render()
 
     struct mallinfo mall_inf = mallinfo();
     int ram_used = mall_inf.uordblks + ((uint32_t)HEAP_START_ADDR) - 0x80000000 - 0x10000;
+    struct collision_scene* c_scene = collision_scene_get();
 
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "fps: %.1f, dT: %lu", fps, TICKS_TO_MS(deltatime_ticks));
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "mem: %d", ram_used);
@@ -212,6 +213,7 @@ void render()
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "ray dwn hit (%.2f, %.2f, %.2f)", player.ray_down_hit.point.x, player.ray_down_hit.point.y, player.ray_down_hit.point.z);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "ray fwd dist %.1f, entity_id: %d", player.ray_fwd_hit.distance, player.ray_fwd_hit.hit_entity_id);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "ray fwd hit (%.2f, %.2f, %.2f)", player.ray_fwd_hit.point.x, player.ray_fwd_hit.point.y, player.ray_fwd_hit.point.z);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "obj sleepy: %i", c_scene->_sleepy_count);
 
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
@@ -310,8 +312,8 @@ int main()
         
 
         // struct collision_scene *collision_scene = collision_scene_get();
-        // draw the dynamic aabbs of all physics objects in the scene
-        // debugDrawBVTree(buff, &collision_scene->mesh_collider->aabbtree, t3d_viewport_get(),
+        // // draw the dynamic aabbs of all physics objects in the scene
+        // debugDrawBVTree(buff, &collision_scene->object_aabbtree, t3d_viewport_get(),
         //     &t3d_viewport_get()->viewFrustum, 1, 3, 15);
         
         rdpq_detach_wait();

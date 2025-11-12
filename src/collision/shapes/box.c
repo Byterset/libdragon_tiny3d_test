@@ -2,6 +2,7 @@
 
 #include "../physics_object.h"
 #include <math.h>
+#include "../../math/matrix.h"
 #include "../../render/defs.h"
 
 void box_support_function(void* data, Vector3* direction, Vector3* output) {
@@ -16,25 +17,33 @@ void box_bounding_box(void* data, Quaternion* rotation, AABB* box) {
     struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
     Vector3* half_size = &shape_data->box.half_size;
-
-    // Define the local basis vectors for the oriented box
-    Vector3 world_x = (Vector3){{ half_size->x, 0.0f, 0.0f }};
-    Vector3 world_y = (Vector3){{ 0.0f, half_size->y, 0.0f }};
-    Vector3 world_z = (Vector3){{ 0.0f, 0.0f, half_size->z }};
+    float extent_x, extent_y, extent_z;
 
     // Rotate the basis vectors according to the given rotation
-
     if(rotation){
-        quatMultVector(rotation, &world_x, &world_x);
-        quatMultVector(rotation, &world_y, &world_y);
-        quatMultVector(rotation, &world_z, &world_z);
+
+        Matrix4x4 rot_mat;
+        quatToMatrix(rotation, rot_mat.m);
+        
+        Matrix4x4 scale = {0};
+        scale.m[0][0] = half_size->x;
+        scale.m[1][1] = half_size->y;
+        scale.m[2][2] = half_size->z;
+        scale.m[3][3] = 1;
+
+        Matrix4x4 world_bounds;
+        matrixMul(scale.m, rot_mat.m, world_bounds.m);
+
+        // Calculate the extents in each axis
+        extent_x = fabsf(world_bounds.m[0][0]) + fabsf(world_bounds.m[0][1]) + fabsf(world_bounds.m[0][2]);
+        extent_y = fabsf(world_bounds.m[1][0]) + fabsf(world_bounds.m[1][1]) + fabsf(world_bounds.m[1][2]);
+        extent_z = fabsf(world_bounds.m[2][0]) + fabsf(world_bounds.m[2][1]) + fabsf(world_bounds.m[2][2]);
     }
-
-
-    // Calculate the extents in each axis
-    float extent_x = fabsf(world_x.x) + fabsf(world_y.x) + fabsf(world_z.x);
-    float extent_y = fabsf(world_x.y) + fabsf(world_y.y) + fabsf(world_z.y);
-    float extent_z = fabsf(world_x.z) + fabsf(world_y.z) + fabsf(world_z.z);
+    else{
+        extent_x = fabsf(half_size->x);
+        extent_y = fabsf(half_size->y);
+        extent_z = fabsf(half_size->z);
+    }
 
     // Set the min and max of the AABB
     box->min.x = -extent_x;

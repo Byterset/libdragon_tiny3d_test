@@ -30,7 +30,14 @@ void collision_scene_reset() {
     AABBTree_free(&g_scene.mesh_collider->aabbtree);
     g_scene.mesh_collider = NULL;
     g_scene.all_contacts = malloc(sizeof(struct contact) * MAX_ACTIVE_CONTACTS);
-    g_scene.contact_allocator_head = 0;
+    g_scene.next_free_contact = &g_scene.all_contacts[0];
+
+    for (int i = 0; i + 1 < MAX_ACTIVE_CONTACTS; ++i)
+    {
+        g_scene.all_contacts[i].next = &g_scene.all_contacts[i + 1];
+    }
+
+    g_scene.all_contacts[MAX_ACTIVE_CONTACTS - 1].next = NULL;
 }
 
 struct collision_scene* collision_scene_get() {
@@ -63,16 +70,26 @@ struct physics_object* collision_scene_find_object(entity_id id) {
 }
 
 /**
- * @brief Clears the active contacts of a physics object.
+ * @brief Returns the active contacts of a physics object to the global scene's free contact list.
  *
- * With the new linear allocator, contacts are released all at once at the start of the physics
- * step via collision_scene_reset_contacts(). This function just clears the object's contact list.
+ * This function iterates through the active contacts of the given physics object and appends
+ * them to the global scene's free contact list. It ensures that the active contacts of the
+ * object are properly returned and the object's active contact list is cleared.
  *
- * @param object Pointer to the physics object whose active contacts are to be cleared.
+ * @param object Pointer to the physics object whose active contacts are to be returned.
  */
 void collision_scene_release_object_contacts(struct physics_object* object) {
-    // Simply clear the contact list - actual memory is reused via linear allocator reset
-    object->active_contacts = NULL;
+    struct contact* last_contact = object->active_contacts;
+
+    while (last_contact && last_contact->next) {
+        last_contact = last_contact->next;
+    }
+
+    if (last_contact) {
+        last_contact->next = g_scene.next_free_contact;
+        g_scene.next_free_contact = object->active_contacts;
+        object->active_contacts = NULL;
+    }
 }
 
 /// @brief Removes a physics object from the collision scene. 
@@ -184,61 +201,61 @@ void collision_scene_collide_object_to_static(struct physics_object* object, Vec
 void collision_scene_step() {
     struct collision_scene_element* element;
 
-    // Pre-pass: Check ground contacts from PREVIOUS frame before clearing
-    // Store results in a temporary array to avoid use-after-free
-    bool hasGroundContact[MAX_PHYSICS_OBJECTS] = {false};
-    for (int i = 0; i < g_scene.objectCount; ++i) {
-        struct physics_object* obj = g_scene.elements[i].object;
-        if (!obj->_is_sleeping && obj->has_gravity && !obj->is_kinematic && obj->active_contacts) {
-            struct contact* c = obj->active_contacts;
-            while (c) {
-                // If contact normal points upward (more lenient threshold)
-                if (c->normal.y > 0.5f) {
-                    hasGroundContact[i] = true;
-                    break;
-                }
-                c = c->next;
-            }
-        }
-    }
-
-    // Clear all contacts from previous frame
-    for (int i = 0; i < g_scene.objectCount; ++i) {
-        collision_scene_release_object_contacts(g_scene.elements[i].object);
-    }
-
-    // Reset allocator - safe now since all contacts are cleared
-    g_scene.contact_allocator_head = 0;
-
     // First loop: Position updates and AABB maintenance
     for (int i = 0; i < g_scene.objectCount; ++i) {
         element = &g_scene.elements[i];
         struct physics_object* obj = element->object;
 
         if (!obj->_is_sleeping) {
-            if (obj->has_gravity && !obj->is_kinematic) {
-                // Use ground contact result from pre-pass
-                if (!hasGroundContact[i]) {
+            if (obj->has_gravity && !obj->is_kinematic)
+            {
+                // Check if object has ground contact
+                bool hasGroundContact = false;
+                if (obj->active_contacts)
+                {
+                    struct contact *c = obj->active_contacts;
+                    while (c)
+                    {
+                        // If contact normal points upward (more lenient threshold)
+                        // 0.5 = surfaces up to 60° from horizontal
+                        // This prevents issues with rotating platforms or numerical precision
+                        if (c->normal.y > 0.5f)
+                        {
+                            hasGroundContact = true;
+                            break;
+                        }
+                        c = c->next;
+                    }
+                }
+
+                // Only apply full gravity if not grounded, or apply reduced gravity for stability
+                if (!hasGroundContact)
+                {
                     obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar;
-                } else {
+                }
+                else
+                {
                     // Apply minimal gravity to grounded objects (maintains contact pressure)
-                    obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * 0.10f;
+                    // but not enough to cause jitter
+                    obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * 0.2f;
                 }
             }
+
+            collision_scene_release_object_contacts(obj);
         }
-        physics_object_update_velocity_verlet(obj);
+        // physics_object_update_velocity_verlet(obj);
+        physics_object_update_implicit_euler(obj);
         physics_object_update_angular_velocity(obj);
 
         // Track movement for AABB updates
         const bool has_moved = !vector3Equals(&obj->_prev_step_pos, obj->position);
         const bool has_rotated = obj->rotation ? !quatIsIdentical(obj->rotation, &obj->_prev_step_rot) : false;
-        g_scene.moved_flags[i] = has_moved;
-        g_scene.rotated_flags[i] = has_rotated;
+        g_scene._moved_flags[i] = has_moved;
+        g_scene._rotated_flags[i] = has_rotated;
 
         if (!obj->_is_sleeping && (has_moved || has_rotated)) {
             // would be technically correct to do this after all objects have been updated but this saves a loop
             collision_scene_collide_phys_object(element);
-
 
             physics_object_recalculate_aabb(obj);
             Vector3 displacement;
@@ -247,7 +264,7 @@ void collision_scene_step() {
                             obj->bounding_box, &displacement);
         }
     }
-
+    g_scene._sleepy_count = 0;
     // Second loop: Mesh Collision, Constraints and Sleep State Update
     for (int i = 0; i < g_scene.objectCount; ++i) {
         element = &g_scene.elements[i];
@@ -255,7 +272,7 @@ void collision_scene_step() {
 
         // Only do mesh collision if the object is not sleeping, not fixed in place, is tangible and has moved or rotated previously 
         if (g_scene.mesh_collider && !obj->_is_sleeping && !obj->is_kinematic && 
-            (obj->collision_layers & (COLLISION_LAYER_TANGIBLE)) && (g_scene.moved_flags[i] || g_scene.rotated_flags[i])) {
+            (obj->collision_layers & (COLLISION_LAYER_TANGIBLE)) && (g_scene._moved_flags[i] || g_scene._rotated_flags[i])) {
             collision_scene_collide_object_to_static(obj, &obj->_prev_step_pos);
         }
 
@@ -279,7 +296,7 @@ void collision_scene_step() {
         // Check physics-driven motion via velocities
         const bool has_linear_velocity = vector3MagSqrd(&obj->velocity) > PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD_SQ;
         const bool has_angular_velocity = obj->rotation &&
-                                          vector3MagSqrd(&obj->angular_velocity) > PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ;
+                                        vector3MagSqrd(&obj->angular_velocity) > PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ;
 
         // Object is at rest if: no external changes AND no physics velocities
         const bool is_at_rest = !position_changed && !rotation_changed &&
@@ -298,25 +315,31 @@ void collision_scene_step() {
         }
         else
         {
-            // Update previous state with current state
+            obj->_is_sleeping = false;
+            obj->_sleep_counter = 0;
+        }
+        if(!obj->_is_sleeping){
+            //only update the previous position if the object is awake so that even small drift would accumulate and be registered eventually
             obj->_prev_step_pos = *obj->position;
             if (obj->rotation)
             {
                 obj->_prev_step_rot = *obj->rotation;
             }
-            obj->_is_sleeping = false;
-            obj->_sleep_counter = 0;
+        }
+        else{
+            //TODO: for debugging - remove
+            g_scene._sleepy_count += 1;
         }
     }
 }
 
-/// @brief Returns a new contact from the global scene's contact pool, NULL if pool is exhausted.
+/// @brief Returns a new contact from the global scene's free contact list, NULL if none are available.
 struct contact* collision_scene_new_contact() {
-    // Check if we've exhausted the contact pool
-    if (g_scene.contact_allocator_head >= MAX_ACTIVE_CONTACTS) {
+    if (!g_scene.next_free_contact) {
         return NULL;
     }
 
-    // Return next available contact and increment head
-    return &g_scene.all_contacts[g_scene.contact_allocator_head++];
+    struct contact* result = g_scene.next_free_contact;
+    g_scene.next_free_contact = result->next;
+    return result;
 }

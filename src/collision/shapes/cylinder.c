@@ -27,32 +27,6 @@ void cylinder_support_function(void* data, Vector3* direction, Vector3* output) 
     }
 
     output->y = direction->y > 0.0f ? shape_data->cylinder.half_height : -shape_data->cylinder.half_height;
-
-    // // Project direction onto XZ plane to find the furthest point on the circular cross-section
-    // // Use the direction components directly scaled by radius, similar to capsule
-    // float lenSquaredXZ = direction->x * direction->x + direction->z * direction->z;
-
-    // if (lenSquaredXZ > 1e-8f) {
-    //     // Normalize the XZ direction and scale by radius
-    //     float invLen = 1.0f / sqrtf(lenSquaredXZ);
-    //     output->x = shape_data->cylinder.radius * direction->x * invLen;
-    //     output->z = shape_data->cylinder.radius * direction->z * invLen;
-    // } else {
-    //     // Direction is purely vertical - any point on the circle is equally valid
-    //     // Return center of cap (0, 0) in XZ plane
-    //     output->x = 0.0f;
-    //     output->z = 0.0f;
-    // }
-
-    // // Determine which end cap is furthest in the direction
-    // if (direction->y > 0)
-    // {
-    //     output->y = shape_data->cylinder.half_height; // Top cap
-    // }
-    // else
-    // {
-    //     output->y = -shape_data->cylinder.half_height; // Bottom cap
-    // }
 }
 
 void cylinder_bounding_box(void* data, Quaternion* rotation, AABB* box) {

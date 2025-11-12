@@ -16,16 +16,16 @@
 #define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default earth gravity in m/s^2
 #define PHYS_OBJECT_TERMINAL_Y_VELOCITY   50.0f // terminal y-velocity
 
-#define PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD 0.005f // the amount the object needs to move in one step to be considered in motion
+#define PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD 0.013f // the amount the object needs to move in one step to be considered in motion
 #define PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD * PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD)
 
 // the velocity an object needs to have to be considered in motion
 // keep in Mind the velocity is in units/second not units/physics_tick
-#define PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD 0.25f 
+#define PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD 0.6f 
 #define PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD * PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD)
 
-#define PHYS_OBJECT_ROT_SIMILARITY_SLEEP_THRESHOLD 0.9999f
-#define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD 0.02f // angular velocity threshold for sleep (rad/s)
+#define PHYS_OBJECT_ROT_SIMILARITY_SLEEP_THRESHOLD 0.999999f
+#define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD 0.1f // angular velocity threshold for sleep (rad/s)
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD * PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD)
 
 #define PHYS_OBJECT_SLEEP_STEPS 10 // number of steps the object has to be still before it goes to sleep
@@ -129,6 +129,7 @@ void physics_object_init(
 );
 
 void physics_object_update_euler(struct physics_object* object);
+void physics_object_update_implicit_euler(struct physics_object* object);
 void physics_object_update_velocity_verlet(struct physics_object* object);
 void physics_object_update_angular_velocity(struct physics_object* object);
 
