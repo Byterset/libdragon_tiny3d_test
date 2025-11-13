@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define PHYS_GLOBAL_GRAVITY_MULT 2.5f
+#define PHYS_GLOBAL_GRAVITY_MULT 2.0f
 #define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default earth gravity in m/s^2
 #define PHYS_OBJECT_TERMINAL_Y_VELOCITY   50.0f // terminal y-velocity
 
@@ -92,7 +92,8 @@ struct physics_object {
     Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
     AABB bounding_box; // the bounding box fitting the object collider, used for broad phase collision detection
     float time_scalar; // a scalar to adjust the time step for the object, default is 1.0
-    float mass; // the mass of the object, cannot be zero
+    float mass; // the mass of the object, cannot be zero - if changed need to recalculate inv_mass!
+    float _inv_mass;
     float gravity_scalar; // how much gravity affects the object, default is 1.0
     bool has_gravity: true;
     bool is_trigger: true;

@@ -55,7 +55,7 @@ void platform_init(struct platform* platform, struct generic_object_pos_definiti
         &platform->transform.position,
         &platform->transform.rotation,
         gZeroVec,
-        10.0f
+        30.0f
     );
 
     platform->physics.has_gravity = false;

@@ -10,7 +10,7 @@ void collide_object_to_mesh(struct physics_object* object, struct mesh_collider*
 void collide_object_to_object(struct physics_object* a, struct physics_object* b);
 
 void correct_velocity(struct physics_object* object, struct physics_object* other, struct EpaResult* result, float ratio, float friction, float bounce);
-void correct_overlap(struct physics_object* object, struct EpaResult* result, float ratio);
+void correct_overlap(struct physics_object* a, struct physics_object* b, struct EpaResult* result);
 
 void collide_add_contact(struct physics_object* object, struct EpaResult* result);
 

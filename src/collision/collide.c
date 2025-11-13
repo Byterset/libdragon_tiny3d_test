@@ -294,30 +294,45 @@ void correct_velocity(struct physics_object* object, struct physics_object* othe
     }
 }
 
-void correct_overlap(struct physics_object* object, struct EpaResult* result, float ratio) {
+void correct_overlap(struct physics_object* a, struct physics_object* b, struct EpaResult* result) {
 
-    if (object->is_kinematic) {
-        return;
+    const float percent = 0.8f; // penetration correction strength
+    const float slop = 0.01f;   // ignore tiny overlaps
+
+    float d = fabsf(result->penetration);
+    if (d < slop) return; // ignore negligible overlap
+
+    float invMassA = a->is_kinematic ? 0.0f : a->_inv_mass;
+    float invMassB = (b && !b->is_kinematic) ? b->_inv_mass : 0.0f;
+    float invMassSum = invMassA + invMassB;
+    if (invMassSum == 0.0f) return; // both static or kinematic
+
+    float correctionMag = percent * maxf(d - slop, 0.0f) / invMassSum;
+
+    Vector3 correctionVec;
+    if(b)
+        vector3Scale(&result->normal, &correctionVec, correctionMag);
+    else
+        vector3Scale(&result->normal, &correctionVec, -correctionMag);
+
+    // Apply correction proportional to inverse mass
+    if (invMassA > 0.0f)
+    {
+        Vector3 corrA = correctionVec;
+        if (a->constrain_movement_x) corrA.x = 0;
+        if (a->constrain_movement_y) corrA.y = 0;
+        if (a->constrain_movement_z) corrA.z = 0;
+        vector3AddScaled(a->position, &corrA, -invMassA, a->position);
     }
 
-    // EPA normal points from A to B
-    // For object A (ratio > 0), we need normal pointing from B to A (flip it)
-    // For object B (ratio < 0), we need normal pointing from A to B (keep it)
-    Vector3 effectiveNormal;
-    if (ratio > 0) {
-        vector3Negate(&result->normal, &effectiveNormal);
-    } else {
-        effectiveNormal = result->normal;
+    if (invMassB > 0.0f)
+    {
+        Vector3 corrB = correctionVec;
+        if (b->constrain_movement_x) corrB.x = 0;
+        if (b->constrain_movement_y) corrB.y = 0;
+        if (b->constrain_movement_z) corrB.z = 0;
+        vector3AddScaled(b->position, &corrB, invMassB, b->position);
     }
-
-    if(object->constrain_movement_x) effectiveNormal.x = 0;
-    if(object->constrain_movement_y) effectiveNormal.y = 0;
-    if(object->constrain_movement_z) effectiveNormal.z = 0;
-
-    // Apply position correction with slight over-correction for faster convergence
-    // This helps resolve stacking penetration more quickly
-    const float POSITION_CORRECTION_SCALE = 1.05f; // Can increase to 1.1-1.2 for more aggressive correction
-    vector3AddScaled(object->position, &effectiveNormal, -result->penetration * fabsf(ratio) * POSITION_CORRECTION_SCALE, object->position);
 
 }
 
@@ -347,7 +362,11 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
             physics_object_gjk_support_function,
             &result))
     {
-        correct_overlap(object, &result, -1.0f);
+        // vector3Negate(&result.normal, &result.normal);
+        if(object->collision->shape_type == COLLISION_SHAPE_CAPSULE){
+            debugf("pen: %.2f, norm: (%.2f, %.2f, %.2f)\n", result.penetration, result.normal.x, result.normal.y, result.normal.z);
+        }
+        correct_overlap(object, NULL, &result);
         correct_velocity(object, NULL, &result, -1.0f, object->collision->friction, object->collision->bounce);
         collide_add_contact(object, &result);
         return true;
@@ -491,8 +510,11 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
         massRatio = 0.0f;
     }
 
-    correct_overlap(b, &result, -massRatio);
-    correct_overlap(a, &result, (1.0f - massRatio));
+    if (a->collision->shape_type == COLLISION_SHAPE_CAPSULE)
+    {
+        debugf("pen: %.2f, norm: (%.2f, %.2f, %.2f)\n", result.penetration, result.normal.x, result.normal.y, result.normal.z);
+    }
+    correct_overlap(a, b, &result);
     correct_velocity(b, a, &result, -massRatio, friction, bounce);
     correct_velocity(a, b, &result, (1.0f - massRatio), friction, bounce);
 

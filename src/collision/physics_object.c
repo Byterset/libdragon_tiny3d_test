@@ -24,7 +24,7 @@ void physics_object_init(
     Vector3 center_offset,
     float mass
 ) {
-    assert(mass > 0.0f);
+    assertf(mass > 0.0f, "Object Mass cannot be <= 0!");
     object->entity_id = entity_id;
     object->collision = collision;
     object->position = position;
@@ -36,6 +36,7 @@ void physics_object_init(
     object->time_scalar = 1.0f;
     object->gravity_scalar = 1.0f;
     object->mass = mass;
+    object->_inv_mass = 1.0f/mass;
     object->has_gravity = true;
     object->is_trigger = false;
     object->is_kinematic = false;

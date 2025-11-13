@@ -121,6 +121,8 @@ void setup()
     viewport = t3d_viewport_create_buffered(FRAMEBUFFER_COUNT);
     camera_init(&camera, 70.0f, 1.5f, 140.0f);
     skybox_flat_init(&skybox_flat);
+
+    player_init(&player, &playerDef, &camera.transform);
     
     for(int i = 0; i < NUM_CRATES; i++){
         crate_init(&crates[i], &crate_def);
@@ -147,7 +149,7 @@ void setup()
     fire.position = (Vector3){{playerDef.location.x, playerDef.location.y + 3.0f, playerDef.location.z}};
     fire_init(&fire);
     
-    player_init(&player, &playerDef, &camera.transform);
+    
 
     camera_controller_init(&camera_controller, &camera, &player);
     

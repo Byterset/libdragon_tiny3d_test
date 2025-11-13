@@ -217,9 +217,8 @@ void collision_scene_step() {
                     while (c)
                     {
                         // If contact normal points upward (more lenient threshold)
-                        // 0.5 = surfaces up to 60° from horizontal
                         // This prevents issues with rotating platforms or numerical precision
-                        if (c->normal.y > 0.5f)
+                        if (c->normal.y > 0.8f)
                         {
                             hasGroundContact = true;
                             break;
@@ -237,7 +236,7 @@ void collision_scene_step() {
                 {
                     // Apply minimal gravity to grounded objects (maintains contact pressure)
                     // but not enough to cause jitter
-                    obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * 0.2f;
+                    obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * 0.25f;
                 }
             }
         }
