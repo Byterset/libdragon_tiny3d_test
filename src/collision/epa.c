@@ -478,7 +478,8 @@ bool epaSolve(struct Simplex* startingSimplex, void* objectA, gjk_support_functi
 
     if (closestFace) {
         result->normal = closestFace->normal;
-        result->penetration = -projection;
+        vector3Negate(&result->normal, &result->normal);
+        result->penetration = projection;
         Vector3 planePos;
         vector3Scale(&closestFace->normal, &planePos, closestFace->distanceToOrigin);
         epaCalculateContact(&simplex, closestFace, &planePos, result);

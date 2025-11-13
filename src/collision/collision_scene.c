@@ -236,7 +236,7 @@ void collision_scene_step() {
                 {
                     // Apply minimal gravity to grounded objects (maintains contact pressure)
                     // but not enough to cause jitter
-                    obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * 0.25f;
+                    obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * 0.1f;
                 }
             }
         }

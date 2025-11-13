@@ -42,7 +42,7 @@ void ball_init(struct ball* ball, struct generic_object_pos_definition* def){
         &ball->transform.position,
         &ball->transform.rotation,
         gZeroVec,
-        20.0f
+        50.0f
     );
     collision_scene_add(&ball->physics);
 }

@@ -51,7 +51,7 @@ void physics_object_init(
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
-    object->angular_drag = 0.02f;
+    object->angular_drag = 0.03f;
     object->angular_velocity = gZeroVec;
     object->_torque_accumulator = gZeroVec;
 

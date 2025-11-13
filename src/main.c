@@ -52,7 +52,7 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
-#define NUM_CRATES 4
+#define NUM_CRATES 3
 #define NUM_BALLS 4
 #define NUM_COINS 5
 
@@ -76,7 +76,7 @@ struct camera_controller camera_controller;
 T3DViewport viewport;
 
 struct player_definition playerDef = {
-    (Vector3){{95, 0.0f, -127}},
+    (Vector3){{95, -2.05f, -127}},
     (Vector2){{1, 0}}
 };
 
@@ -126,7 +126,7 @@ void setup()
     
     for(int i = 0; i < NUM_CRATES; i++){
         crate_init(&crates[i], &crate_def);
-        crate_def.position.y += 5;
+        crate_def.position.y += 4.2f;
     }
 
     for(int i = 0; i < NUM_BALLS; i++){

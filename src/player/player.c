@@ -416,6 +416,9 @@ void player_init(struct player* player, struct player_definition* definition, Tr
     );
 
     player->physics.collision_group = COLLISION_GROUP_PLAYER;
+    // player->physics.constrain_movement_x = true;
+    // player->physics.constrain_movement_y = true;
+    // player->physics.constrain_movement_z = true;
     player->physics.constrain_rotation_x = true;
     player->physics.constrain_rotation_y = true;
     player->physics.constrain_rotation_z = true;

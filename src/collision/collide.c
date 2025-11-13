@@ -11,283 +11,308 @@
 #include <math.h>
 
 
+void correct_velocity(struct physics_object* a, struct physics_object* b, struct EpaResult* result, float friction, float bounce) {
+    // EPA result normal points toward A (from B to A)
+    // Parameters match EPA order:
+    // - For terrain: EPA (terrain, object), call (NULL, object) - normal points toward NULL (terrain)
+    // - For objects: EPA (a, b), call (a, b) - normal points toward A
+    // When A is on top of B, normal points upward (from B toward A)
 
-void correct_velocity(struct physics_object* object, struct physics_object* other, struct EpaResult* result, float ratio, float friction, float bounce) {
-    // Fixed objects don't have their velocity corrected (they're kinematic)
-    if (object->is_kinematic) {
+    float invMassA = (a && !a->is_kinematic) ? a->_inv_mass : 0.0f;
+    float invMassB = (b && !b->is_kinematic) ? b->_inv_mass : 0.0f;
+    float invMassSum = invMassA + invMassB;
+
+    if (invMassSum == 0.0f) {
+        return; // Both kinematic/static
+    }
+
+    // Normal points from B toward A
+    Vector3 normal = result->normal;
+
+    // Calculate contact velocity for object A
+    Vector3 contactVelA = gZeroVec;
+    Vector3 rA = gZeroVec;
+    bool hasA = (a != NULL && invMassA > 0.0f);
+    bool hasRotationA = false;
+
+    if (hasA) {
+        Vector3 centerOfMassA;
+        if (a->rotation) {
+            Vector3 rotatedOffset;
+            quatMultVector(a->rotation, &a->center_offset, &rotatedOffset);
+            vector3Add(a->position, &rotatedOffset, &centerOfMassA);
+        } else {
+            vector3Add(a->position, &a->center_offset, &centerOfMassA);
+        }
+
+        vector3Sub(&result->contactA, &centerOfMassA, &rA);
+
+        contactVelA = a->velocity;
+        hasRotationA = a->rotation && !(a->constrain_rotation_x && a->constrain_rotation_y && a->constrain_rotation_z);
+        if (hasRotationA) {
+            Vector3 angularContribution;
+            vector3Cross(&a->angular_velocity, &rA, &angularContribution);
+            vector3Add(&contactVelA, &angularContribution, &contactVelA);
+        }
+    }
+
+    // Calculate contact velocity for object B
+    Vector3 contactVelB = gZeroVec;
+    Vector3 rB = gZeroVec;
+    bool hasB = (b != NULL && invMassB > 0.0f);
+    bool hasRotationB = false;
+
+    if (hasB) {
+        Vector3 centerOfMassB;
+        if (b->rotation) {
+            Vector3 rotatedOffset;
+            quatMultVector(b->rotation, &b->center_offset, &rotatedOffset);
+            vector3Add(b->position, &rotatedOffset, &centerOfMassB);
+        } else {
+            vector3Add(b->position, &b->center_offset, &centerOfMassB);
+        }
+
+        vector3Sub(&result->contactB, &centerOfMassB, &rB);
+
+        contactVelB = b->velocity;
+        hasRotationB = b->rotation && !(b->constrain_rotation_x && b->constrain_rotation_y && b->constrain_rotation_z);
+        if (hasRotationB) {
+            Vector3 angularContribution;
+            vector3Cross(&b->angular_velocity, &rB, &angularContribution);
+            vector3Add(&contactVelB, &angularContribution, &contactVelB);
+        }
+    }
+
+    // Calculate relative velocity (A relative to B)
+    Vector3 relVel;
+    vector3Sub(&contactVelA, &contactVelB, &relVel);
+
+    // Project relative velocity onto collision normal (which points from B toward A)
+    // If vRel > 0: objects are separating (A moving away from B along normal)
+    // If vRel < 0: objects are approaching (A moving toward B, collision active)
+    float vRel = vector3Dot(&relVel, &normal);
+
+    // If objects are separating, don't apply impulse
+    if (vRel >= 0.0f) {
         return;
     }
 
-    // EPA normal points from A to B
-    // For object A (ratio > 0), we need normal pointing from B to A (flip it)
-    // For object B (ratio < 0), we need normal pointing from A to B (keep it)
-    Vector3 effectiveNormal;
-    if (ratio > 0) {
-        vector3Negate(&result->normal, &effectiveNormal);
-    } else {
-        effectiveNormal = result->normal;
+    // Compute effective bounce with damping for low-velocity contacts
+    float effectiveBounce = bounce;
+    const float bounceThreshold = 2.0f;
+    if (fabsf(vRel) < bounceThreshold) {
+        // Smoothly reduce bounce to zero as velocity approaches zero
+        // This prevents micro-bouncing in stacked objects
+        effectiveBounce = bounce * (fabsf(vRel) / bounceThreshold);
     }
 
-    // Calculate the component of velocity along the effective normal
-    float velocityDot = vector3Dot(&object->velocity, &effectiveNormal);
+    // Calculate impulse denominator: 1/m_a + 1/m_b + inertia terms
+    float denominator = invMassSum;
 
-    // Only proceed if the object is moving toward the collision surface (velocityDot < 0)
-    if (velocityDot < 0) {
+    // Add rotational inertia term for A
+    if (hasA && hasRotationA) {
+        Vector3 rCrossN;
+        vector3Cross(&rA, &normal, &rCrossN);
 
-        // Get contact point (use contactA if ratio > 0, contactB if ratio < 0)
-        Vector3* contactPoint = (ratio > 0) ? &result->contactA : &result->contactB;
+        Vector3 torquePerImpulse;
+        torquePerImpulse.x = rCrossN.x * a->_inv_local_intertia_tensor.x;
+        torquePerImpulse.y = rCrossN.y * a->_inv_local_intertia_tensor.y;
+        torquePerImpulse.z = rCrossN.z * a->_inv_local_intertia_tensor.z;
 
-        // Calculate center of mass in world space
-        Vector3 centerOfMass;
-        if (object->rotation) {
-            Vector3 rotatedOffset;
-            quatMultVector(object->rotation, &object->center_offset, &rotatedOffset);
-            vector3Add(object->position, &rotatedOffset, &centerOfMass);
-        } else {
-            vector3Add(object->position, &object->center_offset, &centerOfMass);
-        }
+        if (a->constrain_rotation_x) torquePerImpulse.x = 0.0f;
+        if (a->constrain_rotation_y) torquePerImpulse.y = 0.0f;
+        if (a->constrain_rotation_z) torquePerImpulse.z = 0.0f;
 
-        // Calculate r = contact point - center of mass
-        Vector3 r;
-        vector3Sub(contactPoint, &centerOfMass, &r);
+        denominator += vector3Dot(&rCrossN, &torquePerImpulse);
+    }
 
-        // Calculate velocity at contact point: v_contact = v_linear + ω × r
-        Vector3 contactVelocity = object->velocity;
-        bool has_rotation = object->rotation &&
-                            !(object->constrain_rotation_x && object->constrain_rotation_y && object->constrain_rotation_z);
-        if (has_rotation) {
-            Vector3 angularContribution;
-            vector3Cross(&object->angular_velocity, &r, &angularContribution);
-            vector3Add(&contactVelocity, &angularContribution, &contactVelocity);
-        }
+    // Add rotational inertia term for B
+    if (hasB && hasRotationB) {
+        Vector3 rCrossN;
+        vector3Cross(&rB, &normal, &rCrossN);
 
-        // Get normal component of contact velocity
-        float vRel = vector3Dot(&contactVelocity, &effectiveNormal);
+        Vector3 torquePerImpulse;
+        torquePerImpulse.x = rCrossN.x * b->_inv_local_intertia_tensor.x;
+        torquePerImpulse.y = rCrossN.y * b->_inv_local_intertia_tensor.y;
+        torquePerImpulse.z = rCrossN.z * b->_inv_local_intertia_tensor.z;
 
-        // Reduce bounce for low-velocity impacts (stabilizes resting contacts)
-        float effectiveBounce = bounce;
-        if (fabsf(vRel) < 0.5f) {
-            // Gradually reduce bounce as velocity approaches zero
-            effectiveBounce = bounce * (fabsf(vRel) / 0.5f);
-        }
+        if (b->constrain_rotation_x) torquePerImpulse.x = 0.0f;
+        if (b->constrain_rotation_y) torquePerImpulse.y = 0.0f;
+        if (b->constrain_rotation_z) torquePerImpulse.z = 0.0f;
 
-        // Calculate the denominator for impulse calculation
-        // j = -(1 + e) * vRel / (1/m + (r × n) · (I^-1 (r × n)))
-        float denominator = 1.0f / object->mass;
+        denominator += vector3Dot(&rCrossN, &torquePerImpulse);
+    }
 
-        if (has_rotation) {
-            // r × n
+    // Add Baumgarte stabilization for penetration correction
+    // This is critical for stacks where position correction alone can't keep up with gravity
+    float baumgarteBias = 0.0f;
+    if (result->penetration > 0.005f) {
+        const float baumgarteSlop = 0.01f;  // Minimal slop
+        const float baumgarteFactor = 0.3f;   // Strong correction for stability
+        float penetrationError = maxf(result->penetration - baumgarteSlop, 0.0f);
+        baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * penetrationError;
+    }
+
+    // Calculate normal impulse magnitude
+    // Impulse = (bounce * closing velocity + penetration bias) * effective mass
+    float jN = -(1.0f + effectiveBounce) * vRel / denominator + baumgarteBias / denominator;
+
+    if (jN < 0.0f) {
+        return;
+    }
+
+    // Apply normal impulse to A (in direction of normal)
+    if (hasA) {
+        Vector3 impulseA;
+        vector3Scale(&normal, &impulseA, jN * invMassA);
+        vector3Add(&a->velocity, &impulseA, &a->velocity);
+
+        if (hasRotationA) {
             Vector3 rCrossN;
-            vector3Cross(&r, &effectiveNormal, &rCrossN);
-
-            // I^-1 (r × n) - apply inverse inertia tensor
-            Vector3 torquePerImpulse;
-            torquePerImpulse.x = rCrossN.x * object->_inv_local_intertia_tensor.x;
-            torquePerImpulse.y = rCrossN.y * object->_inv_local_intertia_tensor.y;
-            torquePerImpulse.z = rCrossN.z * object->_inv_local_intertia_tensor.z;
-
-            // Apply per-axis rotation constraints
-            if (object->constrain_rotation_x) torquePerImpulse.x = 0.0f;
-            if (object->constrain_rotation_y) torquePerImpulse.y = 0.0f;
-            if (object->constrain_rotation_z) torquePerImpulse.z = 0.0f;
-
-            // (r × n) · (I^-1 (r × n))
-            float angularEffect = vector3Dot(&rCrossN, &torquePerImpulse);
-            denominator += angularEffect;
+            vector3Cross(&rA, &normal, &rCrossN);
+            vector3Scale(&rCrossN, &rCrossN, jN);
+            physics_object_apply_angular_impulse(a, &rCrossN);
         }
 
-        // Add Baumgarte stabilization to correct penetration
-        // This adds a small bias velocity proportional to penetration depth
-        float baumgarteBias = 0.0f;
-        if (result->penetration > 0.005f) {
-            // Baumgarte factor: how aggressively to correct penetration
-            const float baumgarteSlop = 0.02f;  // Allow small penetration
-            const float baumgarteFactor = 0.15f; // Correction strength
-
-            float penetrationError = maxf(result->penetration - baumgarteSlop, 0.0f);
-            baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * penetrationError;
-        }
-
-        // Calculate normal impulse magnitude
-        float jN = -(1.0f + effectiveBounce) * vRel / denominator + baumgarteBias;
-
-        // Don't apply impulse if objects are separating
-        if (jN < 0.0f) {
-            return;
-        }
-
-        // Apply normal impulse to linear velocity
-        Vector3 normalImpulse;
-        vector3Scale(&effectiveNormal, &normalImpulse, jN * fabsf(ratio) / object->mass);
-        vector3Add(&object->velocity, &normalImpulse, &object->velocity);
-
-        // Update contact velocity with linear impulse contribution
-        vector3Add(&contactVelocity, &normalImpulse, &contactVelocity);
-
-        // Apply normal impulse to angular velocity
-        if (has_rotation) {
+        // Update A's contact velocity after normal impulse
+        vector3Add(&contactVelA, &impulseA, &contactVelA);
+        if (hasRotationA) {
+            Vector3 deltaAngularVel;
             Vector3 rCrossN;
-            vector3Cross(&r, &effectiveNormal, &rCrossN);
-            vector3Scale(&rCrossN, &rCrossN, jN * fabsf(ratio));
-            physics_object_apply_angular_impulse(object, &rCrossN);
+            vector3Cross(&rA, &normal, &rCrossN);
+            deltaAngularVel.x = rCrossN.x * jN * a->_inv_local_intertia_tensor.x;
+            deltaAngularVel.y = rCrossN.y * jN * a->_inv_local_intertia_tensor.y;
+            deltaAngularVel.z = rCrossN.z * jN * a->_inv_local_intertia_tensor.z;
 
-            // Update contact velocity with angular impulse contribution
-            // Δω = I^-1 * impulse, so Δv_contact = (Δω) × r
-            Vector3 deltaAngularVelocity;
-            deltaAngularVelocity.x = rCrossN.x * object->_inv_local_intertia_tensor.x;
-            deltaAngularVelocity.y = rCrossN.y * object->_inv_local_intertia_tensor.y;
-            deltaAngularVelocity.z = rCrossN.z * object->_inv_local_intertia_tensor.z;
+            if (a->constrain_rotation_x) deltaAngularVel.x = 0.0f;
+            if (a->constrain_rotation_y) deltaAngularVel.y = 0.0f;
+            if (a->constrain_rotation_z) deltaAngularVel.z = 0.0f;
 
-            // Apply rotation constraints
-            if (object->constrain_rotation_x) deltaAngularVelocity.x = 0.0f;
-            if (object->constrain_rotation_y) deltaAngularVelocity.y = 0.0f;
-            if (object->constrain_rotation_z) deltaAngularVelocity.z = 0.0f;
+            Vector3 deltaContactVel;
+            vector3Cross(&deltaAngularVel, &rA, &deltaContactVel);
+            vector3Add(&contactVelA, &deltaContactVel, &contactVelA);
+        }
+    }
 
-            Vector3 deltaContactVelocity;
-            vector3Cross(&deltaAngularVelocity, &r, &deltaContactVelocity);
-            vector3Add(&contactVelocity, &deltaContactVelocity, &contactVelocity);
+    // Apply normal impulse to B (opposite direction)
+    if (hasB) {
+        Vector3 impulseB;
+        vector3Scale(&normal, &impulseB, -jN * invMassB);
+        vector3Add(&b->velocity, &impulseB, &b->velocity);
+
+        if (hasRotationB) {
+            Vector3 rCrossN;
+            vector3Cross(&rB, &normal, &rCrossN);
+            vector3Scale(&rCrossN, &rCrossN, -jN);
+            physics_object_apply_angular_impulse(b, &rCrossN);
         }
 
-        // Now handle friction
-        if (friction > 0.0f) {
-            // Calculate RELATIVE velocity for friction
-            // - For dynamic-dynamic collisions: relative velocity between two moving objects
-            // - For kinematic-dynamic collisions: dynamic object relative to kinematic (e.g., ball vs player)
-            // - For static collisions (other == NULL): use absolute velocity (e.g., ball vs ground mesh)
-            Vector3 relativeContactVelocity = contactVelocity;
+        // Update B's contact velocity after normal impulse
+        vector3Add(&contactVelB, &impulseB, &contactVelB);
+        if (hasRotationB) {
+            Vector3 deltaAngularVel;
+            Vector3 rCrossN;
+            vector3Cross(&rB, &normal, &rCrossN);
+            deltaAngularVel.x = rCrossN.x * -jN * b->_inv_local_intertia_tensor.x;
+            deltaAngularVel.y = rCrossN.y * -jN * b->_inv_local_intertia_tensor.y;
+            deltaAngularVel.z = rCrossN.z * -jN * b->_inv_local_intertia_tensor.z;
 
-            Vector3 rOther = gZeroVec;
-            if (other) {
-                // Calculate other object's contact velocity (even if kinematic)
-                // We need this for proper relative motion calculation
-                Vector3 otherCenterOfMass;
-                if (other->rotation) {
-                    Vector3 rotatedOffset;
-                    quatMultVector(other->rotation, &other->center_offset, &rotatedOffset);
-                    vector3Add(other->position, &rotatedOffset, &otherCenterOfMass);
-                } else {
-                    vector3Add(other->position, &other->center_offset, &otherCenterOfMass);
-                }
+            if (b->constrain_rotation_x) deltaAngularVel.x = 0.0f;
+            if (b->constrain_rotation_y) deltaAngularVel.y = 0.0f;
+            if (b->constrain_rotation_z) deltaAngularVel.z = 0.0f;
 
-                vector3Sub(contactPoint, &otherCenterOfMass, &rOther);
+            Vector3 deltaContactVel;
+            vector3Cross(&deltaAngularVel, &rB, &deltaContactVel);
+            vector3Add(&contactVelB, &deltaContactVel, &contactVelB);
+        }
+    }
 
-                Vector3 otherContactVelocity = other->velocity;
-                bool other_has_rotation = other->rotation &&
-                                          !(other->constrain_rotation_x && other->constrain_rotation_y && other->constrain_rotation_z);
-                if (other_has_rotation) {
-                    Vector3 otherAngularContribution;
-                    vector3Cross(&other->angular_velocity, &rOther, &otherAngularContribution);
-                    vector3Add(&otherContactVelocity, &otherAngularContribution, &otherContactVelocity);
-                }
+    // Handle friction
+    if (friction > 0.0f) {
+        // Recalculate relative velocity after normal impulse
+        vector3Sub(&contactVelA, &contactVelB, &relVel);
 
-                // Subtract other's velocity to get relative sliding velocity
-                vector3Sub(&relativeContactVelocity, &otherContactVelocity, &relativeContactVelocity);
+        // Get tangent velocity (perpendicular to normal)
+        float vN = vector3Dot(&relVel, &normal);
+        Vector3 normalPart;
+        vector3Scale(&normal, &normalPart, vN);
+        Vector3 tangentVelocity;
+        vector3Sub(&relVel, &normalPart, &tangentVelocity);
+
+        float tangentSpeed = sqrtf(vector3MagSqrd(&tangentVelocity));
+        if (tangentSpeed > 0.0001f) {
+            Vector3 tangentDir;
+            vector3Scale(&tangentVelocity, &tangentDir, -1.0f / tangentSpeed);
+
+            // Calculate friction denominator
+            float frictionDenominator = invMassSum;
+
+            // Add rotational inertia term for A
+            if (hasA && hasRotationA) {
+                Vector3 rCrossT;
+                vector3Cross(&rA, &tangentDir, &rCrossT);
+
+                Vector3 torquePerImpulse;
+                torquePerImpulse.x = rCrossT.x * a->_inv_local_intertia_tensor.x;
+                torquePerImpulse.y = rCrossT.y * a->_inv_local_intertia_tensor.y;
+                torquePerImpulse.z = rCrossT.z * a->_inv_local_intertia_tensor.z;
+
+                if (a->constrain_rotation_x) torquePerImpulse.x = 0.0f;
+                if (a->constrain_rotation_y) torquePerImpulse.y = 0.0f;
+                if (a->constrain_rotation_z) torquePerImpulse.z = 0.0f;
+
+                frictionDenominator += vector3Dot(&rCrossT, &torquePerImpulse);
             }
 
-            // Get tangent velocity (perpendicular to normal) using relative velocity
-            float vN = vector3Dot(&relativeContactVelocity, &effectiveNormal);
-            Vector3 normalPart;
-            vector3Scale(&effectiveNormal, &normalPart, vN);
-            Vector3 tangentVelocity;
-            vector3Sub(&relativeContactVelocity, &normalPart, &tangentVelocity);
+            // Add rotational inertia term for B
+            if (hasB && hasRotationB) {
+                Vector3 rCrossT;
+                vector3Cross(&rB, &tangentDir, &rCrossT);
 
-            float tangentSpeed = sqrtf(vector3MagSqrd(&tangentVelocity));
-            if (tangentSpeed > 0.0001f) {
-                // Friction direction (opposite to tangent velocity)
-                Vector3 tangentDir;
-                vector3Scale(&tangentVelocity, &tangentDir, -1.0f / tangentSpeed);
+                Vector3 torquePerImpulse;
+                torquePerImpulse.x = rCrossT.x * b->_inv_local_intertia_tensor.x;
+                torquePerImpulse.y = rCrossT.y * b->_inv_local_intertia_tensor.y;
+                torquePerImpulse.z = rCrossT.z * b->_inv_local_intertia_tensor.z;
 
-                // Calculate friction impulse denominator for TWO-BODY friction
-                // Proper formula: 1/m_a + 1/m_b + (r_a × t)·(I_a^-1 (r_a × t)) + (r_b × t)·(I_b^-1 (r_b × t))
-                float frictionDenominator = 1.0f / object->mass;
+                if (b->constrain_rotation_x) torquePerImpulse.x = 0.0f;
+                if (b->constrain_rotation_y) torquePerImpulse.y = 0.0f;
+                if (b->constrain_rotation_z) torquePerImpulse.z = 0.0f;
 
-                // Add OTHER object's mass contribution (for dynamic-dynamic collisions)
-                if (other && !other->is_kinematic) {
-                    frictionDenominator += 1.0f / other->mass;
-                }
+                frictionDenominator += vector3Dot(&rCrossT, &torquePerImpulse);
+            }
 
-                // Add THIS object's rotational inertia term
-                if (has_rotation) {
-                    Vector3 rCrossT;
-                    vector3Cross(&r, &tangentDir, &rCrossT);
+            // Coulomb friction
+            float jT = tangentSpeed / frictionDenominator;
+            float maxFriction = friction * jN;
+            if (jT > maxFriction) {
+                jT = maxFriction;
+            }
 
-                    // I^-1 (r × t) - apply inverse inertia tensor
-                    Vector3 torquePerImpulse;
-                    torquePerImpulse.x = rCrossT.x * object->_inv_local_intertia_tensor.x;
-                    torquePerImpulse.y = rCrossT.y * object->_inv_local_intertia_tensor.y;
-                    torquePerImpulse.z = rCrossT.z * object->_inv_local_intertia_tensor.z;
-
-                    // Apply per-axis rotation constraints
-                    if (object->constrain_rotation_x) torquePerImpulse.x = 0.0f;
-                    if (object->constrain_rotation_y) torquePerImpulse.y = 0.0f;
-                    if (object->constrain_rotation_z) torquePerImpulse.z = 0.0f;
-
-                    float angularEffect = vector3Dot(&rCrossT, &torquePerImpulse);
-                    frictionDenominator += angularEffect;
-                }
-
-                // Add OTHER object's rotational inertia term (for dynamic-dynamic collisions)
-                if (other && !other->is_kinematic && other->rotation) {
-                    bool other_has_rotation = !(other->constrain_rotation_x &&
-                                                other->constrain_rotation_y &&
-                                                other->constrain_rotation_z);
-                    if (other_has_rotation) {
-                        Vector3 rOtherCrossT;
-                        vector3Cross(&rOther, &tangentDir, &rOtherCrossT);
-
-                        Vector3 otherTorquePerImpulse;
-                        otherTorquePerImpulse.x = rOtherCrossT.x * other->_inv_local_intertia_tensor.x;
-                        otherTorquePerImpulse.y = rOtherCrossT.y * other->_inv_local_intertia_tensor.y;
-                        otherTorquePerImpulse.z = rOtherCrossT.z * other->_inv_local_intertia_tensor.z;
-
-                        // Apply constraints
-                        if (other->constrain_rotation_x) otherTorquePerImpulse.x = 0.0f;
-                        if (other->constrain_rotation_y) otherTorquePerImpulse.y = 0.0f;
-                        if (other->constrain_rotation_z) otherTorquePerImpulse.z = 0.0f;
-
-                        float otherAngularEffect = vector3Dot(&rOtherCrossT, &otherTorquePerImpulse);
-                        frictionDenominator += otherAngularEffect;
-                    }
-                    // If other can't rotate, its inertia term is 0 (infinite inertia)
-                    // This naturally increases the friction impulse, creating more spin
-                }
-
-                // Coulomb friction: jT = min(μ * jN, tangent impulse needed to stop sliding)
-                float jT = tangentSpeed / frictionDenominator;
-                float maxFriction = friction * jN;
-                if (jT > maxFriction) {
-                    jT = maxFriction;
-                }
-
-                // Apply friction impulse to linear velocity
+            // Apply friction impulse to A
+            if (hasA) {
                 Vector3 frictionImpulse;
-                vector3Scale(&tangentDir, &frictionImpulse, jT * fabsf(ratio) / object->mass);
-                vector3Add(&object->velocity, &frictionImpulse, &object->velocity);
+                vector3Scale(&tangentDir, &frictionImpulse, jT * invMassA);
+                vector3Add(&a->velocity, &frictionImpulse, &a->velocity);
 
-                // Apply friction impulse to angular velocity
-                // Note: Angular friction is applied in the FIRST call only (when ratio < 0)
-                // to avoid double-application, and uses FULL jT (not scaled by ratio)
-                if (ratio < 0.0f) {
-                    if (has_rotation) {
-                        Vector3 rCrossT;
-                        vector3Cross(&r, &tangentDir, &rCrossT);
-                        vector3Scale(&rCrossT, &rCrossT, jT);
-                        physics_object_apply_angular_impulse(object, &rCrossT);
-                    }
+                if (hasRotationA) {
+                    Vector3 rCrossT;
+                    vector3Cross(&rA, &tangentDir, &rCrossT);
+                    vector3Scale(&rCrossT, &rCrossT, jT);
+                    physics_object_apply_angular_impulse(a, &rCrossT);
+                }
+            }
 
-                    // Apply friction impulse to OTHER object's angular velocity (Newton's 3rd law)
-                    if (other && !other->is_kinematic && other->rotation) {
-                        bool other_has_rotation = !(other->constrain_rotation_x &&
-                                                    other->constrain_rotation_y &&
-                                                    other->constrain_rotation_z);
-                        if (other_has_rotation) {
-                            Vector3 rOtherCrossT;
-                            vector3Cross(&rOther, &tangentDir, &rOtherCrossT);
-                            // Opposite direction (Newton's 3rd law)
-                            vector3Scale(&rOtherCrossT, &rOtherCrossT, -jT);
-                            physics_object_apply_angular_impulse(other, &rOtherCrossT);
-                        }
-                    }
+            // Apply friction impulse to B (opposite direction)
+            if (hasB) {
+                Vector3 frictionImpulse;
+                vector3Scale(&tangentDir, &frictionImpulse, -jT * invMassB);
+                vector3Add(&b->velocity, &frictionImpulse, &b->velocity);
+
+                if (hasRotationB) {
+                    Vector3 rCrossT;
+                    vector3Cross(&rB, &tangentDir, &rCrossT);
+                    vector3Scale(&rCrossT, &rCrossT, -jT);
+                    physics_object_apply_angular_impulse(b, &rCrossT);
                 }
             }
         }
@@ -296,24 +321,27 @@ void correct_velocity(struct physics_object* object, struct physics_object* othe
 
 void correct_overlap(struct physics_object* a, struct physics_object* b, struct EpaResult* result) {
 
-    const float percent = 0.8f; // penetration correction strength
-    const float slop = 0.01f;   // ignore tiny overlaps
+    const float percent = 1.0f; // penetration correction strength (1.0 = full correction)
+    const float slop = 0.01f;  // minimal slop
 
     float d = fabsf(result->penetration);
     if (d < slop) return; // ignore negligible overlap
 
-    float invMassA = a->is_kinematic ? 0.0f : a->_inv_mass;
+    float invMassA = (a && !a->is_kinematic) ? a->_inv_mass : 0.0f;
     float invMassB = (b && !b->is_kinematic) ? b->_inv_mass : 0.0f;
     float invMassSum = invMassA + invMassB;
     if (invMassSum == 0.0f) return; // both static or kinematic
 
     float correctionMag = percent * maxf(d - slop, 0.0f) / invMassSum;
 
+    // Debug output for significant penetrations
+    if (d > 0.02f && a && b) {
+        debugf("OVERLAP: pen=%.4f, A_id=%d mass=%.2f, B_id=%d mass=%.2f, corrMag=%.4f\n",
+               d, a->entity_id, a->mass, b->entity_id, b->mass, correctionMag);
+    }
+
     Vector3 correctionVec;
-    if(b)
-        vector3Scale(&result->normal, &correctionVec, correctionMag);
-    else
-        vector3Scale(&result->normal, &correctionVec, -correctionMag);
+    vector3Scale(&result->normal, &correctionVec, correctionMag);
 
     // Apply correction proportional to inverse mass
     if (invMassA > 0.0f)
@@ -322,7 +350,7 @@ void correct_overlap(struct physics_object* a, struct physics_object* b, struct 
         if (a->constrain_movement_x) corrA.x = 0;
         if (a->constrain_movement_y) corrA.y = 0;
         if (a->constrain_movement_z) corrA.z = 0;
-        vector3AddScaled(a->position, &corrA, -invMassA, a->position);
+        vector3AddScaled(a->position, &corrA, invMassA, a->position);
     }
 
     if (invMassB > 0.0f)
@@ -331,7 +359,7 @@ void correct_overlap(struct physics_object* a, struct physics_object* b, struct 
         if (b->constrain_movement_x) corrB.x = 0;
         if (b->constrain_movement_y) corrB.y = 0;
         if (b->constrain_movement_z) corrB.z = 0;
-        vector3AddScaled(b->position, &corrB, invMassB, b->position);
+        vector3AddScaled(b->position, &corrB, -invMassB, b->position);
     }
 
 }
@@ -362,12 +390,15 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
             physics_object_gjk_support_function,
             &result))
     {
-        // vector3Negate(&result.normal, &result.normal);
+        
         if(object->collision->shape_type == COLLISION_SHAPE_CAPSULE){
-            debugf("pen: %.2f, norm: (%.2f, %.2f, %.2f)\n", result.penetration, result.normal.x, result.normal.y, result.normal.z);
+            debugf("pen: %.2f, norm: (%.2f, %.2f, %.2f), with STATIC\n", result.penetration, result.normal.x, result.normal.y, result.normal.z);
         }
-        correct_overlap(object, NULL, &result);
-        correct_velocity(object, NULL, &result, -1.0f, object->collision->friction, object->collision->bounce);
+        correct_overlap(NULL, object, &result);
+        correct_velocity(NULL, object, &result, object->collision->friction, object->collision->bounce);
+        
+        
+        
         collide_add_contact(object, &result);
         return true;
     }
@@ -425,7 +456,7 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     bool is_sphere_sphere = a->collision->shape_type == COLLISION_SHAPE_SPHERE && b->collision->shape_type == COLLISION_SHAPE_SPHERE;
     //Sphere-Sphere Optimization
     if(is_sphere_sphere){
-        vector3Sub(b->position, a->position, &delta);
+        vector3Sub(a->position, b->position, &delta); //vector from B to A
         dist_sq = vector3MagSqrd(&delta);
         radii_sum = a->collision->shape_data.sphere.radius + b->collision->shape_data.sphere.radius;
         float radii_sum_sq = radii_sum * radii_sum;
@@ -471,15 +502,14 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     if(is_sphere_sphere){
 
         float dist = sqrtf(dist_sq);
-        float penetration = radii_sum - dist;
-        result.penetration = -penetration;
+        result.penetration = radii_sum - dist;
         if (dist > EPSILON)
             vector3Normalize(&delta, &result.normal);
         else
             result.normal = gUp;
 
-        vector3AddScaled(a->position, &result.normal, a->collision->shape_data.sphere.radius, &result.contactA);
-        vector3AddScaled(b->position, &result.normal, -b->collision->shape_data.sphere.radius, &result.contactB);
+        vector3AddScaled(a->position, &result.normal, -a->collision->shape_data.sphere.radius, &result.contactA);
+        vector3AddScaled(b->position, &result.normal, b->collision->shape_data.sphere.radius, &result.contactB);
     }
     else{
         bool epa_success = epaSolve(
@@ -502,21 +532,15 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     float friction = a->collision->friction < b->collision->friction ? a->collision->friction : b->collision->friction;
     float bounce = a->collision->bounce > b->collision->bounce ? a->collision->bounce : b->collision->bounce;
 
-    float massRatio = a->mass / (a->mass + b->mass);
-    if(a->is_kinematic){
-        massRatio = 1.0f;
-    }
-    if(b->is_kinematic){
-        massRatio = 0.0f;
-    }
-
     if (a->collision->shape_type == COLLISION_SHAPE_CAPSULE)
     {
-        debugf("pen: %.2f, norm: (%.2f, %.2f, %.2f)\n", result.penetration, result.normal.x, result.normal.y, result.normal.z);
+        debugf("pen: %.2f, norm: (%.2f, %.2f, %.2f), other: %d\n", result.penetration, result.normal.x, result.normal.y, result.normal.z, b->entity_id);
     }
+
+
     correct_overlap(a, b, &result);
-    correct_velocity(b, a, &result, -massRatio, friction, bounce);
-    correct_velocity(a, b, &result, (1.0f - massRatio), friction, bounce);
+    correct_velocity(a, b, &result, friction, bounce);
+
 
     struct contact* contact = collision_scene_new_contact();
 

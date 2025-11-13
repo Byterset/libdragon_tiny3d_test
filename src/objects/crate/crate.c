@@ -19,8 +19,8 @@ static struct physics_object_collision_data crate_collision = {
         }
     },
     .shape_type = COLLISION_SHAPE_BOX,
-    .friction = 0.5f,
-    .bounce = 0.0f
+    .friction = 0.8f,
+    .bounce = 0.1f
 };
 
 // static struct physics_object_collision_data crate_collision = {
@@ -56,7 +56,7 @@ void crate_init(struct crate* crate, struct generic_object_pos_definition* def){
         &crate->transform.position,
         &crate->transform.rotation,
         gZeroVec,
-        30.0f
+        200.0f
     );
     collision_scene_add(&crate->physics);
 }
