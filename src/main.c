@@ -261,7 +261,7 @@ int main()
         }
 
         if(joypad_get_buttons_held(0).d_left){
-            physics_object_apply_torque(&crates[0].physics, &(Vector3){{400,550,700}});
+            physics_object_apply_torque(&crates[0].physics, &(Vector3){{4000,5500,7000}});
         }
         
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //

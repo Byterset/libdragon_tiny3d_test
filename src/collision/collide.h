@@ -12,6 +12,6 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
 void correct_velocity(struct physics_object* a, struct physics_object* b, struct EpaResult* result, float friction, float bounce);
 void correct_overlap(struct physics_object* a, struct physics_object* b, struct EpaResult* result);
 
-void collide_add_contact(struct physics_object* object, struct EpaResult* result);
+void collide_add_contact(struct physics_object* object, struct EpaResult* result, bool is_B, entity_id other_id);
 
 #endif

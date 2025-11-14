@@ -15,11 +15,11 @@ static struct physics_object_collision_data crate_collision = {
     .inertia_calculator = box_inertia_tensor,
     .shape_data = {
         .box = {
-            .half_size = {{2.0f, 2.0f, 2.0f}}
+            .half_size = {{1.75f, 1.75f, 1.75f}}
         }
     },
     .shape_type = COLLISION_SHAPE_BOX,
-    .friction = 0.8f,
+    .friction = 0.6f,
     .bounce = 0.1f
 };
 
@@ -40,7 +40,7 @@ static struct physics_object_collision_data crate_collision = {
 void crate_init(struct crate* crate, struct generic_object_pos_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&crate->transform);
-    crate->transform.scale = (Vector3){{4.0f, 4.0f, 4.0f}};
+    crate->transform.scale = (Vector3){{3.5f, 3.5f, 3.5f}};
     vector3Add(&crate->transform.position, &def->position, &crate->transform.position);
 
     renderable_init(&crate->renderable, &crate->transform, "rom:/models/crate/crate.t3dm");

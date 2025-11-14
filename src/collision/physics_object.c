@@ -51,7 +51,7 @@ void physics_object_init(
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
-    object->angular_drag = 0.03f;
+    object->angular_drag = 0.02f;
     object->angular_velocity = gZeroVec;
     object->_torque_accumulator = gZeroVec;
 
@@ -174,13 +174,32 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
     if (object->constrain_rotation_y) object->angular_velocity.y = 0.0f;
     if (object->constrain_rotation_z) object->angular_velocity.z = 0.0f;
 
-    // Apply angular damping
-    if (object->angular_drag > 0.0f) {
-        // Normal damping for faster rotations
-        float damping_factor = 1.0f - object->angular_drag;
-        if (damping_factor < 0.0f) damping_factor = 0.0f;
-        vector3Scale(&object->angular_velocity, &object->angular_velocity, damping_factor);
+    // Check if torque was applied this frame
+    float angular_speed_sq = vector3MagSqrd(&object->angular_velocity);
+    // If torque was applied, DO NOT damp small angular velocities.
+    // Let motion develop.
+    if (object->angular_drag > 0.0f)
+    {
+        
+        if (angular_speed_sq < PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ)
+        {
+            bool ang_speed_decreasing = angular_speed_sq < object->_prev_angular_speed_sq;
+
+            // Only damp extremely small rotations towards zero
+            if (ang_speed_decreasing)
+            {
+                float t = angular_speed_sq / PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ;     // 0 → 1 as speed goes 0 → threshold
+                float damping_factor = 0.5f + 0.5f * t; // Range: 0.5 → 1.0
+                vector3Scale(&object->angular_velocity, &object->angular_velocity, damping_factor);
+            }
+        }
+        else
+        {
+            float damping_factor = 1.0f - object->angular_drag;
+            vector3Scale(&object->angular_velocity, &object->angular_velocity, damping_factor);
+        }
     }
+    object->_prev_angular_speed_sq = angular_speed_sq;
 
     // Calculate rotated center offset before rotation
     Vector3 center_offset_old;

@@ -110,7 +110,6 @@ void mesh_collider_load(struct mesh_collider* into, const char* filename, float 
     uint16_t vertex_count;
     fread(&vertex_count, 2, 1, file);
     into->vertex_count = vertex_count;
-    debugf("Vertex count: %d\n", vertex_count);
 
     into->vertices = malloc(sizeof(Vector3) * vertex_count);
     fread(into->vertices, sizeof(Vector3), vertex_count, file);
@@ -128,7 +127,6 @@ void mesh_collider_load(struct mesh_collider* into, const char* filename, float 
     uint16_t triangle_count;
     fread(&triangle_count, 2, 1, file);
     into->triangle_count = triangle_count;
-    debugf("Triangle count: %d\n", triangle_count);
 
     into->triangles = malloc(sizeof(struct mesh_triangle_indices) * triangle_count);
     fread(into->triangles, sizeof(struct mesh_triangle_indices), triangle_count, file);
@@ -143,10 +141,7 @@ void mesh_collider_load(struct mesh_collider* into, const char* filename, float 
     {
 
         struct mesh_triangle_indices* triangle = &into->triangles[i];
-        if (i == 0)
-        {
-            debugf("Triangle %d: %.2f, %.2f, %.2f\n", i, into->vertices[triangle->indices[0]].x, into->vertices[triangle->indices[0]].y, into->vertices[triangle->indices[0]].z);
-        }
+        
         Vector3* v0 = &into->vertices[triangle->indices[0]];
         Vector3* v1 = &into->vertices[triangle->indices[1]];
         Vector3* v2 = &into->vertices[triangle->indices[2]];

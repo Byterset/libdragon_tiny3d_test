@@ -7,6 +7,7 @@
 #include <libdragon.h>
 
 #include "mesh_collider.h"
+#include "../resource/mesh_collider.h"
 #include "collide.h"
 #include "collide_swept.h"
 #include "../util/hash_map.h"
@@ -27,8 +28,11 @@ void collision_scene_reset() {
     g_scene.elements = malloc(sizeof(struct collision_scene_element) * MAX_PHYSICS_OBJECTS);
     g_scene.capacity = MAX_PHYSICS_OBJECTS;
     g_scene.objectCount = 0;
-    AABBTree_free(&g_scene.mesh_collider->aabbtree);
-    g_scene.mesh_collider = NULL;
+    if(g_scene.mesh_collider){
+        mesh_collider_release(g_scene.mesh_collider);
+        g_scene.mesh_collider = NULL;
+    }
+
     g_scene.all_contacts = malloc(sizeof(struct contact) * MAX_ACTIVE_CONTACTS);
     g_scene.next_free_contact = &g_scene.all_contacts[0];
 
@@ -100,13 +104,13 @@ void collision_scene_release_object_contacts(struct physics_object* object) {
 void collision_scene_remove(struct physics_object* object) {
     bool has_found = false;
 
-    for (int i = 0; i < g_scene.objectCount; ++i) {
+    for (int i = 0; i < g_scene.objectCount; i++) {
         if (object == g_scene.elements[i].object) {
             collision_scene_release_object_contacts(object);
             has_found = true;
         }
 
-        if (has_found) {
+        if (has_found &&  i + 1 < g_scene.objectCount) {
             g_scene.elements[i] = g_scene.elements[i + 1];
         }
     }
@@ -202,7 +206,7 @@ void collision_scene_step() {
     struct collision_scene_element* element;
 
     // First loop: Position updates and AABB maintenance
-    for (int i = 0; i < g_scene.objectCount; ++i) {
+    for (int i = 0; i < g_scene.objectCount; i++) {
         element = &g_scene.elements[i];
         struct physics_object* obj = element->object;
 
@@ -210,7 +214,7 @@ void collision_scene_step() {
             if (obj->has_gravity && !obj->is_kinematic)
             {
                 // Check if object has ground contact
-                bool hasGroundContact = false;
+                float support_factor = 0.0f;
                 if (obj->active_contacts)
                 {
                     struct contact *c = obj->active_contacts;
@@ -218,26 +222,16 @@ void collision_scene_step() {
                     {
                         // If contact normal points upward (more lenient threshold)
                         // This prevents issues with rotating platforms or numerical precision
-                        if (c->normal.y > 0.8f)
+                        if (c->normal.y > support_factor)
                         {
-                            hasGroundContact = true;
+                            support_factor = c->normal.y;
                             break;
                         }
                         c = c->next;
                     }
                 }
+                obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * (1.0f - support_factor);                
 
-                // Only apply full gravity if not grounded, or apply reduced gravity for stability
-                if (!hasGroundContact)
-                {
-                    obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar;
-                }
-                else
-                {
-                    // Apply minimal gravity to grounded objects (maintains contact pressure)
-                    // but not enough to cause jitter
-                    obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * 0.1f;
-                }
             }
         }
         collision_scene_release_object_contacts(obj);
@@ -252,7 +246,6 @@ void collision_scene_step() {
         g_scene._rotated_flags[i] = has_rotated;
 
         if (!obj->_is_sleeping && (has_moved || has_rotated)) {
-            // would be technically correct to do this after all objects have been updated but this saves a loop
             collision_scene_collide_phys_object(element);
 
             physics_object_recalculate_aabb(obj);
@@ -264,7 +257,7 @@ void collision_scene_step() {
     }
     g_scene._sleepy_count = 0;
     // Second loop: Mesh Collision, Constraints and Sleep State Update
-    for (int i = 0; i < g_scene.objectCount; ++i) {
+    for (int i = 0; i < g_scene.objectCount; i++) {
         element = &g_scene.elements[i];
         struct physics_object* obj = element->object;
 

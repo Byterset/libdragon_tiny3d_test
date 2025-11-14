@@ -21,7 +21,7 @@ static struct physics_object_collision_data cylinder_collision = {
         }
     },
     .shape_type = COLLISION_SHAPE_CYLINDER,
-    .friction = 0.3
+    .friction = 0.7
 };
 
 
@@ -46,7 +46,7 @@ void cylinder_init(struct cylinder* cylinder, struct generic_object_pos_definiti
         &cylinder->transform.position,
         &cylinder->transform.rotation,
         (Vector3){{0,cylinder_collision.shape_data.cylinder.half_height,0}},
-        50.0f
+        600.0f
     );
 
     cylinder->physics.has_gravity = true;

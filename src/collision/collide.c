@@ -125,8 +125,6 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
     float effectiveBounce = bounce;
     const float bounceThreshold = 0.5f;
     if (fabsf(vRel) < bounceThreshold) {
-        // Smoothly reduce bounce to zero as velocity approaches zero
-        // This prevents micro-bouncing in stacked objects
         effectiveBounce = bounce * (fabsf(vRel) / bounceThreshold);
     }
 
@@ -167,20 +165,17 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         denominator += vector3Dot(&rCrossN, &torquePerImpulse);
     }
 
-    // Add Baumgarte stabilization for penetration correction
-    // Old version applied this TWICE (once per object), so we need a stronger factor
-    // Also, old version had smaller denominator (single object mass), new has both masses
     float baumgarteBias = 0.0f;
-    if (result->penetration > 0.005f) {
-        const float baumgarteSlop = 0.02f;  // Allow small penetration
-        const float baumgarteFactor = 0.5f;  // Stronger to compensate for single application
-        float penetrationError = maxf(result->penetration - baumgarteSlop, 0.0f);
-        baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * penetrationError;
+    if (result->penetration > 0.002f) {
+        const float baumgarteFactor = 0.4f;
+        baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * result->penetration;
     }
+
+    if (denominator < EPSILON) denominator = EPSILON;
 
     // Calculate normal impulse magnitude
     // Note: baumgarteBias is NOT divided by denominator (dimensionally inconsistent but works)
-    float jN = -(1.0f + effectiveBounce) * vRel / denominator + baumgarteBias;
+    float jN = (-(1.0f + effectiveBounce) * vRel + baumgarteBias) / denominator;
 
     if (jN < 0.0f) {
         return;
@@ -277,7 +272,7 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         vector3Sub(&relVel, &normalPart, &tangentVelocity);
 
         float tangentSpeed = sqrtf(vector3MagSqrd(&tangentVelocity));
-        if (tangentSpeed > 0.0001f) {
+        if (tangentSpeed > 0.002f) {
             Vector3 tangentDir;
             vector3Scale(&tangentVelocity, &tangentDir, -1.0f / tangentSpeed);
 
@@ -372,11 +367,11 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
 
 void correct_overlap(struct physics_object* a, struct physics_object* b, struct EpaResult* result) {
 
-    const float percent = 1.0f; // penetration correction strength (1.0 = full correction)
-    const float slop = 0.00f;  // minimal slop
+    const float percent = 1.0f;
+    const float slop = 0.001f;
 
     float d = fabsf(result->penetration);
-    // if (d < slop) return; // ignore negligible overlap
+    if (d < slop) return;
 
     // Check if movement is fully constrained for each object
     bool aMovementConstrained = a && (a->is_kinematic || (a->constrain_movement_x && a->constrain_movement_y && a->constrain_movement_z));
@@ -403,15 +398,9 @@ void correct_overlap(struct physics_object* a, struct physics_object* b, struct 
     }
 
     float invMassSum = invMassA + invMassB;
-    if (invMassSum == 0.0f) return; // both have constrained movement along collision normal
+    if (invMassSum == 0.0f) return;
 
-    float correctionMag = percent * maxf(d - slop, 0.0f) / invMassSum;
-
-    // Debug output for significant penetrations
-    if (d > 0.02f && a && b) {
-        debugf("OVERLAP: pen=%.4f, A_id=%d mass=%.2f, B_id=%d mass=%.2f, corrMag=%.4f\n",
-               d, a->entity_id, a->mass, b->entity_id, b->mass, correctionMag);
-    }
+    float correctionMag = percent * d / invMassSum;
 
     Vector3 correctionVec;
     vector3Scale(&result->normal, &correctionVec, correctionMag);
@@ -463,16 +452,12 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
             physics_object_gjk_support_function,
             &result))
     {
-        
-        if(object->collision->shape_type == COLLISION_SHAPE_CAPSULE){
-            debugf("pen: %.2f, norm: (%.2f, %.2f, %.2f), with STATIC\n", result.penetration, result.normal.x, result.normal.y, result.normal.z);
-        }
         correct_overlap(NULL, object, &result);
         correct_velocity(NULL, object, &result, object->collision->friction, object->collision->bounce);
         
-        
-        
-        collide_add_contact(object, &result);
+        //Add new contact to object (object is contact Point B in the case of mesh collision)
+        collide_add_contact(object, &result, true, 0);
+
         return true;
     }
 
@@ -569,8 +554,9 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
 
         return;
     }
-    b->_is_sleeping = false;
-    b->_sleep_counter = 0;
+    if (a && !a->is_kinematic) { a->_is_sleeping = false; a->_sleep_counter = 0; }
+    if (b && !b->is_kinematic) { b->_is_sleeping = false; b->_sleep_counter = 0; }
+
 
     if(is_sphere_sphere){
 
@@ -595,9 +581,6 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
 
         if (!epa_success)
         {
-            debugf("EPA FAILED for collision between objects at (%.2f,%.2f,%.2f) and (%.2f,%.2f,%.2f)\n",
-                   a->position->x, a->position->y, a->position->z,
-                   b->position->x, b->position->y, b->position->z);
             return; // Skip collision resolution if EPA fails
         }
     }
@@ -605,53 +588,31 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     float friction = a->collision->friction < b->collision->friction ? a->collision->friction : b->collision->friction;
     float bounce = a->collision->bounce > b->collision->bounce ? a->collision->bounce : b->collision->bounce;
 
-    if (a->collision->shape_type == COLLISION_SHAPE_CAPSULE)
-    {
-        debugf("pen: %.2f, norm: (%.2f, %.2f, %.2f), other: %d\n", result.penetration, result.normal.x, result.normal.y, result.normal.z, b->entity_id);
-    }
-
 
     correct_overlap(a, b, &result);
     correct_velocity(a, b, &result, friction, bounce);
 
-
-    struct contact* contact = collision_scene_new_contact();
-
-    if (!contact) {
-        return;
-    }
-
-    contact->normal = result.normal;
-    contact->point = result.contactA;
-    contact->other_object = a ? a->entity_id : 0;
-
-    contact->next = b->active_contacts;
-    b->active_contacts = contact;
-
-    contact = collision_scene_new_contact();
-
-    if (!contact) {
-        return;
-    }
-    
-    vector3Negate(&result.normal, &contact->normal);
-    contact->point = result.contactB;
-    contact->other_object = b ? b->entity_id : 0;
-
-    contact->next = a->active_contacts;
-    a->active_contacts = contact;
+    collide_add_contact(a, &result, false, b ? b->entity_id : 0);
+    collide_add_contact(b, &result, true, a ? a->entity_id : 0);
 }
 
-void collide_add_contact(struct physics_object* object, struct EpaResult* result) {
+void collide_add_contact(struct physics_object* object, struct EpaResult* result, bool is_B, entity_id other_id) {
     struct contact* contact = collision_scene_new_contact();
 
     if (!contact) {
         return;
     }
 
-    contact->normal = result->normal;
-    contact->point = result->contactA;
-    contact->other_object = 0;
+    if(is_B){
+        vector3Negate(&contact->normal, &result->normal);
+        contact->point = result->contactB;
+    }
+    else{
+        contact->normal = result->normal;
+        contact->point = result->contactA;
+    }
+
+    contact->other_object = other_id;
 
     contact->next = object->active_contacts;
     object->active_contacts = contact;

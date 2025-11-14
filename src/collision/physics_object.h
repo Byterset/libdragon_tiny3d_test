@@ -27,6 +27,7 @@
 #define PHYS_OBJECT_ROT_SIMILARITY_SLEEP_THRESHOLD 0.999999f
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD 0.1f // angular velocity threshold for sleep (rad/s)
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD * PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD)
+#define PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ 0.1f * 0.1f
 
 #define PHYS_OBJECT_SLEEP_STEPS 20 // number of steps the object has to be still before it goes to sleep
 
@@ -116,6 +117,7 @@ struct physics_object {
     Vector3 _local_inertia_tensor;
     Vector3 _inv_local_intertia_tensor;
     float angular_drag;
+    float _prev_angular_speed_sq;
 };
 
 void physics_object_init(
