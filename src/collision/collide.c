@@ -18,21 +18,44 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
     // - For objects: EPA (a, b), call (a, b) - normal points toward A
     // When A is on top of B, normal points upward (from B toward A)
 
-    float invMassA = (a && !a->is_kinematic) ? a->_inv_mass : 0.0f;
-    float invMassB = (b && !b->is_kinematic) ? b->_inv_mass : 0.0f;
+    // Normal points from B toward A
+    Vector3 normal = result->normal;
+
+    // Check if movement is fully constrained for each object
+    bool aMovementConstrained = a && (a->is_kinematic || (a->constrain_movement_x && a->constrain_movement_y && a->constrain_movement_z));
+    bool bMovementConstrained = b && (b->is_kinematic || (b->constrain_movement_x && b->constrain_movement_y && b->constrain_movement_z));
+
+    // For objects with movement constraints, check if constrained along collision normal
+    float invMassA = 0.0f;
+    float invMassB = 0.0f;
+
+    if (a && !aMovementConstrained) {
+        // Check if movement is constrained along the normal direction
+        bool constrainedAlongNormal = (a->constrain_movement_x && fabsf(normal.x) > 0.01f) ||
+                                      (a->constrain_movement_y && fabsf(normal.y) > 0.01f) ||
+                                      (a->constrain_movement_z && fabsf(normal.z) > 0.01f);
+        invMassA = constrainedAlongNormal ? 0.0f : a->_inv_mass;
+    }
+
+    if (b && !bMovementConstrained) {
+        // Check if movement is constrained along the normal direction (opposite direction)
+        bool constrainedAlongNormal = (b->constrain_movement_x && fabsf(normal.x) > 0.01f) ||
+                                      (b->constrain_movement_y && fabsf(normal.y) > 0.01f) ||
+                                      (b->constrain_movement_z && fabsf(normal.z) > 0.01f);
+        invMassB = constrainedAlongNormal ? 0.0f : b->_inv_mass;
+    }
+
     float invMassSum = invMassA + invMassB;
 
     if (invMassSum == 0.0f) {
-        return; // Both kinematic/static
+        return; // Both objects have constrained movement along collision normal
     }
-
-    // Normal points from B toward A
-    Vector3 normal = result->normal;
 
     // Calculate contact velocity for object A
     Vector3 contactVelA = gZeroVec;
     Vector3 rA = gZeroVec;
-    bool hasA = (a != NULL && invMassA > 0.0f);
+    bool hasA = (a != NULL);
+    bool hasLinearA = (hasA && invMassA > 0.0f);
     bool hasRotationA = false;
 
     if (hasA) {
@@ -45,7 +68,7 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
             vector3Add(a->position, &a->center_offset, &centerOfMassA);
         }
 
-        vector3Sub(&result->contactA, &centerOfMassA, &rA);
+        vector3Sub(&result->contactB, &centerOfMassA, &rA);
 
         contactVelA = a->velocity;
         hasRotationA = a->rotation && !(a->constrain_rotation_x && a->constrain_rotation_y && a->constrain_rotation_z);
@@ -59,7 +82,8 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
     // Calculate contact velocity for object B
     Vector3 contactVelB = gZeroVec;
     Vector3 rB = gZeroVec;
-    bool hasB = (b != NULL && invMassB > 0.0f);
+    bool hasB = (b != NULL);
+    bool hasLinearB = (hasB && invMassB > 0.0f);
     bool hasRotationB = false;
 
     if (hasB) {
@@ -72,7 +96,7 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
             vector3Add(b->position, &b->center_offset, &centerOfMassB);
         }
 
-        vector3Sub(&result->contactB, &centerOfMassB, &rB);
+        vector3Sub(&result->contactA, &centerOfMassB, &rB);
 
         contactVelB = b->velocity;
         hasRotationB = b->rotation && !(b->constrain_rotation_x && b->constrain_rotation_y && b->constrain_rotation_z);
@@ -99,7 +123,7 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
 
     // Compute effective bounce with damping for low-velocity contacts
     float effectiveBounce = bounce;
-    const float bounceThreshold = 2.0f;
+    const float bounceThreshold = 0.5f;
     if (fabsf(vRel) < bounceThreshold) {
         // Smoothly reduce bounce to zero as velocity approaches zero
         // This prevents micro-bouncing in stacked objects
@@ -144,87 +168,100 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
     }
 
     // Add Baumgarte stabilization for penetration correction
-    // This is critical for stacks where position correction alone can't keep up with gravity
+    // Old version applied this TWICE (once per object), so we need a stronger factor
+    // Also, old version had smaller denominator (single object mass), new has both masses
     float baumgarteBias = 0.0f;
     if (result->penetration > 0.005f) {
-        const float baumgarteSlop = 0.01f;  // Minimal slop
-        const float baumgarteFactor = 0.3f;   // Strong correction for stability
+        const float baumgarteSlop = 0.02f;  // Allow small penetration
+        const float baumgarteFactor = 0.5f;  // Stronger to compensate for single application
         float penetrationError = maxf(result->penetration - baumgarteSlop, 0.0f);
         baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * penetrationError;
     }
 
     // Calculate normal impulse magnitude
-    // Impulse = (bounce * closing velocity + penetration bias) * effective mass
-    float jN = -(1.0f + effectiveBounce) * vRel / denominator + baumgarteBias / denominator;
+    // Note: baumgarteBias is NOT divided by denominator (dimensionally inconsistent but works)
+    float jN = -(1.0f + effectiveBounce) * vRel / denominator + baumgarteBias;
 
     if (jN < 0.0f) {
         return;
     }
 
     // Apply normal impulse to A (in direction of normal)
-    if (hasA) {
+    // Linear response only if object has non-zero effective mass
+    if (hasLinearA) {
         Vector3 impulseA;
         vector3Scale(&normal, &impulseA, jN * invMassA);
-        vector3Add(&a->velocity, &impulseA, &a->velocity);
 
-        if (hasRotationA) {
-            Vector3 rCrossN;
-            vector3Cross(&rA, &normal, &rCrossN);
-            vector3Scale(&rCrossN, &rCrossN, jN);
-            physics_object_apply_angular_impulse(a, &rCrossN);
-        }
+        // Apply to linear velocity with per-axis constraints
+        Vector3 linearImpulse = impulseA;
+        if (a->constrain_movement_x) linearImpulse.x = 0.0f;
+        if (a->constrain_movement_y) linearImpulse.y = 0.0f;
+        if (a->constrain_movement_z) linearImpulse.z = 0.0f;
+        vector3Add(&a->velocity, &linearImpulse, &a->velocity);
 
-        // Update A's contact velocity after normal impulse
-        vector3Add(&contactVelA, &impulseA, &contactVelA);
-        if (hasRotationA) {
-            Vector3 deltaAngularVel;
-            Vector3 rCrossN;
-            vector3Cross(&rA, &normal, &rCrossN);
-            deltaAngularVel.x = rCrossN.x * jN * a->_inv_local_intertia_tensor.x;
-            deltaAngularVel.y = rCrossN.y * jN * a->_inv_local_intertia_tensor.y;
-            deltaAngularVel.z = rCrossN.z * jN * a->_inv_local_intertia_tensor.z;
+        // Update contact velocity with linear impulse
+        vector3Add(&contactVelA, &linearImpulse, &contactVelA);
+    }
 
-            if (a->constrain_rotation_x) deltaAngularVel.x = 0.0f;
-            if (a->constrain_rotation_y) deltaAngularVel.y = 0.0f;
-            if (a->constrain_rotation_z) deltaAngularVel.z = 0.0f;
+    // Angular response independent of linear constraints
+    if (hasRotationA) {
+        Vector3 rCrossN;
+        vector3Cross(&rA, &normal, &rCrossN);
+        vector3Scale(&rCrossN, &rCrossN, jN);
+        physics_object_apply_angular_impulse(a, &rCrossN);
 
-            Vector3 deltaContactVel;
-            vector3Cross(&deltaAngularVel, &rA, &deltaContactVel);
-            vector3Add(&contactVelA, &deltaContactVel, &contactVelA);
-        }
+        // Update contact velocity with angular contribution
+        Vector3 deltaAngularVel;
+        deltaAngularVel.x = rCrossN.x * a->_inv_local_intertia_tensor.x;
+        deltaAngularVel.y = rCrossN.y * a->_inv_local_intertia_tensor.y;
+        deltaAngularVel.z = rCrossN.z * a->_inv_local_intertia_tensor.z;
+
+        if (a->constrain_rotation_x) deltaAngularVel.x = 0.0f;
+        if (a->constrain_rotation_y) deltaAngularVel.y = 0.0f;
+        if (a->constrain_rotation_z) deltaAngularVel.z = 0.0f;
+
+        Vector3 deltaContactVel;
+        vector3Cross(&deltaAngularVel, &rA, &deltaContactVel);
+        vector3Add(&contactVelA, &deltaContactVel, &contactVelA);
     }
 
     // Apply normal impulse to B (opposite direction)
-    if (hasB) {
+    // Linear response only if object has non-zero effective mass
+    if (hasLinearB) {
         Vector3 impulseB;
         vector3Scale(&normal, &impulseB, -jN * invMassB);
-        vector3Add(&b->velocity, &impulseB, &b->velocity);
 
-        if (hasRotationB) {
-            Vector3 rCrossN;
-            vector3Cross(&rB, &normal, &rCrossN);
-            vector3Scale(&rCrossN, &rCrossN, -jN);
-            physics_object_apply_angular_impulse(b, &rCrossN);
-        }
+        // Apply to linear velocity with per-axis constraints
+        Vector3 linearImpulse = impulseB;
+        if (b->constrain_movement_x) linearImpulse.x = 0.0f;
+        if (b->constrain_movement_y) linearImpulse.y = 0.0f;
+        if (b->constrain_movement_z) linearImpulse.z = 0.0f;
+        vector3Add(&b->velocity, &linearImpulse, &b->velocity);
 
-        // Update B's contact velocity after normal impulse
-        vector3Add(&contactVelB, &impulseB, &contactVelB);
-        if (hasRotationB) {
-            Vector3 deltaAngularVel;
-            Vector3 rCrossN;
-            vector3Cross(&rB, &normal, &rCrossN);
-            deltaAngularVel.x = rCrossN.x * -jN * b->_inv_local_intertia_tensor.x;
-            deltaAngularVel.y = rCrossN.y * -jN * b->_inv_local_intertia_tensor.y;
-            deltaAngularVel.z = rCrossN.z * -jN * b->_inv_local_intertia_tensor.z;
+        // Update contact velocity with linear impulse
+        vector3Add(&contactVelB, &linearImpulse, &contactVelB);
+    }
 
-            if (b->constrain_rotation_x) deltaAngularVel.x = 0.0f;
-            if (b->constrain_rotation_y) deltaAngularVel.y = 0.0f;
-            if (b->constrain_rotation_z) deltaAngularVel.z = 0.0f;
+    // Angular response independent of linear constraints
+    if (hasRotationB) {
+        Vector3 rCrossN;
+        vector3Cross(&rB, &normal, &rCrossN);
+        vector3Scale(&rCrossN, &rCrossN, -jN);
+        physics_object_apply_angular_impulse(b, &rCrossN);
 
-            Vector3 deltaContactVel;
-            vector3Cross(&deltaAngularVel, &rB, &deltaContactVel);
-            vector3Add(&contactVelB, &deltaContactVel, &contactVelB);
-        }
+        // Update contact velocity with angular contribution
+        Vector3 deltaAngularVel;
+        deltaAngularVel.x = rCrossN.x * b->_inv_local_intertia_tensor.x;
+        deltaAngularVel.y = rCrossN.y * b->_inv_local_intertia_tensor.y;
+        deltaAngularVel.z = rCrossN.z * b->_inv_local_intertia_tensor.z;
+
+        if (b->constrain_rotation_x) deltaAngularVel.x = 0.0f;
+        if (b->constrain_rotation_y) deltaAngularVel.y = 0.0f;
+        if (b->constrain_rotation_z) deltaAngularVel.z = 0.0f;
+
+        Vector3 deltaContactVel;
+        vector3Cross(&deltaAngularVel, &rB, &deltaContactVel);
+        vector3Add(&contactVelB, &deltaContactVel, &contactVelB);
     }
 
     // Handle friction
@@ -289,31 +326,45 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
             }
 
             // Apply friction impulse to A
-            if (hasA) {
+            if (hasLinearA) {
                 Vector3 frictionImpulse;
                 vector3Scale(&tangentDir, &frictionImpulse, jT * invMassA);
-                vector3Add(&a->velocity, &frictionImpulse, &a->velocity);
 
-                if (hasRotationA) {
-                    Vector3 rCrossT;
-                    vector3Cross(&rA, &tangentDir, &rCrossT);
-                    vector3Scale(&rCrossT, &rCrossT, jT);
-                    physics_object_apply_angular_impulse(a, &rCrossT);
-                }
+                // Apply to linear velocity with per-axis constraints
+                Vector3 linearFrictionImpulse = frictionImpulse;
+                if (a->constrain_movement_x) linearFrictionImpulse.x = 0.0f;
+                if (a->constrain_movement_y) linearFrictionImpulse.y = 0.0f;
+                if (a->constrain_movement_z) linearFrictionImpulse.z = 0.0f;
+                vector3Add(&a->velocity, &linearFrictionImpulse, &a->velocity);
+            }
+
+            // Apply friction torque independent of linear constraints
+            if (hasRotationA) {
+                Vector3 rCrossT;
+                vector3Cross(&rA, &tangentDir, &rCrossT);
+                vector3Scale(&rCrossT, &rCrossT, jT);
+                physics_object_apply_angular_impulse(a, &rCrossT);
             }
 
             // Apply friction impulse to B (opposite direction)
-            if (hasB) {
+            if (hasLinearB) {
                 Vector3 frictionImpulse;
                 vector3Scale(&tangentDir, &frictionImpulse, -jT * invMassB);
-                vector3Add(&b->velocity, &frictionImpulse, &b->velocity);
 
-                if (hasRotationB) {
-                    Vector3 rCrossT;
-                    vector3Cross(&rB, &tangentDir, &rCrossT);
-                    vector3Scale(&rCrossT, &rCrossT, -jT);
-                    physics_object_apply_angular_impulse(b, &rCrossT);
-                }
+                // Apply to linear velocity with per-axis constraints
+                Vector3 linearFrictionImpulse = frictionImpulse;
+                if (b->constrain_movement_x) linearFrictionImpulse.x = 0.0f;
+                if (b->constrain_movement_y) linearFrictionImpulse.y = 0.0f;
+                if (b->constrain_movement_z) linearFrictionImpulse.z = 0.0f;
+                vector3Add(&b->velocity, &linearFrictionImpulse, &b->velocity);
+            }
+
+            // Apply friction torque independent of linear constraints
+            if (hasRotationB) {
+                Vector3 rCrossT;
+                vector3Cross(&rB, &tangentDir, &rCrossT);
+                vector3Scale(&rCrossT, &rCrossT, -jT);
+                physics_object_apply_angular_impulse(b, &rCrossT);
             }
         }
     }
@@ -322,15 +373,37 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
 void correct_overlap(struct physics_object* a, struct physics_object* b, struct EpaResult* result) {
 
     const float percent = 1.0f; // penetration correction strength (1.0 = full correction)
-    const float slop = 0.01f;  // minimal slop
+    const float slop = 0.00f;  // minimal slop
 
     float d = fabsf(result->penetration);
-    if (d < slop) return; // ignore negligible overlap
+    // if (d < slop) return; // ignore negligible overlap
 
-    float invMassA = (a && !a->is_kinematic) ? a->_inv_mass : 0.0f;
-    float invMassB = (b && !b->is_kinematic) ? b->_inv_mass : 0.0f;
+    // Check if movement is fully constrained for each object
+    bool aMovementConstrained = a && (a->is_kinematic || (a->constrain_movement_x && a->constrain_movement_y && a->constrain_movement_z));
+    bool bMovementConstrained = b && (b->is_kinematic || (b->constrain_movement_x && b->constrain_movement_y && b->constrain_movement_z));
+
+    // For objects with movement constraints, check if constrained along collision normal
+    float invMassA = 0.0f;
+    float invMassB = 0.0f;
+
+    if (a && !aMovementConstrained) {
+        // Check if movement is constrained along the normal direction
+        bool constrainedAlongNormal = (a->constrain_movement_x && fabsf(result->normal.x) > 0.01f) ||
+                                      (a->constrain_movement_y && fabsf(result->normal.y) > 0.01f) ||
+                                      (a->constrain_movement_z && fabsf(result->normal.z) > 0.01f);
+        invMassA = constrainedAlongNormal ? 0.0f : a->_inv_mass;
+    }
+
+    if (b && !bMovementConstrained) {
+        // Check if movement is constrained along the normal direction
+        bool constrainedAlongNormal = (b->constrain_movement_x && fabsf(result->normal.x) > 0.01f) ||
+                                      (b->constrain_movement_y && fabsf(result->normal.y) > 0.01f) ||
+                                      (b->constrain_movement_z && fabsf(result->normal.z) > 0.01f);
+        invMassB = constrainedAlongNormal ? 0.0f : b->_inv_mass;
+    }
+
     float invMassSum = invMassA + invMassB;
-    if (invMassSum == 0.0f) return; // both static or kinematic
+    if (invMassSum == 0.0f) return; // both have constrained movement along collision normal
 
     float correctionMag = percent * maxf(d - slop, 0.0f) / invMassSum;
 

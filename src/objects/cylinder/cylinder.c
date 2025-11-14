@@ -44,13 +44,16 @@ void cylinder_init(struct cylinder* cylinder, struct generic_object_pos_definiti
         &cylinder_collision,
         COLLISION_LAYER_TANGIBLE,
         &cylinder->transform.position,
-        NULL,//&cylinder->transform.rotation,
+        &cylinder->transform.rotation,
         (Vector3){{0,cylinder_collision.shape_data.cylinder.half_height,0}},
         50.0f
     );
 
     cylinder->physics.has_gravity = true;
-    cylinder->physics.is_kinematic = true;
+    cylinder->physics.is_kinematic = false;
+    cylinder->physics.constrain_movement_x = true;
+    cylinder->physics.constrain_movement_y = true;
+    cylinder->physics.constrain_movement_z = true;
 
     collision_scene_add(&cylinder->physics);
 }

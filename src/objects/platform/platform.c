@@ -55,7 +55,7 @@ void platform_init(struct platform* platform, struct generic_object_pos_definiti
         &platform->transform.position,
         &platform->transform.rotation,
         gZeroVec,
-        30.0f
+        400.0f
     );
 
     platform->physics.has_gravity = false;
@@ -63,9 +63,12 @@ void platform_init(struct platform* platform, struct generic_object_pos_definiti
     platform->physics.constrain_movement_x = true;
     platform->physics.constrain_movement_y = true;
     platform->physics.constrain_movement_z = true;
+    platform->physics.constrain_rotation_y = true;
+    platform->physics.constrain_rotation_z = false;
+    platform->physics.constrain_rotation_x = true;
     // Rotation constraints are false by default, allowing rotation
 
-    update_add(platform, (update_callback)platform_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
+    // update_add(platform, (update_callback)platform_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
     collision_scene_add(&platform->physics);
 }
 
