@@ -9,29 +9,31 @@
 #include "../../entity/entity_id.h"
 #include "../../render/defs.h"
 
+#define BALL_RADIUS 2.0f
+
 static struct physics_object_collision_data ball_collision = {
     .gjk_support_function = sphere_support_function,
     .bounding_box_calculator = sphere_bounding_box,
     .inertia_calculator = sphere_inertia_tensor,
     .shape_data = {
         .sphere = {
-            .radius = 2.0f
+            .radius = BALL_RADIUS
         }
     },
     .shape_type = COLLISION_SHAPE_SPHERE,
-    .friction = 0.5,
-    .bounce = 0.4
+    .friction = 0.8,
+    .bounce = 0.3
 };
 
 void ball_init(struct ball* ball, struct generic_object_pos_definition* def){
     entity_id entity_id = entity_id_new();
     transformInitIdentity(&ball->transform);
-    ball->transform.scale = (Vector3){{4.0f, 4.0f, 4.0f}};
+    ball->transform.scale = (Vector3){{2 * BALL_RADIUS, 2 * BALL_RADIUS, 2 * BALL_RADIUS}};
     vector3Add(&ball->transform.position, &def->position, &ball->transform.position);
 
     renderable_init(&ball->renderable, &ball->transform, "rom:/models/ball/ball.t3dm");
 
-    render_scene_add_renderable(&ball->renderable, 4.0f);
+    render_scene_add_renderable(&ball->renderable, BALL_RADIUS);
 
 
     physics_object_init(
@@ -42,7 +44,7 @@ void ball_init(struct ball* ball, struct generic_object_pos_definition* def){
         &ball->transform.position,
         &ball->transform.rotation,
         gZeroVec,
-        50.0f
+        100.0f
     );
     collision_scene_add(&ball->physics);
 }

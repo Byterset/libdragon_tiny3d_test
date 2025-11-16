@@ -439,7 +439,8 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
     triangle.vertices = mesh->vertices;
 
     struct Simplex simplex;
-    if (!gjkCheckForOverlap(&simplex, &triangle, mesh_triangle_gjk_support_function, object, physics_object_gjk_support_function, &gRight))
+    Vector3 firstDir = gRight;
+    if (!gjkCheckForOverlap(&simplex, &triangle, mesh_triangle_gjk_support_function, object, physics_object_gjk_support_function, &firstDir))
     {
         return false;
     }
@@ -522,7 +523,8 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
             return;
     }
     else{
-        if (!gjkCheckForOverlap(&simplex, a, physics_object_gjk_support_function, b, physics_object_gjk_support_function, &gRight))
+        Vector3 firstDir = gRight;
+        if (!gjkCheckForOverlap(&simplex, a, physics_object_gjk_support_function, b, physics_object_gjk_support_function, &firstDir))
         {
             return;
         }

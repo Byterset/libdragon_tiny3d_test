@@ -3,7 +3,7 @@
 #include "../../math/minmax.h"
 #include "../physics_object.h"
 
-void sweep_support_function(void* data, Vector3* direction, Vector3* output) {
+void sweep_support_function(const void* data, const Vector3* direction, Vector3* output) {
     union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)data;
 
     Vector2 dir_2d;
@@ -35,7 +35,7 @@ void sweep_support_function(void* data, Vector3* direction, Vector3* output) {
     output->z = result_2d.y * shape_data->sweep.radius;
 }
 
-void sweep_bounding_box(void* data, Quaternion* rotation, AABB* box) {
+void sweep_bounding_box(const void* data, const Quaternion* rotation, AABB* box) {
     struct physics_object* object = (struct physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
 

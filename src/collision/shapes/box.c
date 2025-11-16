@@ -2,57 +2,50 @@
 
 #include "../physics_object.h"
 #include <math.h>
-#include "../../math/matrix.h"
-#include "../../render/defs.h"
 
-void box_support_function(void* data, Vector3* direction, Vector3* output) {
+void box_support_function(const void* data, const Vector3* direction, Vector3* output) {
     struct physics_object* object = (struct physics_object*)data;
-    union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)&object->collision->shape_data;
-    output->x = direction->x > 0.0f ? shape_data->box.half_size.x : -shape_data->box.half_size.x;
-    output->y = direction->y > 0.0f ? shape_data->box.half_size.y : -shape_data->box.half_size.y;
-    output->z = direction->z > 0.0f ? shape_data->box.half_size.z : -shape_data->box.half_size.z;
+    const Vector3 half_size = object->collision->shape_data.box.half_size;
+    output->x = copysignf(half_size.x, direction->x);
+    output->y = copysignf(half_size.y, direction->y);
+    output->z = copysignf(half_size.z, direction->z);
+
 }
 
-void box_bounding_box(void* data, Quaternion* rotation, AABB* box) {
+
+void box_bounding_box(const void* data, const Quaternion* q, AABB* box) {
     struct physics_object* object = (struct physics_object*)data;
-    union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
-    Vector3* half_size = &shape_data->box.half_size;
-    float extent_x, extent_y, extent_z;
+    Vector3* h = &object->collision->shape_data.box.half_size;
 
-    // Rotate the basis vectors according to the given rotation
-    if(rotation){
+    float ex, ey, ez;
 
-        Matrix4x4 rot_mat;
-        quatToMatrix(rotation, rot_mat.m);
-        
-        Matrix4x4 scale = {0};
-        scale.m[0][0] = half_size->x;
-        scale.m[1][1] = half_size->y;
-        scale.m[2][2] = half_size->z;
-        scale.m[3][3] = 1;
+    if (!q) {
+        ex = h->x;
+        ey = h->y;
+        ez = h->z;
+    } else {
+        // Precompute rotation matrix 3x3
+        float x = q->x, y = q->y, z = q->z, w = q->w;
+        float xx = x*x, yy = y*y, zz = z*z;
+        float xy = x*y, xz = x*z, yz = y*z;
+        float wx = w*x, wy = w*y, wz = w*z;
 
-        Matrix4x4 world_bounds;
-        matrixMul(scale.m, rot_mat.m, world_bounds.m);
+        float r00 = 1 - 2*(yy + zz), r01 = 2*(xy - wz), r02 = 2*(xz + wy);
+        float r10 = 2*(xy + wz),     r11 = 1 - 2*(xx + zz), r12 = 2*(yz - wx);
+        float r20 = 2*(xz - wy),     r21 = 2*(yz + wx),     r22 = 1 - 2*(xx + yy);
 
-        // Calculate the extents in each axis
-        extent_x = fabsf(world_bounds.m[0][0]) + fabsf(world_bounds.m[0][1]) + fabsf(world_bounds.m[0][2]);
-        extent_y = fabsf(world_bounds.m[1][0]) + fabsf(world_bounds.m[1][1]) + fabsf(world_bounds.m[1][2]);
-        extent_z = fabsf(world_bounds.m[2][0]) + fabsf(world_bounds.m[2][1]) + fabsf(world_bounds.m[2][2]);
-    }
-    else{
-        extent_x = fabsf(half_size->x);
-        extent_y = fabsf(half_size->y);
-        extent_z = fabsf(half_size->z);
+        // Compute extents using "box extents along rotated axes" formula
+        ex = h->x*fabsf(r00) + h->y*fabsf(r01) + h->z*fabsf(r02);
+        ey = h->x*fabsf(r10) + h->y*fabsf(r11) + h->z*fabsf(r12);
+        ez = h->x*fabsf(r20) + h->y*fabsf(r21) + h->z*fabsf(r22);
     }
 
-    // Set the min and max of the AABB
-    box->min.x = -extent_x;
-    box->min.y = -extent_y;
-    box->min.z = -extent_z;
-
-    box->max.x = extent_x;
-    box->max.y = extent_y;
-    box->max.z = extent_z;
+    box->min.x = -ex;
+    box->min.y = -ey;
+    box->min.z = -ez;
+    box->max.x =  ex;
+    box->max.y =  ey;
+    box->max.z =  ez;
 }
 
 void box_inertia_tensor(void* data, float mass, Vector3* out) {

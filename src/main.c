@@ -228,11 +228,13 @@ int main()
     debug_init_isviewer();
     debug_init_usblog();
     dfs_init(DFS_DEFAULT_LOCATION);
+    
 
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, FRAMEBUFFER_COUNT, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS_DEDITHER);
     display_set_fps_limit(60);
 
     rdpq_init();
+    // rdpq_debug_start();
     joypad_init();
 
     t3d_init((T3DInitParams){});
@@ -258,10 +260,6 @@ int main()
         if(joypad_get_buttons_pressed(0).start){
             render_collision = !render_collision;
             // render_collision ? update_pause_layers(UPDATE_LAYER_WORLD) : update_unpause_layers(UPDATE_LAYER_WORLD);
-        }
-
-        if(joypad_get_buttons_held(0).d_left){
-            physics_object_apply_torque(&crates[0].physics, &(Vector3){{4000,5500,7000}});
         }
         
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //
@@ -311,13 +309,14 @@ int main()
         t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_start_view, (T3DVec3*)&ray_start);
         t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_end_view, (T3DVec3*)&ray_end);
         debugDrawLineVec3(buff, &ray_start_view, &ray_end_view, 0xfd41);
-        
 
-        // struct collision_scene *collision_scene = collision_scene_get();
-        // // draw the dynamic aabbs of all physics objects in the scene
-        // debugDrawBVTree(buff, &collision_scene->object_aabbtree, t3d_viewport_get(),
-        //     &t3d_viewport_get()->viewFrustum, 1, 3, 15);
-        
+        if (render_collision)
+        {
+            struct collision_scene *collision_scene = collision_scene_get();
+            debugDrawBVTree(buff, &collision_scene->object_aabbtree, t3d_viewport_get(),
+                            &t3d_viewport_get()->viewFrustum, 1, 3, 15);
+        }
+
         rdpq_detach_wait();
         display_show(fb);
         rspq_wait();

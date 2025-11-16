@@ -210,20 +210,6 @@ int abs(int input) {
     return input;
 }
 
-/**
- * @brief Computes the absolute value of a floating-point number.
- * 
- * @param input 
- * @return float absolute value of the input
- */
-float fabsf(float input) {
-    if (input < 0) {
-        return -input;
-    } else {
-        return input;
-    }
-}
-
 float floorf(float input) {
     int asint = (int)input;
     if (input >= 0 || input == asint) {

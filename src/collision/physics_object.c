@@ -30,7 +30,7 @@ void physics_object_init(
     object->position = position;
     object->_prev_step_pos = *position;
     object->rotation = rotation;
-    object->_prev_step_rot = gQuaternionZero;
+    quatIdent(&object->_prev_step_rot);
     object->velocity = gZeroVec;
     object->center_offset = center_offset;
     object->time_scalar = 1.0f;
@@ -174,18 +174,17 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
     if (object->constrain_rotation_y) object->angular_velocity.y = 0.0f;
     if (object->constrain_rotation_z) object->angular_velocity.z = 0.0f;
 
-    // Check if torque was applied this frame
+    // dampen smaller rotations up to a threshold faster
+    // damping scales with how close the angular speed is to zero
     float angular_speed_sq = vector3MagSqrd(&object->angular_velocity);
-    // If torque was applied, DO NOT damp small angular velocities.
-    // Let motion develop.
     if (object->angular_drag > 0.0f)
     {
         
         if (angular_speed_sq < PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ)
         {
+            //only apply increased damping if the speed is already decreasing
+            //this prevents eg a Ball from not starting to roll because it gets dampened to strongly
             bool ang_speed_decreasing = angular_speed_sq < object->_prev_angular_speed_sq;
-
-            // Only damp extremely small rotations towards zero
             if (ang_speed_decreasing)
             {
                 float t = angular_speed_sq / PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ;     // 0 → 1 as speed goes 0 → threshold
@@ -193,6 +192,7 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
                 vector3Scale(&object->angular_velocity, &object->angular_velocity, damping_factor);
             }
         }
+        //for objects that rotate faster than the threshold apply regular damping
         else
         {
             float damping_factor = 1.0f - object->angular_drag;
@@ -383,7 +383,7 @@ bool physics_object_is_touching(struct physics_object* object, entity_id id) {
 /// @param data expected to be a pointer to a physics_object
 /// @param direction the direction vector in world space
 /// @param output the resulting Support point in world space
-void physics_object_gjk_support_function(void* data, Vector3* direction, Vector3* output) {
+void physics_object_gjk_support_function(const void* data, const Vector3* direction, Vector3* output) {
     struct physics_object* object = (struct physics_object*)data;
     Vector3 world_center;
     Vector3 localDir;

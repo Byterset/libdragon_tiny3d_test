@@ -240,7 +240,7 @@ void collision_scene_step() {
         physics_object_update_angular_velocity(obj);
 
         // Track movement for AABB updates
-        const bool has_moved = !vector3Equals(&obj->_prev_step_pos, obj->position);
+        const bool has_moved = !vector3IsIdentical(&obj->_prev_step_pos, obj->position);
         const bool has_rotated = obj->rotation ? !quatIsIdentical(obj->rotation, &obj->_prev_step_rot) : false;
         g_scene._moved_flags[i] = has_moved;
         g_scene._rotated_flags[i] = has_rotated;

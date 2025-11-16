@@ -8,12 +8,12 @@ typedef struct Plane {
     float d;
 } Plane;
 
-void planeInitWithNormalAndPoint(Plane* plane, Vector3* normal, Vector3* point);
+void planeInitWithNormalAndPoint(Plane* plane, const Vector3* normal, const Vector3* point);
 
-int planeRayIntersection(Plane* plane, Vector3* rayOrigin, Vector3* rayDirection, float* rayDistance);
+bool planeRayIntersection(const Plane* plane, const Vector3* rayOrigin, const Vector3* rayDirection, float* rayDistance);
 
-float planePointDistance(Plane* plane, Vector3* point);
-void planeProjectPoint(Plane* plane, Vector3* point, Vector3* output);
+float planePointDistance(const Plane* plane, const Vector3* point);
+void planeProjectPoint(const Plane* plane, const Vector3* point, Vector3* output);
 
 void calculateBarycentricCoords(Vector3* a, Vector3* b, Vector3* c, Vector3* point, Vector3* output);
 void evaluateBarycentricCoords(Vector3* a, Vector3* b, Vector3* c, Vector3* bary, Vector3* output);

@@ -27,7 +27,7 @@
 #define PHYS_OBJECT_ROT_SIMILARITY_SLEEP_THRESHOLD 0.999999f
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD 0.1f // angular velocity threshold for sleep (rad/s)
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD * PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD)
-#define PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ 0.1f * 0.1f
+#define PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ 0.07f * 0.07f
 
 #define PHYS_OBJECT_SLEEP_STEPS 20 // number of steps the object has to be still before it goes to sleep
 
@@ -48,7 +48,7 @@ enum collision_group {
     COLLISION_GROUP_ALL = 0xff
 };
 
-typedef void (*bounding_box_calculator)(void* data, Quaternion* rotation, AABB* box);
+typedef void (*bounding_box_calculator)(const void* data, const Quaternion* rotation, AABB* box);
 typedef void (*inertia_calculator)(void* data, float mass, Vector3* out);
 
 typedef enum physics_object_collision_shape_type {
@@ -152,7 +152,7 @@ void physics_object_set_angular_velocity(struct physics_object* object, Vector3*
 
 void physics_object_apply_constraints(struct physics_object* object);
 
-void physics_object_gjk_support_function(void* data, Vector3* direction, Vector3* output);
+void physics_object_gjk_support_function(const void* data, const Vector3* direction, Vector3* output);
 void physics_object_recalculate_aabb(struct physics_object* object);
 
 #endif

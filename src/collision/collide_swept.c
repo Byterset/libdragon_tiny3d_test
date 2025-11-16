@@ -12,7 +12,7 @@ struct swept_physics_object {
     Vector3 offset;
 };
 
-void swept_physics_object_gjk_support_function(void* data, Vector3* direction, Vector3* output) {
+void swept_physics_object_gjk_support_function(const void* data, const Vector3* direction, Vector3* output) {
     struct swept_physics_object* obj = (struct swept_physics_object*)data;
     Vector3 norm_dir;
     vector3Normalize(direction, &norm_dir);
@@ -46,7 +46,8 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
     triangle.normal = collide_data->mesh->normals[triangle_index];
 
     struct Simplex simplex;
-    if (!gjkCheckForOverlap(&simplex, &triangle, mesh_triangle_gjk_support_function, &swept, swept_physics_object_gjk_support_function, &gRight)) {
+    Vector3 firstDir = gRight;
+    if (!gjkCheckForOverlap(&simplex, &triangle, mesh_triangle_gjk_support_function, &swept, swept_physics_object_gjk_support_function, &firstDir)) {
         return false;
     }
 

@@ -6,7 +6,7 @@
 
 #define MAX_INDEX_SET_SIZE 64
 
-void mesh_triangle_gjk_support_function(void* data, Vector3* direction, Vector3* output) {
+void mesh_triangle_gjk_support_function(const void* data, const Vector3* direction, Vector3* output) {
     struct mesh_triangle* triangle = (struct mesh_triangle*)data;
 
     int idx = 0;

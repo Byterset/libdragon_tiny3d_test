@@ -8,30 +8,152 @@
 
 typedef fm_quat_t Quaternion;
 
-extern Quaternion gQuaternionZero;
-extern Quaternion gQuaternionIdentity;
 
-void quatIdent(Quaternion* q);
-void quatAxisAngle(Vector3* axis, float angle, Quaternion* out);
-void quatAxisComplex(Vector3* axis, Vector2* complex, Quaternion* out);
-void quatConjugate(Quaternion* in, Quaternion* out);
-void quatNegate(Quaternion* in, Quaternion* out);
-void quatMultVector(Quaternion* q, Vector3* a, Vector3* out);
-void quatRotatedBoundingBoxSize(Quaternion* q, Vector3* halfBoxSize, Vector3* out);
-void quatMultiply(Quaternion* a, Quaternion* b, Quaternion* out);
-void quatAdd(Quaternion* a, Quaternion* b, Quaternion* out);
-void quatToMatrix(Quaternion* q, float out[4][4]);
-void quatNormalize(Quaternion* q, Quaternion* out);
+/// @brief Create an identity Quaternion
+/// @param q 
+inline void quatIdent(Quaternion* q) {
+    *q = (Quaternion){{0,0,0,1}};
+}
+
+
+/// @brief Constructs a Quaternion representing a rotation around an axis by a given angle.
+/// @param axis Axis to rotate around (must be normalized)
+/// @param angle Rotation Angle in Radians
+/// @param out the resulting Quaternion
+void quatAxisAngle(const Vector3* axis, float angle, Quaternion* out);
+
+
+/// @brief Similarly to quatAxisAngle this will construct a Quaternion that represents
+/// a rotation around an axis. But here the rotation is given by a complex number
+/// @param axis Axis to rotate around (must be normalized)
+/// @param complex 2D Vector encoding the rotation
+/// @param out the resulting Quaternion
+void quatAxisComplex(const Vector3* axis, const Vector2* complex, Quaternion* out);
+
+
+/// @brief Computes the Conjugate of a quaternion.
+///
+/// The conjugate represents the inverse rotation if the quaternion is unit length.
+/// @param in 
+/// @param out 
+void quatConjugate(const Quaternion* in, Quaternion* out);
+
+
+/// @brief Flips the sign of all components of the input Quaternion.
+///
+/// Result is -q and should be mathmatically equivalent to q.
+/// @param in 
+/// @param out 
+void quatNegate(const Quaternion* in, Quaternion* out);
+
+
+/// @brief Multiplies a quaternion by a vector.
+///
+/// This function takes a quaternion `q` and a vector `a`, and performs the
+/// quaternion-vector multiplication. The result is stored in the output vector `out`.
+///
+/// @param q Pointer to the quaternion to be multiplied.
+/// @param a Pointer to the vector to be multiplied.
+/// @param out Pointer to the vector where the result will be stored.
+void quatMultVector(const Quaternion* q, const Vector3* a, Vector3* out);
+
+
+/// @brief Multiply two Quaternions
+/// @param a 
+/// @param b 
+/// @param out The Quaternion representing the combine Rotation
+void quatMultiply(const Quaternion* a, const Quaternion* b, Quaternion* out);
+
+
+/// @brief Adds two Quaternions together component-wise.
+/// @param a 
+/// @param b 
+/// @param out 
+void quatAdd(const Quaternion* a, const Quaternion* b, Quaternion* out);
+
+
+/// @brief Converts an input quaternion into an equivalent 4x4 rotation matrix
+/// @param q 
+/// @param out 
+void quatToMatrix(const Quaternion* q, float out[4][4]);
+
+
+/// @brief Normalized a quaternion
+/// @param q 
+/// @param out 
+void quatNormalize(const Quaternion* q, Quaternion* out);
+
+
+/// @brief Generate a pseudo-random quaternion rotation
+/// @param q 
 void quatRandom(Quaternion* q);
-void quatLook(Vector3* lookDir, Vector3* up, Quaternion* out);
-void quatEulerAngles(Vector3* angles, Quaternion* out);
-// cheap approximation of slerp
-void quatLerp(Quaternion* a, Quaternion* b, float t, Quaternion* out);
-void quatApplyAngularVelocity(Quaternion* input, Vector3* w, float timeStep, Quaternion* output);
-void quatDecompose(Quaternion* input, Vector3* axis, float* angle);
-void quatRotateAxisEuler(Quaternion* q, Vector3* axis, float angle, Quaternion* out);
-bool quatIsIdentical(Quaternion* a, Quaternion* b);
 
-float quatDot(Quaternion* a, Quaternion* b);
+
+/// @brief Converts a look direction and an up-vector into a quaternion represention the corresponding rotation.
+///
+/// Essentially implement a "look-at" rotation with quaternions.
+/// @param lookDir 
+/// @param up 
+/// @param out 
+void quatLook(const Vector3* lookDir, const Vector3* up, Quaternion* out);
+
+
+/// @brief Create a quaternion from euler angles.
+/// @param angles vector containing the euler angles in radians.
+/// @param out 
+void quatEulerAngles(const Vector3* angles, Quaternion* out);
+
+
+/// @brief Normalized linear interpolation between two quaternions.
+///
+/// Faster than slerp but less accurate
+/// @param a 
+/// @param b 
+/// @param t blending factor
+/// @param out 
+void quatLerp(const Quaternion* a, const Quaternion* b, float t, Quaternion* out);
+
+
+/// @brief Updates a quaternion based on angular velocity over a timestep.
+/// @param input 
+/// @param w 
+/// @param timeStep 
+/// @param output 
+void quatApplyAngularVelocity(const Quaternion* input, const Vector3* w, float timeStep, Quaternion* output);
+
+
+/// @brief Decomposes a quaternion into an axis and an angle.
+///
+/// @param input Pointer to the input quaternion to be decomposed.
+/// @param axis Pointer to the vector that will store the axis of rotation.
+/// @param angle Pointer to the float that will store the angle of rotation in radians.
+///
+/// The function calculates the magnitude of the quaternion's vector part and normalizes it to obtain the axis of rotation.
+/// If the magnitude is very small (less than 0.0001), it sets the axis to a default up vector and the angle to 0.
+/// Otherwise, it normalizes the axis and calculates the angle using the sine of the magnitude.
+void quatDecompose(const Quaternion* input, Vector3* axis, float* angle);
+
+/// @brief Applies an additional Euler-axis rotation to an existing quaternion rotation
+/// @param q 
+/// @param axis 
+/// @param angle 
+/// @param out 
+void quatRotateAxisEuler(const Quaternion* q, const Vector3* axis, float angle, Quaternion* out);
+
+/// @brief Compute the dot product of two quaternions
+/// @param a 
+/// @param b 
+/// @return 
+inline float quatDot(const Quaternion* a, const Quaternion* b) {
+    return a->x * b->x + a->y * b->y + a->z * b->z + a->w * b->w;
+}
+
+/// @brief Checks if two quaternions are the same component-wise
+/// @param a 
+/// @param b 
+/// @return 
+inline bool quatIsIdentical(const Quaternion* a, const Quaternion* b) {
+    return (a->x == b->x) && (a->y == b->y) && (a->z == b->z) && (a->w == b->w);
+}
 
 #endif

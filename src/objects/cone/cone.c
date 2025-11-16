@@ -30,7 +30,7 @@ void cone_init(struct cone* cone, struct generic_object_pos_definition* def){
     cone->transform.scale = (Vector3){{7.0f, 5.0f, 7.0f}};
     cone->transform.position = def->position;
     quatRotateAxisEuler(&cone->transform.rotation, &gRight, T3D_DEG_TO_RAD(0.0f), &cone->transform.rotation);
-    // cone->transform.position.y += 4.5f;
+    cone->transform.position.y += 4.5f;
 
     renderable_init(&cone->renderable, &cone->transform, "rom:/models/cone/cone.t3dm");
 
@@ -45,11 +45,14 @@ void cone_init(struct cone* cone, struct generic_object_pos_definition* def){
         &cone->transform.position,
         &cone->transform.rotation,
         (Vector3){{0,cone_collision.shape_data.cone.half_height,0}},
-        10.0f
+        100.0f
     );
 
     cone->physics.has_gravity = false;
-    cone->physics.is_kinematic = true;
+    cone->physics.is_kinematic = false;
+    cone->physics.constrain_movement_x = true;
+    cone->physics.constrain_movement_y = true;
+    cone->physics.constrain_movement_z = true;
 
     collision_scene_add(&cone->physics);
 }

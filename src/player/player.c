@@ -319,7 +319,7 @@ void player_update(struct player* player) {
 
         vector2RotateTowards(&player->look_direction, &directionUnit, &player_max_rotation, &player->look_direction);
     }
-
+    
     quatAxisComplex(&gUp, &player->look_direction, &player->transform.rotation);
 
 

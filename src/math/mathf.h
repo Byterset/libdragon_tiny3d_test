@@ -33,7 +33,6 @@ float powf(float base, float exp);
 
 float cosf(float in);
 float sinf(float in);
-float fabsf(float in);
 float floorf(float in);
 float ceilf(float in);
 

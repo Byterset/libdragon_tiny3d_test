@@ -64,7 +64,7 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
         vector3TripleProduct(&lastAddedToOther, &aToOrigin, &lastAddedToOther, nextDirection);
 
         if (vector3MagSqrd(nextDirection) <= 0.0000001f) {
-            vector3Perp(&lastAddedToOther, nextDirection);
+            vector3Perpendicular(&lastAddedToOther, nextDirection);
         }
 
         return 0;
@@ -176,7 +176,7 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
             vector3TripleProduct(&ab, &aToOrigin, &ab, nextDirection);
 
             if (vector3MagSqrd(nextDirection) <= 0.0000001f) {
-                vector3Perp(&ab, nextDirection);
+                vector3Perpendicular(&ab, nextDirection);
             }
         } else { // origin is in front of three faces, should never happen
             // if it does reset the simplex to a single point and update the direction
