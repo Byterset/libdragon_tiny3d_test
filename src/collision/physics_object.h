@@ -60,6 +60,22 @@ typedef enum physics_object_collision_shape_type {
     COLLISION_SHAPE_SWEEP,
 } physics_object_collision_shape_type;
 
+/// @brief Flags for physics_object constraints
+///
+/// @note position constraints are applied in World space, and rotation constraints are applied in the inertia space (local)
+typedef enum physics_object_constraints {
+    CONSTRAINTS_NONE = 0,
+    CONSTRAINTS_FREEZE_POSITION_X = (1 << 0),
+    CONSTRAINTS_FREEZE_POSITION_Y = (1 << 1),
+    CONSTRAINTS_FREEZE_POSITION_Z = (1 << 2),
+    CONSTRAINTS_FREEZE_POSITION_ALL = 7,
+    CONSTRAINTS_FREEZE_ROTATION_X = (1 << 3),
+    CONSTRAINTS_FREEZE_ROTATION_Y = (1 << 4),
+    CONSTRAINTS_FREEZE_ROTATION_Z = (1 << 5),
+    CONSTRAINTS_FREEZE_ROTATION_ALL = 56,
+    CONSTRAINTS_ALL = 0xff
+} physics_object_constraints;
+
 union physics_object_collision_shape_data
 {
     struct { float radius; } sphere;
@@ -101,12 +117,7 @@ struct physics_object {
     bool is_kinematic: true;
     bool is_grounded: true;
     bool _is_sleeping: true;
-    bool constrain_movement_x: true; // prohibits movement caused by simulation in the world-X-axis
-    bool constrain_movement_y: true; // prohibits movement caused by simulation in the world-Y-axis
-    bool constrain_movement_z: true; // prohibits movement caused by simulation in the world-Z-axis
-    bool constrain_rotation_x: true; // prohibits rotation caused by simulation around the X axis (in local inertia space!)
-    bool constrain_rotation_y: true; // prohibits rotation caused by simulation around the Y axis (in local inertia space!)
-    bool constrain_rotation_z: true; // prohibits rotation caused by simulation around the Z axis (in local inertia space!)
+    uint16_t constraints;
     uint16_t _sleep_counter;
     uint16_t collision_layers; // objects that share at least one layer can collide
     uint16_t collision_group; // objects of the same group do not collide

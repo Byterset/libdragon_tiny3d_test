@@ -22,8 +22,8 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
     Vector3 normal = result->normal;
 
     // Check if movement is fully constrained for each object
-    bool aMovementConstrained = a && (a->is_kinematic || (a->constrain_movement_x && a->constrain_movement_y && a->constrain_movement_z));
-    bool bMovementConstrained = b && (b->is_kinematic || (b->constrain_movement_x && b->constrain_movement_y && b->constrain_movement_z));
+    bool aMovementConstrained = a && (a->is_kinematic || ((a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
+    bool bMovementConstrained = b && (b->is_kinematic || ((b->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
 
     // For objects with movement constraints, check if constrained along collision normal
     float invMassA = 0.0f;
@@ -31,17 +31,17 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
 
     if (a && !aMovementConstrained) {
         // Check if movement is constrained along the normal direction
-        bool constrainedAlongNormal = (a->constrain_movement_x && fabsf(normal.x) > 0.01f) ||
-                                      (a->constrain_movement_y && fabsf(normal.y) > 0.01f) ||
-                                      (a->constrain_movement_z && fabsf(normal.z) > 0.01f);
+        bool constrainedAlongNormal = ((a->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(normal.x) > 0.01f) ||
+                                      ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(normal.y) > 0.01f) ||
+                                      ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(normal.z) > 0.01f);
         invMassA = constrainedAlongNormal ? 0.0f : a->_inv_mass;
     }
 
     if (b && !bMovementConstrained) {
         // Check if movement is constrained along the normal direction (opposite direction)
-        bool constrainedAlongNormal = (b->constrain_movement_x && fabsf(normal.x) > 0.01f) ||
-                                      (b->constrain_movement_y && fabsf(normal.y) > 0.01f) ||
-                                      (b->constrain_movement_z && fabsf(normal.z) > 0.01f);
+        bool constrainedAlongNormal = ((b->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(normal.x) > 0.01f) ||
+                                      ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(normal.y) > 0.01f) ||
+                                      ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(normal.z) > 0.01f);
         invMassB = constrainedAlongNormal ? 0.0f : b->_inv_mass;
     }
 
@@ -72,7 +72,7 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         vector3Sub(&result->contactB, &centerOfMassA, &rA);
 
         contactVelA = a->velocity;
-        hasRotationA = a->rotation && !(a->constrain_rotation_x && a->constrain_rotation_y && a->constrain_rotation_z);
+        hasRotationA = a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL);
         if (hasRotationA) {
             // Pre-calculate inverse rotation for A (used multiple times below)
             quatConjugate(a->rotation, &rotation_inverse_a);
@@ -104,7 +104,7 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         vector3Sub(&result->contactA, &centerOfMassB, &rB);
 
         contactVelB = b->velocity;
-        hasRotationB = b->rotation && !(b->constrain_rotation_x && b->constrain_rotation_y && b->constrain_rotation_z);
+        hasRotationB = b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL);
         if (hasRotationB) {
             // Pre-calculate inverse rotation for B (used multiple times below)
             quatConjugate(b->rotation, &rotation_inverse_b);
@@ -155,9 +155,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         local_torquePerImpulse.z = local_rCrossN.z * a->_inv_local_intertia_tensor.z;
 
         // Apply constraints in LOCAL space
-        if (a->constrain_rotation_x) local_torquePerImpulse.x = 0.0f;
-        if (a->constrain_rotation_y) local_torquePerImpulse.y = 0.0f;
-        if (a->constrain_rotation_z) local_torquePerImpulse.z = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
 
         // Transform back to world space
         Vector3 torquePerImpulse;
@@ -182,9 +182,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         local_torquePerImpulse.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
 
         // Apply constraints in LOCAL space
-        if (b->constrain_rotation_x) local_torquePerImpulse.x = 0.0f;
-        if (b->constrain_rotation_y) local_torquePerImpulse.y = 0.0f;
-        if (b->constrain_rotation_z) local_torquePerImpulse.z = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
 
         // Transform back to world space
         Vector3 torquePerImpulse;
@@ -217,9 +217,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
 
         // Apply to linear velocity with per-axis constraints
         Vector3 linearImpulse = impulseA;
-        if (a->constrain_movement_x) linearImpulse.x = 0.0f;
-        if (a->constrain_movement_y) linearImpulse.y = 0.0f;
-        if (a->constrain_movement_z) linearImpulse.z = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_X) linearImpulse.x = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) linearImpulse.y = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) linearImpulse.z = 0.0f;
         vector3Add(&a->velocity, &linearImpulse, &a->velocity);
 
         // Update contact velocity with linear impulse
@@ -245,9 +245,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         local_deltaAngularVel.z = local_rCrossN.z * a->_inv_local_intertia_tensor.z;
 
         // Apply constraints in LOCAL space
-        if (a->constrain_rotation_x) local_deltaAngularVel.x = 0.0f;
-        if (a->constrain_rotation_y) local_deltaAngularVel.y = 0.0f;
-        if (a->constrain_rotation_z) local_deltaAngularVel.z = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_deltaAngularVel.x = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_deltaAngularVel.y = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_deltaAngularVel.z = 0.0f;
 
         // Transform back to world space
         Vector3 deltaAngularVel;
@@ -266,9 +266,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
 
         // Apply to linear velocity with per-axis constraints
         Vector3 linearImpulse = impulseB;
-        if (b->constrain_movement_x) linearImpulse.x = 0.0f;
-        if (b->constrain_movement_y) linearImpulse.y = 0.0f;
-        if (b->constrain_movement_z) linearImpulse.z = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_X) linearImpulse.x = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) linearImpulse.y = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) linearImpulse.z = 0.0f;
         vector3Add(&b->velocity, &linearImpulse, &b->velocity);
 
         // Update contact velocity with linear impulse
@@ -294,9 +294,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         local_deltaAngularVel.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
 
         // Apply constraints in LOCAL space
-        if (b->constrain_rotation_x) local_deltaAngularVel.x = 0.0f;
-        if (b->constrain_rotation_y) local_deltaAngularVel.y = 0.0f;
-        if (b->constrain_rotation_z) local_deltaAngularVel.z = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_deltaAngularVel.x = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_deltaAngularVel.y = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_deltaAngularVel.z = 0.0f;
 
         // Transform back to world space
         Vector3 deltaAngularVel;
@@ -343,9 +343,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
                 local_torquePerImpulse.z = local_rCrossT.z * a->_inv_local_intertia_tensor.z;
 
                 // Apply constraints in LOCAL space
-                if (a->constrain_rotation_x) local_torquePerImpulse.x = 0.0f;
-                if (a->constrain_rotation_y) local_torquePerImpulse.y = 0.0f;
-                if (a->constrain_rotation_z) local_torquePerImpulse.z = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
 
                 // Transform back to world space
                 Vector3 torquePerImpulse;
@@ -370,9 +370,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
                 local_torquePerImpulse.z = local_rCrossT.z * b->_inv_local_intertia_tensor.z;
 
                 // Apply constraints in LOCAL space
-                if (b->constrain_rotation_x) local_torquePerImpulse.x = 0.0f;
-                if (b->constrain_rotation_y) local_torquePerImpulse.y = 0.0f;
-                if (b->constrain_rotation_z) local_torquePerImpulse.z = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
 
                 // Transform back to world space
                 Vector3 torquePerImpulse;
@@ -395,9 +395,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
 
                 // Apply to linear velocity with per-axis constraints
                 Vector3 linearFrictionImpulse = frictionImpulse;
-                if (a->constrain_movement_x) linearFrictionImpulse.x = 0.0f;
-                if (a->constrain_movement_y) linearFrictionImpulse.y = 0.0f;
-                if (a->constrain_movement_z) linearFrictionImpulse.z = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_POSITION_X) linearFrictionImpulse.x = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) linearFrictionImpulse.y = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) linearFrictionImpulse.z = 0.0f;
                 vector3Add(&a->velocity, &linearFrictionImpulse, &a->velocity);
             }
 
@@ -416,9 +416,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
 
                 // Apply to linear velocity with per-axis constraints
                 Vector3 linearFrictionImpulse = frictionImpulse;
-                if (b->constrain_movement_x) linearFrictionImpulse.x = 0.0f;
-                if (b->constrain_movement_y) linearFrictionImpulse.y = 0.0f;
-                if (b->constrain_movement_z) linearFrictionImpulse.z = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_POSITION_X) linearFrictionImpulse.x = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) linearFrictionImpulse.y = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) linearFrictionImpulse.z = 0.0f;
                 vector3Add(&b->velocity, &linearFrictionImpulse, &b->velocity);
             }
 
@@ -442,8 +442,8 @@ void correct_overlap(struct physics_object* a, struct physics_object* b, struct 
     if (d < slop) return;
 
     // Check if movement is fully constrained for each object
-    bool aMovementConstrained = a && (a->is_kinematic || (a->constrain_movement_x && a->constrain_movement_y && a->constrain_movement_z));
-    bool bMovementConstrained = b && (b->is_kinematic || (b->constrain_movement_x && b->constrain_movement_y && b->constrain_movement_z));
+    bool aMovementConstrained = a && (a->is_kinematic || ((a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
+    bool bMovementConstrained = b && (b->is_kinematic || ((b->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
 
     // For objects with movement constraints, check if constrained along collision normal
     float invMassA = 0.0f;
@@ -451,17 +451,17 @@ void correct_overlap(struct physics_object* a, struct physics_object* b, struct 
 
     if (a && !aMovementConstrained) {
         // Check if movement is constrained along the normal direction
-        bool constrainedAlongNormal = (a->constrain_movement_x && fabsf(result->normal.x) > 0.01f) ||
-                                      (a->constrain_movement_y && fabsf(result->normal.y) > 0.01f) ||
-                                      (a->constrain_movement_z && fabsf(result->normal.z) > 0.01f);
+        bool constrainedAlongNormal = ((a->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(result->normal.x) > 0.01f) ||
+                                      ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(result->normal.y) > 0.01f) ||
+                                      ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(result->normal.z) > 0.01f);
         invMassA = constrainedAlongNormal ? 0.0f : a->_inv_mass;
     }
 
     if (b && !bMovementConstrained) {
         // Check if movement is constrained along the normal direction
-        bool constrainedAlongNormal = (b->constrain_movement_x && fabsf(result->normal.x) > 0.01f) ||
-                                      (b->constrain_movement_y && fabsf(result->normal.y) > 0.01f) ||
-                                      (b->constrain_movement_z && fabsf(result->normal.z) > 0.01f);
+        bool constrainedAlongNormal = ((b->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(result->normal.x) > 0.01f) ||
+                                      ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(result->normal.y) > 0.01f) ||
+                                      ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(result->normal.z) > 0.01f);
         invMassB = constrainedAlongNormal ? 0.0f : b->_inv_mass;
     }
 
@@ -477,18 +477,18 @@ void correct_overlap(struct physics_object* a, struct physics_object* b, struct 
     if (invMassA > 0.0f)
     {
         Vector3 corrA = correctionVec;
-        if (a->constrain_movement_x) corrA.x = 0;
-        if (a->constrain_movement_y) corrA.y = 0;
-        if (a->constrain_movement_z) corrA.z = 0;
+        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_X) corrA.x = 0;
+        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) corrA.y = 0;
+        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) corrA.z = 0;
         vector3AddScaled(a->position, &corrA, invMassA, a->position);
     }
 
     if (invMassB > 0.0f)
     {
         Vector3 corrB = correctionVec;
-        if (b->constrain_movement_x) corrB.x = 0;
-        if (b->constrain_movement_y) corrB.y = 0;
-        if (b->constrain_movement_z) corrB.z = 0;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_X) corrB.x = 0;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) corrB.y = 0;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) corrB.z = 0;
         vector3AddScaled(b->position, &corrB, -invMassB, b->position);
     }
 

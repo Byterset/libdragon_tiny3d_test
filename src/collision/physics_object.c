@@ -42,12 +42,7 @@ void physics_object_init(
     object->is_kinematic = false;
     object->is_grounded = false;
     object->_is_sleeping = false;
-    object->constrain_movement_x = false;
-    object->constrain_movement_y = false;
-    object->constrain_movement_z = false;
-    object->constrain_rotation_x = false;
-    object->constrain_rotation_y = false;
-    object->constrain_rotation_z = false;
+    object->constraints = CONSTRAINTS_NONE;
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
@@ -79,9 +74,9 @@ void physics_object_update_euler(struct physics_object* object) {
     object->velocity.y = clampf(object->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
 
     // Apply movement constraints
-    if (object->constrain_movement_x) object->velocity.x = 0.0f;
-    if (object->constrain_movement_y) object->velocity.y = 0.0f;
-    if (object->constrain_movement_z) object->velocity.z = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_X) object->velocity.x = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_Y) object->velocity.y = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_Z) object->velocity.z = 0.0f;
 
     object->is_grounded = false;
 
@@ -90,46 +85,46 @@ void physics_object_update_euler(struct physics_object* object) {
 
 }
 
-void physics_object_update_implicit_euler(struct physics_object* o) {
-    if (o->is_trigger || o->is_kinematic) return;
+void physics_object_update_implicit_euler(struct physics_object* object) {
+    if (object->is_trigger || object->is_kinematic) return;
 
     // Implicit Euler: v_{t+1} = v_t + a_{t+1} * dt
     //                 x_{t+1} = x_t + v_{t+1} * dt
     // Here we assume acceleration is based on known forces at current step.
 
     // Update velocity first
-    vector3AddScaled(&o->velocity, &o->acceleration, FIXED_DELTATIME, &o->velocity);
-    o->velocity.y = clampf(o->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
+    vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME, &object->velocity);
+    object->velocity.y = clampf(object->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
 
     // Apply movement constraints
-    if (o->constrain_movement_x) o->velocity.x = 0.0f;
-    if (o->constrain_movement_y) o->velocity.y = 0.0f;
-    if (o->constrain_movement_z) o->velocity.z = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_X) object->velocity.x = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_Y) object->velocity.y = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_Z) object->velocity.z = 0.0f;
 
     // Update position using new velocity
-    vector3AddScaled(o->position, &o->velocity, FIXED_DELTATIME, o->position);
+    vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME, object->position);
 
 
-    o->acceleration = gZeroVec;
-    o->is_grounded = false;
+    object->acceleration = gZeroVec;
+    object->is_grounded = false;
 }
 
-void physics_object_update_velocity_verlet(struct physics_object* o) {
-    if (o->is_trigger || o->is_kinematic) return;
+void physics_object_update_velocity_verlet(struct physics_object* object) {
+    if (object->is_trigger || object->is_kinematic) return;
 
-    vector3AddScaled(o->position, &o->velocity, FIXED_DELTATIME, o->position);
-    vector3AddScaled(o->position, &o->acceleration, 0.5f * FIXED_DELTATIME * FIXED_DELTATIME, o->position);
+    vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME, object->position);
+    vector3AddScaled(object->position, &object->acceleration, 0.5f * FIXED_DELTATIME * FIXED_DELTATIME, object->position);
 
-    vector3AddScaled(&o->velocity, &o->acceleration, FIXED_DELTATIME, &o->velocity);
-    o->velocity.y = clampf(o->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
+    vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME, &object->velocity);
+    object->velocity.y = clampf(object->velocity.y, -PHYS_OBJECT_TERMINAL_Y_VELOCITY, PHYS_OBJECT_TERMINAL_Y_VELOCITY);
 
     // Apply movement constraints
-    if (o->constrain_movement_x) o->velocity.x = 0.0f;
-    if (o->constrain_movement_y) o->velocity.y = 0.0f;
-    if (o->constrain_movement_z) o->velocity.z = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_X) object->velocity.x = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_Y) object->velocity.y = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_Z) object->velocity.z = 0.0f;
 
-    o->acceleration = gZeroVec;
-    o->is_grounded = false;
+    object->acceleration = gZeroVec;
+    object->is_grounded = false;
 }
 
 void physics_object_update_angular_velocity(struct physics_object* object) {
@@ -139,7 +134,7 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
     }
 
     // Skip if all rotation axes are constrained
-    if (object->constrain_rotation_x && object->constrain_rotation_y && object->constrain_rotation_z) {
+    if ((object->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL) {
         return;
     }
 
@@ -165,9 +160,9 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
         local_angular_acceleration.z = local_torque.z * object->_inv_local_intertia_tensor.z;
 
         // Apply per-axis constraints in LOCAL space
-        if (object->constrain_rotation_x) local_angular_acceleration.x = 0.0f;
-        if (object->constrain_rotation_y) local_angular_acceleration.y = 0.0f;
-        if (object->constrain_rotation_z) local_angular_acceleration.z = 0.0f;
+        if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_angular_acceleration.x = 0.0f;
+        if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_angular_acceleration.y = 0.0f;
+        if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_angular_acceleration.z = 0.0f;
 
         // Transform angular acceleration back to world space
         Vector3 angular_acceleration;
@@ -187,9 +182,9 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
     quatMultVector(&rotation_inverse, &object->angular_velocity, &local_angular_velocity);
 
     // Apply per-axis constraints in LOCAL space
-    if (object->constrain_rotation_x) local_angular_velocity.x = 0.0f;
-    if (object->constrain_rotation_y) local_angular_velocity.y = 0.0f;
-    if (object->constrain_rotation_z) local_angular_velocity.z = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_angular_velocity.x = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_angular_velocity.y = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_angular_velocity.z = 0.0f;
 
     // Transform back to world space
     quatMultVector(object->rotation, &local_angular_velocity, &object->angular_velocity);
@@ -306,7 +301,7 @@ void physics_object_apply_angular_impulse(struct physics_object* object, Vector3
     }
 
     // Skip if all rotation axes are constrained
-    if (object->constrain_rotation_x && object->constrain_rotation_y && object->constrain_rotation_z) {
+    if ((object->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL) {
         return;
     }
 
@@ -324,9 +319,9 @@ void physics_object_apply_angular_impulse(struct physics_object* object, Vector3
     local_angular_velocity_change.z = local_angular_impulse.z * object->_inv_local_intertia_tensor.z;
 
     // Apply per-axis constraints in LOCAL space
-    if (object->constrain_rotation_x) local_angular_velocity_change.x = 0.0f;
-    if (object->constrain_rotation_y) local_angular_velocity_change.y = 0.0f;
-    if (object->constrain_rotation_z) local_angular_velocity_change.z = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_angular_velocity_change.x = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_angular_velocity_change.y = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_angular_velocity_change.z = 0.0f;
 
     // Transform angular velocity change back to world space
     Vector3 angular_velocity_change;

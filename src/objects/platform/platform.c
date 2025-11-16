@@ -60,12 +60,10 @@ void platform_init(struct platform* platform, struct generic_object_pos_definiti
 
     platform->physics.has_gravity = false;
     platform->physics.is_kinematic = false;
-    platform->physics.constrain_movement_x = true;
-    platform->physics.constrain_movement_y = true;
-    platform->physics.constrain_movement_z = true;
-    platform->physics.constrain_rotation_y = true;
-    platform->physics.constrain_rotation_z = false;
-    platform->physics.constrain_rotation_x = true;
+    platform->physics.constraints |= CONSTRAINTS_FREEZE_POSITION_ALL;
+    platform->physics.constraints |= CONSTRAINTS_FREEZE_ROTATION_X;
+    platform->physics.constraints |= CONSTRAINTS_FREEZE_ROTATION_Y;
+
     // Rotation constraints are false by default, allowing rotation
 
     // update_add(platform, (update_callback)platform_update, UPDATE_PRIORITY_PLAYER, UPDATE_LAYER_WORLD);
