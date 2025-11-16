@@ -102,8 +102,8 @@ $(function() {
 , <a class="el" href="callback__list_8h.html#a2839beaef1e5d32aa5052312c1d09fdd">callback_list.h</a>
 </li>
 <li>callback_list_reset()
-: <a class="el" href="callback__list_8h.html#ab5bedb8c5bd594a9dc19c65d8cb1f948">callback_list.h</a>
-, <a class="el" href="callback__list_8c.html#ab5bedb8c5bd594a9dc19c65d8cb1f948">callback_list.c</a>
+: <a class="el" href="callback__list_8c.html#ab5bedb8c5bd594a9dc19c65d8cb1f948">callback_list.c</a>
+, <a class="el" href="callback__list_8h.html#ab5bedb8c5bd594a9dc19c65d8cb1f948">callback_list.h</a>
 </li>
 <li>camera_apply()
 : <a class="el" href="camera_8c.html#a4d3ccb7dc90ff24e2e6498c11bcb057a">camera.c</a>
@@ -128,12 +128,16 @@ $(function() {
 , <a class="el" href="camera_8h.html#a6f1563e004251171bc216a392472f04b">camera.h</a>
 </li>
 <li>capsule_bounding_box()
-: <a class="el" href="capsule_8c.html#a0961d4cbce3809e2252f8bc0b165ed31">capsule.c</a>
-, <a class="el" href="capsule_8h.html#a0961d4cbce3809e2252f8bc0b165ed31">capsule.h</a>
+: <a class="el" href="capsule_8c.html#afbc90ce405c2187d00ae33aaf82d9f00">capsule.c</a>
+, <a class="el" href="capsule_8h.html#ae6b2303bc482d0406a35ceb98e871a76">capsule.h</a>
+</li>
+<li>capsule_inertia_tensor()
+: <a class="el" href="capsule_8c.html#abf322d9d571f50eed422a661474b6870">capsule.c</a>
+, <a class="el" href="capsule_8h.html#abf322d9d571f50eed422a661474b6870">capsule.h</a>
 </li>
 <li>capsule_support_function()
-: <a class="el" href="capsule_8h.html#a774dd5b5264aaf1b08adb6bb2dd919a9">capsule.h</a>
-, <a class="el" href="capsule_8c.html#a774dd5b5264aaf1b08adb6bb2dd919a9">capsule.c</a>
+: <a class="el" href="capsule_8h.html#a64fe0fa1a771263d9553f23bebe18409">capsule.h</a>
+, <a class="el" href="capsule_8c.html#a64fe0fa1a771263d9553f23bebe18409">capsule.c</a>
 </li>
 <li>ceilf()
 : <a class="el" href="mathf_8c.html#ac5d42cdbfc9d1ff82f856c5404956a33">mathf.c</a>
@@ -142,10 +146,6 @@ $(function() {
 <li>clampf()
 : <a class="el" href="mathf_8c.html#aa7858054b72ec722a2fff626dde6c162">mathf.c</a>
 , <a class="el" href="mathf_8h.html#aa7858054b72ec722a2fff626dde6c162">mathf.h</a>
-</li>
-<li>clampi()
-: <a class="el" href="math_8c.html#a33f8c460799ad1667cde08d1486103a6">math.c</a>
-, <a class="el" href="math_8h.html#a33f8c460799ad1667cde08d1486103a6">math.h</a>
 </li>
 <li>collectable_assets_load()
 : <a class="el" href="collectable_8c.html#a1dd2c6997ca91c17d47aa26a7e4fda73">collectable.c</a>
@@ -160,16 +160,16 @@ $(function() {
 , <a class="el" href="collectable_8h.html#a72dc76cb1840267d402a3c4607c0228d">collectable.h</a>
 </li>
 <li>collectable_get()
-: <a class="el" href="collectable_8h.html#a13e1c235579585f0ae885424289ce3ea">collectable.h</a>
-, <a class="el" href="collectable_8c.html#a13e1c235579585f0ae885424289ce3ea">collectable.c</a>
+: <a class="el" href="collectable_8c.html#a13e1c235579585f0ae885424289ce3ea">collectable.c</a>
+, <a class="el" href="collectable_8h.html#a13e1c235579585f0ae885424289ce3ea">collectable.h</a>
 </li>
 <li>collectable_init()
 : <a class="el" href="collectable_8c.html#a5e475d3ac693722cc6f63ff2e4a0a2f3">collectable.c</a>
 , <a class="el" href="collectable_8h.html#a5e475d3ac693722cc6f63ff2e4a0a2f3">collectable.h</a>
 </li>
 <li>collide_add_contact()
-: <a class="el" href="collide_8c.html#afeebbdf5ccadbe2ec73b28e9ee4bdf4e">collide.c</a>
-, <a class="el" href="collide_8h.html#afeebbdf5ccadbe2ec73b28e9ee4bdf4e">collide.h</a>
+: <a class="el" href="collide_8c.html#a498326dc6e0bfbdcf1e359d40f84362e">collide.c</a>
+, <a class="el" href="collide_8h.html#a498326dc6e0bfbdcf1e359d40f84362e">collide.h</a>
 </li>
 <li>collide_object_swept_bounce()
 : <a class="el" href="collide__swept_8c.html#a846ebd8dc61072e51deff0cd6470822a">collide_swept.c</a>
@@ -189,6 +189,9 @@ $(function() {
 : <a class="el" href="collide_8c.html#a1d598462ef27e622da9e38f3601926fe">collide.c</a>
 , <a class="el" href="collide_8h.html#a1d598462ef27e622da9e38f3601926fe">collide.h</a>
 </li>
+<li>collide_object_to_object_swept()
+: <a class="el" href="collide__swept_8h.html#acb9b1adf8c78bfd9031e25911bd49e7c">collide_swept.h</a>
+</li>
 <li>collide_object_to_triangle()
 : <a class="el" href="collide_8c.html#a65a40754e335295830c2133381286ac5">collide.c</a>
 </li>
@@ -196,19 +199,19 @@ $(function() {
 : <a class="el" href="collision__scene_8c.html#a3fb9c52da6d5e024b3099511176af20f">collision_scene.c</a>
 , <a class="el" href="collision__scene_8h.html#a3fb9c52da6d5e024b3099511176af20f">collision_scene.h</a>
 </li>
+<li>collision_scene_collide_object_to_static()
+: <a class="el" href="collision__scene_8c.html#acc87aa8cc46a06f8f27d66aca4ae0d8b">collision_scene.c</a>
+</li>
 <li>collision_scene_collide_phys_object()
 : <a class="el" href="collision__scene_8c.html#a4faf12dfbc02b158ff614889c56ae057">collision_scene.c</a>
 </li>
-<li>collision_scene_collide_single()
-: <a class="el" href="collision__scene_8c.html#a82d7202e7453b8c9e220f11ea6a656c1">collision_scene.c</a>
-</li>
 <li>collision_scene_find_object()
-: <a class="el" href="collision__scene_8c.html#a4f9efa8dbc05e1aaf5abe42dfd09b83d">collision_scene.c</a>
-, <a class="el" href="collision__scene_8h.html#a4f9efa8dbc05e1aaf5abe42dfd09b83d">collision_scene.h</a>
+: <a class="el" href="collision__scene_8h.html#a4f9efa8dbc05e1aaf5abe42dfd09b83d">collision_scene.h</a>
+, <a class="el" href="collision__scene_8c.html#a4f9efa8dbc05e1aaf5abe42dfd09b83d">collision_scene.c</a>
 </li>
 <li>collision_scene_get()
-: <a class="el" href="collision__scene_8c.html#a41b2de49293775e2611c115f043ca977">collision_scene.c</a>
-, <a class="el" href="collision__scene_8h.html#a41b2de49293775e2611c115f043ca977">collision_scene.h</a>
+: <a class="el" href="collision__scene_8h.html#a41b2de49293775e2611c115f043ca977">collision_scene.h</a>
+, <a class="el" href="collision__scene_8c.html#a41b2de49293775e2611c115f043ca977">collision_scene.c</a>
 </li>
 <li>collision_scene_new_contact()
 : <a class="el" href="collision__scene_8c.html#aef93064a3e4c7692aac96c267f484831">collision_scene.c</a>
@@ -225,12 +228,9 @@ $(function() {
 : <a class="el" href="collision__scene_8c.html#a62d6ea639161d9864a203e79d8be7ba5">collision_scene.c</a>
 , <a class="el" href="collision__scene_8h.html#a62d6ea639161d9864a203e79d8be7ba5">collision_scene.h</a>
 </li>
-<li>collision_scene_render_debug_raylib()
-: <a class="el" href="collision__scene_8h.html#a9b74c694f952802a237ef57dd9bf02f2">collision_scene.h</a>
-</li>
 <li>collision_scene_reset()
-: <a class="el" href="collision__scene_8h.html#ad775fb1f73ec2ae6a0dc2ca0d00e8ed2">collision_scene.h</a>
-, <a class="el" href="collision__scene_8c.html#ad775fb1f73ec2ae6a0dc2ca0d00e8ed2">collision_scene.c</a>
+: <a class="el" href="collision__scene_8c.html#ad775fb1f73ec2ae6a0dc2ca0d00e8ed2">collision_scene.c</a>
+, <a class="el" href="collision__scene_8h.html#ad775fb1f73ec2ae6a0dc2ca0d00e8ed2">collision_scene.h</a>
 </li>
 <li>collision_scene_step()
 : <a class="el" href="collision__scene_8c.html#a3b3de1d5fd79c57e3bdb6846ce901c9a">collision_scene.c</a>
@@ -241,35 +241,39 @@ $(function() {
 , <a class="el" href="collision__scene_8h.html#a22135104ce37607b2369f69a7957a10d">collision_scene.h</a>
 </li>
 <li>cone_bounding_box()
-: <a class="el" href="collision_2shapes_2cone_8c.html#a0ab6eb1646daae5b28cc41ca49ba30bf">cone.c</a>
-, <a class="el" href="collision_2shapes_2cone_8h.html#a0ab6eb1646daae5b28cc41ca49ba30bf">cone.h</a>
+: <a class="el" href="collision_2shapes_2cone_8c.html#aecc2f72e34b7e85402e358813e12d67b">cone.c</a>
+, <a class="el" href="collision_2shapes_2cone_8h.html#a975fd15958c4a8cb25c69f5a176ee2c8">cone.h</a>
 </li>
 <li>cone_destroy()
 : <a class="el" href="objects_2cone_2cone_8c.html#a1f002057669090f88c868aef3343083c">cone.c</a>
 , <a class="el" href="objects_2cone_2cone_8h.html#a68aae9e38a4f273d75e90373b08cb6f3">cone.h</a>
+</li>
+<li>cone_inertia_tensor()
+: <a class="el" href="collision_2shapes_2cone_8c.html#aa52239f8bd36a48b79b3fcfec1a4b3a2">cone.c</a>
+, <a class="el" href="collision_2shapes_2cone_8h.html#aa52239f8bd36a48b79b3fcfec1a4b3a2">cone.h</a>
 </li>
 <li>cone_init()
 : <a class="el" href="objects_2cone_2cone_8c.html#a3bcf5cae2fcdd0a85e7379f6405856fd">cone.c</a>
 , <a class="el" href="objects_2cone_2cone_8h.html#a4b08572895c6d20f6f0e3e4264540e60">cone.h</a>
 </li>
 <li>cone_support_function()
-: <a class="el" href="collision_2shapes_2cone_8c.html#abe454dbafed1eac00e788b28c2a0d851">cone.c</a>
-, <a class="el" href="collision_2shapes_2cone_8h.html#abe454dbafed1eac00e788b28c2a0d851">cone.h</a>
+: <a class="el" href="collision_2shapes_2cone_8c.html#a554ae622011c531bad61fab012b4e27d">cone.c</a>
+, <a class="el" href="collision_2shapes_2cone_8h.html#a554ae622011c531bad61fab012b4e27d">cone.h</a>
 </li>
 <li>correct_overlap()
-: <a class="el" href="collide_8c.html#a2e221babe46f9cff4292f7a59351a37a">collide.c</a>
-, <a class="el" href="collide_8h.html#a2e221babe46f9cff4292f7a59351a37a">collide.h</a>
+: <a class="el" href="collide_8c.html#a8b355212c1642470f623c8d8c9d54276">collide.c</a>
+, <a class="el" href="collide_8h.html#a8b355212c1642470f623c8d8c9d54276">collide.h</a>
 </li>
 <li>correct_velocity()
-: <a class="el" href="collide_8c.html#aacb4f9fbc744ceab3a858b4404a325f4">collide.c</a>
-, <a class="el" href="collide_8h.html#aacb4f9fbc744ceab3a858b4404a325f4">collide.h</a>
+: <a class="el" href="collide_8c.html#afc10f7833a9c55388f138378cb60797c">collide.c</a>
+, <a class="el" href="collide_8h.html#afc10f7833a9c55388f138378cb60797c">collide.h</a>
 </li>
 <li>cosf()
 : <a class="el" href="mathf_8h.html#aaf8f74b31bea0f391c633dd681120237">mathf.h</a>
 </li>
 <li>countdown_timer_get_progress()
-: <a class="el" href="countdown__timer_8c.html#a2447ee22c8d8c7018699d71cbc2ac755">countdown_timer.c</a>
-, <a class="el" href="countdown__timer_8h.html#a2447ee22c8d8c7018699d71cbc2ac755">countdown_timer.h</a>
+: <a class="el" href="countdown__timer_8h.html#a2447ee22c8d8c7018699d71cbc2ac755">countdown_timer.h</a>
+, <a class="el" href="countdown__timer_8c.html#a2447ee22c8d8c7018699d71cbc2ac755">countdown_timer.c</a>
 </li>
 <li>countdown_timer_init()
 : <a class="el" href="countdown__timer_8c.html#a641d15ee8dda05558dc6532321516a47">countdown_timer.c</a>
@@ -296,24 +300,36 @@ $(function() {
 , <a class="el" href="countdown__timer_8h.html#ad7c2d22bf9b593ed7a3b3868563c2173">countdown_timer.h</a>
 </li>
 <li>countdown_timer_update()
-: <a class="el" href="countdown__timer_8c.html#a5339b9b20bc48009eeec5f2f93f04442">countdown_timer.c</a>
-, <a class="el" href="countdown__timer_8h.html#a5339b9b20bc48009eeec5f2f93f04442">countdown_timer.h</a>
+: <a class="el" href="countdown__timer_8h.html#a5339b9b20bc48009eeec5f2f93f04442">countdown_timer.h</a>
+, <a class="el" href="countdown__timer_8c.html#a5339b9b20bc48009eeec5f2f93f04442">countdown_timer.c</a>
+</li>
+<li>crate_destroy()
+: <a class="el" href="crate_8c.html#a800fd387e2906a27a0b3673daafe1c03">crate.c</a>
+, <a class="el" href="crate_8h.html#a92b3688e7251614804387528efdd74ee">crate.h</a>
+</li>
+<li>crate_init()
+: <a class="el" href="crate_8c.html#aec16b7ca7725f841bbdaa4c514715868">crate.c</a>
+, <a class="el" href="crate_8h.html#ab2f08b2582a196d27a001e27a5d96f21">crate.h</a>
 </li>
 <li>cylinder_bounding_box()
-: <a class="el" href="collision_2shapes_2cylinder_8c.html#a9c2cbeb8b00fd6c28aea9fefc12ed7e5">cylinder.c</a>
-, <a class="el" href="collision_2shapes_2cylinder_8h.html#a9c2cbeb8b00fd6c28aea9fefc12ed7e5">cylinder.h</a>
+: <a class="el" href="collision_2shapes_2cylinder_8c.html#a9f724b6b75f88c77d5315f196e26ff4d">cylinder.c</a>
+, <a class="el" href="collision_2shapes_2cylinder_8h.html#a97044dd7542ce91e02aa2936c71c0ec7">cylinder.h</a>
 </li>
 <li>cylinder_destroy()
 : <a class="el" href="objects_2cylinder_2cylinder_8c.html#a52e297c653b2763f7e97bad3b733953f">cylinder.c</a>
 , <a class="el" href="objects_2cylinder_2cylinder_8h.html#aab817a236bcc54fb58d487a42346d7cb">cylinder.h</a>
+</li>
+<li>cylinder_inertia_tensor()
+: <a class="el" href="collision_2shapes_2cylinder_8c.html#a206a3bdc22da56040c6beac74eee0fdc">cylinder.c</a>
+, <a class="el" href="collision_2shapes_2cylinder_8h.html#a206a3bdc22da56040c6beac74eee0fdc">cylinder.h</a>
 </li>
 <li>cylinder_init()
 : <a class="el" href="objects_2cylinder_2cylinder_8c.html#a8d122a6825b5808f4efef4e455310760">cylinder.c</a>
 , <a class="el" href="objects_2cylinder_2cylinder_8h.html#a924eed93a56e616bb3c2ee5b881adc0d">cylinder.h</a>
 </li>
 <li>cylinder_support_function()
-: <a class="el" href="collision_2shapes_2cylinder_8c.html#aff1d593d727fcc56e776bdd1bb69284c">cylinder.c</a>
-, <a class="el" href="collision_2shapes_2cylinder_8h.html#aff1d593d727fcc56e776bdd1bb69284c">cylinder.h</a>
+: <a class="el" href="collision_2shapes_2cylinder_8c.html#a6183e50dd893a12752ff3f51708498ee">cylinder.c</a>
+, <a class="el" href="collision_2shapes_2cylinder_8h.html#a6183e50dd893a12752ff3f51708498ee">cylinder.h</a>
 </li>
 </ul>
 </div><!-- contents -->

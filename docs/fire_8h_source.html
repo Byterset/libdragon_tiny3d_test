@@ -70,8 +70,8 @@ $(function() {
 <div class="title">fire.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="fire_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef __SPELL_FIRE_H__</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define __SPELL_FIRE_H__</span></div>
+<a href="fire_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef __EFFECT_FIRE_H__</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define __EFFECT_FIRE_H__</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;t3d/t3dmodel.h&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;../math/vector3.h&quot;</span></div>
@@ -82,8 +82,8 @@ $(function() {
 <div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="fire_8h.html#a5a6bf5e7e17068a3dca3550bbecdaea5">   10</a></span>&#160;<span class="preprocessor">#define MAX_FIRE_PARTICLE_COUNT     7</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
 <div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="structfire.html">   12</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structfire.html">fire</a> {</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structfire.html#af7a44a8d296d79deef45debb801fc9df">   13</a></span>&#160;    <a class="code" href="unionVector3.html">Vector3</a> <a class="code" href="structfire.html#af7a44a8d296d79deef45debb801fc9df">particle_offset</a>[<a class="code" href="fire_8h.html#a5a6bf5e7e17068a3dca3550bbecdaea5">MAX_FIRE_PARTICLE_COUNT</a>];</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structfire.html#a5ea122dec702e99ea7a37bfc89b1b499">   14</a></span>&#160;    <a class="code" href="unionVector3.html">Vector3</a> <a class="code" href="structfire.html#a5ea122dec702e99ea7a37bfc89b1b499">position</a>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structfire.html#af7a44a8d296d79deef45debb801fc9df">   13</a></span>&#160;    <a class="code" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> <a class="code" href="structfire.html#af7a44a8d296d79deef45debb801fc9df">particle_offset</a>[<a class="code" href="fire_8h.html#a5a6bf5e7e17068a3dca3550bbecdaea5">MAX_FIRE_PARTICLE_COUNT</a>];</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structfire.html#a5ea122dec702e99ea7a37bfc89b1b499">   14</a></span>&#160;    <a class="code" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> <a class="code" href="structfire.html#a5ea122dec702e99ea7a37bfc89b1b499">position</a>;</div>
 <div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structfire.html#a50a4c9032977c0b3f3116061dd9585a0">   15</a></span>&#160;    <a class="code" href="unionVector2.html">Vector2</a> <a class="code" href="structfire.html#a50a4c9032977c0b3f3116061dd9585a0">rotation</a>;</div>
 <div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="structfire.html#a4c82ffe3a4ff1341783f46fca68f1310">   16</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="structfire.html#a4c82ffe3a4ff1341783f46fca68f1310">cycle_time</a>;</div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structfire.html#a8651edc2e029d30f66c3ec5d913f2e99">   17</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="structfire.html#a8651edc2e029d30f66c3ec5d913f2e99">total_time</a>;</div>
@@ -109,8 +109,8 @@ $(function() {
 <div class="ttc" id="astructfire_html_a8651edc2e029d30f66c3ec5d913f2e99"><div class="ttname"><a href="structfire.html#a8651edc2e029d30f66c3ec5d913f2e99">fire::total_time</a></div><div class="ttdeci">float total_time</div><div class="ttdef"><b>Definition:</b> fire.h:17</div></div>
 <div class="ttc" id="astructfire_html_a9c8f8dab86d978f3968e4601224b3cdf"><div class="ttname"><a href="structfire.html#a9c8f8dab86d978f3968e4601224b3cdf">fire::end_time</a></div><div class="ttdeci">float end_time</div><div class="ttdef"><b>Definition:</b> fire.h:18</div></div>
 <div class="ttc" id="astructfire_html_af7a44a8d296d79deef45debb801fc9df"><div class="ttname"><a href="structfire.html#af7a44a8d296d79deef45debb801fc9df">fire::particle_offset</a></div><div class="ttdeci">Vector3 particle_offset[MAX_FIRE_PARTICLE_COUNT]</div><div class="ttdef"><b>Definition:</b> fire.h:13</div></div>
-<div class="ttc" id="aunionVector2_html"><div class="ttname"><a href="unionVector2.html">Vector2</a></div><div class="ttdef"><b>Definition:</b> vector2.h:4</div></div>
-<div class="ttc" id="aunionVector3_html"><div class="ttname"><a href="unionVector3.html">Vector3</a></div><div class="ttdef"><b>Definition:</b> vector3.h:10</div></div>
+<div class="ttc" id="aunionVector2_html"><div class="ttname"><a href="unionVector2.html">Vector2</a></div><div class="ttdef"><b>Definition:</b> vector2.h:7</div></div>
+<div class="ttc" id="avector3_8h_html_a9388e90302520bfda15dc15cdb488471"><div class="ttname"><a href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a></div><div class="ttdeci">fm_vec3_t Vector3</div><div class="ttdef"><b>Definition:</b> vector3.h:9</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -68,6 +68,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -81,20 +82,23 @@ $(function() {
 <code>#include &quot;<a class="el" href="entity__id_8h_source.html">../entity/entity_id.h</a>&quot;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &lt;libdragon.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for raycast.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="raycast_8h__incl.png" border="0" usemap="#asrc_2collision_2raycast_8h" alt=""/></div>
 <map name="asrc_2collision_2raycast_8h" id="asrc_2collision_2raycast_8h">
-<area shape="rect" title=" " alt="" coords="312,5,475,32"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="5,229,139,256"/>
-<area shape="rect" href="transform_8h.html" title=" " alt="" coords="81,80,229,107"/>
-<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="253,80,376,107"/>
-<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="401,80,546,107"/>
-<area shape="rect" title=" " alt="" coords="571,80,653,107"/>
-<area shape="rect" title=" " alt="" coords="678,80,749,107"/>
-<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="131,155,235,181"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="163,229,245,256"/>
+<area shape="rect" title=" " alt="" coords="283,5,445,32"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="73,304,207,331"/>
+<area shape="rect" title=" " alt="" coords="209,379,303,405"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="5,379,77,405"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="178,80,326,107"/>
+<area shape="rect" title=" " alt="" coords="321,229,404,256"/>
+<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="479,80,625,107"/>
+<area shape="rect" title=" " alt="" coords="649,80,719,107"/>
+<area shape="rect" title=" " alt="" coords="106,379,174,405"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="201,155,305,181"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="215,229,297,256"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -102,56 +106,56 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="raycast_8h__dep__incl.png" border="0" usemap="#asrc_2collision_2raycast_8hdep" alt=""/></div>
 <map name="asrc_2collision_2raycast_8hdep" id="asrc_2collision_2raycast_8hdep">
-<area shape="rect" title=" " alt="" coords="1344,5,1507,32"/>
-<area shape="rect" href="collide_8h.html" title=" " alt="" coords="4239,341,4398,367"/>
-<area shape="rect" href="raycast_8c.html" title=" " alt="" coords="5,430,168,457"/>
-<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="1362,80,1489,107"/>
-<area shape="rect" href="collide_8c.html" title=" " alt="" coords="4152,430,4309,457"/>
-<area shape="rect" href="collide__swept_8c.html" title=" " alt="" coords="4333,423,4480,464"/>
-<area shape="rect" href="collision__scene_8c.html" title=" " alt="" coords="4504,423,4661,464"/>
-<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="2509,162,2683,189"/>
-<area shape="rect" href="collision_2mesh__collider_8h.html" title=" " alt="" coords="3991,244,4129,285"/>
-<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="1815,244,1967,285"/>
-<area shape="rect" href="collision_2shapes_2box_8h.html" title=" " alt="" coords="1991,244,2140,285"/>
-<area shape="rect" href="capsule_8h.html" title=" " alt="" coords="561,244,711,285"/>
-<area shape="rect" href="collision_2shapes_2cone_8h.html" title=" " alt="" coords="1121,244,1271,285"/>
-<area shape="rect" href="collision_2shapes_2cylinder_8h.html" title=" " alt="" coords="449,333,599,375"/>
-<area shape="rect" href="lineSegment_8h.html" title=" " alt="" coords="124,244,273,285"/>
-<area shape="rect" href="sphere_8h.html" title=" " alt="" coords="785,244,935,285"/>
-<area shape="rect" href="sweep_8h.html" title=" " alt="" coords="1295,155,1444,196"/>
-<area shape="rect" href="aabb_8c.html" title="Implementation of the AABB structure and functions to work with Axis Aligned Bounding Boxes." alt="" coords="1621,162,1747,189"/>
-<area shape="rect" href="render__batch_8h.html" title=" " alt="" coords="3001,251,3189,278"/>
-<area shape="rect" href="aabbtree_8c.html" title=" " alt="" coords="3213,251,3385,278"/>
-<area shape="rect" href="collision__scene_8h.html" title=" " alt="" coords="2517,333,2675,375"/>
-<area shape="rect" href="collectable_8c.html" title=" " alt="" coords="1990,430,2199,457"/>
-<area shape="rect" href="main_8c.html" title=" " alt="" coords="2963,430,3053,457"/>
-<area shape="rect" href="objects_2box_2box_8c.html" title=" " alt="" coords="2223,430,2382,457"/>
-<area shape="rect" href="objects_2cone_2cone_8c.html" title=" " alt="" coords="1792,430,1965,457"/>
-<area shape="rect" href="objects_2cylinder_2cylinder_8c.html" title=" " alt="" coords="2517,423,2665,464"/>
-<area shape="rect" href="platform_8c.html" title=" " alt="" coords="2739,423,2891,464"/>
-<area shape="rect" href="player_8c.html" title=" " alt="" coords="1503,430,1644,457"/>
-<area shape="rect" href="collide__swept_8h.html" title=" " alt="" coords="4423,333,4569,375"/>
-<area shape="rect" href="collision_2mesh__collider_8c.html" title=" " alt="" coords="4593,333,4732,375"/>
-<area shape="rect" href="resource_2mesh__collider_8h.html" title=" " alt="" coords="3906,341,4113,367"/>
-<area shape="rect" href="scene_8h.html" title=" " alt="" coords="3913,430,4050,457"/>
-<area shape="rect" href="scene_8c.html" title=" " alt="" coords="3980,512,4116,539"/>
-<area shape="rect" href="collectable_8h.html" title=" " alt="" coords="1468,341,1679,367"/>
-<area shape="rect" href="physics__object_8c.html" title=" " alt="" coords="1703,333,1855,375"/>
-<area shape="rect" href="collision_2shapes_2box_8c.html" title=" " alt="" coords="1879,333,2028,375"/>
-<area shape="rect" href="capsule_8c.html" title=" " alt="" coords="673,333,823,375"/>
-<area shape="rect" href="collision_2shapes_2cone_8c.html" title=" " alt="" coords="1121,333,1271,375"/>
-<area shape="rect" href="collision_2shapes_2cylinder_8c.html" title=" " alt="" coords="343,423,492,464"/>
-<area shape="rect" href="lineSegment_8c.html" title=" " alt="" coords="124,333,273,375"/>
-<area shape="rect" href="sphere_8c.html" title=" " alt="" coords="897,333,1047,375"/>
-<area shape="rect" href="sweep_8c.html" title=" " alt="" coords="1295,333,1444,375"/>
-<area shape="rect" href="objects_2box_2box_8h.html" title=" " alt="" coords="2699,341,2859,367"/>
-<area shape="rect" href="objects_2cone_2cone_8h.html" title=" " alt="" coords="2318,341,2493,367"/>
-<area shape="rect" href="objects_2cylinder_2cylinder_8h.html" title=" " alt="" coords="2934,333,3082,375"/>
-<area shape="rect" href="platform_8h.html" title=" " alt="" coords="3107,333,3259,375"/>
-<area shape="rect" href="player_8h.html" title=" " alt="" coords="3283,341,3426,367"/>
-<area shape="rect" href="map_8h.html" title=" " alt="" coords="3450,341,3569,367"/>
-<area shape="rect" href="render__batch_8c.html" title=" " alt="" coords="3593,341,3780,367"/>
-<area shape="rect" href="render__scene_8h.html" title=" " alt="" coords="2103,341,2294,367"/>
+<area shape="rect" title=" " alt="" coords="891,5,1054,32"/>
+<area shape="rect" href="collide_8h.html" title=" " alt="" coords="1347,341,1505,367"/>
+<area shape="rect" href="raycast_8c.html" title=" " alt="" coords="229,430,391,457"/>
+<area shape="rect" href="ray__shape__intersection_8h.html" title=" " alt="" coords="415,333,605,375"/>
+<area shape="rect" href="ray__triangle__intersection_8h.html" title=" " alt="" coords="141,333,341,375"/>
+<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="2160,80,2287,107"/>
+<area shape="rect" href="camera__controller_8h.html" title=" " alt="" coords="3898,430,4114,457"/>
+<area shape="rect" href="collide_8c.html" title=" " alt="" coords="1526,430,1683,457"/>
+<area shape="rect" href="collide__swept_8c.html" title=" " alt="" coords="1353,423,1499,464"/>
+<area shape="rect" href="collision__scene_8c.html" title=" " alt="" coords="1170,423,1327,464"/>
+<area shape="rect" href="ray__shape__intersection_8c.html" title=" " alt="" coords="416,423,604,464"/>
+<area shape="rect" href="ray__triangle__intersection_8c.html" title=" " alt="" coords="5,423,204,464"/>
+<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="1635,162,1809,189"/>
+<area shape="rect" href="collision_2mesh__collider_8h.html" title=" " alt="" coords="1179,244,1318,285"/>
+<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="2213,244,2365,285"/>
+<area shape="rect" href="box_8h.html" title=" " alt="" coords="3107,333,3257,375"/>
+<area shape="rect" href="capsule_8h.html" title=" " alt="" coords="3165,155,3314,196"/>
+<area shape="rect" href="collision_2shapes_2cone_8h.html" title=" " alt="" coords="2086,155,2235,196"/>
+<area shape="rect" href="collision_2shapes_2cylinder_8h.html" title=" " alt="" coords="2329,155,2478,196"/>
+<area shape="rect" href="sphere_8h.html" title=" " alt="" coords="3841,244,3990,285"/>
+<area shape="rect" href="sweep_8h.html" title=" " alt="" coords="1886,155,2035,196"/>
+<area shape="rect" href="aabb_8c.html" title="Implementation of the AABB structure and functions to work with Axis Aligned Bounding Boxes." alt="" coords="1484,162,1611,189"/>
+<area shape="rect" href="render__batch_8h.html" title=" " alt="" coords="3047,251,3235,278"/>
+<area shape="rect" href="aabbtree_8c.html" title=" " alt="" coords="1512,251,1684,278"/>
+<area shape="rect" href="collision__scene_8h.html" title=" " alt="" coords="1530,333,1687,375"/>
+<area shape="rect" href="debugDraw_8h.html" title=" " alt="" coords="525,512,655,539"/>
+<area shape="rect" href="main_8c.html" title=" " alt="" coords="2631,587,2720,613"/>
+<area shape="rect" href="ball_8c.html" title=" " alt="" coords="3367,430,3525,457"/>
+<area shape="rect" href="crate_8c.html" title=" " alt="" coords="3113,430,3291,457"/>
+<area shape="rect" href="platform_8c.html" title=" " alt="" coords="2713,423,2865,464"/>
+<area shape="rect" href="collide__swept_8h.html" title=" " alt="" coords="1175,333,1322,375"/>
+<area shape="rect" href="collision_2mesh__collider_8c.html" title=" " alt="" coords="730,333,869,375"/>
+<area shape="rect" href="resource_2mesh__collider_8h.html" title=" " alt="" coords="893,341,1100,367"/>
+<area shape="rect" href="scene_8h.html" title=" " alt="" coords="3824,587,3961,613"/>
+<area shape="rect" href="collectable_8h.html" title=" " alt="" coords="2187,512,2398,539"/>
+<area shape="rect" href="physics__object_8c.html" title=" " alt="" coords="2159,333,2311,375"/>
+<area shape="rect" href="box_8c.html" title=" " alt="" coords="2939,423,3089,464"/>
+<area shape="rect" href="capsule_8c.html" title=" " alt="" coords="3841,333,3990,375"/>
+<area shape="rect" href="collision_2shapes_2cone_8c.html" title=" " alt="" coords="1935,333,2085,375"/>
+<area shape="rect" href="collision_2shapes_2cylinder_8c.html" title=" " alt="" coords="2335,333,2485,375"/>
+<area shape="rect" href="sphere_8c.html" title=" " alt="" coords="3667,333,3817,375"/>
+<area shape="rect" href="sweep_8c.html" title=" " alt="" coords="1762,333,1911,375"/>
+<area shape="rect" href="ball_8h.html" title=" " alt="" coords="3483,341,3643,367"/>
+<area shape="rect" href="objects_2cone_2cone_8h.html" title=" " alt="" coords="2681,341,2856,367"/>
+<area shape="rect" href="crate_8h.html" title=" " alt="" coords="3281,341,3459,367"/>
+<area shape="rect" href="objects_2cylinder_2cylinder_8h.html" title=" " alt="" coords="2509,333,2657,375"/>
+<area shape="rect" href="platform_8h.html" title=" " alt="" coords="2881,333,3033,375"/>
+<area shape="rect" href="player_8h.html" title=" " alt="" coords="4116,341,4259,367"/>
+<area shape="rect" href="camera_8h.html" title=" " alt="" coords="3817,512,3969,539"/>
+<area shape="rect" href="camera__controller_8c.html" title=" " alt="" coords="4044,512,4259,539"/>
 </map>
 </div>
 </div>
@@ -165,6 +169,15 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structraycast__hit.html">raycast_hit</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raycast hit structure represents the result of a raycast.  <a href="structraycast__hit.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a6115f07fa948bd49b694081d210eba4e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="raycast_8h.html#a6115f07fa948bd49b694081d210eba4e">RAYCAST_MAX_DISTANCE</a>&#160;&#160;&#160;2000.0f</td></tr>
+<tr class="separator:a6115f07fa948bd49b694081d210eba4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61e477f822ea9ba562e39b0d91eb2773"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="raycast_8h.html#a61e477f822ea9ba562e39b0d91eb2773">RAYCAST_MAX_OBJECT_TESTS</a>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a61e477f822ea9ba562e39b0d91eb2773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9d3d527a582c38bb0e8085c15b4e5a1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="raycast_8h.html#ab9d3d527a582c38bb0e8085c15b4e5a1">RAYCAST_MAX_TRIANGLE_TESTS</a>&#160;&#160;&#160;15</td></tr>
+<tr class="separator:ab9d3d527a582c38bb0e8085c15b4e5a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -189,16 +202,62 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae8f919290f67e4df59e834b152ece2da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structraycast.html">raycast</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="raycast_8h.html#ae8f919290f67e4df59e834b152ece2da">raycast_init</a> (<a class="el" href="unionVector3.html">Vector3</a> origin, <a class="el" href="unionVector3.html">Vector3</a> dir, float maxDistance, <a class="el" href="raycast_8h.html#ae8418136eb75d783f16d1a1fe824adec">raycast_collision_scene_mask</a> mask, bool interact_trigger, uint16_t collision_layer_filter)</td></tr>
-<tr class="separator:ae8f919290f67e4df59e834b152ece2da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a040cdffa62011d0692604474433dbd30"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structraycast.html">raycast</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="raycast_8h.html#a040cdffa62011d0692604474433dbd30">raycast_init</a> (<a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> origin, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> dir, float maxDistance, <a class="el" href="raycast_8h.html#ae8418136eb75d783f16d1a1fe824adec">raycast_collision_scene_mask</a> mask, bool interact_trigger, uint16_t collision_layers, uint16_t ignore_layers)</td></tr>
+<tr class="memdesc:a040cdffa62011d0692604474433dbd30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a raycast with the given parameters and returns a new raycast struct.  <a href="raycast_8h.html#a040cdffa62011d0692604474433dbd30">More...</a><br /></td></tr>
+<tr class="separator:a040cdffa62011d0692604474433dbd30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2547b5064d7a0fee042a913a8c4288e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="raycast_8h.html#a2547b5064d7a0fee042a913a8c4288e4">raycast_transform</a> (<a class="el" href="structTransform.html">Transform</a> *transform, <a class="el" href="structraycast.html">raycast</a> *ray, <a class="el" href="structraycast.html">raycast</a> *output)</td></tr>
+<tr class="memdesc:a2547b5064d7a0fee042a913a8c4288e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies a given transform to a raycast translating the origin of the ray and rotating the direction.  <a href="raycast_8h.html#a2547b5064d7a0fee042a913a8c4288e4">More...</a><br /></td></tr>
 <tr class="separator:a2547b5064d7a0fee042a913a8c4288e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b6d319d92f0425db067a644146d923d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="raycast_8h.html#a2b6d319d92f0425db067a644146d923d">raycast_calc_distance_to_point</a> (<a class="el" href="structraycast.html">raycast</a> *ray, <a class="el" href="unionVector3.html">Vector3</a> *point)</td></tr>
+<tr class="memitem:a2b6d319d92f0425db067a644146d923d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="raycast_8h.html#a2b6d319d92f0425db067a644146d923d">raycast_calc_distance_to_point</a> (<a class="el" href="structraycast.html">raycast</a> *ray, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *point)</td></tr>
+<tr class="memdesc:a2b6d319d92f0425db067a644146d923d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the distance of a point in space to the line given by the ray origin and direction.  <a href="raycast_8h.html#a2b6d319d92f0425db067a644146d923d">More...</a><br /></td></tr>
 <tr class="separator:a2b6d319d92f0425db067a644146d923d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92735ca7b281de2af69fd5aa7a22cd7f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="raycast_8h.html#a92735ca7b281de2af69fd5aa7a22cd7f">raycast_cast</a> (<a class="el" href="structraycast.html">raycast</a> *ray, <a class="el" href="structraycast__hit.html">raycast_hit</a> *hit)</td></tr>
-<tr class="memdesc:a92735ca7b281de2af69fd5aa7a22cd7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">cast a ray into the existing collision scene and return a hit object if one is found  <a href="raycast_8h.html#a92735ca7b281de2af69fd5aa7a22cd7f">More...</a><br /></td></tr>
+<tr class="memdesc:a92735ca7b281de2af69fd5aa7a22cd7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">cast a ray into the existing collision scene and return true if an object or static collision triangle fitting the settings of the raycast is hit.  <a href="raycast_8h.html#a92735ca7b281de2af69fd5aa7a22cd7f">More...</a><br /></td></tr>
 <tr class="separator:a92735ca7b281de2af69fd5aa7a22cd7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a6115f07fa948bd49b694081d210eba4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6115f07fa948bd49b694081d210eba4e">&#9670;&nbsp;</a></span>RAYCAST_MAX_DISTANCE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RAYCAST_MAX_DISTANCE&#160;&#160;&#160;2000.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a61e477f822ea9ba562e39b0d91eb2773"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61e477f822ea9ba562e39b0d91eb2773">&#9670;&nbsp;</a></span>RAYCAST_MAX_OBJECT_TESTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RAYCAST_MAX_OBJECT_TESTS&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab9d3d527a582c38bb0e8085c15b4e5a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9d3d527a582c38bb0e8085c15b4e5a1">&#9670;&nbsp;</a></span>RAYCAST_MAX_TRIANGLE_TESTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RAYCAST_MAX_TRIANGLE_TESTS&#160;&#160;&#160;15</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a3e43f0b5f8111aab9998815e2d5c09e5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3e43f0b5f8111aab9998815e2d5c09e5">&#9670;&nbsp;</a></span>raycast</h2>
@@ -286,7 +345,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>point</em>&#160;</td>
         </tr>
         <tr>
@@ -296,6 +355,17 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Calculate the distance of a point in space to the line given by the ray origin and direction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ray</td><td></td></tr>
+    <tr><td class="paramname">point</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><br  />
+ </dd></dl>
 
 </div>
 </div>
@@ -325,7 +395,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>cast a ray into the existing collision scene and return a hit object if one is found </p>
+<p>cast a ray into the existing collision scene and return true if an object or static collision triangle fitting the settings of the raycast is hit. </p>
 <p>The hit object will contain the raycast hit information of the intersection with the least distance </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ray</td><td>pointer to the ray to be cast </td></tr>
@@ -333,12 +403,12 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the raycast has hit anything, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the raycast has hit anything mathing the mask &amp; filter, false otherwise </dd></dl>
 
 </div>
 </div>
-<a id="ae8f919290f67e4df59e834b152ece2da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8f919290f67e4df59e834b152ece2da">&#9670;&nbsp;</a></span>raycast_init()</h2>
+<a id="a040cdffa62011d0692604474433dbd30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a040cdffa62011d0692604474433dbd30">&#9670;&nbsp;</a></span>raycast_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -346,13 +416,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structraycast.html">raycast</a> raycast_init </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td>
           <td class="paramname"><em>origin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td>
           <td class="paramname"><em>dir</em>, </td>
         </tr>
         <tr>
@@ -377,7 +447,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>collision_layer_filter</em>&#160;</td>
+          <td class="paramname"><em>collision_layers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>ignore_layers</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -386,6 +462,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Initializes a raycast with the given parameters and returns a new raycast struct. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">origin</td><td>the origin point of the ray in world space </td></tr>
+    <tr><td class="paramname">dir</td><td>the direction of the ray (will be normalized during initialization) </td></tr>
+    <tr><td class="paramname">maxDistance</td><td>the maximum distance until which hits will be considered. Must be &gt; 0 </td></tr>
+    <tr><td class="paramname">mask</td><td>decides if the ray will hit physicsObjects, static Collision or both </td></tr>
+    <tr><td class="paramname">interact_trigger</td><td>toggle if the raycast will be able to hit physicsObjects that are triggers </td></tr>
+    <tr><td class="paramname">collision_layers</td><td>the mask of the rays collision layers - the layers the ray will be able to hit </td></tr>
+    <tr><td class="paramname">ignore_layers</td><td>the mask of the collision layers that will be explicitly ignored by the raycast </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new initialized raycast structure </dd></dl>
 
 </div>
 </div>
@@ -420,6 +511,17 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Applies a given transform to a raycast translating the origin of the ray and rotating the direction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">transform</td><td></td></tr>
+    <tr><td class="paramname">ray</td><td></td></tr>
+    <tr><td class="paramname">output</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

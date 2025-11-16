@@ -67,24 +67,27 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">quaternion.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="vector3_8h_source.html">vector3.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="vector2_8h_source.html">vector2.h</a>&quot;</code><br />
+<code>#include &lt;stdbool.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for quaternion.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="quaternion_8h__incl.png" border="0" usemap="#asrc_2math_2quaternion_8h" alt=""/></div>
 <map name="asrc_2math_2quaternion_8h" id="asrc_2math_2quaternion_8h">
-<area shape="rect" title=" " alt="" coords="17,5,183,32"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="5,80,88,107"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="112,80,195,107"/>
+<area shape="rect" title=" " alt="" coords="70,5,235,32"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="111,155,194,181"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="33,80,115,107"/>
+<area shape="rect" title=" " alt="" coords="190,80,273,107"/>
+<area shape="rect" title=" " alt="" coords="5,229,100,256"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="125,229,197,256"/>
+<area shape="rect" title=" " alt="" coords="221,229,289,256"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -92,128 +95,135 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="quaternion_8h__dep__incl.png" border="0" usemap="#asrc_2math_2quaternion_8hdep" alt=""/></div>
 <map name="asrc_2math_2quaternion_8hdep" id="asrc_2math_2quaternion_8hdep">
-<area shape="rect" title=" " alt="" coords="1902,5,2067,32"/>
-<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="327,87,461,114"/>
-<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="1626,169,1778,211"/>
-<area shape="rect" href="collision_2shapes_2box_8h.html" title=" " alt="" coords="997,169,1146,211"/>
-<area shape="rect" href="capsule_8h.html" title=" " alt="" coords="2301,169,2450,211"/>
-<area shape="rect" href="collision_2shapes_2cone_8h.html" title=" " alt="" coords="1802,169,1951,211"/>
-<area shape="rect" href="collision_2shapes_2cylinder_8h.html" title=" " alt="" coords="2474,259,2623,300"/>
-<area shape="rect" href="lineSegment_8h.html" title=" " alt="" coords="781,169,930,211"/>
-<area shape="rect" href="sphere_8h.html" title=" " alt="" coords="1975,169,2125,211"/>
-<area shape="rect" href="sweep_8h.html" title=" " alt="" coords="1529,80,1678,121"/>
-<area shape="rect" href="basis_8h.html" title="Defines the Basis structure and functions for quaternion&#45;based rotations." alt="" coords="2119,87,2248,114"/>
-<area shape="rect" href="quaternion_8c.html" title=" " alt="" coords="2525,87,2689,114"/>
-<area shape="rect" href="transform_8h.html" title=" " alt="" coords="3687,87,3845,114"/>
-<area shape="rect" href="collide__swept_8c.html" title=" " alt="" coords="266,348,413,389"/>
-<area shape="rect" href="epa_8h.html" title=" " alt="" coords="325,177,463,203"/>
-<area shape="rect" href="gjk_8c.html" title=" " alt="" coords="5,177,140,203"/>
-<area shape="rect" href="collide_8h.html" title=" " alt="" coords="488,266,647,293"/>
-<area shape="rect" href="collide__swept_8h.html" title=" " alt="" coords="266,259,413,300"/>
-<area shape="rect" href="raycast_8c.html" title=" " alt="" coords="629,355,791,382"/>
-<area shape="rect" href="collectable_8h.html" title=" " alt="" coords="3109,266,3319,293"/>
-<area shape="rect" href="collision__scene_8h.html" title=" " alt="" coords="2018,259,2175,300"/>
-<area shape="rect" href="physics__object_8c.html" title=" " alt="" coords="1445,259,1597,300"/>
-<area shape="rect" href="collision_2shapes_2box_8c.html" title=" " alt="" coords="1047,259,1197,300"/>
-<area shape="rect" href="capsule_8c.html" title=" " alt="" coords="2301,259,2450,300"/>
-<area shape="rect" href="collision_2shapes_2cone_8c.html" title=" " alt="" coords="1621,259,1770,300"/>
-<area shape="rect" href="collision_2shapes_2cylinder_8c.html" title=" " alt="" coords="1985,348,2134,389"/>
-<area shape="rect" href="lineSegment_8c.html" title=" " alt="" coords="773,259,922,300"/>
-<area shape="rect" href="sphere_8c.html" title=" " alt="" coords="1794,259,1943,300"/>
-<area shape="rect" href="sweep_8c.html" title=" " alt="" coords="1221,259,1370,300"/>
-<area shape="rect" href="objects_2box_2box_8h.html" title=" " alt="" coords="2925,266,3085,293"/>
-<area shape="rect" href="objects_2cone_2cone_8h.html" title=" " alt="" coords="3344,266,3519,293"/>
-<area shape="rect" href="objects_2cylinder_2cylinder_8h.html" title=" " alt="" coords="3543,259,3691,300"/>
-<area shape="rect" href="platform_8h.html" title=" " alt="" coords="2749,259,2901,300"/>
-<area shape="rect" href="player_8h.html" title=" " alt="" coords="3715,266,3857,293"/>
-<area shape="rect" href="collectable_8c.html" title=" " alt="" coords="2159,355,2368,382"/>
-<area shape="rect" href="main_8c.html" title=" " alt="" coords="3656,355,3745,382"/>
-<area shape="rect" href="player_8c.html" title=" " alt="" coords="2763,355,2905,382"/>
-<area shape="rect" href="objects_2box_2box_8c.html" title=" " alt="" coords="1801,355,1960,382"/>
-<area shape="rect" href="objects_2cone_2cone_8c.html" title=" " alt="" coords="2393,355,2566,382"/>
-<area shape="rect" href="objects_2cylinder_2cylinder_8c.html" title=" " alt="" coords="2591,348,2739,389"/>
-<area shape="rect" href="platform_8c.html" title=" " alt="" coords="1625,348,1777,389"/>
-<area shape="rect" href="basis_8c.html" title="Implementation of the Basis structure and functions for basis rotations." alt="" coords="2149,177,2277,203"/>
-<area shape="rect" href="raycast_8h.html" title=" " alt="" coords="594,177,757,203"/>
-<area shape="rect" href="map_8h.html" title=" " alt="" coords="3881,266,4000,293"/>
-<area shape="rect" href="transform_8c.html" title=" " alt="" coords="4029,177,4188,203"/>
-<area shape="rect" href="soda__can_8h.html" title=" " alt="" coords="4270,259,4427,300"/>
-<area shape="rect" href="camera_8h.html" title=" " alt="" coords="4502,177,4654,203"/>
-<area shape="rect" href="render__batch_8h.html" title=" " alt="" coords="3416,177,3604,203"/>
-<area shape="rect" href="skybox3d_8h.html" title=" " alt="" coords="4076,266,4245,293"/>
-<area shape="rect" href="renderable_8h.html" title=" " alt="" coords="3679,177,3853,203"/>
+<area shape="rect" title=" " alt="" coords="2956,5,3121,32"/>
+<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="393,87,527,114"/>
+<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="1801,169,1953,211"/>
+<area shape="rect" href="ray__shape__intersection_8h.html" title=" " alt="" coords="3311,259,3500,300"/>
+<area shape="rect" href="box_8h.html" title=" " alt="" coords="892,259,1041,300"/>
+<area shape="rect" href="capsule_8h.html" title=" " alt="" coords="393,259,543,300"/>
+<area shape="rect" href="collision_2shapes_2cone_8h.html" title=" " alt="" coords="3437,169,3587,211"/>
+<area shape="rect" href="collision_2shapes_2cylinder_8h.html" title=" " alt="" coords="3137,259,3287,300"/>
+<area shape="rect" href="ray__triangle__intersection_8h.html" title=" " alt="" coords="3799,259,3999,300"/>
+<area shape="rect" href="sphere_8h.html" title=" " alt="" coords="719,259,868,300"/>
+<area shape="rect" href="sweep_8h.html" title=" " alt="" coords="2964,80,3113,121"/>
+<area shape="rect" href="basis_8h.html" title="Defines the Basis structure and functions for quaternion&#45;based rotations." alt="" coords="3662,87,3791,114"/>
+<area shape="rect" href="quaternion_8c.html" title=" " alt="" coords="3815,87,3979,114"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="2325,87,2483,114"/>
+<area shape="rect" href="collide__swept_8c.html" title=" " alt="" coords="39,348,185,389"/>
+<area shape="rect" href="epa_8h.html" title=" " alt="" coords="132,177,271,203"/>
+<area shape="rect" href="gjk_8c.html" title=" " alt="" coords="393,177,527,203"/>
+<area shape="rect" href="collide_8h.html" title=" " alt="" coords="210,266,369,293"/>
+<area shape="rect" href="collide__swept_8h.html" title=" " alt="" coords="39,259,185,300"/>
+<area shape="rect" href="collectable_8h.html" title=" " alt="" coords="1628,266,1839,293"/>
+<area shape="rect" href="collision__scene_8h.html" title=" " alt="" coords="1863,259,2020,300"/>
+<area shape="rect" href="physics__object_8c.html" title=" " alt="" coords="1452,259,1604,300"/>
+<area shape="rect" href="box_8c.html" title=" " alt="" coords="892,348,1041,389"/>
+<area shape="rect" href="capsule_8c.html" title=" " alt="" coords="505,348,655,389"/>
+<area shape="rect" href="collision_2shapes_2cone_8c.html" title=" " alt="" coords="3524,259,3673,300"/>
+<area shape="rect" href="collision_2shapes_2cylinder_8c.html" title=" " alt="" coords="2771,348,2920,389"/>
+<area shape="rect" href="sphere_8c.html" title=" " alt="" coords="699,348,848,389"/>
+<area shape="rect" href="sweep_8c.html" title=" " alt="" coords="2964,259,3113,300"/>
+<area shape="rect" href="ball_8h.html" title=" " alt="" coords="1065,266,1225,293"/>
+<area shape="rect" href="objects_2cone_2cone_8h.html" title=" " alt="" coords="2765,266,2939,293"/>
+<area shape="rect" href="crate_8h.html" title=" " alt="" coords="1249,266,1428,293"/>
+<area shape="rect" href="objects_2cylinder_2cylinder_8h.html" title=" " alt="" coords="2541,259,2689,300"/>
+<area shape="rect" href="platform_8h.html" title=" " alt="" coords="2212,259,2364,300"/>
+<area shape="rect" href="player_8h.html" title=" " alt="" coords="2045,266,2187,293"/>
+<area shape="rect" href="collectable_8c.html" title=" " alt="" coords="1547,355,1757,382"/>
+<area shape="rect" href="main_8c.html" title=" " alt="" coords="2243,355,2333,382"/>
+<area shape="rect" href="player_8c.html" title=" " alt="" coords="1781,355,1923,382"/>
+<area shape="rect" href="raycast_8c.html" title=" " alt="" coords="3568,355,3731,382"/>
+<area shape="rect" href="ball_8c.html" title=" " alt="" coords="1066,355,1225,382"/>
+<area shape="rect" href="objects_2cone_2cone_8c.html" title=" " alt="" coords="3057,355,3231,382"/>
+<area shape="rect" href="crate_8c.html" title=" " alt="" coords="1250,355,1427,382"/>
+<area shape="rect" href="objects_2cylinder_2cylinder_8c.html" title=" " alt="" coords="2541,348,2689,389"/>
+<area shape="rect" href="platform_8c.html" title=" " alt="" coords="1947,348,2099,389"/>
+<area shape="rect" href="ray__shape__intersection_8c.html" title=" " alt="" coords="3311,348,3499,389"/>
+<area shape="rect" href="ray__triangle__intersection_8c.html" title=" " alt="" coords="3799,348,3998,389"/>
+<area shape="rect" href="basis_8c.html" title="Implementation of the Basis structure and functions for basis rotations." alt="" coords="3663,177,3791,203"/>
+<area shape="rect" href="raycast_8h.html" title=" " alt="" coords="3200,177,3363,203"/>
+<area shape="rect" href="map_8h.html" title=" " alt="" coords="2295,177,2414,203"/>
+<area shape="rect" href="transform_8c.html" title=" " alt="" coords="2010,177,2169,203"/>
+<area shape="rect" href="soda__can_8h.html" title=" " alt="" coords="2489,169,2647,211"/>
 </map>
 </div>
 </div>
 <p><a href="quaternion_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structQuaternion.html">Quaternion</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a8b8ae6480df2117ee6e3edd97c4309a0"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structQuaternion.html">Quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a8b8ae6480df2117ee6e3edd97c4309a0">Quaternion</a></td></tr>
-<tr class="separator:a8b8ae6480df2117ee6e3edd97c4309a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b650dbe9845f0655da72e4a978a6358"><td class="memItemLeft" align="right" valign="top">typedef fm_quat_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a></td></tr>
+<tr class="separator:a6b650dbe9845f0655da72e4a978a6358"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae121ee9135c9da7e6cc2619a99e2645c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#ae121ee9135c9da7e6cc2619a99e2645c">quatIdent</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q)</td></tr>
+<tr class="memitem:ae121ee9135c9da7e6cc2619a99e2645c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#ae121ee9135c9da7e6cc2619a99e2645c">quatIdent</a> (<a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q)</td></tr>
+<tr class="memdesc:ae121ee9135c9da7e6cc2619a99e2645c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an identity Quaternion.  <a href="quaternion_8h.html#ae121ee9135c9da7e6cc2619a99e2645c">More...</a><br /></td></tr>
 <tr class="separator:ae121ee9135c9da7e6cc2619a99e2645c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab45b8f43b04b1fe0f4b9796480d493e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#ab45b8f43b04b1fe0f4b9796480d493e4">quatAxisAngle</a> (<a class="el" href="unionVector3.html">Vector3</a> *axis, float angle, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:ab45b8f43b04b1fe0f4b9796480d493e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c666a3dc6956ff66043a558468ba7f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a0c666a3dc6956ff66043a558468ba7f0">quatAxisComplex</a> (<a class="el" href="unionVector3.html">Vector3</a> *axis, <a class="el" href="unionVector2.html">Vector2</a> *complex, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a0c666a3dc6956ff66043a558468ba7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69905a1431117a6dd0817ca016f9e1d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a69905a1431117a6dd0817ca016f9e1d9">quatConjugate</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *in, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a69905a1431117a6dd0817ca016f9e1d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a485f7e2430bd5e7895674ff2c015dd53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a485f7e2430bd5e7895674ff2c015dd53">quatNegate</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *in, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a485f7e2430bd5e7895674ff2c015dd53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac726a3867b018503417208a988d4640c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#ac726a3867b018503417208a988d4640c">quatMultVector</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q, <a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:ac726a3867b018503417208a988d4640c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4094a0e9a6b252ab5e19b1e6183abe5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#ac4094a0e9a6b252ab5e19b1e6183abe5">quatRotatedBoundingBoxSize</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q, <a class="el" href="unionVector3.html">Vector3</a> *halfBoxSize, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:ac4094a0e9a6b252ab5e19b1e6183abe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cd26605ace7ccaeab3cf26613d79312"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a6cd26605ace7ccaeab3cf26613d79312">quatMultiply</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *a, <a class="el" href="structQuaternion.html">Quaternion</a> *b, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a6cd26605ace7ccaeab3cf26613d79312"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a954c5493a1a3802b7b241c9f42029a38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a954c5493a1a3802b7b241c9f42029a38">quatAdd</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *a, <a class="el" href="structQuaternion.html">Quaternion</a> *b, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a954c5493a1a3802b7b241c9f42029a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72ee8797e1fe3c35b701d8038d875d01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a72ee8797e1fe3c35b701d8038d875d01">quatToMatrix</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q, float out[4][4])</td></tr>
-<tr class="separator:a72ee8797e1fe3c35b701d8038d875d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1110e54a2461a938fff79b66d143db93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a1110e54a2461a938fff79b66d143db93">quatNormalize</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a1110e54a2461a938fff79b66d143db93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ce32b242b038bc6011d0cd9e569c32d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a8ce32b242b038bc6011d0cd9e569c32d">quatRandom</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q)</td></tr>
+<tr class="memitem:a5d478682eb560afbc52f728e0c4c048b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a5d478682eb560afbc52f728e0c4c048b">quatAxisAngle</a> (const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *axis, float angle, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:a5d478682eb560afbc52f728e0c4c048b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a Quaternion representing a rotation around an axis by a given angle.  <a href="quaternion_8h.html#a5d478682eb560afbc52f728e0c4c048b">More...</a><br /></td></tr>
+<tr class="separator:a5d478682eb560afbc52f728e0c4c048b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49741d3bc4d24f5be6ed52efd0d07772"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a49741d3bc4d24f5be6ed52efd0d07772">quatAxisComplex</a> (const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *axis, const <a class="el" href="unionVector2.html">Vector2</a> *complex, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:a49741d3bc4d24f5be6ed52efd0d07772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similarly to quatAxisAngle this will construct a Quaternion that represents a rotation around an axis. But here the rotation is given by a complex number.  <a href="quaternion_8h.html#a49741d3bc4d24f5be6ed52efd0d07772">More...</a><br /></td></tr>
+<tr class="separator:a49741d3bc4d24f5be6ed52efd0d07772"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11f642ccb2ec08fbc46781337f4c5716"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a11f642ccb2ec08fbc46781337f4c5716">quatConjugate</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *in, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:a11f642ccb2ec08fbc46781337f4c5716"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the Conjugate of a quaternion.  <a href="quaternion_8h.html#a11f642ccb2ec08fbc46781337f4c5716">More...</a><br /></td></tr>
+<tr class="separator:a11f642ccb2ec08fbc46781337f4c5716"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d4ed35999eba41aa54a08d08063885d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a5d4ed35999eba41aa54a08d08063885d">quatNegate</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *in, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:a5d4ed35999eba41aa54a08d08063885d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flips the sign of all components of the input Quaternion.  <a href="quaternion_8h.html#a5d4ed35999eba41aa54a08d08063885d">More...</a><br /></td></tr>
+<tr class="separator:a5d4ed35999eba41aa54a08d08063885d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94b21df349768713cf8ca7d279615992"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a94b21df349768713cf8ca7d279615992">quatMultVector</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *a, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
+<tr class="memdesc:a94b21df349768713cf8ca7d279615992"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies a quaternion by a vector.  <a href="quaternion_8h.html#a94b21df349768713cf8ca7d279615992">More...</a><br /></td></tr>
+<tr class="separator:a94b21df349768713cf8ca7d279615992"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affa8766b0ea7161ffdf6cf215d308f4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#affa8766b0ea7161ffdf6cf215d308f4b">quatMultiply</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *a, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *b, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:affa8766b0ea7161ffdf6cf215d308f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply two Quaternions.  <a href="quaternion_8h.html#affa8766b0ea7161ffdf6cf215d308f4b">More...</a><br /></td></tr>
+<tr class="separator:affa8766b0ea7161ffdf6cf215d308f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5348460efc33846d5f047d00ae80eb52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a5348460efc33846d5f047d00ae80eb52">quatAdd</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *a, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *b, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:a5348460efc33846d5f047d00ae80eb52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds two Quaternions together component-wise.  <a href="quaternion_8h.html#a5348460efc33846d5f047d00ae80eb52">More...</a><br /></td></tr>
+<tr class="separator:a5348460efc33846d5f047d00ae80eb52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc88114c0cf691570b85b482ac2844db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#afc88114c0cf691570b85b482ac2844db">quatToMatrix</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q, float out[4][4])</td></tr>
+<tr class="memdesc:afc88114c0cf691570b85b482ac2844db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an input quaternion into an equivalent 4x4 rotation matrix.  <a href="quaternion_8h.html#afc88114c0cf691570b85b482ac2844db">More...</a><br /></td></tr>
+<tr class="separator:afc88114c0cf691570b85b482ac2844db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a405c368e7e50e9eda4224cace8a41d5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a405c368e7e50e9eda4224cace8a41d5b">quatNormalize</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:a405c368e7e50e9eda4224cace8a41d5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalized a quaternion.  <a href="quaternion_8h.html#a405c368e7e50e9eda4224cace8a41d5b">More...</a><br /></td></tr>
+<tr class="separator:a405c368e7e50e9eda4224cace8a41d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce32b242b038bc6011d0cd9e569c32d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a8ce32b242b038bc6011d0cd9e569c32d">quatRandom</a> (<a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q)</td></tr>
+<tr class="memdesc:a8ce32b242b038bc6011d0cd9e569c32d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a pseudo-random quaternion rotation.  <a href="quaternion_8h.html#a8ce32b242b038bc6011d0cd9e569c32d">More...</a><br /></td></tr>
 <tr class="separator:a8ce32b242b038bc6011d0cd9e569c32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02b262fe1eba55d072292636ddabea20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a02b262fe1eba55d072292636ddabea20">quatLook</a> (<a class="el" href="unionVector3.html">Vector3</a> *lookDir, <a class="el" href="unionVector3.html">Vector3</a> *up, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a02b262fe1eba55d072292636ddabea20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67fcd84362c643129d69a1f00f66b01d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a67fcd84362c643129d69a1f00f66b01d">quatEulerAngles</a> (<a class="el" href="unionVector3.html">Vector3</a> *angles, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a67fcd84362c643129d69a1f00f66b01d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61295b100b3029d7aad5013113aa3575"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a61295b100b3029d7aad5013113aa3575">quatLerp</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *a, <a class="el" href="structQuaternion.html">Quaternion</a> *b, float t, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a61295b100b3029d7aad5013113aa3575"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22149fa08c22cb8212df255cefde0f74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a22149fa08c22cb8212df255cefde0f74">quatApplyAngularVelocity</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *input, <a class="el" href="unionVector3.html">Vector3</a> *w, float timeStep, <a class="el" href="structQuaternion.html">Quaternion</a> *output)</td></tr>
-<tr class="separator:a22149fa08c22cb8212df255cefde0f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc4b8e6e29282312169311d7b36d5fef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#acc4b8e6e29282312169311d7b36d5fef">quatDecompose</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *input, <a class="el" href="unionVector3.html">Vector3</a> *axis, float *angle)</td></tr>
-<tr class="separator:acc4b8e6e29282312169311d7b36d5fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d1374bf9c3c49432fe7408227ac32c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a5d1374bf9c3c49432fe7408227ac32c7">quatRotateAxisEuler</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *q, <a class="el" href="unionVector3.html">Vector3</a> *axis, float angle, <a class="el" href="structQuaternion.html">Quaternion</a> *out)</td></tr>
-<tr class="separator:a5d1374bf9c3c49432fe7408227ac32c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7af17ea186a5a670a2f25dba8d4d9a92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a7af17ea186a5a670a2f25dba8d4d9a92">quatIsIdentical</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *a, <a class="el" href="structQuaternion.html">Quaternion</a> *b)</td></tr>
-<tr class="separator:a7af17ea186a5a670a2f25dba8d4d9a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21b5bfdd64a2b123c16c116c5263a53e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a21b5bfdd64a2b123c16c116c5263a53e">quatDot</a> (<a class="el" href="structQuaternion.html">Quaternion</a> *a, <a class="el" href="structQuaternion.html">Quaternion</a> *b)</td></tr>
-<tr class="separator:a21b5bfdd64a2b123c16c116c5263a53e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a0aad318a4f1e244aa7e16509d808aa85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structQuaternion.html">Quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a0aad318a4f1e244aa7e16509d808aa85">gQuaternionZero</a></td></tr>
-<tr class="separator:a0aad318a4f1e244aa7e16509d808aa85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf6cb39d9e7b740ff0ba3ae9759316d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#aaf6cb39d9e7b740ff0ba3ae9759316d1">quatLook</a> (const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *lookDir, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *up, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:aaf6cb39d9e7b740ff0ba3ae9759316d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a look direction and an up-vector into a quaternion represention the corresponding rotation.  <a href="quaternion_8h.html#aaf6cb39d9e7b740ff0ba3ae9759316d1">More...</a><br /></td></tr>
+<tr class="separator:aaf6cb39d9e7b740ff0ba3ae9759316d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bd662de396c2016df6b2380e35e1a73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a8bd662de396c2016df6b2380e35e1a73">quatEulerAngles</a> (const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *angles, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:a8bd662de396c2016df6b2380e35e1a73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a quaternion from euler angles.  <a href="quaternion_8h.html#a8bd662de396c2016df6b2380e35e1a73">More...</a><br /></td></tr>
+<tr class="separator:a8bd662de396c2016df6b2380e35e1a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84768273cc9d82d934e902146f7aeb8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a84768273cc9d82d934e902146f7aeb8e">quatLerp</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *a, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *b, float t, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:a84768273cc9d82d934e902146f7aeb8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalized linear interpolation between two quaternions.  <a href="quaternion_8h.html#a84768273cc9d82d934e902146f7aeb8e">More...</a><br /></td></tr>
+<tr class="separator:a84768273cc9d82d934e902146f7aeb8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada71fa1c15f46797c6d4b4343013f167"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#ada71fa1c15f46797c6d4b4343013f167">quatApplyAngularVelocity</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *input, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *w, float timeStep, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *output)</td></tr>
+<tr class="memdesc:ada71fa1c15f46797c6d4b4343013f167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates a quaternion based on angular velocity over a timestep.  <a href="quaternion_8h.html#ada71fa1c15f46797c6d4b4343013f167">More...</a><br /></td></tr>
+<tr class="separator:ada71fa1c15f46797c6d4b4343013f167"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2879397f1e88084d3582519ea3cbfde"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#aa2879397f1e88084d3582519ea3cbfde">quatDecompose</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *input, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *axis, float *angle)</td></tr>
+<tr class="memdesc:aa2879397f1e88084d3582519ea3cbfde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decomposes a quaternion into an axis and an angle.  <a href="quaternion_8h.html#aa2879397f1e88084d3582519ea3cbfde">More...</a><br /></td></tr>
+<tr class="separator:aa2879397f1e88084d3582519ea3cbfde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adacd453f45dd7c2ca2566d41a9a12ba0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#adacd453f45dd7c2ca2566d41a9a12ba0">quatRotateAxisEuler</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *axis, float angle, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
+<tr class="memdesc:adacd453f45dd7c2ca2566d41a9a12ba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies an additional Euler-axis rotation to an existing quaternion rotation.  <a href="quaternion_8h.html#adacd453f45dd7c2ca2566d41a9a12ba0">More...</a><br /></td></tr>
+<tr class="separator:adacd453f45dd7c2ca2566d41a9a12ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e2b91cd4d84031b610658fac55c845e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a4e2b91cd4d84031b610658fac55c845e">quatDot</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *a, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *b)</td></tr>
+<tr class="memdesc:a4e2b91cd4d84031b610658fac55c845e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the dot product of two quaternions.  <a href="quaternion_8h.html#a4e2b91cd4d84031b610658fac55c845e">More...</a><br /></td></tr>
+<tr class="separator:a4e2b91cd4d84031b610658fac55c845e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c84c01b266de6c4dfa4220cc1d084b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8h.html#a3c84c01b266de6c4dfa4220cc1d084b3">quatIsIdentical</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *a, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *b)</td></tr>
+<tr class="memdesc:a3c84c01b266de6c4dfa4220cc1d084b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if two quaternions are the same component-wise.  <a href="quaternion_8h.html#a3c84c01b266de6c4dfa4220cc1d084b3">More...</a><br /></td></tr>
+<tr class="separator:a3c84c01b266de6c4dfa4220cc1d084b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a8b8ae6480df2117ee6e3edd97c4309a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b8ae6480df2117ee6e3edd97c4309a0">&#9670;&nbsp;</a></span>Quaternion</h2>
+<a id="a6b650dbe9845f0655da72e4a978a6358"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b650dbe9845f0655da72e4a978a6358">&#9670;&nbsp;</a></span>Quaternion</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="structQuaternion.html">Quaternion</a> <a class="el" href="structQuaternion.html">Quaternion</a></td>
+          <td class="memname">typedef fm_quat_t <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -221,28 +231,31 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a954c5493a1a3802b7b241c9f42029a38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a954c5493a1a3802b7b241c9f42029a38">&#9670;&nbsp;</a></span>quatAdd()</h2>
+<a id="a5348460efc33846d5f047d00ae80eb52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5348460efc33846d5f047d00ae80eb52">&#9670;&nbsp;</a></span>quatAdd()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void quatAdd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -251,12 +264,28 @@ Variables</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Adds two Quaternions together component-wise. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="a22149fa08c22cb8212df255cefde0f74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22149fa08c22cb8212df255cefde0f74">&#9670;&nbsp;</a></span>quatApplyAngularVelocity()</h2>
+<a id="ada71fa1c15f46797c6d4b4343013f167"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada71fa1c15f46797c6d4b4343013f167">&#9670;&nbsp;</a></span>quatApplyAngularVelocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -264,13 +293,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatApplyAngularVelocity </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>w</em>, </td>
         </tr>
         <tr>
@@ -282,7 +311,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>
@@ -293,10 +322,22 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Updates a quaternion based on angular velocity over a timestep. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td></td></tr>
+    <tr><td class="paramname">w</td><td></td></tr>
+    <tr><td class="paramname">timeStep</td><td></td></tr>
+    <tr><td class="paramname">output</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="ab45b8f43b04b1fe0f4b9796480d493e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab45b8f43b04b1fe0f4b9796480d493e4">&#9670;&nbsp;</a></span>quatAxisAngle()</h2>
+<a id="a5d478682eb560afbc52f728e0c4c048b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d478682eb560afbc52f728e0c4c048b">&#9670;&nbsp;</a></span>quatAxisAngle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -304,7 +345,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatAxisAngle </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>axis</em>, </td>
         </tr>
         <tr>
@@ -316,7 +357,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -327,10 +368,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructs a Quaternion representing a rotation around an axis by a given angle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">axis</td><td>Axis to rotate around (must be normalized) </td></tr>
+    <tr><td class="paramname">angle</td><td>Rotation Angle in Radians </td></tr>
+    <tr><td class="paramname">out</td><td>the resulting Quaternion </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a0c666a3dc6956ff66043a558468ba7f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c666a3dc6956ff66043a558468ba7f0">&#9670;&nbsp;</a></span>quatAxisComplex()</h2>
+<a id="a49741d3bc4d24f5be6ed52efd0d07772"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49741d3bc4d24f5be6ed52efd0d07772">&#9670;&nbsp;</a></span>quatAxisComplex()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -338,19 +389,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatAxisComplex </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>axis</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector2.html">Vector2</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="unionVector2.html">Vector2</a> *&#160;</td>
           <td class="paramname"><em>complex</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -361,10 +412,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Similarly to quatAxisAngle this will construct a Quaternion that represents a rotation around an axis. But here the rotation is given by a complex number. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">axis</td><td>Axis to rotate around (must be normalized) </td></tr>
+    <tr><td class="paramname">complex</td><td>2D Vector encoding the rotation </td></tr>
+    <tr><td class="paramname">out</td><td>the resulting Quaternion </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a69905a1431117a6dd0817ca016f9e1d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69905a1431117a6dd0817ca016f9e1d9">&#9670;&nbsp;</a></span>quatConjugate()</h2>
+<a id="a11f642ccb2ec08fbc46781337f4c5716"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11f642ccb2ec08fbc46781337f4c5716">&#9670;&nbsp;</a></span>quatConjugate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -372,13 +433,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatConjugate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -389,10 +450,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Computes the Conjugate of a quaternion. </p>
+<p>The conjugate represents the inverse rotation if the quaternion is unit length. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td></td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="acc4b8e6e29282312169311d7b36d5fef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc4b8e6e29282312169311d7b36d5fef">&#9670;&nbsp;</a></span>quatDecompose()</h2>
+<a id="aa2879397f1e88084d3582519ea3cbfde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2879397f1e88084d3582519ea3cbfde">&#9670;&nbsp;</a></span>quatDecompose()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -400,13 +471,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatDecompose </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>axis</em>, </td>
         </tr>
         <tr>
@@ -422,7 +493,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Decomposes a quaternion into an axis and an angle.</p>
+
+<p>Decomposes a quaternion into an axis and an angle. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">input</td><td>Pointer to the input quaternion to be decomposed. </td></tr>
@@ -435,22 +507,25 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a21b5bfdd64a2b123c16c116c5263a53e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21b5bfdd64a2b123c16c116c5263a53e">&#9670;&nbsp;</a></span>quatDot()</h2>
+<a id="a4e2b91cd4d84031b610658fac55c845e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e2b91cd4d84031b610658fac55c845e">&#9670;&nbsp;</a></span>quatDot()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">float quatDot </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
@@ -459,12 +534,28 @@ Variables</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Compute the dot product of two quaternions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><br  />
+ </dd></dl>
 
 </div>
 </div>
-<a id="a67fcd84362c643129d69a1f00f66b01d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67fcd84362c643129d69a1f00f66b01d">&#9670;&nbsp;</a></span>quatEulerAngles()</h2>
+<a id="a8bd662de396c2016df6b2380e35e1a73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bd662de396c2016df6b2380e35e1a73">&#9670;&nbsp;</a></span>quatEulerAngles()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -472,13 +563,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatEulerAngles </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>angles</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -489,6 +580,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Create a quaternion from euler angles. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">angles</td><td>vector containing the euler angles in radians. </td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ae121ee9135c9da7e6cc2619a99e2645c"></a>
@@ -496,35 +597,55 @@ Variables</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void quatIdent </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Create an identity Quaternion. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">q</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="a7af17ea186a5a670a2f25dba8d4d9a92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7af17ea186a5a670a2f25dba8d4d9a92">&#9670;&nbsp;</a></span>quatIsIdentical()</h2>
+<a id="a3c84c01b266de6c4dfa4220cc1d084b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c84c01b266de6c4dfa4220cc1d084b3">&#9670;&nbsp;</a></span>quatIsIdentical()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int quatIsIdentical </td>
+          <td class="memname">bool quatIsIdentical </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
@@ -533,12 +654,28 @@ Variables</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Checks if two quaternions are the same component-wise. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><br  />
+ </dd></dl>
 
 </div>
 </div>
-<a id="a61295b100b3029d7aad5013113aa3575"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61295b100b3029d7aad5013113aa3575">&#9670;&nbsp;</a></span>quatLerp()</h2>
+<a id="a84768273cc9d82d934e902146f7aeb8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84768273cc9d82d934e902146f7aeb8e">&#9670;&nbsp;</a></span>quatLerp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -546,13 +683,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatLerp </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
@@ -564,7 +701,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -575,10 +712,22 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Normalized linear interpolation between two quaternions. </p>
+<p>Faster than slerp but less accurate </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+    <tr><td class="paramname">t</td><td>blending factor </td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a02b262fe1eba55d072292636ddabea20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02b262fe1eba55d072292636ddabea20">&#9670;&nbsp;</a></span>quatLook()</h2>
+<a id="aaf6cb39d9e7b740ff0ba3ae9759316d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf6cb39d9e7b740ff0ba3ae9759316d1">&#9670;&nbsp;</a></span>quatLook()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -586,19 +735,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatLook </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>lookDir</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>up</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -609,30 +758,44 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Converts a look direction and an up-vector into a quaternion represention the corresponding rotation. </p>
+<p>Essentially implement a "look-at" rotation with quaternions. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lookDir</td><td></td></tr>
+    <tr><td class="paramname">up</td><td></td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a6cd26605ace7ccaeab3cf26613d79312"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6cd26605ace7ccaeab3cf26613d79312">&#9670;&nbsp;</a></span>quatMultiply()</h2>
+<a id="affa8766b0ea7161ffdf6cf215d308f4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affa8766b0ea7161ffdf6cf215d308f4b">&#9670;&nbsp;</a></span>quatMultiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void quatMultiply </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -641,12 +804,27 @@ Variables</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Multiply two Quaternions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+    <tr><td class="paramname">out</td><td>The Quaternion representing the combine Rotation </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="ac726a3867b018503417208a988d4640c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac726a3867b018503417208a988d4640c">&#9670;&nbsp;</a></span>quatMultVector()</h2>
+<a id="a94b21df349768713cf8ca7d279615992"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94b21df349768713cf8ca7d279615992">&#9670;&nbsp;</a></span>quatMultVector()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -654,19 +832,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatMultVector </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -676,7 +854,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Multiplies a quaternion by a vector.</p>
+
+<p>Multiplies a quaternion by a vector. </p>
 <p>This function takes a quaternion <code>q</code> and a vector <code>a</code>, and performs the quaternion-vector multiplication. The result is stored in the output vector <code>out</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -689,8 +868,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a485f7e2430bd5e7895674ff2c015dd53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a485f7e2430bd5e7895674ff2c015dd53">&#9670;&nbsp;</a></span>quatNegate()</h2>
+<a id="a5d4ed35999eba41aa54a08d08063885d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d4ed35999eba41aa54a08d08063885d">&#9670;&nbsp;</a></span>quatNegate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -698,13 +877,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatNegate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -715,24 +894,37 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Flips the sign of all components of the input Quaternion. </p>
+<p>Result is -q and should be mathmatically equivalent to q. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td></td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a1110e54a2461a938fff79b66d143db93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1110e54a2461a938fff79b66d143db93">&#9670;&nbsp;</a></span>quatNormalize()</h2>
+<a id="a405c368e7e50e9eda4224cace8a41d5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a405c368e7e50e9eda4224cace8a41d5b">&#9670;&nbsp;</a></span>quatNormalize()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void quatNormalize </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -741,7 +933,22 @@ Variables</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Normalized a quaternion. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">q</td><td></td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -754,17 +961,26 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatRandom </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+<p>Generate a pseudo-random quaternion rotation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">q</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a5d1374bf9c3c49432fe7408227ac32c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d1374bf9c3c49432fe7408227ac32c7">&#9670;&nbsp;</a></span>quatRotateAxisEuler()</h2>
+<a id="adacd453f45dd7c2ca2566d41a9a12ba0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adacd453f45dd7c2ca2566d41a9a12ba0">&#9670;&nbsp;</a></span>quatRotateAxisEuler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -772,13 +988,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatRotateAxisEuler </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>axis</em>, </td>
         </tr>
         <tr>
@@ -790,7 +1006,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -801,44 +1017,22 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="ac4094a0e9a6b252ab5e19b1e6183abe5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4094a0e9a6b252ab5e19b1e6183abe5">&#9670;&nbsp;</a></span>quatRotatedBoundingBoxSize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void quatRotatedBoundingBoxSize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>q</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>halfBoxSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Applies an additional Euler-axis rotation to an existing quaternion rotation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">q</td><td></td></tr>
+    <tr><td class="paramname">axis</td><td></td></tr>
+    <tr><td class="paramname">angle</td><td></td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="a72ee8797e1fe3c35b701d8038d875d01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72ee8797e1fe3c35b701d8038d875d01">&#9670;&nbsp;</a></span>quatToMatrix()</h2>
+<a id="afc88114c0cf691570b85b482ac2844db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc88114c0cf691570b85b482ac2844db">&#9670;&nbsp;</a></span>quatToMatrix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -846,7 +1040,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void quatToMatrix </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
@@ -863,28 +1057,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="a0aad318a4f1e244aa7e16509d808aa85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0aad318a4f1e244aa7e16509d808aa85">&#9670;&nbsp;</a></span>gQuaternionZero</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structQuaternion.html">Quaternion</a> gQuaternionZero</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>Converts an input quaternion into an equivalent 4x4 rotation matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">q</td><td></td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -75,21 +75,20 @@ Collaboration diagram for camera_controller:</div>
 <div class="dyncontent">
 <div class="center"><img src="structcamera__controller__coll__graph.png" border="0" usemap="#acamera__controller_coll__map" alt="Collaboration graph"/></div>
 <map name="acamera__controller_coll__map" id="acamera__controller_coll__map">
-<area shape="rect" title=" " alt="" coords="68,557,208,584"/>
-<area shape="rect" href="structcamera.html" title=" " alt="" coords="5,417,76,444"/>
-<area shape="rect" href="structTransform.html" title=" " alt="" coords="16,273,103,300"/>
-<area shape="rect" href="structplayer.html" title=" " alt="" coords="416,468,479,495"/>
-<area shape="rect" href="structrenderable.html" title=" " alt="" coords="401,365,493,392"/>
-<area shape="rect" href="structQuaternion.html" title=" " alt="" coords="381,117,476,143"/>
-<area shape="rect" href="structphysics__object.html" title=" " alt="" coords="565,365,684,392"/>
-<area shape="rect" href="structphysics__object__collision__data.html" title=" " alt="" coords="776,273,991,300"/>
-<area shape="rect" href="unionVector3.html" title=" " alt="" coords="513,5,584,32"/>
-<area shape="rect" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure." alt="" coords="626,198,685,225"/>
-<area shape="rect" href="unionphysics__object__collision__shape__data.html" title=" " alt="" coords="862,109,1041,151"/>
-<area shape="rect" href="structcontact.html" title=" " alt="" coords="1039,198,1109,225"/>
-<area shape="rect" href="structmodel.html" title=" " alt="" coords="344,273,407,300"/>
-<area shape="rect" href="unionVector2.html" title=" " alt="" coords="1051,5,1121,32"/>
-<area shape="rect" href="structplayer__animations.html" title=" " alt="" coords="1232,365,1375,392"/>
+<area shape="rect" title=" " alt="" coords="192,484,332,511"/>
+<area shape="rect" href="structcamera.html" title=" " alt="" coords="5,343,76,369"/>
+<area shape="rect" href="structTransform.html" title=" " alt="" coords="69,199,156,225"/>
+<area shape="rect" href="structplayer.html" title=" " alt="" coords="519,395,581,421"/>
+<area shape="rect" href="structrenderable.html" title=" " alt="" coords="263,289,355,316"/>
+<area shape="rect" href="structmodel.html" title=" " alt="" coords="211,199,273,225"/>
+<area shape="rect" href="structphysics__object.html" title=" " alt="" coords="491,289,609,316"/>
+<area shape="rect" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure." alt="" coords="306,102,365,129"/>
+<area shape="rect" href="structphysics__object__collision__data.html" title=" " alt="" coords="443,199,657,225"/>
+<area shape="rect" href="unionphysics__object__collision__shape__data.html" title=" " alt="" coords="615,95,794,136"/>
+<area shape="rect" href="unionVector2.html" title=" " alt="" coords="760,5,831,32"/>
+<area shape="rect" href="structcontact.html" title=" " alt="" coords="681,199,752,225"/>
+<area shape="rect" href="structplayer__animations.html" title=" " alt="" coords="896,289,1039,316"/>
+<area shape="rect" href="structraycast__hit.html" title="The raycast hit structure represents the result of a raycast." alt="" coords="1063,289,1157,316"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -101,8 +100,10 @@ Data Fields</h2></td></tr>
 <tr class="separator:a7ce83cad1f8570cd92d5c6d9852efc3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd4aaec0b1c42f478eaba1661684ddf3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcamera__controller.html#acd4aaec0b1c42f478eaba1661684ddf3">follow_distace</a></td></tr>
 <tr class="separator:acd4aaec0b1c42f478eaba1661684ddf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeca1baea595ec219b47b1ce5ba4b861"><td class="memItemLeft" align="right" valign="top"><a class="el" href="unionVector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcamera__controller.html#adeca1baea595ec219b47b1ce5ba4b861">target</a></td></tr>
+<tr class="memitem:adeca1baea595ec219b47b1ce5ba4b861"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcamera__controller.html#adeca1baea595ec219b47b1ce5ba4b861">target</a></td></tr>
 <tr class="separator:adeca1baea595ec219b47b1ce5ba4b861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26dfa45efeec7d4cf8edd065c4f80d9f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcamera__controller.html#a26dfa45efeec7d4cf8edd065c4f80d9f">collision_distance</a></td></tr>
+<tr class="separator:a26dfa45efeec7d4cf8edd065c4f80d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Field Documentation</h2>
 <a id="a0258ceb6e7bb06fdfc2a7d00a83d88ee"></a>
@@ -113,6 +114,20 @@ Data Fields</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">struct <a class="el" href="structcamera.html">camera</a>* camera_controller::camera</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a26dfa45efeec7d4cf8edd065c4f80d9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26dfa45efeec7d4cf8edd065c4f80d9f">&#9670;&nbsp;</a></span>collision_distance</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float camera_controller::collision_distance</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -154,7 +169,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="unionVector3.html">Vector3</a> camera_controller::target</td>
+          <td class="memname"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> camera_controller::target</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -82,23 +82,27 @@ Include dependency graph for basis.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="basis_8c__incl.png" border="0" usemap="#asrc_2math_2basis_8c" alt=""/></div>
 <map name="asrc_2math_2basis_8c" id="asrc_2math_2basis_8c">
-<area shape="rect" title="Implementation of the Basis structure and functions for basis rotations." alt="" coords="75,5,203,32"/>
-<area shape="rect" href="basis_8h.html" title="Defines the Basis structure and functions for quaternion&#45;based rotations." alt="" coords="57,80,125,107"/>
-<area shape="rect" title=" " alt="" coords="149,80,224,107"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="5,229,88,256"/>
-<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="84,155,188,181"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="112,229,195,256"/>
+<area shape="rect" title="Implementation of the Basis structure and functions for basis rotations." alt="" coords="133,5,261,32"/>
+<area shape="rect" href="basis_8h.html" title="Defines the Basis structure and functions for quaternion&#45;based rotations." alt="" coords="115,80,183,107"/>
+<area shape="rect" title=" " alt="" coords="208,80,283,107"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="101,304,184,331"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="163,155,267,181"/>
+<area shape="rect" title=" " alt="" coords="194,379,289,405"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="5,379,77,405"/>
+<area shape="rect" title=" " alt="" coords="102,379,170,405"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="193,229,276,256"/>
+<area shape="rect" title=" " alt="" coords="300,229,383,256"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ade5e6ff5110110ac7bca690161bb087d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basis_8c.html#ade5e6ff5110110ac7bca690161bb087d">basisFromQuat</a> (struct <a class="el" href="structBasis.html">Basis</a> *basis, <a class="el" href="structQuaternion.html">Quaternion</a> *quat)</td></tr>
+<tr class="memitem:ade5e6ff5110110ac7bca690161bb087d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basis_8c.html#ade5e6ff5110110ac7bca690161bb087d">basisFromQuat</a> (struct <a class="el" href="structBasis.html">Basis</a> *basis, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *quat)</td></tr>
 <tr class="memdesc:ade5e6ff5110110ac7bca690161bb087d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a basis (orthonormal set of vectors) from a quaternion.  <a href="basis_8c.html#ade5e6ff5110110ac7bca690161bb087d">More...</a><br /></td></tr>
 <tr class="separator:ade5e6ff5110110ac7bca690161bb087d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acee8e2f6ab95bec9365896298bfa38d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basis_8c.html#acee8e2f6ab95bec9365896298bfa38d4">basisRotate</a> (struct <a class="el" href="structBasis.html">Basis</a> *basis, <a class="el" href="unionVector3.html">Vector3</a> *input, <a class="el" href="unionVector3.html">Vector3</a> *output)</td></tr>
+<tr class="memitem:acee8e2f6ab95bec9365896298bfa38d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basis_8c.html#acee8e2f6ab95bec9365896298bfa38d4">basisRotate</a> (struct <a class="el" href="structBasis.html">Basis</a> *basis, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *input, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *output)</td></tr>
 <tr class="separator:acee8e2f6ab95bec9365896298bfa38d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8921a309a5301c4514dbd64d68008a05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basis_8c.html#a8921a309a5301c4514dbd64d68008a05">basisUnRotate</a> (struct <a class="el" href="structBasis.html">Basis</a> *basis, <a class="el" href="unionVector3.html">Vector3</a> *input, <a class="el" href="unionVector3.html">Vector3</a> *output)</td></tr>
+<tr class="memitem:a8921a309a5301c4514dbd64d68008a05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basis_8c.html#a8921a309a5301c4514dbd64d68008a05">basisUnRotate</a> (struct <a class="el" href="structBasis.html">Basis</a> *basis, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *input, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *output)</td></tr>
 <tr class="memdesc:a8921a309a5301c4514dbd64d68008a05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a vector using the inverse of the given basis.  <a href="basis_8c.html#a8921a309a5301c4514dbd64d68008a05">More...</a><br /></td></tr>
 <tr class="separator:a8921a309a5301c4514dbd64d68008a05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -120,7 +124,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>quat</em>&#160;</td>
         </tr>
         <tr>
@@ -136,7 +140,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">basis</td><td>Pointer to the <a class="el" href="structBasis.html" title="Represents a 3D coordinate system using three vectors.">Basis</a> structure where the resulting basis vectors will be stored. </td></tr>
-    <tr><td class="paramname">quat</td><td>Pointer to the <a class="el" href="structQuaternion.html">Quaternion</a> structure used to generate the basis vectors. </td></tr>
+    <tr><td class="paramname">quat</td><td>Pointer to the Quaternion structure used to generate the basis vectors. </td></tr>
   </table>
   </dd>
 </dl>
@@ -158,13 +162,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>
@@ -179,8 +183,8 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">basis</td><td>A pointer to the <a class="el" href="structBasis.html" title="Represents a 3D coordinate system using three vectors.">Basis</a> structure containing the rotation basis. </td></tr>
-    <tr><td class="paramname">input</td><td>A pointer to the input <a class="el" href="unionVector3.html">Vector3</a> structure to be rotated. </td></tr>
-    <tr><td class="paramname">output</td><td>A pointer to the output <a class="el" href="unionVector3.html">Vector3</a> structure where the result will be stored. </td></tr>
+    <tr><td class="paramname">input</td><td>A pointer to the input Vector3 structure to be rotated. </td></tr>
+    <tr><td class="paramname">output</td><td>A pointer to the output Vector3 structure where the result will be stored. </td></tr>
   </table>
   </dd>
 </dl>
@@ -202,13 +206,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>
@@ -224,8 +228,8 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">basis</td><td>A pointer to the <a class="el" href="structBasis.html" title="Represents a 3D coordinate system using three vectors.">Basis</a> structure containing the basis vectors. </td></tr>
-    <tr><td class="paramname">input</td><td>A pointer to the input <a class="el" href="unionVector3.html">Vector3</a> structure to be rotated. </td></tr>
-    <tr><td class="paramname">output</td><td>A pointer to the output <a class="el" href="unionVector3.html">Vector3</a> structure to store the result. </td></tr>
+    <tr><td class="paramname">input</td><td>A pointer to the input Vector3 structure to be rotated. </td></tr>
+    <tr><td class="paramname">output</td><td>A pointer to the output Vector3 structure to store the result. </td></tr>
   </table>
   </dd>
 </dl>

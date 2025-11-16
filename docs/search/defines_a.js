@@ -1,6 +1,24 @@
 var searchData=
 [
-  ['render_5fbatch_5fmax_5fsize_2283',['RENDER_BATCH_MAX_SIZE',['../render__batch_8h.html#a9096be7dfd6b15d40ea2517ee2dfb473',1,'render_batch.h']]],
-  ['render_5fbatch_5ftransform_5fcount_2284',['RENDER_BATCH_TRANSFORM_COUNT',['../render__batch_8h.html#a99a06419ba3d1eab1c52c67b5365b4ac',1,'render_batch.h']]],
-  ['rotation_5fduration_2285',['ROTATION_DURATION',['../platform_8c.html#a8b7da8d760540d9b1dd4b52a73966001',1,'platform.c']]]
+  ['phys_5fglobal_5fgravity_5fmult_2352',['PHYS_GLOBAL_GRAVITY_MULT',['../physics__object_8h.html#ac95f6fa9f4c55d14bcee7c03b22d6bcc',1,'physics_object.h']]],
+  ['phys_5fgravity_5fconstant_2353',['PHYS_GRAVITY_CONSTANT',['../physics__object_8h.html#a5df9e09d241ad3b1909e84cfd47ca93a',1,'physics_object.h']]],
+  ['phys_5fobject_5fangular_5fchange_5fsleep_5fthreshold_2354',['PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD',['../physics__object_8h.html#a266af60a0b052ce958dbb354ad502f52',1,'physics_object.h']]],
+  ['phys_5fobject_5fangular_5fchange_5fsleep_5fthreshold_5fsq_2355',['PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ',['../physics__object_8h.html#a5095481e2abae1cb3097bdf5c82a61c9',1,'physics_object.h']]],
+  ['phys_5fobject_5fpos_5fchange_5fsleep_5fthreshold_2356',['PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD',['../physics__object_8h.html#a893206ea91713da6b34246ff7fe81acf',1,'physics_object.h']]],
+  ['phys_5fobject_5fpos_5fchange_5fsleep_5fthreshold_5fsq_2357',['PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD_SQ',['../physics__object_8h.html#a615a787f3563941089275f9161ce4ff9',1,'physics_object.h']]],
+  ['phys_5fobject_5frot_5fsimilarity_5fsleep_5fthreshold_2358',['PHYS_OBJECT_ROT_SIMILARITY_SLEEP_THRESHOLD',['../physics__object_8h.html#acd38f2f473f829f104bd169170d83dc2',1,'physics_object.h']]],
+  ['phys_5fobject_5fsleep_5fsteps_2359',['PHYS_OBJECT_SLEEP_STEPS',['../physics__object_8h.html#ab2b19ac7761786f798e7cf010b81cfd1',1,'physics_object.h']]],
+  ['phys_5fobject_5fterminal_5fy_5fvelocity_2360',['PHYS_OBJECT_TERMINAL_Y_VELOCITY',['../physics__object_8h.html#a5aefdd6728e1a721e820f8ece4bb0ec7',1,'physics_object.h']]],
+  ['phys_5fobject_5fvelocity_5fsleep_5fthreshold_2361',['PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD',['../physics__object_8h.html#ae8017d16255029e7456e8edc1acd765d',1,'physics_object.h']]],
+  ['phys_5fobject_5fvelocity_5fsleep_5fthreshold_5fsq_2362',['PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD_SQ',['../physics__object_8h.html#a0e3a6f72a7817aebbf6a39c659da5f85',1,'physics_object.h']]],
+  ['physics_5ftickrate_2363',['PHYSICS_TICKRATE',['../time_8h.html#acc14909795a4c4ad67102c15a58df488',1,'time.h']]],
+  ['pi_2364',['PI',['../mathf_8h.html#a598a3330b3c21701223ee0ca14316eca',1,'mathf.h']]],
+  ['player_5fjump_5fheight_2365',['PLAYER_JUMP_HEIGHT',['../player_8c.html#a43108aab3c7bfeb7432d64e22fe176d1',1,'player.c']]],
+  ['player_5fmax_5facc_2366',['PLAYER_MAX_ACC',['../player_8c.html#a8d6717cea1716e07dff3aa384a73ba53',1,'player.c']]],
+  ['player_5fmax_5facc_5fair_2367',['PLAYER_MAX_ACC_AIR',['../player_8c.html#a8824e512f5e174f2ed4312d026592fcb',1,'player.c']]],
+  ['player_5fmax_5fangle_5fground_2368',['PLAYER_MAX_ANGLE_GROUND',['../player_8c.html#ae9d9531bba7fd0c14780e81e32054ba9',1,'player.c']]],
+  ['player_5fmax_5fangle_5fground_5fdot_2369',['PLAYER_MAX_ANGLE_GROUND_DOT',['../player_8c.html#a02f3c002fe759be8d48da7690ed5327e',1,'player.c']]],
+  ['player_5fmax_5fspeed_2370',['PLAYER_MAX_SPEED',['../player_8c.html#a9e5036cddf12afce2f37ae0c25934d9c',1,'player.c']]],
+  ['player_5fturn_5fspeed_2371',['PLAYER_TURN_SPEED',['../player_8c.html#ae70792103dbd4eba86a68e2b9984f6f0',1,'player.c']]],
+  ['pyhs_5fobject_5fang_5fspeed_5fdamping_5fthreshold_5fsq_2372',['PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ',['../physics__object_8h.html#a4fdda934b831b899b294fb0ee34df9e6',1,'physics_object.h']]]
 ];

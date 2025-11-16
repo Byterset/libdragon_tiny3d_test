@@ -85,16 +85,18 @@ Include dependency graph for epa.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="epa_8c__incl.png" border="0" usemap="#asrc_2collision_2epa_8c" alt=""/></div>
 <map name="asrc_2collision_2epa_8c" id="asrc_2collision_2epa_8c">
-<area shape="rect" title=" " alt="" coords="176,5,315,32"/>
-<area shape="rect" href="epa_8h.html" title=" " alt="" coords="171,80,229,107"/>
-<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="332,229,455,256"/>
-<area shape="rect" title=" " alt="" coords="253,80,328,107"/>
-<area shape="rect" href="plane_8h.html" title=" " alt="" coords="5,155,125,181"/>
-<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="257,155,311,181"/>
-<area shape="rect" title=" " alt="" coords="149,155,232,181"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="40,304,173,331"/>
-<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="153,229,308,256"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="197,304,280,331"/>
+<area shape="rect" title=" " alt="" coords="115,5,253,32"/>
+<area shape="rect" href="epa_8h.html" title=" " alt="" coords="121,80,180,107"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="84,453,207,480"/>
+<area shape="rect" title=" " alt="" coords="255,80,329,107"/>
+<area shape="rect" href="plane_8h.html" title=" " alt="" coords="340,155,460,181"/>
+<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="177,155,231,181"/>
+<area shape="rect" title=" " alt="" coords="43,304,125,331"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="300,379,433,405"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="200,229,355,256"/>
+<area shape="rect" title=" " alt="" coords="231,453,326,480"/>
+<area shape="rect" title=" " alt="" coords="350,453,418,480"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="221,304,304,331"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -109,13 +111,13 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aea71bad120f57c3a6bd4ab7d15fe4991"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a>&#160;&#160;&#160;14</td></tr>
+<tr class="memitem:aea71bad120f57c3a6bd4ab7d15fe4991"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a>&#160;&#160;&#160;12</td></tr>
 <tr class="separator:aea71bad120f57c3a6bd4ab7d15fe4991"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43bc70e13a08ba885f5444e56d3107fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a43bc70e13a08ba885f5444e56d3107fd">EPA_MAX_SIMPLEX_POINTS</a>&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a>)</td></tr>
 <tr class="separator:a43bc70e13a08ba885f5444e56d3107fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a4ad0a9e90d1fef62ae437d3957eed2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2a4ad0a9e90d1fef62ae437d3957eed2">EPA_MAX_SIMPLEX_TRIANGLES</a>&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a> * 2)</td></tr>
 <tr class="separator:a2a4ad0a9e90d1fef62ae437d3957eed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab235c239a6e46cad5248e0d87c8a722e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ab235c239a6e46cad5248e0d87c8a722e">NEXT_FACE</a>(index)&#160;&#160;&#160;((index) == 2 ? 0 : (index) + 1)</td></tr>
+<tr class="memitem:ab235c239a6e46cad5248e0d87c8a722e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ab235c239a6e46cad5248e0d87c8a722e">NEXT_FACE</a>(index)&#160;&#160;&#160;(NEXT_FACE_LUT[index])</td></tr>
 <tr class="separator:ab235c239a6e46cad5248e0d87c8a722e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2960398afbe529123f120fdc076305e0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2960398afbe529123f120fdc076305e0">GET_PARENT_INDEX</a>(heapIndex)&#160;&#160;&#160;(((heapIndex) - 1) &gt;&gt; 1)</td></tr>
 <tr class="separator:a2960398afbe529123f120fdc076305e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,7 +125,7 @@ Macros</h2></td></tr>
 <tr class="separator:a908707fd583c16a2f942594db9e89da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b3e9a0b40d077216ed6346612a9a6ad"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a1b3e9a0b40d077216ed6346612a9a6ad">EXPANDING_SIMPLEX_GET_DISTANCE</a>(simplex,  triangleIndex)&#160;&#160;&#160;((simplex)-&gt;triangles[triangleIndex].distanceToOrigin)</td></tr>
 <tr class="separator:a1b3e9a0b40d077216ed6346612a9a6ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae802ccf54b4d431358718926fb804387"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ae802ccf54b4d431358718926fb804387">MAX_SWEPT_ITERATIONS</a>&#160;&#160;&#160;20</td></tr>
+<tr class="memitem:ae802ccf54b4d431358718926fb804387"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ae802ccf54b4d431358718926fb804387">MAX_SWEPT_ITERATIONS</a>&#160;&#160;&#160;15</td></tr>
 <tr class="separator:ae802ccf54b4d431358718926fb804387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -135,49 +137,58 @@ Enumerations</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a49c32da4e2117521983f3d404c3a2665"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a49c32da4e2117521983f3d404c3a2665">validateHeap</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex)</td></tr>
+<tr class="memdesc:a49c32da4e2117521983f3d404c3a2665"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates the min-heap property for debugging purposes.  <a href="epa_8c.html#a49c32da4e2117521983f3d404c3a2665">More...</a><br /></td></tr>
 <tr class="separator:a49c32da4e2117521983f3d404c3a2665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a7b74e90c3ccc356079d81da21a6c8b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a9a7b74e90c3ccc356079d81da21a6c8b">validateExpandingSimplex</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex)</td></tr>
+<tr class="memdesc:a9a7b74e90c3ccc356079d81da21a6c8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates polytope topology and convexity for debugging purposes.  <a href="epa_8c.html#a9a7b74e90c3ccc356079d81da21a6c8b">More...</a><br /></td></tr>
 <tr class="separator:a9a7b74e90c3ccc356079d81da21a6c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8ca62890a2e069d2140b9d6934d3f1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ab8ca62890a2e069d2140b9d6934d3f1a">expandingSimplexAddPoint</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, <a class="el" href="unionVector3.html">Vector3</a> *aPoint, <a class="el" href="unionVector3.html">Vector3</a> *pointDiff)</td></tr>
-<tr class="separator:ab8ca62890a2e069d2140b9d6934d3f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0fa74102fc937adc2f9a89dcf6b5824"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ab0fa74102fc937adc2f9a89dcf6b5824">expandingSimplexSiftDownHeap</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, int heapIndex)</td></tr>
+<tr class="memdesc:ab0fa74102fc937adc2f9a89dcf6b5824"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restores min-heap property by moving an element upward (toward root).  <a href="epa_8c.html#ab0fa74102fc937adc2f9a89dcf6b5824">More...</a><br /></td></tr>
 <tr class="separator:ab0fa74102fc937adc2f9a89dcf6b5824"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe35cf280f750ae30488c77ead3978cb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#abe35cf280f750ae30488c77ead3978cb">expandingSimplexSiftUpHeap</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, int heapIndex)</td></tr>
+<tr class="memdesc:abe35cf280f750ae30488c77ead3978cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restores min-heap property by moving an element downward (toward leaves).  <a href="epa_8c.html#abe35cf280f750ae30488c77ead3978cb">More...</a><br /></td></tr>
 <tr class="separator:abe35cf280f750ae30488c77ead3978cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ba8bf480d835ea64c19e9e183d865d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a3ba8bf480d835ea64c19e9e183d865d3">expandingSimplexFixHeap</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, int heapIndex)</td></tr>
+<tr class="memdesc:a3ba8bf480d835ea64c19e9e183d865d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restores heap property when a triangle's distance changes.  <a href="epa_8c.html#a3ba8bf480d835ea64c19e9e183d865d3">More...</a><br /></td></tr>
 <tr class="separator:a3ba8bf480d835ea64c19e9e183d865d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a444c65a3aeb5d455a3317f8baadd036a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a444c65a3aeb5d455a3317f8baadd036a">expandingSimplexFindHeapIndex</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, int value)</td></tr>
-<tr class="separator:a444c65a3aeb5d455a3317f8baadd036a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b213a124f6e138ccdf37c1b2937e849"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a8b213a124f6e138ccdf37c1b2937e849">expandingSimplexTriangleInitNormal</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *triangle)</td></tr>
-<tr class="separator:a8b213a124f6e138ccdf37c1b2937e849"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a963d1a051de74d940d4b784e85a6b3b9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a963d1a051de74d940d4b784e85a6b3b9">expandingSimplexTriangleCheckEdge</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *triangle, int index)</td></tr>
+<tr class="memdesc:a963d1a051de74d940d4b784e85a6b3b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the origin projects onto a specific edge of the triangle.  <a href="epa_8c.html#a963d1a051de74d940d4b784e85a6b3b9">More...</a><br /></td></tr>
 <tr class="separator:a963d1a051de74d940d4b784e85a6b3b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfc60150f16d6c052525b62d1cad1205"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#acfc60150f16d6c052525b62d1cad1205">expandingSimplexTriangleDetermineDistance</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *triangle)</td></tr>
+<tr class="memdesc:acfc60150f16d6c052525b62d1cad1205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the distance from the origin to the triangle.  <a href="epa_8c.html#acfc60150f16d6c052525b62d1cad1205">More...</a><br /></td></tr>
 <tr class="separator:acfc60150f16d6c052525b62d1cad1205"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8babac6f6faefbc446e4ca605d4ba25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#af8babac6f6faefbc446e4ca605d4ba25">expandingSimplexRotateEdge</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *triangleA, int triangleAIndex, int heapIndex)</td></tr>
+<tr class="memdesc:af8babac6f6faefbc446e4ca605d4ba25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a shared edge between two triangles to maintain polytope convexity.  <a href="epa_8c.html#af8babac6f6faefbc446e4ca605d4ba25">More...</a><br /></td></tr>
 <tr class="separator:af8babac6f6faefbc446e4ca605d4ba25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af22bad172061cc3158918706cfa110fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#af22bad172061cc3158918706cfa110fe">expandingSimplexTriangleCheckRotate</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, int triangleIndex, int heapIndex)</td></tr>
+<tr class="memdesc:af22bad172061cc3158918706cfa110fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if an edge needs rotation and performs it if necessary.  <a href="epa_8c.html#af22bad172061cc3158918706cfa110fe">More...</a><br /></td></tr>
 <tr class="separator:af22bad172061cc3158918706cfa110fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8a65fab0a41621a5c9b407da6229c9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#af8a65fab0a41621a5c9b407da6229c9e">expandingSimplexTriangleInit</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, union <a class="el" href="unionSimplexTriangleIndexData.html">SimplexTriangleIndexData</a> *indexData, struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *triangle)</td></tr>
+<tr class="memdesc:af8a65fab0a41621a5c9b407da6229c9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a triangle with topology data and computes its normal.  <a href="epa_8c.html#af8a65fab0a41621a5c9b407da6229c9e">More...</a><br /></td></tr>
 <tr class="separator:af8a65fab0a41621a5c9b407da6229c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad07860aa29ed46fa0be7048b7c734671"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#ad07860aa29ed46fa0be7048b7c734671">expandingSimplexAddTriangle</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, union <a class="el" href="unionSimplexTriangleIndexData.html">SimplexTriangleIndexData</a> *data)</td></tr>
+<tr class="memdesc:ad07860aa29ed46fa0be7048b7c734671"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new triangle to the expanding simplex.  <a href="epa_8c.html#ad07860aa29ed46fa0be7048b7c734671">More...</a><br /></td></tr>
 <tr class="separator:ad07860aa29ed46fa0be7048b7c734671"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabee561237f2f43e002aeb3728802de5"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#aabee561237f2f43e002aeb3728802de5">expandingSimplexClosestFace</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex)</td></tr>
-<tr class="separator:aabee561237f2f43e002aeb3728802de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a554560619194b6a49b203c1962c3ff64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a554560619194b6a49b203c1962c3ff64">expandingSimplexInit</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *expandingSimplex, struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, int flags)</td></tr>
+<tr class="memdesc:a554560619194b6a49b203c1962c3ff64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the expanding simplex from a GJK simplex.  <a href="epa_8c.html#a554560619194b6a49b203c1962c3ff64">More...</a><br /></td></tr>
 <tr class="separator:a554560619194b6a49b203c1962c3ff64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb4ed823dbbf84f086b4e66273a6337"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a6fb4ed823dbbf84f086b4e66273a6337">expandingSimplexExpand</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *expandingSimplex, int newPointIndex, int faceToRemoveIndex)</td></tr>
+<tr class="memdesc:a6fb4ed823dbbf84f086b4e66273a6337"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the polytope by replacing a face with three new faces.  <a href="epa_8c.html#a6fb4ed823dbbf84f086b4e66273a6337">More...</a><br /></td></tr>
 <tr class="separator:a6fb4ed823dbbf84f086b4e66273a6337"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69431df68139038ef4a2a95fb3a95072"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a69431df68139038ef4a2a95fb3a95072">epaCalculateContact</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *closestFace, <a class="el" href="unionVector3.html">Vector3</a> *planePos, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="memitem:a69431df68139038ef4a2a95fb3a95072"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a69431df68139038ef4a2a95fb3a95072">epaCalculateContact</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *closestFace, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *planePos, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="memdesc:a69431df68139038ef4a2a95fb3a95072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates contact points from the closest face on the polytope.  <a href="epa_8c.html#a69431df68139038ef4a2a95fb3a95072">More...</a><br /></td></tr>
 <tr class="separator:a69431df68139038ef4a2a95fb3a95072"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d915fe1547382b06cee6ebae14c66b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2d915fe1547382b06cee6ebae14c66b3">epaSolve</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectBSum, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
-<tr class="memdesc:a2d915fe1547382b06cee6ebae14c66b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the Expanding Polytope Algorithm (EPA) to find the penetration depth and contact normal between two objects.  <a href="epa_8c.html#a2d915fe1547382b06cee6ebae14c66b3">More...</a><br /></td></tr>
+<tr class="memitem:a2d915fe1547382b06cee6ebae14c66b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2d915fe1547382b06cee6ebae14c66b3">epaSolve</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectBSum, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="memdesc:a2d915fe1547382b06cee6ebae14c66b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves EPA to find penetration depth and contact information for overlapping objects.  <a href="epa_8c.html#a2d915fe1547382b06cee6ebae14c66b3">More...</a><br /></td></tr>
 <tr class="separator:a2d915fe1547382b06cee6ebae14c66b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aec61053fa2dd19ddace5ebe2f26dff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2aec61053fa2dd19ddace5ebe2f26dff">epaSweptFindFace</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, <a class="el" href="unionVector3.html">Vector3</a> *direction, int *startTriangleIndex, int *startFaceEdge)</td></tr>
+<tr class="memitem:a2aec61053fa2dd19ddace5ebe2f26dff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2aec61053fa2dd19ddace5ebe2f26dff">epaSweptFindFace</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *direction, int *startTriangleIndex, int *startFaceEdge)</td></tr>
+<tr class="memdesc:a2aec61053fa2dd19ddace5ebe2f26dff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the face of the polytope that the sweep direction first encounters.  <a href="epa_8c.html#a2aec61053fa2dd19ddace5ebe2f26dff">More...</a><br /></td></tr>
 <tr class="separator:a2aec61053fa2dd19ddace5ebe2f26dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ab04215e88cfb4b60614d47bfb0db92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2ab04215e88cfb4b60614d47bfb0db92">epaSolveSwept</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a> objectBSum, <a class="el" href="unionVector3.html">Vector3</a> *bStart, <a class="el" href="unionVector3.html">Vector3</a> *bEnd, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="memitem:a2ab04215e88cfb4b60614d47bfb0db92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2ab04215e88cfb4b60614d47bfb0db92">epaSolveSwept</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectBSum, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *bStart, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *bEnd, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="memdesc:a2ab04215e88cfb4b60614d47bfb0db92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swept EPA for continuous collision detection (time of impact calculation).  <a href="epa_8c.html#a2ab04215e88cfb4b60614d47bfb0db92">More...</a><br /></td></tr>
 <tr class="separator:a2ab04215e88cfb4b60614d47bfb0db92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf3e9b77a5cad2a29960a73b2b322d28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#adf3e9b77a5cad2a29960a73b2b322d28">epaSwapResult</a> (struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="memdesc:adf3e9b77a5cad2a29960a73b2b322d28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swaps contact points and reverses the normal in an EPA result.  <a href="epa_8c.html#adf3e9b77a5cad2a29960a73b2b322d28">More...</a><br /></td></tr>
 <tr class="separator:adf3e9b77a5cad2a29960a73b2b322d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -193,10 +204,17 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define EPA_MAX_ITERATIONS&#160;&#160;&#160;14</td>
+          <td class="memname">#define EPA_MAX_ITERATIONS&#160;&#160;&#160;12</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Expanding Polytope Algorithm (EPA) implementation for collision detection.</p>
+<p>EPA refines the penetration information after GJK determines that two convex shapes intersect. While GJK efficiently detects collision, it only provides a simplex containing the origin. EPA expands this simplex into a polytope to find:</p><ul>
+<li>The exact penetration depth</li>
+<li>The collision normal</li>
+<li>Contact points on both objects</li>
+</ul>
+<p>The algorithm works by iteratively expanding the polytope toward the origin, finding the face closest to the origin. This closest face defines the minimum translation vector needed to separate the objects. </p>
 
 </div>
 </div>
@@ -309,7 +327,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MAX_SWEPT_ITERATIONS&#160;&#160;&#160;20</td>
+          <td class="memname">#define MAX_SWEPT_ITERATIONS&#160;&#160;&#160;15</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -327,7 +345,7 @@ Variables</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">index</td><td>)</td>
-          <td>&#160;&#160;&#160;((index) == 2 ? 0 : (index) + 1)</td>
+          <td>&#160;&#160;&#160;(NEXT_FACE_LUT[index])</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -374,7 +392,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>planePos</em>, </td>
         </tr>
         <tr>
@@ -390,6 +408,18 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Calculates contact points from the closest face on the polytope. </p>
+<p>Uses barycentric coordinates to interpolate the exact contact point on object A's surface. The contact point on B is then derived from A's point plus the penetration along the normal.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">closestFace</td><td>The face closest to the origin (defines the contact plane) </td></tr>
+    <tr><td class="paramname">planePos</td><td>Position on the face plane closest to the origin </td></tr>
+    <tr><td class="paramname">result</td><td>Output structure to store contact information </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -414,7 +444,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a>&#160;</td>
           <td class="paramname"><em>objectASupport</em>, </td>
         </tr>
         <tr>
@@ -426,7 +456,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a>&#160;</td>
           <td class="paramname"><em>objectBSum</em>, </td>
         </tr>
         <tr>
@@ -443,20 +473,26 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Solves the Expanding Polytope Algorithm (EPA) to find the penetration depth and contact normal between two objects. </p>
-<p>This function takes an initial simplex from the GJK algorithm and iteratively expands it to find the closest face to the origin. It then calculates the penetration depth and contact normal between the two objects.</p>
+<p>Solves EPA to find penetration depth and contact information for overlapping objects. </p>
+<p>Starting from a GJK simplex that contains the origin (indicating collision), EPA iteratively expands the polytope toward the Minkowski difference boundary. Each iteration:</p><ol type="1">
+<li>Finds the face closest to the origin (min-heap root)</li>
+<li>Computes a new support point in that face's normal direction</li>
+<li>Tests convergence: if the new point barely extends the polytope, we've found the boundary</li>
+<li>Otherwise, expands the polytope by replacing the closest face with three new faces</li>
+</ol>
+<p>The closest face at convergence defines the penetration normal and depth.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">startingSimplex</td><td>A pointer to the initial simplex obtained from the GJK algorithm. </td></tr>
-    <tr><td class="paramname">objectA</td><td>A pointer to the first object involved in the collision. </td></tr>
-    <tr><td class="paramname">objectASupport</td><td>A function pointer to the GJK Support function for the first object. </td></tr>
-    <tr><td class="paramname">objectB</td><td>A pointer to the second object involved in the collision. </td></tr>
-    <tr><td class="paramname">objectBSupport</td><td>A function pointer to the GJK Support function for the second object. </td></tr>
-    <tr><td class="paramname">result</td><td>A pointer to an <a class="el" href="structEpaResult.html">EpaResult</a> structure where the result will be stored. </td></tr>
+    <tr><td class="paramname">startingSimplex</td><td>GJK simplex containing the origin (4-point tetrahedron) </td></tr>
+    <tr><td class="paramname">objectA</td><td>First colliding object </td></tr>
+    <tr><td class="paramname">objectASupport</td><td>Support function for object A </td></tr>
+    <tr><td class="paramname">objectB</td><td>Second colliding object </td></tr>
+    <tr><td class="paramname">objectBSum</td><td>Support function for object B </td></tr>
+    <tr><td class="paramname">result</td><td>Output: penetration depth, normal, and contact points </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the EPA algorithm successfully finds a penetration depth and contact normal, false otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if penetration info was successfully calculated, false otherwise </dd></dl>
 
 </div>
 </div>
@@ -481,7 +517,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a>&#160;</td>
           <td class="paramname"><em>objectASupport</em>, </td>
         </tr>
         <tr>
@@ -493,19 +529,19 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="gjk_8h.html#a2f00376369534890cc276864a4572f90">gjk_support_function</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a>&#160;</td>
           <td class="paramname"><em>objectBSum</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>bStart</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>bEnd</em>, </td>
         </tr>
         <tr>
@@ -521,6 +557,23 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Swept EPA for continuous collision detection (time of impact calculation). </p>
+<p>Unlike standard EPA which finds penetration for already-overlapping objects, swept EPA finds the moment when a moving object (B) first touches a stationary object (A). The algorithm walks the polytope surface in the sweep direction to find the first contact face, then calculates the exact time and contact geometry.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startingSimplex</td><td>GJK simplex at the end position (objects overlapping) </td></tr>
+    <tr><td class="paramname">objectA</td><td>Stationary object </td></tr>
+    <tr><td class="paramname">objectASupport</td><td>Support function for object A </td></tr>
+    <tr><td class="paramname">objectB</td><td>Moving object </td></tr>
+    <tr><td class="paramname">objectBSum</td><td>Support function for object B </td></tr>
+    <tr><td class="paramname">bStart</td><td>Starting position of object B (modified to first contact position) </td></tr>
+    <tr><td class="paramname">bEnd</td><td>Ending position of object B </td></tr>
+    <tr><td class="paramname">result</td><td>Output: contact normal and points at time of impact </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if valid collision found within the sweep, 0 otherwise </dd></dl>
 
 </div>
 </div>
@@ -540,6 +593,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Swaps contact points and reverses the normal in an EPA result. </p>
+<p>Used when the collision detection is performed with objects in reverse order and the result needs to be corrected to match the expected perspective.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>EPA result to swap </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a2aec61053fa2dd19ddace5ebe2f26dff"></a>
@@ -557,7 +619,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>direction</em>, </td>
         </tr>
         <tr>
@@ -580,39 +642,17 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="ab8ca62890a2e069d2140b9d6934d3f1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8ca62890a2e069d2140b9d6934d3f1a">&#9670;&nbsp;</a></span>expandingSimplexAddPoint()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void expandingSimplexAddPoint </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *&#160;</td>
-          <td class="paramname"><em>simplex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>aPoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>pointDiff</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Finds the face of the polytope that the sweep direction first encounters. </p>
+<p>For swept collision detection (continuous collision), we need to find where a moving object first touches a stationary one. This walks the polytope surface from a starting face, following edges in the direction opposite to the sweep, until finding the "frontmost" face relative to the sweep direction.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">direction</td><td>Sweep direction vector </td></tr>
+    <tr><td class="paramname">startTriangleIndex</td><td>In/out: triangle index, updated to the found face </td></tr>
+    <tr><td class="paramname">startFaceEdge</td><td>In/out: edge index, updated during traversal </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -642,23 +682,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="aabee561237f2f43e002aeb3728802de5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabee561237f2f43e002aeb3728802de5">&#9670;&nbsp;</a></span>expandingSimplexClosestFace()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a>* expandingSimplexClosestFace </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *&#160;</td>
-          <td class="paramname"><em>simplex</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Adds a new triangle to the expanding simplex. </p>
+<p>Initializes the triangle, calculates its distance, and inserts it into the min-heap. The heap maintains O(1) access to the closest face, which is critical for EPA efficiency.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">data</td><td>Triangle topology data </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -694,33 +726,17 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a444c65a3aeb5d455a3317f8baadd036a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a444c65a3aeb5d455a3317f8baadd036a">&#9670;&nbsp;</a></span>expandingSimplexFindHeapIndex()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int expandingSimplexFindHeapIndex </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *&#160;</td>
-          <td class="paramname"><em>simplex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Expands the polytope by replacing a face with three new faces. </p>
+<p>This is the core EPA expansion operation. The closest face to the origin is removed and replaced with three new faces connecting the face's edges to the new support point. This grows the polytope closer to the true Minkowski difference boundary.</p>
+<p>The operation maintains all adjacency relationships and checks for edge rotations to preserve convexity.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">expandingSimplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">newPointIndex</td><td>Index of the new support point to add </td></tr>
+    <tr><td class="paramname">faceToRemoveIndex</td><td>Index of the face to replace (typically the closest face) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -749,6 +765,16 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Restores heap property when a triangle's distance changes. </p>
+<p>Tries sifting up first (more common case), then sifts down if needed. This is necessary after edge rotations or distance recalculations.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">heapIndex</td><td>Position in heap to fix </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -783,6 +809,17 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Initializes the expanding simplex from a GJK simplex. </p>
+<p>Converts the 4-point GJK simplex (tetrahedron) into a polytope representation with explicit triangle faces and adjacency information. This forms the initial structure that EPA will expand.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">expandingSimplex</td><td>The expanding simplex to initialize </td></tr>
+    <tr><td class="paramname">simplex</td><td>GJK simplex containing the origin (must have 4 points) </td></tr>
+    <tr><td class="paramname">flags</td><td>Initialization flags (e.g., SimplexFlagsSkipDistance for swept mode) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -824,6 +861,19 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Rotates a shared edge between two triangles to maintain polytope convexity. </p>
+<p>Edge rotation (edge flip) is a fundamental operation in maintaining a convex polytope. When a vertex from an adjacent triangle lies outside the current triangle's plane, the shared edge must be rotated to restore convexity. This is analogous to Delaunay triangulation edge flips but operates in 3D Minkowski space.</p>
+<p>The operation rewires the topology of both triangles and updates their adjacency information, followed by recalculating normals and distances.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">triangleA</td><td>First triangle sharing the edge (edge 0 is the one to rotate) </td></tr>
+    <tr><td class="paramname">triangleAIndex</td><td>Index of triangleA </td></tr>
+    <tr><td class="paramname">heapIndex</td><td>Heap position of triangleA </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ab0fa74102fc937adc2f9a89dcf6b5824"></a>
@@ -852,6 +902,17 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Restores min-heap property by moving an element upward (toward root). </p>
+<p>Used when a triangle's distance decreases. Moves the element up the heap until it finds its correct position where parent distance &lt;= current distance. The inverse mapping is maintained to allow O(log n) updates to any triangle.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">heapIndex</td><td>Starting position in the heap </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Final position of the element after sifting </dd></dl>
+
 </div>
 </div>
 <a id="abe35cf280f750ae30488c77ead3978cb"></a>
@@ -879,6 +940,17 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Restores min-heap property by moving an element downward (toward leaves). </p>
+<p>Used when a triangle's distance increases. Moves the element down by swapping with the smaller child until the heap property is restored.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">heapIndex</td><td>Starting position in the heap </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Final position of the element after sifting </dd></dl>
 
 </div>
 </div>
@@ -914,6 +986,18 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Checks if the origin projects onto a specific edge of the triangle. </p>
+<p>If the origin's closest point is on this edge rather than the face interior, the distance is calculated to that edge. This handles degenerate cases where the origin is outside the triangle's Voronoi region.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">triangle</td><td>Triangle to check </td></tr>
+    <tr><td class="paramname">index</td><td>Edge index (0-2) to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if origin projects onto this edge, 0 otherwise </dd></dl>
+
 </div>
 </div>
 <a id="af22bad172061cc3158918706cfa110fe"></a>
@@ -948,6 +1032,17 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Tests if an edge needs rotation and performs it if necessary. </p>
+<p>Checks if the opposite vertex from the adjacent triangle violates convexity (lies above the current triangle's plane). If so, rotates the edge to restore the convex hull property.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">triangleIndex</td><td>Triangle to check </td></tr>
+    <tr><td class="paramname">heapIndex</td><td>Heap position of the triangle </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="acfc60150f16d6c052525b62d1cad1205"></a>
@@ -975,6 +1070,16 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Computes the distance from the origin to the triangle. </p>
+<p>First checks if the origin projects onto any edge (outside the face's Voronoi region). If not, the distance is the perpendicular distance to the face plane. This distance determines which face is closest and drives the EPA iteration.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">triangle</td><td>Triangle to calculate distance for </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1010,33 +1115,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a8b213a124f6e138ccdf37c1b2937e849"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b213a124f6e138ccdf37c1b2937e849">&#9670;&nbsp;</a></span>expandingSimplexTriangleInitNormal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void expandingSimplexTriangleInitNormal </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *&#160;</td>
-          <td class="paramname"><em>simplex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct <a class="el" href="structSimplexTriangle.html">SimplexTriangle</a> *&#160;</td>
-          <td class="paramname"><em>triangle</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Initializes a triangle with topology data and computes its normal. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex </td></tr>
+    <tr><td class="paramname">indexData</td><td>Vertex indices and adjacency information </td></tr>
+    <tr><td class="paramname">triangle</td><td>Triangle to initialize </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1056,6 +1143,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Validates polytope topology and convexity for debugging purposes. </p>
+<p>Verifies that adjacency relationships are bidirectional and that the polytope remains convex. Convexity is essential because EPA assumes the polytope faces point outward from the origin.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex to validate </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if topology is valid and polytope is convex, 0 otherwise </dd></dl>
+
 </div>
 </div>
 <a id="a49c32da4e2117521983f3d404c3a2665"></a>
@@ -1073,6 +1170,16 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Validates the min-heap property for debugging purposes. </p>
+<p>Ensures all children have distances &gt;= their parent's distance, which is critical for efficiently finding the closest face to the origin.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td>The expanding simplex to validate </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if heap is valid, 0 otherwise </dd></dl>
 
 </div>
 </div>

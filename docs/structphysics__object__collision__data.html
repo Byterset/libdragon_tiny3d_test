@@ -75,11 +75,10 @@ Collaboration diagram for physics_object_collision_data:</div>
 <div class="dyncontent">
 <div class="center"><img src="structphysics__object__collision__data__coll__graph.png" border="0" usemap="#aphysics__object__collision__data_coll__map" alt="Collaboration graph"/></div>
 <map name="aphysics__object__collision__data_coll__map" id="aphysics__object__collision__data_coll__map">
-<area shape="rect" title=" " alt="" coords="125,199,339,225"/>
-<area shape="rect" href="unionphysics__object__collision__shape__data.html" title=" " alt="" coords="5,95,184,136"/>
-<area shape="rect" href="unionVector2.html" title=" " alt="" coords="42,5,113,32"/>
-<area shape="rect" href="unionVector3.html" title=" " alt="" coords="166,5,237,32"/>
-<area shape="rect" href="structQuaternion.html" title=" " alt="" coords="401,102,495,129"/>
+<area shape="rect" title=" " alt="" coords="26,199,241,225"/>
+<area shape="rect" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure." alt="" coords="5,102,64,129"/>
+<area shape="rect" href="unionphysics__object__collision__shape__data.html" title=" " alt="" coords="143,95,321,136"/>
+<area shape="rect" href="unionVector2.html" title=" " alt="" coords="197,5,267,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -89,9 +88,11 @@ Data Fields</h2></td></tr>
 <tr class="separator:a522a6553b878fcd87b29f47bdf8de48d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fb175fe041e6ae0029a2934673b82de"><td class="memItemLeft" align="right" valign="top">bounding_box_calculator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object__collision__data.html#a0fb175fe041e6ae0029a2934673b82de">bounding_box_calculator</a></td></tr>
 <tr class="separator:a0fb175fe041e6ae0029a2934673b82de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3aeeef9592b644dc28e1b8e9a96d093"><td class="memItemLeft" align="right" valign="top">inertia_calculator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object__collision__data.html#af3aeeef9592b644dc28e1b8e9a96d093">inertia_calculator</a></td></tr>
+<tr class="separator:af3aeeef9592b644dc28e1b8e9a96d093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c13d4fa75117aaa230f693f038810fa"><td class="memItemLeft" align="right" valign="top">union <a class="el" href="unionphysics__object__collision__shape__data.html">physics_object_collision_shape_data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object__collision__data.html#a2c13d4fa75117aaa230f693f038810fa">shape_data</a></td></tr>
 <tr class="separator:a2c13d4fa75117aaa230f693f038810fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9d62450fcf1ded16676849ef5e581b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="unionVector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object__collision__data.html#ae9d62450fcf1ded16676849ef5e581b0">collider_world_center</a></td></tr>
+<tr class="memitem:ae9d62450fcf1ded16676849ef5e581b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object__collision__data.html#ae9d62450fcf1ded16676849ef5e581b0">collider_world_center</a></td></tr>
 <tr class="separator:ae9d62450fcf1ded16676849ef5e581b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1d405fe04a4a9f0752211d45e002f78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68">physics_object_collision_shape_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object__collision__data.html#ab1d405fe04a4a9f0752211d45e002f78">shape_type</a></td></tr>
 <tr class="separator:ab1d405fe04a4a9f0752211d45e002f78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,7 +137,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="unionVector3.html">Vector3</a> physics_object_collision_data::collider_world_center</td>
+          <td class="memname"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> physics_object_collision_data::collider_world_center</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -165,6 +166,20 @@ Data Fields</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">gjk_support_function physics_object_collision_data::gjk_support_function</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af3aeeef9592b644dc28e1b8e9a96d093"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3aeeef9592b644dc28e1b8e9a96d093">&#9670;&nbsp;</a></span>inertia_calculator</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inertia_calculator physics_object_collision_data::inertia_calculator</td>
         </tr>
       </table>
 </div><div class="memdoc">

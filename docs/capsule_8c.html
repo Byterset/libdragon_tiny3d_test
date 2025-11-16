@@ -74,49 +74,52 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="capsule_8h_source.html">capsule.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="physics__object_8h_source.html">../physics_object.h</a>&quot;</code><br />
-<code>#include &lt;<a class="el" href="math_8h_source.html">math.h</a>&gt;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="sphere_8h_source.html">sphere.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for capsule.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="capsule_8c__incl.png" border="0" usemap="#asrc_2collision_2shapes_2capsule_8c" alt=""/></div>
 <map name="asrc_2collision_2shapes_2capsule_8c" id="asrc_2collision_2shapes_2capsule_8c">
-<area shape="rect" title=" " alt="" coords="1203,5,1352,47"/>
-<area shape="rect" href="capsule_8h.html" title=" " alt="" coords="1210,169,1294,196"/>
-<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="622,95,765,121"/>
-<area shape="rect" href="math_8h.html" title="This file contains the declaration of commonly used integer math functions." alt="" coords="1279,95,1347,121"/>
-<area shape="rect" href="sphere_8h.html" title=" " alt="" coords="1346,169,1425,196"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="1378,543,1523,569"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="799,543,945,569"/>
-<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="897,244,1025,271"/>
-<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="1120,468,1224,495"/>
-<area shape="rect" href="raycast_8h.html" title=" " alt="" coords="731,319,883,345"/>
-<area shape="rect" href="transform_8h.html" title=" " alt="" coords="935,393,1083,420"/>
-<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="687,393,809,420"/>
-<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="155,393,301,420"/>
-<area shape="rect" title=" " alt="" coords="529,393,612,420"/>
-<area shape="rect" title=" " alt="" coords="325,393,395,420"/>
-<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="461,169,624,196"/>
-<area shape="rect" href="contact_8h.html" title=" " alt="" coords="5,319,88,345"/>
-<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="907,319,962,345"/>
-<area shape="rect" href="vec_8h.html" title=" " alt="" coords="462,244,557,271"/>
-<area shape="rect" title=" " alt="" coords="581,244,656,271"/>
-<area shape="rect" title=" " alt="" coords="491,319,565,345"/>
-<area shape="rect" title=" " alt="" coords="589,319,656,345"/>
-<area shape="rect" title=" " alt="" coords="395,319,466,345"/>
+<area shape="rect" title=" " alt="" coords="543,5,692,47"/>
+<area shape="rect" href="capsule_8h.html" title=" " alt="" coords="1170,169,1254,196"/>
+<area shape="rect" title=" " alt="" coords="387,692,455,719"/>
+<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="491,95,634,121"/>
+<area shape="rect" href="sphere_8h.html" title=" " alt="" coords="1067,169,1146,196"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="1349,543,1494,569"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="879,617,961,644"/>
+<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="912,244,1040,271"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="868,468,972,495"/>
+<area shape="rect" title=" " alt="" coords="1374,692,1469,719"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="884,692,956,719"/>
+<area shape="rect" href="raycast_8h.html" title=" " alt="" coords="868,319,1020,345"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="871,393,1019,420"/>
+<area shape="rect" title=" " alt="" coords="789,543,872,569"/>
+<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="174,393,319,420"/>
+<area shape="rect" title=" " alt="" coords="446,393,517,420"/>
+<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="481,169,644,196"/>
+<area shape="rect" href="contact_8h.html" title=" " alt="" coords="121,319,204,345"/>
+<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="43,393,98,420"/>
+<area shape="rect" href="vec_8h.html" title=" " alt="" coords="515,244,610,271"/>
+<area shape="rect" title=" " alt="" coords="635,244,709,271"/>
+<area shape="rect" title=" " alt="" coords="577,319,652,345"/>
+<area shape="rect" title=" " alt="" coords="676,319,743,345"/>
+<area shape="rect" title=" " alt="" coords="482,319,553,345"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a774dd5b5264aaf1b08adb6bb2dd919a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="capsule_8c.html#a774dd5b5264aaf1b08adb6bb2dd919a9">capsule_support_function</a> (void *data, <a class="el" href="unionVector3.html">Vector3</a> *direction, <a class="el" href="unionVector3.html">Vector3</a> *output)</td></tr>
-<tr class="separator:a774dd5b5264aaf1b08adb6bb2dd919a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0961d4cbce3809e2252f8bc0b165ed31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="capsule_8c.html#a0961d4cbce3809e2252f8bc0b165ed31">capsule_bounding_box</a> (void *data, <a class="el" href="structQuaternion.html">Quaternion</a> *rotation, <a class="el" href="structAABB.html">AABB</a> *<a class="el" href="structbox.html">box</a>)</td></tr>
-<tr class="separator:a0961d4cbce3809e2252f8bc0b165ed31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64fe0fa1a771263d9553f23bebe18409"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="capsule_8c.html#a64fe0fa1a771263d9553f23bebe18409">capsule_support_function</a> (const void *data, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *direction, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *output)</td></tr>
+<tr class="separator:a64fe0fa1a771263d9553f23bebe18409"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc90ce405c2187d00ae33aaf82d9f00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="capsule_8c.html#afbc90ce405c2187d00ae33aaf82d9f00">capsule_bounding_box</a> (const void *data, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q, <a class="el" href="structAABB.html">AABB</a> *box)</td></tr>
+<tr class="separator:afbc90ce405c2187d00ae33aaf82d9f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf322d9d571f50eed422a661474b6870"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="capsule_8c.html#abf322d9d571f50eed422a661474b6870">capsule_inertia_tensor</a> (void *data, float mass, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
+<tr class="separator:abf322d9d571f50eed422a661474b6870"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a0961d4cbce3809e2252f8bc0b165ed31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0961d4cbce3809e2252f8bc0b165ed31">&#9670;&nbsp;</a></span>capsule_bounding_box()</h2>
+<a id="afbc90ce405c2187d00ae33aaf82d9f00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbc90ce405c2187d00ae33aaf82d9f00">&#9670;&nbsp;</a></span>capsule_bounding_box()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -124,14 +127,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void capsule_bounding_box </td>
           <td>(</td>
-          <td class="paramtype">void *&#160;</td>
+          <td class="paramtype">const void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structQuaternion.html">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>rotation</em>, </td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -149,14 +152,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a774dd5b5264aaf1b08adb6bb2dd919a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a774dd5b5264aaf1b08adb6bb2dd919a9">&#9670;&nbsp;</a></span>capsule_support_function()</h2>
+<a id="abf322d9d571f50eed422a661474b6870"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf322d9d571f50eed422a661474b6870">&#9670;&nbsp;</a></span>capsule_inertia_tensor()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void capsule_support_function </td>
+          <td class="memname">void capsule_inertia_tensor </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
@@ -164,13 +167,47 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>mass</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a64fe0fa1a771263d9553f23bebe18409"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64fe0fa1a771263d9553f23bebe18409">&#9670;&nbsp;</a></span>capsule_support_function()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void capsule_support_function </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>direction</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>

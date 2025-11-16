@@ -74,599 +74,65 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="vector3_8h_source.html">vector3.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="mathf_8h_source.html">mathf.h</a>&quot;</code><br />
-<code>#include &lt;<a class="el" href="math_8h_source.html">math.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for vector3.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="vector3_8c__incl.png" border="0" usemap="#asrc_2math_2vector3_8c" alt=""/></div>
 <map name="asrc_2math_2vector3_8c" id="asrc_2math_2vector3_8c">
-<area shape="rect" title=" " alt="" coords="77,5,219,32"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="5,80,88,107"/>
-<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="112,80,184,107"/>
-<area shape="rect" href="math_8h.html" title="This file contains the declaration of commonly used integer math functions." alt="" coords="209,80,277,107"/>
+<area shape="rect" title=" " alt="" coords="89,5,232,32"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="119,80,202,107"/>
+<area shape="rect" title=" " alt="" coords="5,155,100,181"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="125,155,197,181"/>
+<area shape="rect" title=" " alt="" coords="221,155,289,181"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5819c55370521d3101c162f37190fa92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a5819c55370521d3101c162f37190fa92">vector3Copy</a> (<a class="el" href="unionVector3.html">Vector3</a> *source, <a class="el" href="unionVector3.html">Vector3</a> *target)</td></tr>
-<tr class="separator:a5819c55370521d3101c162f37190fa92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71e3ded549dccfd89cd8f64525528bf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a71e3ded549dccfd89cd8f64525528bf5">vector3Abs</a> (<a class="el" href="unionVector3.html">Vector3</a> *in, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a71e3ded549dccfd89cd8f64525528bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a367fb43cf076b1f68167a2eec231ad10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a367fb43cf076b1f68167a2eec231ad10">vector3Negate</a> (<a class="el" href="unionVector3.html">Vector3</a> *in, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a367fb43cf076b1f68167a2eec231ad10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4635af87a976d082f640304041f754a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a4635af87a976d082f640304041f754a1">vector3Scale</a> (<a class="el" href="unionVector3.html">Vector3</a> *in, <a class="el" href="unionVector3.html">Vector3</a> *out, float scale)</td></tr>
-<tr class="separator:a4635af87a976d082f640304041f754a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69c997b4b3f36d8f246a1365d1b8dae4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a69c997b4b3f36d8f246a1365d1b8dae4">vector3Add</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a69c997b4b3f36d8f246a1365d1b8dae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cc9c564208fa6ce482050100c6572d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a2cc9c564208fa6ce482050100c6572d6">vector3AddToSelf</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b)</td></tr>
-<tr class="separator:a2cc9c564208fa6ce482050100c6572d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae559f0c674862d1fc54d9ee24a5a9709"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#ae559f0c674862d1fc54d9ee24a5a9709">vector3AddScaled</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *normal, float scale, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:ae559f0c674862d1fc54d9ee24a5a9709"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5750ce00a260457f5c91e33b4d77f14d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a5750ce00a260457f5c91e33b4d77f14d">vector3Sub</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a5750ce00a260457f5c91e33b4d77f14d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30b6462b72bd09c63a3896009e47f930"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a30b6462b72bd09c63a3896009e47f930">vector3SubFromSelf</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b)</td></tr>
-<tr class="separator:a30b6462b72bd09c63a3896009e47f930"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5aa99cf7159587e5005baaf4fa37297"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#af5aa99cf7159587e5005baaf4fa37297">vector3Multiply</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:af5aa99cf7159587e5005baaf4fa37297"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9437a034b2909b98edc312c9d91b33f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a9437a034b2909b98edc312c9d91b33f0">vector3Normalize</a> (<a class="el" href="unionVector3.html">Vector3</a> *in, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a9437a034b2909b98edc312c9d91b33f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e1e437799c94e0d5b95418588b9ee1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a2e1e437799c94e0d5b95418588b9ee1c">vector3Lerp</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b, float t, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a2e1e437799c94e0d5b95418588b9ee1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dff0b4364db0d7a9cdd4384d2228077"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a8dff0b4364db0d7a9cdd4384d2228077">vector3Dot</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b)</td></tr>
-<tr class="separator:a8dff0b4364db0d7a9cdd4384d2228077"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a735f2073b6db18d6644bede499ce7cef"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a735f2073b6db18d6644bede499ce7cef">vector3MagSqrd</a> (<a class="el" href="unionVector3.html">Vector3</a> *a)</td></tr>
-<tr class="separator:a735f2073b6db18d6644bede499ce7cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3721b3a05617da1e9fc5c80c208a549a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a3721b3a05617da1e9fc5c80c208a549a">vector3DistSqrd</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b)</td></tr>
-<tr class="separator:a3721b3a05617da1e9fc5c80c208a549a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8b5b0ebc90d901297687261d74ede4b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#ae8b5b0ebc90d901297687261d74ede4b">vector3Dist</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b)</td></tr>
-<tr class="separator:ae8b5b0ebc90d901297687261d74ede4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4235da512cb025a47cbd00326b50397"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#aa4235da512cb025a47cbd00326b50397">vector3Cross</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:aa4235da512cb025a47cbd00326b50397"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fe4ff5bd027dac45cc49d7214f9ce5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a9fe4ff5bd027dac45cc49d7214f9ce5b">vector3Perp</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a9fe4ff5bd027dac45cc49d7214f9ce5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6582dd03d48a9a496fdbe23a412e9d56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a6582dd03d48a9a496fdbe23a412e9d56">vector3Project</a> (<a class="el" href="unionVector3.html">Vector3</a> *in, <a class="el" href="unionVector3.html">Vector3</a> *normal, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a6582dd03d48a9a496fdbe23a412e9d56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1a0f894475a14e5cf3ba41b93d90885"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#ac1a0f894475a14e5cf3ba41b93d90885">vector3ProjectPlane</a> (<a class="el" href="unionVector3.html">Vector3</a> *in, <a class="el" href="unionVector3.html">Vector3</a> *normal, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:ac1a0f894475a14e5cf3ba41b93d90885"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75db93653f433709068016940636b1f9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a75db93653f433709068016940636b1f9">vector3MoveTowards</a> (<a class="el" href="unionVector3.html">Vector3</a> *from, <a class="el" href="unionVector3.html">Vector3</a> *towards, float maxDistance, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a75db93653f433709068016940636b1f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f6a1382b6a67199af9c10facbea3700"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a8f6a1382b6a67199af9c10facbea3700">vector3TripleProduct</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b, <a class="el" href="unionVector3.html">Vector3</a> *c, <a class="el" href="unionVector3.html">Vector3</a> *output)</td></tr>
-<tr class="separator:a8f6a1382b6a67199af9c10facbea3700"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d0e0fdd186d1debb12956786461593c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a0d0e0fdd186d1debb12956786461593c">vector3Max</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a0d0e0fdd186d1debb12956786461593c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e62a17881c4721a126440a3b2da8a86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a2e62a17881c4721a126440a3b2da8a86">vector3Min</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b, <a class="el" href="unionVector3.html">Vector3</a> *out)</td></tr>
-<tr class="separator:a2e62a17881c4721a126440a3b2da8a86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9a1c98adc0881ee065a5bb90cdbc3d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#aa9a1c98adc0881ee065a5bb90cdbc3d1">vector3IsZero</a> (<a class="el" href="unionVector3.html">Vector3</a> *vector)</td></tr>
-<tr class="separator:aa9a1c98adc0881ee065a5bb90cdbc3d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ea7e4a76c4e4434c4da8205a0716178"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a5ea7e4a76c4e4434c4da8205a0716178">vector3Equals</a> (<a class="el" href="unionVector3.html">Vector3</a> *a, <a class="el" href="unionVector3.html">Vector3</a> *b)</td></tr>
-<tr class="separator:a5ea7e4a76c4e4434c4da8205a0716178"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50854774c02b8c8979d7ecb9bcce5d6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a50854774c02b8c8979d7ecb9bcce5d6a">vector3ToVector3u8</a> (<a class="el" href="unionVector3.html">Vector3</a> *input, <a class="el" href="unionVector3u8.html">Vector3u8</a> *output)</td></tr>
-<tr class="separator:a50854774c02b8c8979d7ecb9bcce5d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2c89d73b18929ba4a15e1b9b2b49e29"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#ad2c89d73b18929ba4a15e1b9b2b49e29">vector3EvalBarycentric1D</a> (<a class="el" href="unionVector3.html">Vector3</a> *baryCoords, float a, float b, float c)</td></tr>
-<tr class="separator:ad2c89d73b18929ba4a15e1b9b2b49e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82f5ea54ee04d61a47d7b2c90dea6ec1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a82f5ea54ee04d61a47d7b2c90dea6ec1">vector3MoveTowards</a> (const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *from, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *towards, float maxDistance, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
+<tr class="separator:a82f5ea54ee04d61a47d7b2c90dea6ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9905dcab4ecfcc37ad6a9a15dc07824d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a9905dcab4ecfcc37ad6a9a15dc07824d">vector3ToVector3u8</a> (const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *input, <a class="el" href="unionVector3u8.html">Vector3u8</a> *output)</td></tr>
+<tr class="memdesc:a9905dcab4ecfcc37ad6a9a15dc07824d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts single precision floating point vector to char vector.  <a href="vector3_8c.html#a9905dcab4ecfcc37ad6a9a15dc07824d">More...</a><br /></td></tr>
+<tr class="separator:a9905dcab4ecfcc37ad6a9a15dc07824d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54ba774d3a9b8264c79546cc45633cef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a54ba774d3a9b8264c79546cc45633cef">vector3Reflect</a> (const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *in, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *normal, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
+<tr class="memdesc:a54ba774d3a9b8264c79546cc45633cef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the reflection of an incident vector off a surface.  <a href="vector3_8c.html#a54ba774d3a9b8264c79546cc45633cef">More...</a><br /></td></tr>
+<tr class="separator:a54ba774d3a9b8264c79546cc45633cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaba9dcd134d91705a595d91182afdfe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#aaaba9dcd134d91705a595d91182afdfe">vector3Refract</a> (const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *in, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *normal, float eta, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
+<tr class="memdesc:aaaba9dcd134d91705a595d91182afdfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the refraction of an incident vector through a surface.  <a href="vector3_8c.html#aaaba9dcd134d91705a595d91182afdfe">More...</a><br /></td></tr>
+<tr class="separator:aaaba9dcd134d91705a595d91182afdfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ae30989642ca22f9b8ea2b4b11d3f78f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="unionVector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#ae30989642ca22f9b8ea2b4b11d3f78f4">gRight</a> = {{1.0f, 0.0f, 0.0f}}</td></tr>
-<tr class="separator:ae30989642ca22f9b8ea2b4b11d3f78f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac23c1931a96bf9ac3bbc48d92d45090b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="unionVector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#ac23c1931a96bf9ac3bbc48d92d45090b">gUp</a> = {{0.0f, 1.0f, 0.0f}}</td></tr>
-<tr class="separator:ac23c1931a96bf9ac3bbc48d92d45090b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63c1c73f6e3967318337e9b85bc0c983"><td class="memItemLeft" align="right" valign="top"><a class="el" href="unionVector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a63c1c73f6e3967318337e9b85bc0c983">gDown</a> = {{0.0f, -1.0f, 0.0f}}</td></tr>
-<tr class="separator:a63c1c73f6e3967318337e9b85bc0c983"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3a54a38b6c90029524fa8576b41ee62"><td class="memItemLeft" align="right" valign="top"><a class="el" href="unionVector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#ae3a54a38b6c90029524fa8576b41ee62">gForward</a> = {{0.0f, 0.0f, 1.0f}}</td></tr>
-<tr class="separator:ae3a54a38b6c90029524fa8576b41ee62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22ad4c46080958f93088d7f07e44fc35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="unionVector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a22ad4c46080958f93088d7f07e44fc35">gZeroVec</a> = {{0.0f, 0.0f, 0.0f}}</td></tr>
-<tr class="separator:a22ad4c46080958f93088d7f07e44fc35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82a243a437bb04385ab84042ab0561ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="unionVector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a82a243a437bb04385ab84042ab0561ef">gOneVec</a> = {{1.0f, 1.0f, 1.0f}}</td></tr>
-<tr class="separator:a82a243a437bb04385ab84042ab0561ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0564f49858e7584de09e59fb80b677e2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a0564f49858e7584de09e59fb80b677e2">gRight</a> = {{1.0f, 0.0f, 0.0f}}</td></tr>
+<tr class="separator:a0564f49858e7584de09e59fb80b677e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad11252a81924f9ede90a4990a9a60003"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#ad11252a81924f9ede90a4990a9a60003">gUp</a> = {{0.0f, 1.0f, 0.0f}}</td></tr>
+<tr class="separator:ad11252a81924f9ede90a4990a9a60003"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1b84d388d623916115a942940abcfc0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#aa1b84d388d623916115a942940abcfc0">gDown</a> = {{0.0f, -1.0f, 0.0f}}</td></tr>
+<tr class="separator:aa1b84d388d623916115a942940abcfc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a492a94082b0642558da20e473173fe51"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a492a94082b0642558da20e473173fe51">gForward</a> = {{0.0f, 0.0f, 1.0f}}</td></tr>
+<tr class="separator:a492a94082b0642558da20e473173fe51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86fe07e22a330eae5b0fb21b13eb416e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#a86fe07e22a330eae5b0fb21b13eb416e">gZeroVec</a> = {{0.0f, 0.0f, 0.0f}}</td></tr>
+<tr class="separator:a86fe07e22a330eae5b0fb21b13eb416e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaed180b9bf014dcd6a949747cb0fc0f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vector3_8c.html#aaaed180b9bf014dcd6a949747cb0fc0f">gOneVec</a> = {{1.0f, 1.0f, 1.0f}}</td></tr>
+<tr class="separator:aaaed180b9bf014dcd6a949747cb0fc0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a71e3ded549dccfd89cd8f64525528bf5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71e3ded549dccfd89cd8f64525528bf5">&#9670;&nbsp;</a></span>vector3Abs()</h2>
+<a id="a82f5ea54ee04d61a47d7b2c90dea6ec1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82f5ea54ee04d61a47d7b2c90dea6ec1">&#9670;&nbsp;</a></span>vector3MoveTowards()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void vector3Abs </td>
+          <td class="memname">bool vector3MoveTowards </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a69c997b4b3f36d8f246a1365d1b8dae4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69c997b4b3f36d8f246a1365d1b8dae4">&#9670;&nbsp;</a></span>vector3Add()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Add </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae559f0c674862d1fc54d9ee24a5a9709"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae559f0c674862d1fc54d9ee24a5a9709">&#9670;&nbsp;</a></span>vector3AddScaled()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3AddScaled </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>normal</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>scale</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a2cc9c564208fa6ce482050100c6572d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cc9c564208fa6ce482050100c6572d6">&#9670;&nbsp;</a></span>vector3AddToSelf()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3AddToSelf </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a5819c55370521d3101c162f37190fa92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5819c55370521d3101c162f37190fa92">&#9670;&nbsp;</a></span>vector3Copy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Copy </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>source</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>target</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa4235da512cb025a47cbd00326b50397"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4235da512cb025a47cbd00326b50397">&#9670;&nbsp;</a></span>vector3Cross()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Cross </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae8b5b0ebc90d901297687261d74ede4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8b5b0ebc90d901297687261d74ede4b">&#9670;&nbsp;</a></span>vector3Dist()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float vector3Dist </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a3721b3a05617da1e9fc5c80c208a549a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3721b3a05617da1e9fc5c80c208a549a">&#9670;&nbsp;</a></span>vector3DistSqrd()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float vector3DistSqrd </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a8dff0b4364db0d7a9cdd4384d2228077"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dff0b4364db0d7a9cdd4384d2228077">&#9670;&nbsp;</a></span>vector3Dot()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float vector3Dot </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a5ea7e4a76c4e4434c4da8205a0716178"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ea7e4a76c4e4434c4da8205a0716178">&#9670;&nbsp;</a></span>vector3Equals()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vector3Equals </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad2c89d73b18929ba4a15e1b9b2b49e29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2c89d73b18929ba4a15e1b9b2b49e29">&#9670;&nbsp;</a></span>vector3EvalBarycentric1D()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float vector3EvalBarycentric1D </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>baryCoords</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>c</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa9a1c98adc0881ee065a5bb90cdbc3d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9a1c98adc0881ee065a5bb90cdbc3d1">&#9670;&nbsp;</a></span>vector3IsZero()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vector3IsZero </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>vector</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a2e1e437799c94e0d5b95418588b9ee1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e1e437799c94e0d5b95418588b9ee1c">&#9670;&nbsp;</a></span>vector3Lerp()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Lerp </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>t</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a735f2073b6db18d6644bede499ce7cef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a735f2073b6db18d6644bede499ce7cef">&#9670;&nbsp;</a></span>vector3MagSqrd()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float vector3MagSqrd </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a0d0e0fdd186d1debb12956786461593c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d0e0fdd186d1debb12956786461593c">&#9670;&nbsp;</a></span>vector3Max()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Max </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a2e62a17881c4721a126440a3b2da8a86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e62a17881c4721a126440a3b2da8a86">&#9670;&nbsp;</a></span>vector3Min()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Min </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a75db93653f433709068016940636b1f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75db93653f433709068016940636b1f9">&#9670;&nbsp;</a></span>vector3MoveTowards()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vector3MoveTowards </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>from</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>towards</em>, </td>
         </tr>
         <tr>
@@ -678,7 +144,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -688,149 +154,41 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">from</td><td></td></tr>
+    <tr><td class="paramname">towards</td><td></td></tr>
+    <tr><td class="paramname">maxDistance</td><td></td></tr>
+    <tr><td class="paramname">out</td><td>the moved point </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if destination reached, false otherwise </dd></dl>
 
 </div>
 </div>
-<a id="af5aa99cf7159587e5005baaf4fa37297"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5aa99cf7159587e5005baaf4fa37297">&#9670;&nbsp;</a></span>vector3Multiply()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Multiply </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a367fb43cf076b1f68167a2eec231ad10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a367fb43cf076b1f68167a2eec231ad10">&#9670;&nbsp;</a></span>vector3Negate()</h2>
+<a id="a54ba774d3a9b8264c79546cc45633cef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54ba774d3a9b8264c79546cc45633cef">&#9670;&nbsp;</a></span>vector3Reflect()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void vector3Negate </td>
+          <td class="memname">void vector3Reflect </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a9437a034b2909b98edc312c9d91b33f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9437a034b2909b98edc312c9d91b33f0">&#9670;&nbsp;</a></span>vector3Normalize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Normalize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a9fe4ff5bd027dac45cc49d7214f9ce5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fe4ff5bd027dac45cc49d7214f9ce5b">&#9670;&nbsp;</a></span>vector3Perp()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Perp </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a6582dd03d48a9a496fdbe23a412e9d56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6582dd03d48a9a496fdbe23a412e9d56">&#9670;&nbsp;</a></span>vector3Project()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Project </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>normal</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -841,98 +199,46 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Compute the reflection of an incident vector off a surface. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td>The incident vector </td></tr>
+    <tr><td class="paramname">normal</td><td>The surface's normal vector. Must be normalized </td></tr>
+    <tr><td class="paramname">out</td><td>The reflected vector </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="ac1a0f894475a14e5cf3ba41b93d90885"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1a0f894475a14e5cf3ba41b93d90885">&#9670;&nbsp;</a></span>vector3ProjectPlane()</h2>
+<a id="aaaba9dcd134d91705a595d91182afdfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaba9dcd134d91705a595d91182afdfe">&#9670;&nbsp;</a></span>vector3Refract()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void vector3ProjectPlane </td>
+          <td class="memname">bool vector3Refract </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>normal</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4635af87a976d082f640304041f754a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4635af87a976d082f640304041f754a1">&#9670;&nbsp;</a></span>vector3Scale()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Scale </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>out</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>scale</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a5750ce00a260457f5c91e33b4d77f14d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5750ce00a260457f5c91e33b4d77f14d">&#9670;&nbsp;</a></span>vector3Sub()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3Sub </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
+          <td class="paramname"><em>eta</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
@@ -943,38 +249,22 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a30b6462b72bd09c63a3896009e47f930"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30b6462b72bd09c63a3896009e47f930">&#9670;&nbsp;</a></span>vector3SubFromSelf()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3SubFromSelf </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Compute the refraction of an incident vector through a surface. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td>The incident vector. Must be normalized. </td></tr>
+    <tr><td class="paramname">normal</td><td>The surface's normal vector. Must be normalized. </td></tr>
+    <tr><td class="paramname">eta</td><td>The ratio of indices of refraction (indicent/transmitted) </td></tr>
+    <tr><td class="paramname">out</td><td>Will contain the refracted vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if refraction occurs; false if total internal reflection occurs. </dd></dl>
 
 </div>
 </div>
-<a id="a50854774c02b8c8979d7ecb9bcce5d6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50854774c02b8c8979d7ecb9bcce5d6a">&#9670;&nbsp;</a></span>vector3ToVector3u8()</h2>
+<a id="a9905dcab4ecfcc37ad6a9a15dc07824d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9905dcab4ecfcc37ad6a9a15dc07824d">&#9670;&nbsp;</a></span>vector3ToVector3u8()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -982,7 +272,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void vector3ToVector3u8 </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
           <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
@@ -999,127 +289,97 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a8f6a1382b6a67199af9c10facbea3700"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f6a1382b6a67199af9c10facbea3700">&#9670;&nbsp;</a></span>vector3TripleProduct()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vector3TripleProduct </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>c</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="unionVector3.html">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>output</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Converts single precision floating point vector to char vector. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td></td></tr>
+    <tr><td class="paramname">output</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a63c1c73f6e3967318337e9b85bc0c983"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63c1c73f6e3967318337e9b85bc0c983">&#9670;&nbsp;</a></span>gDown</h2>
+<a id="aa1b84d388d623916115a942940abcfc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1b84d388d623916115a942940abcfc0">&#9670;&nbsp;</a></span>gDown</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="unionVector3.html">Vector3</a> gDown = {{0.0f, -1.0f, 0.0f}}</td>
+          <td class="memname">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> gDown = {{0.0f, -1.0f, 0.0f}}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ae3a54a38b6c90029524fa8576b41ee62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3a54a38b6c90029524fa8576b41ee62">&#9670;&nbsp;</a></span>gForward</h2>
+<a id="a492a94082b0642558da20e473173fe51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a492a94082b0642558da20e473173fe51">&#9670;&nbsp;</a></span>gForward</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="unionVector3.html">Vector3</a> gForward = {{0.0f, 0.0f, 1.0f}}</td>
+          <td class="memname">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> gForward = {{0.0f, 0.0f, 1.0f}}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a82a243a437bb04385ab84042ab0561ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82a243a437bb04385ab84042ab0561ef">&#9670;&nbsp;</a></span>gOneVec</h2>
+<a id="aaaed180b9bf014dcd6a949747cb0fc0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaed180b9bf014dcd6a949747cb0fc0f">&#9670;&nbsp;</a></span>gOneVec</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="unionVector3.html">Vector3</a> gOneVec = {{1.0f, 1.0f, 1.0f}}</td>
+          <td class="memname">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> gOneVec = {{1.0f, 1.0f, 1.0f}}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ae30989642ca22f9b8ea2b4b11d3f78f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae30989642ca22f9b8ea2b4b11d3f78f4">&#9670;&nbsp;</a></span>gRight</h2>
+<a id="a0564f49858e7584de09e59fb80b677e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0564f49858e7584de09e59fb80b677e2">&#9670;&nbsp;</a></span>gRight</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="unionVector3.html">Vector3</a> gRight = {{1.0f, 0.0f, 0.0f}}</td>
+          <td class="memname">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> gRight = {{1.0f, 0.0f, 0.0f}}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ac23c1931a96bf9ac3bbc48d92d45090b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac23c1931a96bf9ac3bbc48d92d45090b">&#9670;&nbsp;</a></span>gUp</h2>
+<a id="ad11252a81924f9ede90a4990a9a60003"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad11252a81924f9ede90a4990a9a60003">&#9670;&nbsp;</a></span>gUp</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="unionVector3.html">Vector3</a> gUp = {{0.0f, 1.0f, 0.0f}}</td>
+          <td class="memname">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> gUp = {{0.0f, 1.0f, 0.0f}}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a22ad4c46080958f93088d7f07e44fc35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22ad4c46080958f93088d7f07e44fc35">&#9670;&nbsp;</a></span>gZeroVec</h2>
+<a id="a86fe07e22a330eae5b0fb21b13eb416e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86fe07e22a330eae5b0fb21b13eb416e">&#9670;&nbsp;</a></span>gZeroVec</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="unionVector3.html">Vector3</a> gZeroVec = {{0.0f, 0.0f, 0.0f}}</td>
+          <td class="memname">const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> gZeroVec = {{0.0f, 0.0f, 0.0f}}</td>
         </tr>
       </table>
 </div><div class="memdoc">

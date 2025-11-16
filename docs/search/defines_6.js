@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['initial_5falpha_2244',['INITIAL_ALPHA',['../fire_8c.html#a749d77a5f429c6f0458667f05bbdafb2',1,'fire.c']]],
-  ['inv_5fmodel_5fscale_2245',['INV_MODEL_SCALE',['../defs_8h.html#ac2cf25de8d4b7149eb1374d2eb24e7a2',1,'defs.h']]]
+  ['half_5fpi_2324',['HALF_PI',['../mathf_8h.html#ae3ec3219e4eee3b0992bfd59c2e2bc42',1,'mathf.h']]],
+  ['has_5fflag_2325',['HAS_FLAG',['../flags_8h.html#a624e740076e775a0d9f1946290c66113',1,'flags.h']]]
 ];
