@@ -6,7 +6,7 @@
 
 #include "../math/vector3.h"
 #include "../math/aabb.h"
-#include "aabbtree.h"
+#include "aabb_tree.h"
 #include "../render/defs.h"
 
 struct mesh_triangle_indices {
@@ -14,7 +14,7 @@ struct mesh_triangle_indices {
 };
 
 struct mesh_collider {
-    struct AABBTree aabbtree;
+    struct AABB_tree aabbtree;
     Vector3* vertices;
     struct mesh_triangle_indices* triangles;
     Vector3* normals;

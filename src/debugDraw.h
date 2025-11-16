@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./collision/aabbtree.h"
+#include "./collision/aabb_tree.h"
 #include <t3d/t3d.h>
 
 /**
@@ -80,13 +80,13 @@ static uint16_t DEBUG_COLORS[8] = {
 
 static void debugDrawBVTreeNode(
   uint16_t *fb, T3DViewport *vp,
-  NodeProxy node, AABBTree *tree, const T3DFrustum *frustum, float scale, int level, int max_level
+  node_proxy node, AABB_tree *tree, const T3DFrustum *frustum, float scale, int level, int max_level
 ) {
 
-  if(node != AABBTREE_NULL_NODE && level <= max_level) {
+  if(node != AABB_TREE_NULL_NODE && level <= max_level) {
     
     if(t3d_frustum_vs_aabb(frustum, (T3DVec3*)(&tree->nodes[node].bounds.min), (T3DVec3*)(&tree->nodes[node].bounds.max))) {
-      if(AABBTreeNode_isLeaf(&tree->nodes[node]))debugDrawAABB(fb, &tree->nodes[node].bounds.min, &tree->nodes[node].bounds.max, vp, scale, DEBUG_COLORS[level & 7]);
+      if(AABB_tree_node_isLeaf(&tree->nodes[node]))debugDrawAABB(fb, &tree->nodes[node].bounds.min, &tree->nodes[node].bounds.max, vp, scale, DEBUG_COLORS[level & 7]);
       debugDrawBVTreeNode(fb, vp, tree->nodes[node]._left, tree, frustum, scale, level+1, max_level);
       debugDrawBVTreeNode(fb, vp, tree->nodes[node]._right, tree, frustum, scale, level+1, max_level);
     }
@@ -95,7 +95,7 @@ static void debugDrawBVTreeNode(
   
 }
 
-static void debugDrawBVTree(uint16_t *fb, AABBTree *tree, T3DViewport *vp, const T3DFrustum *frustum, float scale, int start_level, int max_level)
+static void debugDrawBVTree(uint16_t *fb, AABB_tree *tree, T3DViewport *vp, const T3DFrustum *frustum, float scale, int start_level, int max_level)
 {
   debugDrawBVTreeNode(fb, vp, tree->root, tree, frustum, scale, start_level, max_level);
 }

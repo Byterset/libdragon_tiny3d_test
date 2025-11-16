@@ -6,7 +6,7 @@
 #include <math.h>
 
 void cone_support_function(const void* data, const Vector3* direction, Vector3* output) {
-    struct physics_object* object = (struct physics_object*)data;
+    physics_object* object = (physics_object*)data;
     union physics_object_collision_shape_data* shape_data = (union physics_object_collision_shape_data*)&object->collision->shape_data;
 
     const float r = shape_data->cone.radius; // radius ρ
@@ -46,7 +46,7 @@ void cone_support_function(const void* data, const Vector3* direction, Vector3* 
 
 void cone_bounding_box(const void* data, const Quaternion* q, AABB* box)
 {
-    struct physics_object* object = (struct physics_object*)data;
+    physics_object* object = (physics_object*)data;
     float h = object->collision->shape_data.cone.half_height;
     float r = object->collision->shape_data.cone.radius;
 
@@ -101,13 +101,11 @@ void cone_bounding_box(const void* data, const Quaternion* q, AABB* box)
     box->max = bmax;
 }
 
-void cone_inertia_tensor(void* data, float mass, Vector3* out) {
-    struct physics_object* object = (struct physics_object*)data;
-    union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
+void cone_inertia_tensor(void* data, Vector3* out) {
+    physics_object* object = (physics_object*)data;
 
-    float radius = shape_data->cone.radius;
-    float half_height = shape_data->cone.half_height;
-    float height = 2.0f * half_height;
+    float radius = object->collision->shape_data.cone.radius;
+    float height = 2.0f * object->collision->shape_data.cone.half_height;
 
     // Inertia tensor for a solid cone oriented along y-axis:
     // Ixx = Izz = (3/80) * mass * (4*r² + h²)  (perpendicular to cone axis)
@@ -115,8 +113,8 @@ void cone_inertia_tensor(void* data, float mass, Vector3* out) {
     float r_sq = radius * radius;
     float h_sq = height * height;
 
-    float perpendicular_inertia = (3.0f / 80.0f) * mass * (4.0f * r_sq + h_sq);
-    float axial_inertia = 0.3f * mass * r_sq;
+    float perpendicular_inertia = (3.0f / 80.0f) * object->mass * (4.0f * r_sq + h_sq);
+    float axial_inertia = 0.3f * object->mass * r_sq;
 
     out->x = perpendicular_inertia;
     out->y = axial_inertia;

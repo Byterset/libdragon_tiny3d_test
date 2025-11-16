@@ -1,5 +1,5 @@
-#ifndef __RAY_H__
-#define __RAY_H__
+#ifndef __RAYCAST_H__
+#define __RAYCAST_H__
 
 #include "../math/vector3.h"
 #include "../math/transform.h"

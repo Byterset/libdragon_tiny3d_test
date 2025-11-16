@@ -11,16 +11,7 @@
 
 
 static struct physics_object_collision_data cylinder_collision = {
-    .gjk_support_function = cylinder_support_function,
-    .bounding_box_calculator = cylinder_bounding_box,
-    .inertia_calculator = cylinder_inertia_tensor,
-    .shape_data = {
-        .cylinder = {
-            .half_height = 2.5f,
-            .radius = 6.0f
-        }
-    },
-    .shape_type = COLLISION_SHAPE_CYLINDER,
+    CYLINDER_COLLIDER(6.0f, 2.5f),
     .friction = 0.7
 };
 

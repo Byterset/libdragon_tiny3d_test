@@ -612,7 +612,7 @@ bool ray_cone_intersection(
 
 bool ray_physics_object_intersection(
     raycast* ray, 
-    struct physics_object* object, 
+    physics_object* object, 
     raycast_hit* hit
 ) {
     // Get the object's collision data

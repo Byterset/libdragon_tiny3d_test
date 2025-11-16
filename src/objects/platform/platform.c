@@ -11,15 +11,7 @@
 #define ROTATION_DURATION 9.0f
 
 static struct physics_object_collision_data platform_collision = {
-    .gjk_support_function = box_support_function,
-    .bounding_box_calculator = box_bounding_box,
-    .inertia_calculator = box_inertia_tensor,
-    .shape_data = {
-        .box = {
-            .half_size = {{12.5f, 1.0f, 5.0f}}
-        }
-    },
-    .shape_type = COLLISION_SHAPE_BOX,
+    BOX_COLLIDER(12.5f, 1.0f, 5.0f)
 };
 
 void platform_update(struct platform* platform){

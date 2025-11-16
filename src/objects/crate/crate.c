@@ -10,32 +10,10 @@
 #include "../../render/defs.h"
 
 static struct physics_object_collision_data crate_collision = {
-    .gjk_support_function = box_support_function,
-    .bounding_box_calculator = box_bounding_box,
-    .inertia_calculator = box_inertia_tensor,
-    .shape_data = {
-        .box = {
-            .half_size = {{1.75f, 1.75f, 1.75f}}
-        }
-    },
-    .shape_type = COLLISION_SHAPE_BOX,
+    BOX_COLLIDER(1.75f,1.75f,1.75f),
     .friction = 0.6f,
     .bounce = 0.1f
 };
-
-// static struct physics_object_collision_data crate_collision = {
-//     .gjk_support_function = sphere_support_function,
-//     .bounding_box_calculator = sphere_bounding_box,
-//     .inertia_calculator = sphere_inertia_tensor,
-//     .shape_data = {
-//         .sphere = {
-//             .radius = 2.0f
-//         }
-//     },
-//     .shape_type = COLLISION_SHAPE_SPHERE,
-//     .friction = 0.2,
-//     .bounce = 0.4
-// };
 
 void crate_init(struct crate* crate, struct generic_object_pos_definition* def){
     entity_id entity_id = entity_id_new();

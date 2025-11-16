@@ -24,37 +24,16 @@
 static Vector2 player_max_rotation;
 
 static struct physics_object_collision_data player_collision = {
-    .gjk_support_function = capsule_support_function,
-    .bounding_box_calculator = capsule_bounding_box,
-    .inertia_calculator = capsule_inertia_tensor,
-    .shape_data = {
-        .capsule = {
-            .radius = 1.0f,
-            .inner_half_height = 0.7f,
-        }},
-    .shape_type = COLLISION_SHAPE_CAPSULE,
+    CAPSULE_COLLIDER(1.0f, 0.7f),
     .friction = 0.5f
 };
 
-// static struct physics_object_collision_data player_collision = {
-//     .gjk_support_function = sphere_support_function,
-//     .bounding_box_calculator = sphere_bounding_box,
-//     .inertia_calculator = sphere_inertia_tensor,
-//     .shape_data = {
-//         .sphere = {
-//             .radius = 1.0f,
-//         }},
-//     .shape_type = COLLISION_SHAPE_SPHERE,
-//     .friction = 0.1f,
-//     .bounce = 0
-// };
-
 void player_handle_contacts(struct player* player){
-    struct contact *contact = player->physics.active_contacts;
+    contact *contact = player->physics.active_contacts;
     while (contact)
     {
         struct collectable *collectable = collectable_get(contact->other_object);
-        struct physics_object *other = collision_scene_find_object(contact->other_object); 
+        physics_object *other = collision_scene_find_object(contact->other_object); 
         if (contact->other_object != 0)
         {
             // debugf("Collision with %d\n", contact->other_object);

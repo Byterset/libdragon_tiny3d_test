@@ -13,7 +13,7 @@
 struct ball {
     Transform transform;
     struct renderable renderable;
-    struct physics_object physics;
+    physics_object physics;
 };
 
 void ball_init(struct ball* ball, struct generic_object_pos_definition* def);

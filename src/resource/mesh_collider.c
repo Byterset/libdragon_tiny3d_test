@@ -86,7 +86,7 @@ void mesh_collider_load_test(struct mesh_collider* into){
 
     into->triangle_count = triangle_count;
 
-    AABBTree_create(&into->aabbtree, (2 * triangle_count) + 1);
+    AABB_tree_init(&into->aabbtree, (2 * triangle_count) + 1);
     AABB triangleAABB;
     for (int i = 0; i < triangle_count; i++)
     {
@@ -97,7 +97,7 @@ void mesh_collider_load_test(struct mesh_collider* into){
 
         triangleAABB = AABBFromTriangle(v0, v1, v2);
 
-        AABBTreeNode_createNode(&into->aabbtree, triangleAABB, (void *)i);
+        AABB_tree_create_node(&into->aabbtree, triangleAABB, (void *)i);
     }
 }
 
@@ -135,7 +135,7 @@ void mesh_collider_load(struct mesh_collider* into, const char* filename, float 
     fread(into->normals, sizeof(Vector3), triangle_count, file);
     fclose(file);
 
-    AABBTree_create(&into->aabbtree, (2 * triangle_count) + 1);
+    AABB_tree_init(&into->aabbtree, (2 * triangle_count) + 1);
     AABB triangleAABB;
     for (int i = 0; i < triangle_count; i++)
     {
@@ -148,12 +148,12 @@ void mesh_collider_load(struct mesh_collider* into, const char* filename, float 
 
         triangleAABB = AABBFromTriangle(v0, v1, v2);
 
-        AABBTreeNode_createNode(&into->aabbtree, triangleAABB, (void *)i);
+        AABB_tree_create_node(&into->aabbtree, triangleAABB, (void *)i);
     }
 }
 
 void mesh_collider_release(struct mesh_collider* mesh){
     free(mesh->vertices);
     free(mesh->triangles);
-    AABBTree_free(&mesh->aabbtree);
+    AABB_tree_free(&mesh->aabbtree);
 }

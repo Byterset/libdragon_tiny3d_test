@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 struct swept_physics_object {
-    struct physics_object* object;
+    physics_object* object;
     Vector3 offset;
 };
 
@@ -27,7 +27,7 @@ void object_mesh_collide_data_init(
     struct object_mesh_collide_data* data,
     Vector3* prev_pos,
     struct mesh_collider* mesh,
-    struct physics_object* object
+    physics_object* object
 ) {
     data->prev_pos = prev_pos;
     data->mesh = mesh;
@@ -96,7 +96,7 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
  * @param start_pos Pointer to the position of the object before the collision applies (after mover/phys update, before collision resolution).
  */
 void collide_object_swept_bounce(
-    struct physics_object* object, 
+    physics_object* object, 
     struct object_mesh_collide_data* collide_data,
     Vector3* start_pos
 ) {
@@ -129,7 +129,7 @@ void collide_object_swept_bounce(
     collide_add_contact(object, &collide_data->hit_result, true, 0);
 }
 
-bool collide_object_to_mesh_swept(struct physics_object* object, struct mesh_collider* mesh, Vector3* prev_pos){
+bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* mesh, Vector3* prev_pos){
     if (object->is_trigger) {
         return false;
     }
@@ -160,14 +160,14 @@ bool collide_object_to_mesh_swept(struct physics_object* object, struct mesh_col
 
     int result_count = 0;
     int max_results = 20;
-    NodeProxy results[max_results];
+    node_proxy results[max_results];
 
-    AABBTree_queryBounds(&mesh->aabbtree, &expanded_box, results, &result_count, max_results);
+    AABB_tree_query_bounds(&mesh->aabbtree, &expanded_box, results, &result_count, max_results);
     
     bool did_hit = false;
     for (size_t j = 0; j < result_count; j++)
     {
-        int triangle_index = (int)AABBTreeNode_getData(&mesh->aabbtree, results[j]);
+        int triangle_index = (int)AABB_tree_get_node_data(&mesh->aabbtree, results[j]);
 
         did_hit = did_hit | collide_object_swept_to_triangle(&collide_data, triangle_index);
     }

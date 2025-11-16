@@ -4,7 +4,7 @@
 #include <math.h>
 
 void box_support_function(const void* data, const Vector3* direction, Vector3* output) {
-    struct physics_object* object = (struct physics_object*)data;
+    physics_object* object = (physics_object*)data;
     const Vector3 half_size = object->collision->shape_data.box.half_size;
     output->x = copysignf(half_size.x, direction->x);
     output->y = copysignf(half_size.y, direction->y);
@@ -12,9 +12,8 @@ void box_support_function(const void* data, const Vector3* direction, Vector3* o
 
 }
 
-
 void box_bounding_box(const void* data, const Quaternion* q, AABB* box) {
-    struct physics_object* object = (struct physics_object*)data;
+    physics_object* object = (physics_object*)data;
     Vector3* h = &object->collision->shape_data.box.half_size;
 
     float ex, ey, ez;
@@ -48,10 +47,10 @@ void box_bounding_box(const void* data, const Quaternion* q, AABB* box) {
     box->max.z =  ez;
 }
 
-void box_inertia_tensor(void* data, float mass, Vector3* out) {
-    struct physics_object* object = (struct physics_object*)data;
+void box_inertia_tensor(void* data, Vector3* out) {
+    physics_object* object = (physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
-    Vector3* half_size = &shape_data->box.half_size;
+    Vector3* half_size = &object->collision->shape_data.box.half_size;
 
     // Inertia tensor for a box with half-sizes (hx, hy, hz):
     // Ixx = (1/3) * mass * (hy² + hz²)
@@ -61,7 +60,7 @@ void box_inertia_tensor(void* data, float mass, Vector3* out) {
     float hy_sq = half_size->y * half_size->y;
     float hz_sq = half_size->z * half_size->z;
 
-    float scale = mass / 3.0f;
+    float scale = object->mass / 3.0f;
 
     out->x = scale * (hy_sq + hz_sq);
     out->y = scale * (hx_sq + hz_sq);

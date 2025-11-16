@@ -16,7 +16,7 @@
 /// @param mass 
 void physics_object_init(
     entity_id entity_id,
-    struct physics_object* object, 
+    physics_object* object, 
     struct physics_object_collision_data* collision,
     uint16_t collision_layers,
     Vector3* position, 
@@ -52,7 +52,7 @@ void physics_object_init(
 
     // Calculate inertia tensor if inertia calculator is provided
     if (collision->inertia_calculator) {
-        collision->inertia_calculator(object, mass, &object->_local_inertia_tensor);
+        collision->inertia_calculator(object, &object->_local_inertia_tensor);
     } else {
         // Fallback: treat as unit sphere if no calculator provided
         float default_inertia = 0.4f * mass;
@@ -65,7 +65,7 @@ void physics_object_init(
     physics_object_recalculate_aabb(object);
 }
 
-void physics_object_update_euler(struct physics_object* object) {
+void physics_object_update_euler(physics_object* object) {
     if (object->is_trigger || object->is_kinematic) {
         return;
     }
@@ -85,7 +85,7 @@ void physics_object_update_euler(struct physics_object* object) {
 
 }
 
-void physics_object_update_implicit_euler(struct physics_object* object) {
+void physics_object_update_implicit_euler(physics_object* object) {
     if (object->is_trigger || object->is_kinematic) return;
 
     // Implicit Euler: v_{t+1} = v_t + a_{t+1} * dt
@@ -109,7 +109,7 @@ void physics_object_update_implicit_euler(struct physics_object* object) {
     object->is_grounded = false;
 }
 
-void physics_object_update_velocity_verlet(struct physics_object* object) {
+void physics_object_update_velocity_verlet(physics_object* object) {
     if (object->is_trigger || object->is_kinematic) return;
 
     vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME, object->position);
@@ -127,7 +127,7 @@ void physics_object_update_velocity_verlet(struct physics_object* object) {
     object->is_grounded = false;
 }
 
-void physics_object_update_angular_velocity(struct physics_object* object) {
+void physics_object_update_angular_velocity(physics_object* object) {
     // Skip if trigger, kinematic, or no rotation quaternion
     if (object->is_trigger || object->is_kinematic || !object->rotation) {
         return;
@@ -237,7 +237,7 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
     vector3Add(object->position, &position_adjustment, object->position);
 }
 
-void physics_object_apply_constraints(struct physics_object* object){
+void physics_object_apply_constraints(physics_object* object){
     if (object->position->y <= -20){
         *object->position = (Vector3){{0, 20, 0}};
         object->velocity = gZeroVec;
@@ -267,35 +267,35 @@ void physics_object_apply_constraints(struct physics_object* object){
 /// @brief Accelerates the object by the given acceleration vector. 
 /// @param object 
 /// @param acceleration 
-void physics_object_accelerate(struct physics_object* object, Vector3* acceleration) {
+void physics_object_accelerate(physics_object* object, Vector3* acceleration) {
     vector3Add(&object->acceleration, acceleration, &object->acceleration);
 }
 
 /// @brief Set the velocity of the object to the given velocity vector
 /// @param object 
 /// @param velocity 
-void physics_object_set_velocity(struct physics_object* object, Vector3* velocity){
+void physics_object_set_velocity(physics_object* object, Vector3* velocity){
     vector3Copy(velocity, &object->velocity);
 }
 
 /// @brief apply and impulse force to the object
 /// @param object
 /// @param impulse
-void physics_object_apply_impulse(struct physics_object* object, Vector3* impulse) {
+void physics_object_apply_impulse(physics_object* object, Vector3* impulse) {
     vector3AddScaled(&object->velocity, impulse, 1.0f / object->mass, &object->velocity);
 }
 
 /// @brief Apply torque to the object (accumulated and applied during physics update)
 /// @param object
 /// @param torque the torque vector in world space (N⋅m)
-void physics_object_apply_torque(struct physics_object* object, Vector3* torque) {
+void physics_object_apply_torque(physics_object* object, Vector3* torque) {
     vector3Add(&object->_torque_accumulator, torque, &object->_torque_accumulator);
 }
 
 /// @brief Apply an angular impulse directly to angular velocity
 /// @param object
 /// @param angular_impulse angular impulse in world space (N⋅m⋅s)
-void physics_object_apply_angular_impulse(struct physics_object* object, Vector3* angular_impulse) {
+void physics_object_apply_angular_impulse(physics_object* object, Vector3* angular_impulse) {
     if (object->is_kinematic || !object->rotation) {
         return;
     }
@@ -334,7 +334,7 @@ void physics_object_apply_angular_impulse(struct physics_object* object, Vector3
 /// @param object
 /// @param force the force vector in world space
 /// @param world_point the point in world space where the force is applied
-void physics_object_apply_force_at_point(struct physics_object* object, Vector3* force, Vector3* world_point) {
+void physics_object_apply_force_at_point(physics_object* object, Vector3* force, Vector3* world_point) {
     // Apply linear force
     vector3AddScaled(&object->acceleration, force, 1.0f / object->mass, &object->acceleration);
 
@@ -361,16 +361,16 @@ void physics_object_apply_force_at_point(struct physics_object* object, Vector3*
 /// @brief Set the angular velocity of the object
 /// @param object
 /// @param angular_velocity the angular velocity in world space (rad/s)
-void physics_object_set_angular_velocity(struct physics_object* object, Vector3* angular_velocity) {
+void physics_object_set_angular_velocity(physics_object* object, Vector3* angular_velocity) {
     vector3Copy(angular_velocity, &object->angular_velocity);
 }
 
 /// @brief iterate through the active contacts of the object and return the contact with the smallest distance to the object
 /// @param object the physics_object whose contacts are to be checked
 /// @return the contact with the smallest distance to the object
-struct contact* physics_object_nearest_contact(struct physics_object* object) {
-    struct contact* nearest_target = NULL;
-    struct contact* current = object->active_contacts;
+contact* physics_object_nearest_contact(physics_object* object) {
+    contact* nearest_target = NULL;
+    contact* current = object->active_contacts;
     float distance = 0.0f;
 
     while (current) {
@@ -390,8 +390,8 @@ struct contact* physics_object_nearest_contact(struct physics_object* object) {
 /// @param object the physics_object whose contacts are to be checked
 /// @param id the entity id of the object to check for
 /// @return true if the object is in the list of contacts, false otherwise
-bool physics_object_is_touching(struct physics_object* object, entity_id id) {
-    struct contact* current = object->active_contacts;
+bool physics_object_is_touching(physics_object* object, entity_id id) {
+    contact* current = object->active_contacts;
 
     while (current) {
         if (current->other_object == id) {
@@ -409,7 +409,7 @@ bool physics_object_is_touching(struct physics_object* object, entity_id id) {
 /// @param direction the direction vector in world space
 /// @param output the resulting Support point in world space
 void physics_object_gjk_support_function(const void* data, const Vector3* direction, Vector3* output) {
-    struct physics_object* object = (struct physics_object*)data;
+    physics_object* object = (physics_object*)data;
     Vector3 world_center;
     Vector3 localDir;
     if(object->rotation){
@@ -437,7 +437,7 @@ void physics_object_gjk_support_function(const void* data, const Vector3* direct
 
 /// @brief re-caluclates the bounding box of the object using the collision type's bounding box function
 /// @param object 
-void physics_object_recalculate_aabb(struct physics_object* object) {
+void physics_object_recalculate_aabb(physics_object* object) {
     //calculate bounding box for object in local space
     object->collision->bounding_box_calculator(object, object->rotation, &object->bounding_box);
     Vector3 offset;

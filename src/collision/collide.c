@@ -11,7 +11,7 @@
 #include <math.h>
 
 
-void correct_velocity(struct physics_object* a, struct physics_object* b, struct EpaResult* result, float friction, float bounce) {
+void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* result, float friction, float bounce) {
     // EPA result normal points toward A (from B to A)
     // Parameters match EPA order:
     // - For terrain: EPA (terrain, object), call (NULL, object) - normal points toward NULL (terrain)
@@ -433,7 +433,7 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
     }
 }
 
-void correct_overlap(struct physics_object* a, struct physics_object* b, struct EpaResult* result) {
+void correct_overlap(physics_object* a, physics_object* b, struct EpaResult* result) {
 
     const float percent = 1.0f;
     const float slop = 0.001f;
@@ -496,11 +496,11 @@ void correct_overlap(struct physics_object* a, struct physics_object* b, struct 
 
 struct object_mesh_collide_data {
     struct mesh_collider* mesh;
-    struct physics_object* object;
+    physics_object* object;
     struct mesh_triangle triangle;
 };
 
-bool collide_object_to_triangle(struct physics_object* object, struct mesh_collider* mesh, int triangle_index){
+bool collide_object_to_triangle(physics_object* object, struct mesh_collider* mesh, int triangle_index){
     struct mesh_triangle triangle;
     triangle.triangle = mesh->triangles[triangle_index];
     triangle.normal = mesh->normals[triangle_index];
@@ -533,19 +533,19 @@ bool collide_object_to_triangle(struct physics_object* object, struct mesh_colli
     return false;
 }
 
-void collide_object_to_mesh(struct physics_object* object, struct mesh_collider* mesh) {   
+void collide_object_to_mesh(physics_object* object, struct mesh_collider* mesh) {   
     if (object->is_trigger) {
         return;
     }
 
     int result_count = 0;
     int max_results = 20;
-    NodeProxy results[max_results];
+    node_proxy results[max_results];
 
-    AABBTree_queryBounds(&mesh->aabbtree, &object->bounding_box, results, &result_count, max_results);
+    AABB_tree_query_bounds(&mesh->aabbtree, &object->bounding_box, results, &result_count, max_results);
     for (size_t j = 0; j < result_count; j++)
     {
-        int triangle_index = (int)AABBTreeNode_getData(&mesh->aabbtree, results[j]);
+        int triangle_index = (int)AABB_tree_get_node_data(&mesh->aabbtree, results[j]);
 
         collide_object_to_triangle(object, mesh, triangle_index);
     }    
@@ -558,7 +558,7 @@ void collide_object_to_mesh(struct physics_object* object, struct mesh_collider*
 /// Then it performs a GJK/EPA collision detection and resolution.
 /// @param a physics object a
 /// @param b physics object b
-void collide_object_to_object(struct physics_object* a, struct physics_object* b) {
+void collide_object_to_object(physics_object* a, physics_object* b) {
     // If the Objects don't share any collision layers, don't collide
     if (!(a->collision_layers & b->collision_layers)) {
         return;
@@ -600,7 +600,7 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
 
 
     if (a->is_trigger || b->is_trigger) {
-        struct contact* contact = collision_scene_new_contact();
+        contact* contact = collision_scene_new_contact();
 
         if (!contact) {
             return;
@@ -666,8 +666,8 @@ void collide_object_to_object(struct physics_object* a, struct physics_object* b
     collide_add_contact(b, &result, true, a ? a->entity_id : 0);
 }
 
-void collide_add_contact(struct physics_object* object, struct EpaResult* result, bool is_B, entity_id other_id) {
-    struct contact* contact = collision_scene_new_contact();
+void collide_add_contact(physics_object* object, struct EpaResult* result, bool is_B, entity_id other_id) {
+    contact* contact = collision_scene_new_contact();
 
     if (!contact) {
         return;

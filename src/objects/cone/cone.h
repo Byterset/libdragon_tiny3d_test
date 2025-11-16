@@ -13,7 +13,7 @@
 struct cone {
     Transform transform;
     struct renderable renderable;
-    struct physics_object physics;
+    physics_object physics;
 };
 
 void cone_init(struct cone* box, struct generic_object_pos_definition* def);

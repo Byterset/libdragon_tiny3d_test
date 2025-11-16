@@ -12,15 +12,7 @@
 #define BALL_RADIUS 2.0f
 
 static struct physics_object_collision_data ball_collision = {
-    .gjk_support_function = sphere_support_function,
-    .bounding_box_calculator = sphere_bounding_box,
-    .inertia_calculator = sphere_inertia_tensor,
-    .shape_data = {
-        .sphere = {
-            .radius = BALL_RADIUS
-        }
-    },
-    .shape_type = COLLISION_SHAPE_SPHERE,
+    SPHERE_COLLIDER(BALL_RADIUS),
     .friction = 0.8,
     .bounce = 0.3
 };

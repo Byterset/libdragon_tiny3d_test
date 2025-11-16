@@ -11,16 +11,7 @@
 
 
 static struct physics_object_collision_data cone_collision = {
-    .gjk_support_function = cone_support_function,
-    .bounding_box_calculator = cone_bounding_box,
-    .inertia_calculator = cone_inertia_tensor,
-    .shape_data = {
-        .cone = {
-            .half_height = 5.0f,
-            .radius = 7.0f
-        }
-    },
-    .shape_type = COLLISION_SHAPE_CONE,
+    CONE_COLLIDER(7.0f, 5.0f)
 };
 
 

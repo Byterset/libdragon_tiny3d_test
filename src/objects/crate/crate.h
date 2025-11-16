@@ -13,7 +13,7 @@
 struct crate {
     Transform transform;
     struct renderable renderable;
-    struct physics_object physics;
+    physics_object physics;
 };
 
 void crate_init(struct crate* box, struct generic_object_pos_definition* def);

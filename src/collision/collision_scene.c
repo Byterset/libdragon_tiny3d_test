@@ -20,11 +20,11 @@ struct collision_scene g_scene;
 void collision_scene_reset() {
     free(g_scene.elements);
     free(g_scene.all_contacts);
-    AABBTree_free(&g_scene.object_aabbtree);
+    AABB_tree_free(&g_scene.object_aabbtree);
     hash_map_destroy(&g_scene.entity_mapping);
 
     hash_map_init(&g_scene.entity_mapping, MAX_PHYSICS_OBJECTS);
-    AABBTree_create(&g_scene.object_aabbtree, MAX_PHYSICS_OBJECTS);
+    AABB_tree_init(&g_scene.object_aabbtree, MAX_PHYSICS_OBJECTS);
     g_scene.elements = malloc(sizeof(struct collision_scene_element) * MAX_PHYSICS_OBJECTS);
     g_scene.capacity = MAX_PHYSICS_OBJECTS;
     g_scene.objectCount = 0;
@@ -33,7 +33,7 @@ void collision_scene_reset() {
         g_scene.mesh_collider = NULL;
     }
 
-    g_scene.all_contacts = malloc(sizeof(struct contact) * MAX_ACTIVE_CONTACTS);
+    g_scene.all_contacts = malloc(sizeof(contact) * MAX_ACTIVE_CONTACTS);
     g_scene.next_free_contact = &g_scene.all_contacts[0];
 
     for (int i = 0; i + 1 < MAX_ACTIVE_CONTACTS; ++i)
@@ -48,7 +48,7 @@ struct collision_scene* collision_scene_get() {
     return &g_scene;
 }
 
-void collision_scene_add(struct physics_object* object) {
+void collision_scene_add(physics_object* object) {
     if (g_scene.objectCount >= g_scene.capacity) {
         g_scene.capacity *= 2;
         g_scene.elements = realloc(g_scene.elements, sizeof(struct collision_scene_element) * g_scene.capacity);
@@ -61,11 +61,11 @@ void collision_scene_add(struct physics_object* object) {
     g_scene.objectCount += 1;
 
     hash_map_set(&g_scene.entity_mapping, object->entity_id, object);
-    object->_aabb_tree_node_id = AABBTreeNode_createNode(&g_scene.object_aabbtree, object->bounding_box, object);
+    object->_aabb_tree_node_id = AABB_tree_create_node(&g_scene.object_aabbtree, object->bounding_box, object);
 }
 
 /// @brief Returns the physics object associated with the given entity id if it exists in the collision scene.
-struct physics_object* collision_scene_find_object(entity_id id) {
+physics_object* collision_scene_find_object(entity_id id) {
     if (!id) {
         return 0;
     }
@@ -82,8 +82,8 @@ struct physics_object* collision_scene_find_object(entity_id id) {
  *
  * @param object Pointer to the physics object whose active contacts are to be returned.
  */
-void collision_scene_release_object_contacts(struct physics_object* object) {
-    struct contact* last_contact = object->active_contacts;
+void collision_scene_release_object_contacts(physics_object* object) {
+    contact* last_contact = object->active_contacts;
 
     while (last_contact && last_contact->next) {
         last_contact = last_contact->next;
@@ -101,7 +101,7 @@ void collision_scene_release_object_contacts(struct physics_object* object) {
 /// The removed object will no longer be updated in the phys loop or considered for collision.
 /// All contacts associated with the object will be released.
 /// @param object 
-void collision_scene_remove(struct physics_object* object) {
+void collision_scene_remove(physics_object* object) {
     bool has_found = false;
 
     for (int i = 0; i < g_scene.objectCount; i++) {
@@ -118,7 +118,7 @@ void collision_scene_remove(struct physics_object* object) {
     if (has_found) {
         g_scene.objectCount -= 1;
     }
-    AABBTree_removeLeaf(&g_scene.object_aabbtree, object->_aabb_tree_node_id, true);
+    AABB_tree_remove_leaf_node(&g_scene.object_aabbtree, object->_aabb_tree_node_id, true);
     hash_map_delete(&g_scene.entity_mapping, object->entity_id);
 }
 
@@ -130,7 +130,7 @@ void collision_scene_use_static_collision(struct mesh_collider* mesh_collider) {
 
 /// @brief Removes the current static collision mesh from the scene.
 void collision_scene_remove_static_collision() {
-    AABBTree_free(&g_scene.mesh_collider->aabbtree);
+    AABB_tree_free(&g_scene.mesh_collider->aabbtree);
     g_scene.mesh_collider = NULL;
 }
 
@@ -146,13 +146,13 @@ void collision_scene_collide_phys_object(struct collision_scene_element* element
     //and collecting leaf nodes that overlap with the object's bounding box
     int result_count = 0;
     int max_results = 10;
-    NodeProxy results[max_results];
-    AABBTree_queryBounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, max_results);
+    node_proxy results[max_results];
+    AABB_tree_query_bounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, max_results);
 
     //iterate over the list of candidates and perform detailed collision detection
     for (size_t i = 0; i < result_count; i++)
     {
-        struct physics_object *other = (struct physics_object *)AABBTreeNode_getData(&g_scene.object_aabbtree, results[i]);
+        physics_object *other = (physics_object *)AABB_tree_get_node_data(&g_scene.object_aabbtree, results[i]);
         // skip narrow phase if there is no physics object associated with the result node
         // or if it is the same object as the one queried
         if (!other || other == element->object)
@@ -166,7 +166,7 @@ void collision_scene_collide_phys_object(struct collision_scene_element* element
 
 #define MAX_SWEPT_ITERATIONS    5
 
-void collision_scene_collide_object_to_static(struct physics_object* object, Vector3* prev_pos) {
+void collision_scene_collide_object_to_static(physics_object* object, Vector3* prev_pos) {
 
     for (int i = 0; i < MAX_SWEPT_ITERATIONS; i += 1)
     {
@@ -208,7 +208,7 @@ void collision_scene_step() {
     // First loop: Position updates and AABB maintenance
     for (int i = 0; i < g_scene.objectCount; i++) {
         element = &g_scene.elements[i];
-        struct physics_object* obj = element->object;
+        physics_object* obj = element->object;
 
         if (!obj->_is_sleeping) {
             if (obj->has_gravity && !obj->is_kinematic)
@@ -217,7 +217,7 @@ void collision_scene_step() {
                 float support_factor = 0.0f;
                 if (obj->active_contacts)
                 {
-                    struct contact *c = obj->active_contacts;
+                    contact *c = obj->active_contacts;
                     while (c)
                     {
                         // If contact normal points upward (more lenient threshold)
@@ -251,7 +251,7 @@ void collision_scene_step() {
             physics_object_recalculate_aabb(obj);
             Vector3 displacement;
             vector3Sub(obj->position, &obj->_prev_step_pos, &displacement);
-            AABBTree_moveNode(&g_scene.object_aabbtree, obj->_aabb_tree_node_id,
+            AABB_tree_move_node(&g_scene.object_aabbtree, obj->_aabb_tree_node_id,
                             obj->bounding_box, &displacement);
         }
     }
@@ -259,7 +259,7 @@ void collision_scene_step() {
     // Second loop: Mesh Collision, Constraints and Sleep State Update
     for (int i = 0; i < g_scene.objectCount; i++) {
         element = &g_scene.elements[i];
-        struct physics_object* obj = element->object;
+        physics_object* obj = element->object;
 
         // Only do mesh collision if the object is not sleeping, not fixed in place, is tangible and has moved or rotated previously 
         if (g_scene.mesh_collider && !obj->_is_sleeping && !obj->is_kinematic && 
@@ -328,12 +328,12 @@ void collision_scene_step() {
 }
 
 /// @brief Returns a new contact from the global scene's free contact list, NULL if none are available.
-struct contact* collision_scene_new_contact() {
+contact* collision_scene_new_contact() {
     if (!g_scene.next_free_contact) {
         return NULL;
     }
 
-    struct contact* result = g_scene.next_free_contact;
+    contact* result = g_scene.next_free_contact;
     g_scene.next_free_contact = result->next;
     return result;
 }

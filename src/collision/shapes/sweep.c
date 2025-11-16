@@ -36,7 +36,7 @@ void sweep_support_function(const void* data, const Vector3* direction, Vector3*
 }
 
 void sweep_bounding_box(const void* data, const Quaternion* rotation, AABB* box) {
-    struct physics_object* object = (struct physics_object*)data;
+    physics_object* object = (physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
 
     // box->min = (Vector3){0.0f, -shape_data->sweep.half_height, 0.0f};

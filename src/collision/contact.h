@@ -6,13 +6,13 @@
 
 #define MAX_ACTIVE_CONTACTS 128
 
-struct physics_object;
+typedef struct contact contact;
 
-struct contact {
-    struct contact* next;
+typedef struct contact {
+    contact* next;
     Vector3 point;
     Vector3 normal;
     entity_id other_object;
-};
+} contact;
 
 #endif

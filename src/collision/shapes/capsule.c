@@ -5,7 +5,7 @@
 #include "sphere.h"
 
 void capsule_support_function(const void* data, const Vector3* direction, Vector3* output) {
-    struct physics_object* object = (struct physics_object*)data;
+    physics_object* object = (physics_object*)data;
     float half_h = object->collision->shape_data.capsule.inner_half_height;
     float radius = object->collision->shape_data.capsule.radius;
 
@@ -20,7 +20,7 @@ void capsule_support_function(const void* data, const Vector3* direction, Vector
 
 
 void capsule_bounding_box(const void* data, const Quaternion* q, AABB* box) {
-    struct physics_object* object = (struct physics_object*)data;
+    physics_object* object = (physics_object*)data;
     float half_h = object->collision->shape_data.capsule.inner_half_height;
     float radius = object->collision->shape_data.capsule.radius;
 
@@ -62,8 +62,8 @@ void capsule_bounding_box(const void* data, const Quaternion* q, AABB* box) {
 }
 
 
-void capsule_inertia_tensor(void* data, float mass, Vector3* out) {
-    struct physics_object* object = (struct physics_object*)data;
+void capsule_inertia_tensor(void* data, Vector3* out) {
+    physics_object* object = (physics_object*)data;
     union physics_object_collision_shape_data* shape_data = &object->collision->shape_data;
 
     float radius = shape_data->capsule.radius;
@@ -76,8 +76,8 @@ void capsule_inertia_tensor(void* data, float mass, Vector3* out) {
     float sphere_volume = (4.0f / 3.0f) * PI * radius * radius * radius;
     float total_volume = cylinder_volume + sphere_volume;
 
-    float cylinder_mass = mass * (cylinder_volume / total_volume);
-    float sphere_mass = mass * (sphere_volume / total_volume);
+    float cylinder_mass = object->mass * (cylinder_volume / total_volume);
+    float sphere_mass = object->mass * (sphere_volume / total_volume);
 
     // Cylinder inertia (oriented along y-axis)
     float r_sq = radius * radius;

@@ -29,7 +29,7 @@ struct player {
     Vector2 look_direction;
     bool is_attacking;
     bool is_jumping;
-    struct physics_object physics;
+    physics_object physics;
     T3DSkeleton skelBlend;
     struct player_animations animations;
     Vector3 desired_velocity;

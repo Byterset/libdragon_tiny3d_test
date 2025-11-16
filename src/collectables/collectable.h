@@ -10,7 +10,7 @@
 struct collectable {
     TransformSingleAxis transform;
     struct renderable_single_axis renderable;
-    struct physics_object physics;
+    physics_object physics;
     enum collectable_type collectable_type;
     uint16_t collectable_sub_type;
 };

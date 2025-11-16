@@ -14,7 +14,7 @@ struct platform {
     float rot_elapsed_time;
     Transform transform;
     struct renderable renderable;
-    struct physics_object physics;
+    physics_object physics;
     Vector2 look_direction;
 };
 

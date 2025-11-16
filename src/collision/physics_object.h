@@ -6,7 +6,7 @@
 #include "../math/vector2.h"
 #include "../math/aabb.h"
 #include "../math/quaternion.h"
-#include "../collision/aabbtree.h"
+#include "../collision/aabb_tree.h"
 #include "contact.h"
 #include "gjk.h"
 #include <stdint.h>
@@ -49,7 +49,7 @@ enum collision_group {
 };
 
 typedef void (*bounding_box_calculator)(const void* data, const Quaternion* rotation, AABB* box);
-typedef void (*inertia_calculator)(void* data, float mass, Vector3* out);
+typedef void (*inertia_calculator)(void* data, Vector3* out);
 
 typedef enum physics_object_collision_shape_type {
     COLLISION_SHAPE_SPHERE,
@@ -68,11 +68,11 @@ typedef enum physics_object_constraints {
     CONSTRAINTS_FREEZE_POSITION_X = (1 << 0),
     CONSTRAINTS_FREEZE_POSITION_Y = (1 << 1),
     CONSTRAINTS_FREEZE_POSITION_Z = (1 << 2),
-    CONSTRAINTS_FREEZE_POSITION_ALL = 7,
+    CONSTRAINTS_FREEZE_POSITION_ALL = (CONSTRAINTS_FREEZE_POSITION_X | CONSTRAINTS_FREEZE_POSITION_Y | CONSTRAINTS_FREEZE_POSITION_Z),
     CONSTRAINTS_FREEZE_ROTATION_X = (1 << 3),
     CONSTRAINTS_FREEZE_ROTATION_Y = (1 << 4),
     CONSTRAINTS_FREEZE_ROTATION_Z = (1 << 5),
-    CONSTRAINTS_FREEZE_ROTATION_ALL = 56,
+    CONSTRAINTS_FREEZE_ROTATION_ALL = (CONSTRAINTS_FREEZE_ROTATION_X | CONSTRAINTS_FREEZE_ROTATION_Y | CONSTRAINTS_FREEZE_ROTATION_Z),
     CONSTRAINTS_ALL = 0xff
 } physics_object_constraints;
 
@@ -97,7 +97,8 @@ struct physics_object_collision_data {
     float friction;
 };
 
-struct physics_object {
+/// @brief 
+typedef struct physics_object {
     entity_id entity_id;
     struct physics_object_collision_data* collision; // information about the collision shape
     Vector3* position;
@@ -117,23 +118,23 @@ struct physics_object {
     bool is_kinematic: true;
     bool is_grounded: true;
     bool _is_sleeping: true;
-    uint16_t constraints;
+    uint16_t constraints; // flags that control which degrees of freedom are allowed for the simulation of this object
     uint16_t _sleep_counter;
     uint16_t collision_layers; // objects that share at least one layer can collide
     uint16_t collision_group; // objects of the same group do not collide
-    struct contact* active_contacts; // contacts with other objects from the last physics step
-    NodeProxy _aabb_tree_node_id; // the node id of the object in the phys-object AABB tree of the collision scene
+    contact* active_contacts; // contacts with other objects from the last physics step
+    node_proxy _aabb_tree_node_id; // the node id of the object in the phys-object AABB tree of the collision scene
     Vector3 angular_velocity;
     Vector3 _torque_accumulator;
     Vector3 _local_inertia_tensor;
     Vector3 _inv_local_intertia_tensor;
     float angular_drag;
     float _prev_angular_speed_sq;
-};
+} physics_object;
 
 void physics_object_init(
     entity_id entity_id,
-    struct physics_object* object, 
+    physics_object* object, 
     struct physics_object_collision_data* collision,
     uint16_t collision_layers,
     Vector3* position, 
@@ -142,28 +143,28 @@ void physics_object_init(
     float mass
 );
 
-void physics_object_update_euler(struct physics_object* object);
-void physics_object_update_implicit_euler(struct physics_object* object);
-void physics_object_update_velocity_verlet(struct physics_object* object);
-void physics_object_update_angular_velocity(struct physics_object* object);
+void physics_object_update_euler(physics_object* object);
+void physics_object_update_implicit_euler(physics_object* object);
+void physics_object_update_velocity_verlet(physics_object* object);
+void physics_object_update_angular_velocity(physics_object* object);
 
-struct contact* physics_object_nearest_contact(struct physics_object* object);
-bool physics_object_is_touching(struct physics_object* object, entity_id id);
+contact* physics_object_nearest_contact(physics_object* object);
+bool physics_object_is_touching(physics_object* object, entity_id id);
 
-void physics_object_accelerate(struct physics_object* object, Vector3* acceleration);
-void physics_object_translate_no_force(struct physics_object* object, Vector3* translation);
-void physics_object_position_no_force(struct physics_object* object, Vector3* position);
-void physics_object_set_velocity(struct physics_object* object, Vector3* velocity);
-void physics_object_apply_impulse(struct physics_object* object, Vector3* impulse);
+void physics_object_accelerate(physics_object* object, Vector3* acceleration);
+void physics_object_translate_no_force(physics_object* object, Vector3* translation);
+void physics_object_position_no_force(physics_object* object, Vector3* position);
+void physics_object_set_velocity(physics_object* object, Vector3* velocity);
+void physics_object_apply_impulse(physics_object* object, Vector3* impulse);
 
-void physics_object_apply_torque(struct physics_object* object, Vector3* torque);
-void physics_object_apply_angular_impulse(struct physics_object* object, Vector3* angular_impulse);
-void physics_object_apply_force_at_point(struct physics_object* object, Vector3* force, Vector3* world_point);
-void physics_object_set_angular_velocity(struct physics_object* object, Vector3* angular_velocity);
+void physics_object_apply_torque(physics_object* object, Vector3* torque);
+void physics_object_apply_angular_impulse(physics_object* object, Vector3* angular_impulse);
+void physics_object_apply_force_at_point(physics_object* object, Vector3* force, Vector3* world_point);
+void physics_object_set_angular_velocity(physics_object* object, Vector3* angular_velocity);
 
-void physics_object_apply_constraints(struct physics_object* object);
+void physics_object_apply_constraints(physics_object* object);
 
 void physics_object_gjk_support_function(const void* data, const Vector3* direction, Vector3* output);
-void physics_object_recalculate_aabb(struct physics_object* object);
+void physics_object_recalculate_aabb(physics_object* object);
 
 #endif
