@@ -209,34 +209,34 @@ void collision_scene_step() {
     for (int i = 0; i < g_scene.objectCount; i++) {
         element = &g_scene.elements[i];
         physics_object* obj = element->object;
+        obj->_ground_support_factor = 0;
 
-        if (!obj->_is_sleeping) {
-            if (obj->has_gravity && !obj->is_kinematic)
+        if (!obj->_is_sleeping && obj->has_gravity && !obj->is_kinematic)
+        {
+            // Check if object has ground contact
+            float ground_support_factor = 0.0f;
+            if (obj->active_contacts)
             {
-                // Check if object has ground contact
-                float support_factor = 0.0f;
-                if (obj->active_contacts)
+                contact *c = obj->active_contacts;
+                while (c)
                 {
-                    contact *c = obj->active_contacts;
-                    while (c)
+                    // If contact normal points upward (more lenient threshold)
+                    // This prevents issues with rotating platforms or numerical precision
+                    if (c->normal.y > ground_support_factor)
                     {
-                        // If contact normal points upward (more lenient threshold)
-                        // This prevents issues with rotating platforms or numerical precision
-                        if (c->normal.y > support_factor)
-                        {
-                            support_factor = c->normal.y;
-                            break;
-                        }
-                        c = c->next;
+                        ground_support_factor = c->normal.y;
+                        break;
                     }
+                    c = c->next;
                 }
-                obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * (1.0f - support_factor);                
-
             }
+            obj->_ground_support_factor = ground_support_factor;
+            ground_support_factor = clampf(ground_support_factor, 0.0f, 0.8f);
+            obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * (1.0f - ground_support_factor);
         }
+
         collision_scene_release_object_contacts(obj);
-        // physics_object_update_velocity_verlet(obj);
-        physics_object_update_implicit_euler(obj);
+        physics_object_update_velocity_semi_implicit_euler(obj);
         physics_object_update_angular_velocity(obj);
 
         // Track movement for AABB updates
@@ -268,7 +268,7 @@ void collision_scene_step() {
         }
 
         // Apply physical constraints to the object
-        physics_object_apply_constraints(obj);
+        physics_object_apply_position_constraints(obj);
 
         // Update sleep state
 
@@ -285,7 +285,7 @@ void collision_scene_step() {
         }
 
         // Check physics-driven motion via velocities
-        const bool has_linear_velocity = vector3MagSqrd(&obj->velocity) > PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD_SQ;
+        const bool has_linear_velocity = vector3MagSqrd(&obj->velocity) > PHYS_OBJECT_SPEED_SLEEP_THRESHOLD_SQ;
         const bool has_angular_velocity = obj->rotation &&
                                         vector3MagSqrd(&obj->angular_velocity) > PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ;
 

@@ -20,7 +20,7 @@
 #include "../math/mathf.h"
 
 // Limit iterations to prevent infinite loops while allowing enough refinement for accurate results
-#define EPA_MAX_ITERATIONS  12
+#define EPA_MAX_ITERATIONS  10
 
 #define EPA_MAX_SIMPLEX_POINTS      (4 + EPA_MAX_ITERATIONS)
 #define EPA_MAX_SIMPLEX_TRIANGLES   (4 + EPA_MAX_ITERATIONS * 2)

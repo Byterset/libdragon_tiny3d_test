@@ -11,7 +11,8 @@
 #define ROTATION_DURATION 9.0f
 
 static struct physics_object_collision_data platform_collision = {
-    BOX_COLLIDER(12.5f, 1.0f, 5.0f)
+    BOX_COLLIDER(12.5f, 1.0f, 5.0f),
+    .friction = 0.6
 };
 
 void platform_update(struct platform* platform){
@@ -47,7 +48,7 @@ void platform_init(struct platform* platform, struct generic_object_pos_definiti
         &platform->transform.position,
         &platform->transform.rotation,
         gZeroVec,
-        400.0f
+        100.0f
     );
 
     platform->physics.has_gravity = false;

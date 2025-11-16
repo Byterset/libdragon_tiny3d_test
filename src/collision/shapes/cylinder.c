@@ -105,8 +105,8 @@ void cylinder_inertia_tensor(void* data, Vector3* out) {
     float r_sq = radius * radius;
     float h_sq = height * height;
 
-    float perpendicular_inertia = object->mass * (3.0f * r_sq + h_sq) / 12.0f;
-    float axial_inertia = 0.5f * object->mass * r_sq;
+    float perpendicular_inertia = object->_mass * (3.0f * r_sq + h_sq) / 12.0f;
+    float axial_inertia = 0.5f * object->_mass * r_sq;
 
     out->x = perpendicular_inertia;
     out->y = axial_inertia;

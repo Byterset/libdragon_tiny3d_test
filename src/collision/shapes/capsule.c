@@ -76,8 +76,8 @@ void capsule_inertia_tensor(void* data, Vector3* out) {
     float sphere_volume = (4.0f / 3.0f) * PI * radius * radius * radius;
     float total_volume = cylinder_volume + sphere_volume;
 
-    float cylinder_mass = object->mass * (cylinder_volume / total_volume);
-    float sphere_mass = object->mass * (sphere_volume / total_volume);
+    float cylinder_mass = object->_mass * (cylinder_volume / total_volume);
+    float sphere_mass = object->_mass * (sphere_volume / total_volume);
 
     // Cylinder inertia (oriented along y-axis)
     float r_sq = radius * radius;

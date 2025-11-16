@@ -14,10 +14,7 @@ void sweep_support_function(const void* data, const Vector3* direction, Vector3*
     float distance = 0.0f;
 
     Vector2 arm_check = shape_data->sweep.range;
-
-    if (direction->x < 0.0f) {
-        arm_check.x = -arm_check.x;
-    }
+    arm_check.x = copysignf(arm_check.x, direction->x);
 
     float test = vector2Dot(&dir_2d, &arm_check);
 
@@ -31,7 +28,7 @@ void sweep_support_function(const void* data, const Vector3* direction, Vector3*
     }
 
     output->x = result_2d.x * shape_data->sweep.radius;
-    output->y = direction->y > 0.0f ? shape_data->sweep.half_height : -shape_data->sweep.half_height;
+    output->y = copysignf(shape_data->sweep.half_height, direction->y);
     output->z = result_2d.y * shape_data->sweep.radius;
 }
 

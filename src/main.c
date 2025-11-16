@@ -81,7 +81,7 @@ struct player_definition playerDef = {
 };
 
 struct generic_object_pos_definition crate_def = {
-    (Vector3){{89, 5, -127}}
+    (Vector3){{89, 2, -127}}
 };
 
 struct generic_object_pos_definition ball_def = {

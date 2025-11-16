@@ -167,6 +167,23 @@ inline float vector3MagSqrd(const Vector3* a) {
     return vector3Dot(a, a);
 }
 
+/// @brief Clamp the length of a vector without changing it's direction
+/// @param in 
+/// @param out 
+/// @param max_length 
+inline void vector3ClampMag(const Vector3* in, Vector3* out, float max_length) {
+    float len_sq = vector3MagSqrd(in);
+
+    if(len_sq > (max_length * max_length)) {
+        float inv_len = 1.0f / sqrtf(len_sq);
+        float scale = max_length * inv_len;
+
+        out->x = in->x * scale;
+        out->y = in->y * scale;
+        out->z = in->z * scale;
+    }
+}
+
 /// @brief Calculate the magnitute/length of a vector
 /// @param a 
 /// @return 

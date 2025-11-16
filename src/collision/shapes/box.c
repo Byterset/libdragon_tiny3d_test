@@ -60,7 +60,7 @@ void box_inertia_tensor(void* data, Vector3* out) {
     float hy_sq = half_size->y * half_size->y;
     float hz_sq = half_size->z * half_size->z;
 
-    float scale = object->mass / 3.0f;
+    float scale = object->_mass / 3.0f;
 
     out->x = scale * (hy_sq + hz_sq);
     out->y = scale * (hx_sq + hz_sq);

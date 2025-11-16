@@ -11,8 +11,8 @@
 
 static struct physics_object_collision_data crate_collision = {
     BOX_COLLIDER(1.75f,1.75f,1.75f),
-    .friction = 0.6f,
-    .bounce = 0.1f
+    .friction = 0.7f,
+    .bounce = 0.0f
 };
 
 void crate_init(struct crate* crate, struct generic_object_pos_definition* def){

@@ -113,8 +113,8 @@ void cone_inertia_tensor(void* data, Vector3* out) {
     float r_sq = radius * radius;
     float h_sq = height * height;
 
-    float perpendicular_inertia = (3.0f / 80.0f) * object->mass * (4.0f * r_sq + h_sq);
-    float axial_inertia = 0.3f * object->mass * r_sq;
+    float perpendicular_inertia = (3.0f / 80.0f) * object->_mass * (4.0f * r_sq + h_sq);
+    float axial_inertia = 0.3f * object->_mass * r_sq;
 
     out->x = perpendicular_inertia;
     out->y = axial_inertia;

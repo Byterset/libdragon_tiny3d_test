@@ -33,7 +33,7 @@ void sphere_inertia_tensor(void* data, Vector3* out) {
 
     // Inertia tensor for a solid sphere: I = (2/5) * mass * r²
     // Same for all axes due to rotational symmetry
-    float inertia = 0.4f * object->mass * radius * radius;
+    float inertia = 0.4f * object->_mass * radius * radius;
 
     out->x = inertia;
     out->y = inertia;

@@ -12,25 +12,40 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define PHYS_GLOBAL_GRAVITY_MULT 2.0f
-#define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default earth gravity in m/s^2
-#define PHYS_OBJECT_TERMINAL_Y_VELOCITY   50.0f // terminal y-velocity
+#define PHYS_GLOBAL_GRAVITY_MULT 2.0f // adjust this according to general world scale
+#define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default gravity in m/s^2
 
+#define PHYS_OBJECT_TERMINAL_SPEED   90.0f // terminal linear speed / velocity magnitude (units/s)
+#define PHYS_OBJECT_TERMINAL_ANGULAR_SPEED 50.0f // terminal angular speed / angular velocity magnitude (rad/s)
+#define PHYS_OBJECT_TERMINAL_ANGULAR_SPEED_SQ (PHYS_OBJECT_TERMINAL_ANGULAR_SPEED * PHYS_OBJECT_TERMINAL_ANGULAR_SPEED)
+
+// The minimum amount of units an object has to move between physics ticks to be considered to have changed position
 #define PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD 0.013f // the amount the object needs to move in one step to be considered in motion
 #define PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD * PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD)
 
-// the velocity an object needs to have to be considered in motion
-// keep in Mind the velocity is in units/second not units/physics_tick
-#define PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD 0.6f 
-#define PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD * PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD)
+// The minimum speed an object needs to have to be considered in motion
+// Keep in mind the speed is in units/second not units/physics_tick
+#define PHYS_OBJECT_SPEED_SLEEP_THRESHOLD 0.6f 
+#define PHYS_OBJECT_SPEED_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_SPEED_SLEEP_THRESHOLD * PHYS_OBJECT_SPEED_SLEEP_THRESHOLD)
 
+// The similarity of quaternion rotations between physics ticks to consider the rotation unchanged
 #define PHYS_OBJECT_ROT_SIMILARITY_SLEEP_THRESHOLD 0.999999f
-#define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD 0.1f // angular velocity threshold for sleep (rad/s)
+
+// The minimum angular speed an object needs to have to be considered rotating
+// Keep in mind the speed is in rad/second not rad/physics_tick
+#define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD 0.1f
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD * PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD)
-#define PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ 0.05f * 0.05f
 
-#define PHYS_OBJECT_SLEEP_STEPS 20 // number of steps the object has to be still before it goes to sleep
+// The threshold for the angular speed (in rad/sec) under which the angular velocity will be dampened more aggressively
+// to reduce tiny rotations
+#define PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD 0.1f
+#define PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD_SQ (PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD * PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD)
+#define PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD_SQ_INV (1.0f / PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD_SQ)
 
+#define PHYS_OBJECT_SLEEP_STEPS 20 // number of timesteps the object has to be still for before it goes to sleep
+
+
+/// @brief Enum of collision layers a physics object can be part of or interact with
 enum collision_layer {
     COLLISION_LAYER_NONE = 0,
     COLLISION_LAYER_TANGIBLE = (1 << 0),
@@ -41,6 +56,7 @@ enum collision_layer {
     COLLISION_LAYER_ALL = 0xff
 };
 
+/// @brief Enum of collision groups. Physics objects that are part of a collision group cannot collide/interact with objects of the same group
 enum collision_group {
     COLLISION_GROUP_NONE = 0,
     COLLISION_GROUP_PLAYER = 1,
@@ -48,9 +64,13 @@ enum collision_group {
     COLLISION_GROUP_ALL = 0xff
 };
 
+/// @brief Defines a function pointer for a general bounding_box_calculater function. These functions are implemented for each collider shape.
 typedef void (*bounding_box_calculator)(const void* data, const Quaternion* rotation, AABB* box);
+
+/// @brief Defines a function pointer for a inertia_calculator function. These functions are implemented per collision shape.
 typedef void (*inertia_calculator)(void* data, Vector3* out);
 
+/// @brief Enum of possible collision shapes
 typedef enum physics_object_collision_shape_type {
     COLLISION_SHAPE_SPHERE,
     COLLISION_SHAPE_CAPSULE,
@@ -62,7 +82,7 @@ typedef enum physics_object_collision_shape_type {
 
 /// @brief Flags for physics_object constraints
 ///
-/// @note position constraints are applied in World space, and rotation constraints are applied in the inertia space (local)
+/// @note Position constraints are applied in World space, and rotation constraints are applied in the inertia space (local)
 typedef enum physics_object_constraints {
     CONSTRAINTS_NONE = 0,
     CONSTRAINTS_FREEZE_POSITION_X = (1 << 0),
@@ -76,6 +96,7 @@ typedef enum physics_object_constraints {
     CONSTRAINTS_ALL = 0xff
 } physics_object_constraints;
 
+/// @brief Defines the parameters necessary to describe a collision shape
 union physics_object_collision_shape_data
 {
     struct { float radius; } sphere;
@@ -86,6 +107,9 @@ union physics_object_collision_shape_data
     struct { Vector2 range; float radius; float half_height; } sweep;
 };
 
+/// @brief Defines a set of functions and data to describe a collider.
+///
+/// @note Most collider primitives offer a #define function to assemble this
 struct physics_object_collision_data {
     gjk_support_function gjk_support_function;
     bounding_box_calculator bounding_box_calculator;
@@ -110,8 +134,8 @@ typedef struct physics_object {
     Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
     AABB bounding_box; // the bounding box fitting the object collider, used for broad phase collision detection
     float time_scalar; // a scalar to adjust the time step for the object, default is 1.0
-    float mass; // the mass of the object, cannot be zero - if changed need to recalculate inv_mass!
-    float _inv_mass;
+    float _mass; // the mass of the object, cannot be zero - change only via physics_object_set_mass!
+    float _inv_mass; //must be recalculated if mass changes!
     float gravity_scalar; // how much gravity affects the object, default is 1.0
     bool has_gravity: true;
     bool is_trigger: true;
@@ -126,12 +150,23 @@ typedef struct physics_object {
     node_proxy _aabb_tree_node_id; // the node id of the object in the phys-object AABB tree of the collision scene
     Vector3 angular_velocity;
     Vector3 _torque_accumulator;
-    Vector3 _local_inertia_tensor;
-    Vector3 _inv_local_intertia_tensor;
-    float angular_drag;
+    Vector3 _local_inertia_tensor; // must be recalculated if mass or collision changes!
+    Vector3 _inv_local_intertia_tensor; // must be recalculated if _local_inertia_tensor changes!
+    float angular_damping; // defines the decay rate of an objects angular velocity. Higher = object rotation slows down faster. Default 0.05
     float _prev_angular_speed_sq;
+    float _ground_support_factor;
 } physics_object;
 
+
+/// @brief Initializes a physics object with the given parameters.
+/// @param entity_id The entity ID of the owner entity of this physics object.
+/// @param object Pointer to the object to be initialized.
+/// @param collision Pointer to the objects collision information. Must be set!
+/// @param collision_layers Flags that define which layers the object can collide/interact with. See enum collision_layer
+/// @param position Pointer to the 3D vector that represents the objects position (usually shared with the owners). Must be set!
+/// @param rotation Pointer to the quaternion rotation that represents the objects rotation (usually shared with owner). May be NULL.
+/// @param center_offset 3D vector that describes how the phys objects collision is offset from the position (eg if the model orign is not at center)
+/// @param mass The mass of the physics object. Must be > 0.
 void physics_object_init(
     entity_id entity_id,
     physics_object* object, 
@@ -143,28 +178,107 @@ void physics_object_init(
     float mass
 );
 
-void physics_object_update_euler(physics_object* object);
-void physics_object_update_implicit_euler(physics_object* object);
-void physics_object_update_velocity_verlet(physics_object* object);
-void physics_object_update_angular_velocity(physics_object* object);
 
+
+/// @brief iterate through the active contacts of the object and return the contact with the smallest distance to the object
+/// @param object the physics_object whose contacts are to be checked
+/// @return the contact with the smallest distance to the object
 contact* physics_object_nearest_contact(physics_object* object);
+
+
+/// @brief iterate through the active contacts of the object and check if the given entity id is in the list
+/// @param object the physics_object whose contacts are to be checked
+/// @param id the entity id of the object to check for
+/// @return true if the object is in the list of contacts, false otherwise
 bool physics_object_is_touching(physics_object* object, entity_id id);
 
-void physics_object_accelerate(physics_object* object, Vector3* acceleration);
-void physics_object_translate_no_force(physics_object* object, Vector3* translation);
-void physics_object_position_no_force(physics_object* object, Vector3* position);
-void physics_object_set_velocity(physics_object* object, Vector3* velocity);
-void physics_object_apply_impulse(physics_object* object, Vector3* impulse);
 
-void physics_object_apply_torque(physics_object* object, Vector3* torque);
-void physics_object_apply_angular_impulse(physics_object* object, Vector3* angular_impulse);
+/// @brief Sets the mass of a physics_object and recalculates mass-dependent properties.
+///
+/// This includes _inv_mass, _local_inertia_tensor & _inv_local_inertia_tensor.
+///
+/// Use this function if the mass of a physics object must be adjusted after initialization instead of modifying the mass directly.
+/// @param object 
+/// @param new_mass 
+void physics_object_set_mass(physics_object* object, float new_mass);
+
+// -------- FORCE --------
+
+/// @brief Apply a force at a specific world point, generating both linear and angular effects
+/// @param object
+/// @param force the force vector in world space
+/// @param world_point the point in world space where the force is applied
 void physics_object_apply_force_at_point(physics_object* object, Vector3* force, Vector3* world_point);
+
+// -------- LINEAR --------
+
+/// @brief Will update an objects position and velocity according to the existing velocity, the accumulated acceleration,
+/// & the objects position constraints.
+/// 
+/// Uses Semi Implicit Euler
+/// @param object 
+void physics_object_update_velocity_semi_implicit_euler(physics_object* object);
+
+/// @brief Accelerates the object by the given acceleration vector. 
+/// @param object 
+/// @param acceleration 
+void physics_object_accelerate(physics_object* object, Vector3* acceleration);
+
+
+/// @brief Manually set the velocity of the object to the given velocity vector
+/// @param object 
+/// @param velocity 
+void physics_object_set_velocity(physics_object* object, Vector3* velocity);
+
+
+/// @brief apply a linear impulse force to the object
+/// @param object
+/// @param impulse linear impulse in world space (N⋅m⋅s)
+void physics_object_apply_linear_impulse(physics_object* object, Vector3* impulse);
+
+
+// -------- ANGULAR --------
+
+/// @brief Will update an objects rotation and angular velocity according to the existing ang. velocity, the accumulated torque,
+/// the angular damping & the objects rotational constraints
+/// @param object 
+void physics_object_update_angular_velocity(physics_object* object);
+
+
+/// @brief Apply torque to the object (accumulated and applied during physics update)
+/// @param object
+/// @param torque the torque vector in world space (N⋅m)
+void physics_object_apply_torque(physics_object* object, Vector3* torque);
+
+
+/// @brief Apply an angular impulse directly to angular velocity.
+///
+/// This will take into account the objects rotational constraints!
+/// @param object
+/// @param angular_impulse angular impulse in world space (N⋅m⋅s)
+void physics_object_apply_angular_impulse(physics_object* object, Vector3* angular_impulse);
+
+
+/// @brief Manually set the angular velocity of the object
+/// @param object
+/// @param angular_velocity the angular velocity in world space (rad/s)
 void physics_object_set_angular_velocity(physics_object* object, Vector3* angular_velocity);
 
-void physics_object_apply_constraints(physics_object* object);
 
+/// @brief Enforce the objects position to stay in reasonable bounds as to not crash when converting the floating point position to the fixed matrix for rendering
+/// @param object 
+void physics_object_apply_position_constraints(physics_object* object);
+
+/// @brief will transform the given direction vector into the local space of the object and then call the GJK support function associated with the object
+/// @param data expected to be a pointer to a physics_object
+/// @param direction the direction vector in world space
+/// @param output the resulting Support point in world space
 void physics_object_gjk_support_function(const void* data, const Vector3* direction, Vector3* output);
+
+/// @brief re-caluclates the bounding box of the object using the collision type's bounding box function.
+///
+/// This will also take into account the center_offset and rotation of the object.
+/// @param object
 void physics_object_recalculate_aabb(physics_object* object);
 
 #endif

@@ -10,6 +10,9 @@
 #include <stdio.h>
 #include <math.h>
 
+const float baumgarteFactor = 0.3f;
+const float slop = 0.003;
+
 
 void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* result, float friction, float bounce) {
     // EPA result normal points toward A (from B to A)
@@ -17,6 +20,9 @@ void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* re
     // - For terrain: EPA (terrain, object), call (NULL, object) - normal points toward NULL (terrain)
     // - For objects: EPA (a, b), call (a, b) - normal points toward A
     // When A is on top of B, normal points upward (from B toward A)
+
+    if (result->penetration < slop)
+        return;
 
     // Normal points from B toward A
     Vector3 normal = result->normal;
@@ -193,16 +199,12 @@ void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* re
         denominator += vector3Dot(&rCrossN, &torquePerImpulse);
     }
 
-    float baumgarteBias = 0.0f;
-    if (result->penetration > 0.002f) {
-        const float baumgarteFactor = 0.4f;
-        baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * result->penetration;
-    }
+    float baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * result->penetration;
+
 
     if (denominator < EPSILON) denominator = EPSILON;
 
     // Calculate normal impulse magnitude
-    // Note: baumgarteBias is NOT divided by denominator (dimensionally inconsistent but works)
     float jN = (-(1.0f + effectiveBounce) * vRel + baumgarteBias) / denominator;
 
     if (jN < 0.0f) {
@@ -231,6 +233,11 @@ void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* re
         Vector3 rCrossN;
         vector3Cross(&rA, &normal, &rCrossN);
         vector3Scale(&rCrossN, &rCrossN, jN);
+
+        if(a->entity_id == 2){
+            debugf("Obj 2 impulse: (%.3f, %.3f, %.3f)\n", rCrossN.x, rCrossN.y, rCrossN.z);
+        }
+
         physics_object_apply_angular_impulse(a, &rCrossN);
 
         // Update contact velocity with angular contribution
@@ -280,6 +287,10 @@ void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* re
         Vector3 rCrossN;
         vector3Cross(&rB, &normal, &rCrossN);
         vector3Scale(&rCrossN, &rCrossN, -jN);
+
+        if(b->entity_id == 2){
+            debugf("Obj 2 impulse: (%.3f, %.3f, %.3f)\n", rCrossN.x, rCrossN.y, rCrossN.z);
+        }
         physics_object_apply_angular_impulse(b, &rCrossN);
 
         // Update contact velocity with angular contribution
@@ -307,6 +318,7 @@ void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* re
         vector3Add(&contactVelB, &deltaContactVel, &contactVelB);
     }
 
+    #ifndef DEBUG_IGNORE_FRICTION
     // Handle friction
     if (friction > 0.0f) {
         // Recalculate relative velocity after normal impulse
@@ -431,15 +443,14 @@ void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* re
             }
         }
     }
+    #endif
 }
 
 void correct_overlap(physics_object* a, physics_object* b, struct EpaResult* result) {
 
-    const float percent = 1.0f;
-    const float slop = 0.001f;
+    const float percent = 0.7f;
 
-    float d = fabsf(result->penetration);
-    if (d < slop) return;
+    if (result->penetration < slop) return;
 
     // Check if movement is fully constrained for each object
     bool aMovementConstrained = a && (a->is_kinematic || ((a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
@@ -449,47 +460,49 @@ void correct_overlap(physics_object* a, physics_object* b, struct EpaResult* res
     float invMassA = 0.0f;
     float invMassB = 0.0f;
 
+    // Calculate the effective normal after applying constraints
+    Vector3 effectiveNormalA = result->normal;
+    Vector3 effectiveNormalB = result->normal;;
+
+    float normal_dot_inv = 1.0f / vector3Dot(&result->normal, &result->normal);
     if (a && !aMovementConstrained) {
-        // Check if movement is constrained along the normal direction
-        bool constrainedAlongNormal = ((a->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(result->normal.x) > 0.01f) ||
-                                      ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(result->normal.y) > 0.01f) ||
-                                      ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(result->normal.z) > 0.01f);
-        invMassA = constrainedAlongNormal ? 0.0f : a->_inv_mass;
+        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_X)
+            effectiveNormalA.x = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Y)
+            effectiveNormalA.y = 0.0f;
+        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Z)
+            effectiveNormalA.z = 0.0f;
+        // Project the effective normal onto the actual normal to get the "effective mobility"
+        float normalDotA = vector3Dot(&effectiveNormalA, &result->normal);
+        invMassA = a->_inv_mass * (normalDotA * normalDotA) * normal_dot_inv;
     }
 
     if (b && !bMovementConstrained) {
-        // Check if movement is constrained along the normal direction
-        bool constrainedAlongNormal = ((b->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(result->normal.x) > 0.01f) ||
-                                      ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(result->normal.y) > 0.01f) ||
-                                      ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(result->normal.z) > 0.01f);
-        invMassB = constrainedAlongNormal ? 0.0f : b->_inv_mass;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_X)
+            effectiveNormalB.x = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Y)
+            effectiveNormalB.y = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Z)
+            effectiveNormalB.z = 0.0f;
+        // Project the effective normal onto the actual normal to get the "effective mobility"
+        float normalDotB = vector3Dot(&effectiveNormalB, &result->normal);
+        invMassB = b->_inv_mass * (normalDotB * normalDotB) * normal_dot_inv;
     }
 
     float invMassSum = invMassA + invMassB;
     if (invMassSum == 0.0f) return;
 
-    float correctionMag = percent * d / invMassSum;
-
-    Vector3 correctionVec;
-    vector3Scale(&result->normal, &correctionVec, correctionMag);
+    float correctionMag = (percent * result->penetration) / invMassSum;
 
     // Apply correction proportional to inverse mass
-    if (invMassA > 0.0f)
+    if (a && invMassA > 0.0f)
     {
-        Vector3 corrA = correctionVec;
-        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_X) corrA.x = 0;
-        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) corrA.y = 0;
-        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) corrA.z = 0;
-        vector3AddScaled(a->position, &corrA, invMassA, a->position);
+        vector3AddScaled(a->position, &effectiveNormalA, correctionMag * invMassA, a->position);
     }
 
-    if (invMassB > 0.0f)
+    if (b && invMassB > 0.0f)
     {
-        Vector3 corrB = correctionVec;
-        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_X) corrB.x = 0;
-        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) corrB.y = 0;
-        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) corrB.z = 0;
-        vector3AddScaled(b->position, &corrB, -invMassB, b->position);
+        vector3AddScaled(b->position, &effectiveNormalB, -correctionMag * invMassB, b->position);
     }
 
 }
