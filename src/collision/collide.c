@@ -57,6 +57,7 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
     bool hasA = (a != NULL);
     bool hasLinearA = (hasA && invMassA > 0.0f);
     bool hasRotationA = false;
+    Quaternion rotation_inverse_a;
 
     if (hasA) {
         Vector3 centerOfMassA;
@@ -73,6 +74,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         contactVelA = a->velocity;
         hasRotationA = a->rotation && !(a->constrain_rotation_x && a->constrain_rotation_y && a->constrain_rotation_z);
         if (hasRotationA) {
+            // Pre-calculate inverse rotation for A (used multiple times below)
+            quatConjugate(a->rotation, &rotation_inverse_a);
+
             Vector3 angularContribution;
             vector3Cross(&a->angular_velocity, &rA, &angularContribution);
             vector3Add(&contactVelA, &angularContribution, &contactVelA);
@@ -85,6 +89,7 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
     bool hasB = (b != NULL);
     bool hasLinearB = (hasB && invMassB > 0.0f);
     bool hasRotationB = false;
+    Quaternion rotation_inverse_b;
 
     if (hasB) {
         Vector3 centerOfMassB;
@@ -101,6 +106,9 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         contactVelB = b->velocity;
         hasRotationB = b->rotation && !(b->constrain_rotation_x && b->constrain_rotation_y && b->constrain_rotation_z);
         if (hasRotationB) {
+            // Pre-calculate inverse rotation for B (used multiple times below)
+            quatConjugate(b->rotation, &rotation_inverse_b);
+
             Vector3 angularContribution;
             vector3Cross(&b->angular_velocity, &rB, &angularContribution);
             vector3Add(&contactVelB, &angularContribution, &contactVelB);
@@ -136,14 +144,24 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         Vector3 rCrossN;
         vector3Cross(&rA, &normal, &rCrossN);
 
-        Vector3 torquePerImpulse;
-        torquePerImpulse.x = rCrossN.x * a->_inv_local_intertia_tensor.x;
-        torquePerImpulse.y = rCrossN.y * a->_inv_local_intertia_tensor.y;
-        torquePerImpulse.z = rCrossN.z * a->_inv_local_intertia_tensor.z;
+        // Transform torque to local space (using pre-calculated inverse)
+        Vector3 local_rCrossN;
+        quatMultVector(&rotation_inverse_a, &rCrossN, &local_rCrossN);
 
-        if (a->constrain_rotation_x) torquePerImpulse.x = 0.0f;
-        if (a->constrain_rotation_y) torquePerImpulse.y = 0.0f;
-        if (a->constrain_rotation_z) torquePerImpulse.z = 0.0f;
+        // Apply local inertia tensor
+        Vector3 local_torquePerImpulse;
+        local_torquePerImpulse.x = local_rCrossN.x * a->_inv_local_intertia_tensor.x;
+        local_torquePerImpulse.y = local_rCrossN.y * a->_inv_local_intertia_tensor.y;
+        local_torquePerImpulse.z = local_rCrossN.z * a->_inv_local_intertia_tensor.z;
+
+        // Apply constraints in LOCAL space
+        if (a->constrain_rotation_x) local_torquePerImpulse.x = 0.0f;
+        if (a->constrain_rotation_y) local_torquePerImpulse.y = 0.0f;
+        if (a->constrain_rotation_z) local_torquePerImpulse.z = 0.0f;
+
+        // Transform back to world space
+        Vector3 torquePerImpulse;
+        quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
 
         denominator += vector3Dot(&rCrossN, &torquePerImpulse);
     }
@@ -153,14 +171,24 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         Vector3 rCrossN;
         vector3Cross(&rB, &normal, &rCrossN);
 
-        Vector3 torquePerImpulse;
-        torquePerImpulse.x = rCrossN.x * b->_inv_local_intertia_tensor.x;
-        torquePerImpulse.y = rCrossN.y * b->_inv_local_intertia_tensor.y;
-        torquePerImpulse.z = rCrossN.z * b->_inv_local_intertia_tensor.z;
+        // Transform torque to local space (using pre-calculated inverse)
+        Vector3 local_rCrossN;
+        quatMultVector(&rotation_inverse_b, &rCrossN, &local_rCrossN);
 
-        if (b->constrain_rotation_x) torquePerImpulse.x = 0.0f;
-        if (b->constrain_rotation_y) torquePerImpulse.y = 0.0f;
-        if (b->constrain_rotation_z) torquePerImpulse.z = 0.0f;
+        // Apply local inertia tensor
+        Vector3 local_torquePerImpulse;
+        local_torquePerImpulse.x = local_rCrossN.x * b->_inv_local_intertia_tensor.x;
+        local_torquePerImpulse.y = local_rCrossN.y * b->_inv_local_intertia_tensor.y;
+        local_torquePerImpulse.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
+
+        // Apply constraints in LOCAL space
+        if (b->constrain_rotation_x) local_torquePerImpulse.x = 0.0f;
+        if (b->constrain_rotation_y) local_torquePerImpulse.y = 0.0f;
+        if (b->constrain_rotation_z) local_torquePerImpulse.z = 0.0f;
+
+        // Transform back to world space
+        Vector3 torquePerImpulse;
+        quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
 
         denominator += vector3Dot(&rCrossN, &torquePerImpulse);
     }
@@ -206,14 +234,24 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         physics_object_apply_angular_impulse(a, &rCrossN);
 
         // Update contact velocity with angular contribution
-        Vector3 deltaAngularVel;
-        deltaAngularVel.x = rCrossN.x * a->_inv_local_intertia_tensor.x;
-        deltaAngularVel.y = rCrossN.y * a->_inv_local_intertia_tensor.y;
-        deltaAngularVel.z = rCrossN.z * a->_inv_local_intertia_tensor.z;
+        // Transform angular impulse to local space (using pre-calculated inverse)
+        Vector3 local_rCrossN;
+        quatMultVector(&rotation_inverse_a, &rCrossN, &local_rCrossN);
 
-        if (a->constrain_rotation_x) deltaAngularVel.x = 0.0f;
-        if (a->constrain_rotation_y) deltaAngularVel.y = 0.0f;
-        if (a->constrain_rotation_z) deltaAngularVel.z = 0.0f;
+        // Apply local inertia tensor
+        Vector3 local_deltaAngularVel;
+        local_deltaAngularVel.x = local_rCrossN.x * a->_inv_local_intertia_tensor.x;
+        local_deltaAngularVel.y = local_rCrossN.y * a->_inv_local_intertia_tensor.y;
+        local_deltaAngularVel.z = local_rCrossN.z * a->_inv_local_intertia_tensor.z;
+
+        // Apply constraints in LOCAL space
+        if (a->constrain_rotation_x) local_deltaAngularVel.x = 0.0f;
+        if (a->constrain_rotation_y) local_deltaAngularVel.y = 0.0f;
+        if (a->constrain_rotation_z) local_deltaAngularVel.z = 0.0f;
+
+        // Transform back to world space
+        Vector3 deltaAngularVel;
+        quatMultVector(a->rotation, &local_deltaAngularVel, &deltaAngularVel);
 
         Vector3 deltaContactVel;
         vector3Cross(&deltaAngularVel, &rA, &deltaContactVel);
@@ -245,14 +283,24 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
         physics_object_apply_angular_impulse(b, &rCrossN);
 
         // Update contact velocity with angular contribution
-        Vector3 deltaAngularVel;
-        deltaAngularVel.x = rCrossN.x * b->_inv_local_intertia_tensor.x;
-        deltaAngularVel.y = rCrossN.y * b->_inv_local_intertia_tensor.y;
-        deltaAngularVel.z = rCrossN.z * b->_inv_local_intertia_tensor.z;
+        // Transform angular impulse to local space (using pre-calculated inverse)
+        Vector3 local_rCrossN;
+        quatMultVector(&rotation_inverse_b, &rCrossN, &local_rCrossN);
 
-        if (b->constrain_rotation_x) deltaAngularVel.x = 0.0f;
-        if (b->constrain_rotation_y) deltaAngularVel.y = 0.0f;
-        if (b->constrain_rotation_z) deltaAngularVel.z = 0.0f;
+        // Apply local inertia tensor
+        Vector3 local_deltaAngularVel;
+        local_deltaAngularVel.x = local_rCrossN.x * b->_inv_local_intertia_tensor.x;
+        local_deltaAngularVel.y = local_rCrossN.y * b->_inv_local_intertia_tensor.y;
+        local_deltaAngularVel.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
+
+        // Apply constraints in LOCAL space
+        if (b->constrain_rotation_x) local_deltaAngularVel.x = 0.0f;
+        if (b->constrain_rotation_y) local_deltaAngularVel.y = 0.0f;
+        if (b->constrain_rotation_z) local_deltaAngularVel.z = 0.0f;
+
+        // Transform back to world space
+        Vector3 deltaAngularVel;
+        quatMultVector(b->rotation, &local_deltaAngularVel, &deltaAngularVel);
 
         Vector3 deltaContactVel;
         vector3Cross(&deltaAngularVel, &rB, &deltaContactVel);
@@ -284,14 +332,24 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
                 Vector3 rCrossT;
                 vector3Cross(&rA, &tangentDir, &rCrossT);
 
-                Vector3 torquePerImpulse;
-                torquePerImpulse.x = rCrossT.x * a->_inv_local_intertia_tensor.x;
-                torquePerImpulse.y = rCrossT.y * a->_inv_local_intertia_tensor.y;
-                torquePerImpulse.z = rCrossT.z * a->_inv_local_intertia_tensor.z;
+                // Transform torque to local space (using pre-calculated inverse)
+                Vector3 local_rCrossT;
+                quatMultVector(&rotation_inverse_a, &rCrossT, &local_rCrossT);
 
-                if (a->constrain_rotation_x) torquePerImpulse.x = 0.0f;
-                if (a->constrain_rotation_y) torquePerImpulse.y = 0.0f;
-                if (a->constrain_rotation_z) torquePerImpulse.z = 0.0f;
+                // Apply local inertia tensor
+                Vector3 local_torquePerImpulse;
+                local_torquePerImpulse.x = local_rCrossT.x * a->_inv_local_intertia_tensor.x;
+                local_torquePerImpulse.y = local_rCrossT.y * a->_inv_local_intertia_tensor.y;
+                local_torquePerImpulse.z = local_rCrossT.z * a->_inv_local_intertia_tensor.z;
+
+                // Apply constraints in LOCAL space
+                if (a->constrain_rotation_x) local_torquePerImpulse.x = 0.0f;
+                if (a->constrain_rotation_y) local_torquePerImpulse.y = 0.0f;
+                if (a->constrain_rotation_z) local_torquePerImpulse.z = 0.0f;
+
+                // Transform back to world space
+                Vector3 torquePerImpulse;
+                quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
 
                 frictionDenominator += vector3Dot(&rCrossT, &torquePerImpulse);
             }
@@ -301,14 +359,24 @@ void correct_velocity(struct physics_object* a, struct physics_object* b, struct
                 Vector3 rCrossT;
                 vector3Cross(&rB, &tangentDir, &rCrossT);
 
-                Vector3 torquePerImpulse;
-                torquePerImpulse.x = rCrossT.x * b->_inv_local_intertia_tensor.x;
-                torquePerImpulse.y = rCrossT.y * b->_inv_local_intertia_tensor.y;
-                torquePerImpulse.z = rCrossT.z * b->_inv_local_intertia_tensor.z;
+                // Transform torque to local space (using pre-calculated inverse)
+                Vector3 local_rCrossT;
+                quatMultVector(&rotation_inverse_b, &rCrossT, &local_rCrossT);
 
-                if (b->constrain_rotation_x) torquePerImpulse.x = 0.0f;
-                if (b->constrain_rotation_y) torquePerImpulse.y = 0.0f;
-                if (b->constrain_rotation_z) torquePerImpulse.z = 0.0f;
+                // Apply local inertia tensor
+                Vector3 local_torquePerImpulse;
+                local_torquePerImpulse.x = local_rCrossT.x * b->_inv_local_intertia_tensor.x;
+                local_torquePerImpulse.y = local_rCrossT.y * b->_inv_local_intertia_tensor.y;
+                local_torquePerImpulse.z = local_rCrossT.z * b->_inv_local_intertia_tensor.z;
+
+                // Apply constraints in LOCAL space
+                if (b->constrain_rotation_x) local_torquePerImpulse.x = 0.0f;
+                if (b->constrain_rotation_y) local_torquePerImpulse.y = 0.0f;
+                if (b->constrain_rotation_z) local_torquePerImpulse.z = 0.0f;
+
+                // Transform back to world space
+                Vector3 torquePerImpulse;
+                quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
 
                 frictionDenominator += vector3Dot(&rCrossT, &torquePerImpulse);
             }

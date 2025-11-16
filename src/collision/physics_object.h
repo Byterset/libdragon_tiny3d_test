@@ -27,7 +27,7 @@
 #define PHYS_OBJECT_ROT_SIMILARITY_SLEEP_THRESHOLD 0.999999f
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD 0.1f // angular velocity threshold for sleep (rad/s)
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD * PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD)
-#define PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ 0.07f * 0.07f
+#define PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ 0.05f * 0.05f
 
 #define PHYS_OBJECT_SLEEP_STEPS 20 // number of steps the object has to be still before it goes to sleep
 
@@ -101,12 +101,12 @@ struct physics_object {
     bool is_kinematic: true;
     bool is_grounded: true;
     bool _is_sleeping: true;
-    bool constrain_movement_x: true;
-    bool constrain_movement_y: true;
-    bool constrain_movement_z: true;
-    bool constrain_rotation_x: true;
-    bool constrain_rotation_y: true;
-    bool constrain_rotation_z: true;
+    bool constrain_movement_x: true; // prohibits movement caused by simulation in the world-X-axis
+    bool constrain_movement_y: true; // prohibits movement caused by simulation in the world-Y-axis
+    bool constrain_movement_z: true; // prohibits movement caused by simulation in the world-Z-axis
+    bool constrain_rotation_x: true; // prohibits rotation caused by simulation around the X axis (in local inertia space!)
+    bool constrain_rotation_y: true; // prohibits rotation caused by simulation around the Y axis (in local inertia space!)
+    bool constrain_rotation_z: true; // prohibits rotation caused by simulation around the Z axis (in local inertia space!)
     uint16_t _sleep_counter;
     uint16_t collision_layers; // objects that share at least one layer can collide
     uint16_t collision_group; // objects of the same group do not collide

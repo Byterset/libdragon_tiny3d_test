@@ -261,6 +261,10 @@ int main()
             render_collision = !render_collision;
             // render_collision ? update_pause_layers(UPDATE_LAYER_WORLD) : update_unpause_layers(UPDATE_LAYER_WORLD);
         }
+
+        // if(joypad_get_buttons_held(0).d_left){
+        //     physics_object_apply_torque(&crates[0].physics, &(Vector3){{9000,7000,-7000}});
+        // }
         
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //
         while (accumulator_ticks >= l_fixed_dt_ticks)

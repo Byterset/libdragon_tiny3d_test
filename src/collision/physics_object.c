@@ -148,18 +148,30 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
         return;
     }
 
+    Quaternion rotation_inverse;
+    quatConjugate(object->rotation, &rotation_inverse);
+
     // Calculate angular acceleration: α = I^-1 * τ
     // Since we store diagonal inertia tensor, inverse is just 1/Ixx, 1/Iyy, 1/Izz
     if (!vector3IsZero(&object->_torque_accumulator)) {
-        Vector3 angular_acceleration;
-        angular_acceleration.x = object->_torque_accumulator.x * object->_inv_local_intertia_tensor.x;
-        angular_acceleration.y = object->_torque_accumulator.y * object->_inv_local_intertia_tensor.y;
-        angular_acceleration.z = object->_torque_accumulator.z * object->_inv_local_intertia_tensor.z;
+        // Transform torque from world space to local space
+        Vector3 local_torque;
+        quatMultVector(&rotation_inverse, &object->_torque_accumulator, &local_torque);
 
-        // Apply per-axis constraints to angular acceleration
-        if (object->constrain_rotation_x) angular_acceleration.x = 0.0f;
-        if (object->constrain_rotation_y) angular_acceleration.y = 0.0f;
-        if (object->constrain_rotation_z) angular_acceleration.z = 0.0f;
+        // Calculate local angular acceleration
+        Vector3 local_angular_acceleration;
+        local_angular_acceleration.x = local_torque.x * object->_inv_local_intertia_tensor.x;
+        local_angular_acceleration.y = local_torque.y * object->_inv_local_intertia_tensor.y;
+        local_angular_acceleration.z = local_torque.z * object->_inv_local_intertia_tensor.z;
+
+        // Apply per-axis constraints in LOCAL space
+        if (object->constrain_rotation_x) local_angular_acceleration.x = 0.0f;
+        if (object->constrain_rotation_y) local_angular_acceleration.y = 0.0f;
+        if (object->constrain_rotation_z) local_angular_acceleration.z = 0.0f;
+
+        // Transform angular acceleration back to world space
+        Vector3 angular_acceleration;
+        quatMultVector(object->rotation, &local_angular_acceleration, &angular_acceleration);
 
         // Update angular velocity: ω = ω + α * dt
         vector3AddScaled(&object->angular_velocity, &angular_acceleration,
@@ -169,10 +181,18 @@ void physics_object_update_angular_velocity(struct physics_object* object) {
         object->_torque_accumulator = gZeroVec;
     }
 
-    // Apply per-axis constraints to angular velocity
-    if (object->constrain_rotation_x) object->angular_velocity.x = 0.0f;
-    if (object->constrain_rotation_y) object->angular_velocity.y = 0.0f;
-    if (object->constrain_rotation_z) object->angular_velocity.z = 0.0f;
+    // Also apply constraints to angular velocity in local space to catch any numerical drift
+    // Transform current angular velocity to local space
+    Vector3 local_angular_velocity;
+    quatMultVector(&rotation_inverse, &object->angular_velocity, &local_angular_velocity);
+
+    // Apply per-axis constraints in LOCAL space
+    if (object->constrain_rotation_x) local_angular_velocity.x = 0.0f;
+    if (object->constrain_rotation_y) local_angular_velocity.y = 0.0f;
+    if (object->constrain_rotation_z) local_angular_velocity.z = 0.0f;
+
+    // Transform back to world space
+    quatMultVector(object->rotation, &local_angular_velocity, &object->angular_velocity);
 
     // dampen smaller rotations up to a threshold faster
     // damping scales with how close the angular speed is to zero
@@ -290,17 +310,27 @@ void physics_object_apply_angular_impulse(struct physics_object* object, Vector3
         return;
     }
 
-    // Δω = I^-1 * angular_impulse
-    // Since we store diagonal inertia tensor, inverse is just 1/Ixx, 1/Iyy, 1/Izz
-    Vector3 angular_velocity_change;
-    angular_velocity_change.x = angular_impulse->x * object->_inv_local_intertia_tensor.x;
-    angular_velocity_change.y = angular_impulse->y * object->_inv_local_intertia_tensor.y;
-    angular_velocity_change.z = angular_impulse->z * object->_inv_local_intertia_tensor.z;
+    // Transform angular impulse from world space to local space
+    Quaternion rotation_inverse;
+    quatConjugate(object->rotation, &rotation_inverse);
+    Vector3 local_angular_impulse;
+    quatMultVector(&rotation_inverse, angular_impulse, &local_angular_impulse);
 
-    // Apply per-axis constraints
-    if (object->constrain_rotation_x) angular_velocity_change.x = 0.0f;
-    if (object->constrain_rotation_y) angular_velocity_change.y = 0.0f;
-    if (object->constrain_rotation_z) angular_velocity_change.z = 0.0f;
+    // Δω = I^-1 * angular_impulse (in local space)
+    // Since we store diagonal inertia tensor, inverse is just 1/Ixx, 1/Iyy, 1/Izz
+    Vector3 local_angular_velocity_change;
+    local_angular_velocity_change.x = local_angular_impulse.x * object->_inv_local_intertia_tensor.x;
+    local_angular_velocity_change.y = local_angular_impulse.y * object->_inv_local_intertia_tensor.y;
+    local_angular_velocity_change.z = local_angular_impulse.z * object->_inv_local_intertia_tensor.z;
+
+    // Apply per-axis constraints in LOCAL space
+    if (object->constrain_rotation_x) local_angular_velocity_change.x = 0.0f;
+    if (object->constrain_rotation_y) local_angular_velocity_change.y = 0.0f;
+    if (object->constrain_rotation_z) local_angular_velocity_change.z = 0.0f;
+
+    // Transform angular velocity change back to world space
+    Vector3 angular_velocity_change;
+    quatMultVector(object->rotation, &local_angular_velocity_change, &angular_velocity_change);
 
     vector3Add(&object->angular_velocity, &angular_velocity_change, &object->angular_velocity);
 }
