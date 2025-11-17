@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gjkcheckforoverlap_1559',['gjkCheckForOverlap',['../gjk_8c.html#ab0ec43b861f31e3a7b7a09e1eae7a151',1,'gjkCheckForOverlap(struct Simplex *simplex, void *objectA, gjk_support_function objectASupport, void *objectB, gjk_support_function objectBSupport, Vector3 *firstDirection):&#160;gjk.c'],['../gjk_8h.html#ab0ec43b861f31e3a7b7a09e1eae7a151',1,'gjkCheckForOverlap(struct Simplex *simplex, void *objectA, gjk_support_function objectASupport, void *objectB, gjk_support_function objectBSupport, Vector3 *firstDirection):&#160;gjk.c']]]
+  ['gjkcheckforoverlap_1567',['gjkCheckForOverlap',['../gjk_8c.html#a2fddf7553432e93eda5f5547a4c03d40',1,'gjkCheckForOverlap(struct Simplex *simplex, const void *objectA, gjk_support_function objectASupport, const void *objectB, gjk_support_function objectBSupport, Vector3 *firstDirection):&#160;gjk.c'],['../gjk_8h.html#a2fddf7553432e93eda5f5547a4c03d40',1,'gjkCheckForOverlap(struct Simplex *simplex, const void *objectA, gjk_support_function objectASupport, const void *objectB, gjk_support_function objectBSupport, Vector3 *firstDirection):&#160;gjk.c']]]
 ];

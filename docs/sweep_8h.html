@@ -67,6 +67,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">sweep.h File Reference</div>  </div>
@@ -108,6 +109,11 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="sweep_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a5cd4392608329b3ad070d68fcc19ece0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sweep_8h.html#a5cd4392608329b3ad070d68fcc19ece0">SWEEP_COLLIDER</a>(range_x,  range_y,  r,  hh)</td></tr>
+<tr class="separator:a5cd4392608329b3ad070d68fcc19ece0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a0db7429e7b354a4e83214ab9335ae719"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sweep_8h.html#a0db7429e7b354a4e83214ab9335ae719">sweep_support_function</a> (const void *data, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *direction, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *output)</td></tr>
@@ -115,6 +121,61 @@ Functions</h2></td></tr>
 <tr class="memitem:ae8e288e1b89e9da014da0918f0384cb5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sweep_8h.html#ae8e288e1b89e9da014da0918f0384cb5">sweep_bounding_box</a> (const void *data, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *rotation, <a class="el" href="structAABB.html">AABB</a> *box)</td></tr>
 <tr class="separator:ae8e288e1b89e9da014da0918f0384cb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a5cd4392608329b3ad070d68fcc19ece0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cd4392608329b3ad070d68fcc19ece0">&#9670;&nbsp;</a></span>SWEEP_COLLIDER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SWEEP_COLLIDER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">range_x, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">range_y, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">r, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">hh&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    .gjk_support_function = <a class="code" href="sweep_8h.html#a0db7429e7b354a4e83214ab9335ae719">sweep_support_function</a>, \</div>
+<div class="line">    .bounding_box_calculator = <a class="code" href="sweep_8h.html#ae8e288e1b89e9da014da0918f0384cb5">sweep_bounding_box</a>,  \</div>
+<div class="line">    .inertia_calculator = NULL,     \</div>
+<div class="line">    .shape_type = <a class="code" href="physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68a9a87b15f489516c631fe678aba700900">COLLISION_SHAPE_SWEEP</a>, \</div>
+<div class="line">    .shape_data = {                          \</div>
+<div class="line">        .sweep = {                       \</div>
+<div class="line">            .range = {{range_x, range_y}},    \</div>
+<div class="line">            .radius = r,    \</div>
+<div class="line">            .half_height = hh,    \</div>
+<div class="line">        },                             \</div>
+<div class="line">    }</div>
+<div class="ttc" id="aphysics__object_8h_html_a49af2557fdce03be977f2d4ec085ff68a9a87b15f489516c631fe678aba700900"><div class="ttname"><a href="physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68a9a87b15f489516c631fe678aba700900">COLLISION_SHAPE_SWEEP</a></div><div class="ttdeci">@ COLLISION_SHAPE_SWEEP</div><div class="ttdef"><b>Definition:</b> physics_object.h:80</div></div>
+<div class="ttc" id="asweep_8h_html_a0db7429e7b354a4e83214ab9335ae719"><div class="ttname"><a href="sweep_8h.html#a0db7429e7b354a4e83214ab9335ae719">sweep_support_function</a></div><div class="ttdeci">void sweep_support_function(const void *data, const Vector3 *direction, Vector3 *output)</div><div class="ttdef"><b>Definition:</b> sweep.c:6</div></div>
+<div class="ttc" id="asweep_8h_html_ae8e288e1b89e9da014da0918f0384cb5"><div class="ttname"><a href="sweep_8h.html#ae8e288e1b89e9da014da0918f0384cb5">sweep_bounding_box</a></div><div class="ttdeci">void sweep_bounding_box(const void *data, const Quaternion *rotation, AABB *box)</div><div class="ttdef"><b>Definition:</b> sweep.c:35</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ae8e288e1b89e9da014da0918f0384cb5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae8e288e1b89e9da014da0918f0384cb5">&#9670;&nbsp;</a></span>sweep_bounding_box()</h2>

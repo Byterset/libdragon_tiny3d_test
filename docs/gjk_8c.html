@@ -98,17 +98,16 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3b66502a89a2fe01e80c043ae8ce0c51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#a3b66502a89a2fe01e80c043ae8ce0c51">simplexInit</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex)</td></tr>
-<tr class="separator:a3b66502a89a2fe01e80c043ae8ce0c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a508c231388d385f2a9db54cee8d12a2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#a508c231388d385f2a9db54cee8d12a2d">simplexAddPoint</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *aPoint, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *bPoint)</td></tr>
 <tr class="separator:a508c231388d385f2a9db54cee8d12a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5ca1dc49f749bf05b76ab85772f111a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#aa5ca1dc49f749bf05b76ab85772f111a">simplexMovePoint</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, int to, int from)</td></tr>
 <tr class="separator:aa5ca1dc49f749bf05b76ab85772f111a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32a94eba7a51df7a5344f2f816a85a87"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#a32a94eba7a51df7a5344f2f816a85a87">simplexCheck</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *nextDirection)</td></tr>
-<tr class="separator:a32a94eba7a51df7a5344f2f816a85a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0ec43b861f31e3a7b7a09e1eae7a151"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#ab0ec43b861f31e3a7b7a09e1eae7a151">gjkCheckForOverlap</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, void *objectA, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectBSupport, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *firstDirection)</td></tr>
-<tr class="memdesc:ab0ec43b861f31e3a7b7a09e1eae7a151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes two objects and their support functions and checks if they overlap using the GJK algorithm.  <a href="gjk_8c.html#ab0ec43b861f31e3a7b7a09e1eae7a151">More...</a><br /></td></tr>
-<tr class="separator:ab0ec43b861f31e3a7b7a09e1eae7a151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a47a9f8f15131ab42f1b0824c40c345"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#a5a47a9f8f15131ab42f1b0824c40c345">simplexCheck</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *nextDirection)</td></tr>
+<tr class="memdesc:a5a47a9f8f15131ab42f1b0824c40c345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the current simplex to determine if it encloses the origin and updates the search direction.  <a href="gjk_8c.html#a5a47a9f8f15131ab42f1b0824c40c345">More...</a><br /></td></tr>
+<tr class="separator:a5a47a9f8f15131ab42f1b0824c40c345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fddf7553432e93eda5f5547a4c03d40"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8c.html#a2fddf7553432e93eda5f5547a4c03d40">gjkCheckForOverlap</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, const void *objectA, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectASupport, const void *objectB, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectBSupport, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *firstDirection)</td></tr>
+<tr class="memdesc:a2fddf7553432e93eda5f5547a4c03d40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes two objects and their support functions and checks if they overlap using the GJK algorithm.  <a href="gjk_8c.html#a2fddf7553432e93eda5f5547a4c03d40">More...</a><br /></td></tr>
+<tr class="separator:a2fddf7553432e93eda5f5547a4c03d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="aca7c73020abfbfa5b057429a9d4425b1"></a>
@@ -122,18 +121,20 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Gilbert–Johnson–Keerthi distance algorithm (GJK) implementation for collision detection.</p>
+<p>Efficiently determines if two convex shapes overlap or not by attempting to build a <a class="el" href="structSimplex.html" title="simplex struct (Tetrahedron) for use in the solving of the GJK">Simplex</a> (Tetrahedron for 3D GJK) that contains the origin. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ab0ec43b861f31e3a7b7a09e1eae7a151"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0ec43b861f31e3a7b7a09e1eae7a151">&#9670;&nbsp;</a></span>gjkCheckForOverlap()</h2>
+<a id="a2fddf7553432e93eda5f5547a4c03d40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fddf7553432e93eda5f5547a4c03d40">&#9670;&nbsp;</a></span>gjkCheckForOverlap()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int gjkCheckForOverlap </td>
+          <td class="memname">bool gjkCheckForOverlap </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structSimplex.html">Simplex</a> *&#160;</td>
           <td class="paramname"><em>simplex</em>, </td>
@@ -141,7 +142,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">void *&#160;</td>
+          <td class="paramtype">const void *&#160;</td>
           <td class="paramname"><em>objectA</em>, </td>
         </tr>
         <tr>
@@ -153,7 +154,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">void *&#160;</td>
+          <td class="paramtype">const void *&#160;</td>
           <td class="paramname"><em>objectB</em>, </td>
         </tr>
         <tr>
@@ -188,7 +189,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>1 if the objects overlap, 0 otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if the objects overlap, FALSE otherwise </dd></dl>
 
 </div>
 </div>
@@ -226,14 +227,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a32a94eba7a51df7a5344f2f816a85a87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32a94eba7a51df7a5344f2f816a85a87">&#9670;&nbsp;</a></span>simplexCheck()</h2>
+<a id="a5a47a9f8f15131ab42f1b0824c40c345"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a47a9f8f15131ab42f1b0824c40c345">&#9670;&nbsp;</a></span>simplexCheck()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int simplexCheck </td>
+          <td class="memname">bool simplexCheck </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structSimplex.html">Simplex</a> *&#160;</td>
           <td class="paramname"><em>simplex</em>, </td>
@@ -251,7 +252,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Checks the current simplex to determine if it encloses the origin and updates the search direction.</p>
+
+<p>Checks the current simplex to determine if it encloses the origin and updates the search direction. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">simplex</td><td>Pointer to the current simplex structure. </td></tr>
@@ -259,7 +261,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>1 if the simplex encloses the origin, 0 otherwise.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if the simplex encloses the origin, FALSE otherwise.</dd></dl>
 <p>The function performs the following steps:</p><ol type="1">
 <li>Retrieves the last added point in the simplex and calculates the vector from this point to the origin.</li>
 <li>Depending on the number of points in the simplex, different checks and updates are performed:<ul>
@@ -288,24 +290,6 @@ Functions</h2></td></tr>
 </ul>
 </li>
 </ol>
-
-</div>
-</div>
-<a id="a3b66502a89a2fe01e80c043ae8ce0c51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b66502a89a2fe01e80c043ae8ce0c51">&#9670;&nbsp;</a></span>simplexInit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void simplexInit </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structSimplex.html">Simplex</a> *&#160;</td>
-          <td class="paramname"><em>simplex</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>

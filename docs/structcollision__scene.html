@@ -81,12 +81,12 @@ Collaboration diagram for collision_scene:</div>
 <area shape="rect" href="structcollision__scene__element.html" title=" " alt="" coords="342,392,525,419"/>
 <area shape="rect" href="structphysics__object.html" title=" " alt="" coords="369,288,487,315"/>
 <area shape="rect" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure." alt="" coords="363,102,421,129"/>
-<area shape="rect" href="structphysics__object__collision__data.html" title=" " alt="" coords="98,199,313,225"/>
-<area shape="rect" href="structAABBTreeNode.html" title="A node in the AABBTree structure. Holds the bounds of the node, the parent, left and right children,..." alt="" coords="665,199,783,225"/>
-<area shape="rect" href="unionphysics__object__collision__shape__data.html" title=" " alt="" coords="5,95,184,136"/>
+<area shape="rect" href="structphysics__object__collision__data.html" title="Defines a set of functions and data to describe a collider." alt="" coords="98,199,313,225"/>
+<area shape="rect" href="structAABB__tree__node.html" title="A node in the AABB_tree structure. Holds the bounds of the node, node_proxies to the parent,..." alt="" coords="665,199,796,225"/>
+<area shape="rect" href="unionphysics__object__collision__shape__data.html" title="Defines the parameters necessary to describe a collision shape." alt="" coords="5,95,184,136"/>
 <area shape="rect" href="unionVector2.html" title=" " alt="" coords="59,5,130,32"/>
-<area shape="rect" href="structcontact.html" title=" " alt="" coords="513,199,583,225"/>
-<area shape="rect" href="structAABBTree.html" title="The AABBTree holds the root node, the number of nodes in the tree, the capacity of the tree,..." alt="" coords="681,288,767,315"/>
+<area shape="rect" href="structcontact.html" title="contact struct containing information about a collision" alt="" coords="513,199,583,225"/>
+<area shape="rect" href="structAABB__tree.html" title="The AABB_tree holds the root node, the number of nodes in the tree, the capacity of the tree,..." alt="" coords="685,288,776,315"/>
 <area shape="rect" href="structmesh__collider.html" title=" " alt="" coords="834,392,947,419"/>
 <area shape="rect" href="structmesh__triangle__indices.html" title=" " alt="" coords="807,288,975,315"/>
 </map>
@@ -96,18 +96,18 @@ Collaboration diagram for collision_scene:</div>
 Data Fields</h2></td></tr>
 <tr class="memitem:a9d1d1844c9e9d84d10e413152aa580b5"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structcollision__scene__element.html">collision_scene_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#a9d1d1844c9e9d84d10e413152aa580b5">elements</a></td></tr>
 <tr class="separator:a9d1d1844c9e9d84d10e413152aa580b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29d2e89917c2af63fc48e24a3204bb4e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structcontact.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#a29d2e89917c2af63fc48e24a3204bb4e">next_free_contact</a></td></tr>
-<tr class="separator:a29d2e89917c2af63fc48e24a3204bb4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cb73118081913b9dbb4b4f27d9934ef"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structcontact.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#a2cb73118081913b9dbb4b4f27d9934ef">all_contacts</a></td></tr>
-<tr class="separator:a2cb73118081913b9dbb4b4f27d9934ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c7415aaf194a07a574a3dff941eb6a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontact.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#a7c7415aaf194a07a574a3dff941eb6a0">next_free_contact</a></td></tr>
+<tr class="separator:a7c7415aaf194a07a574a3dff941eb6a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab30503de34cdab2c68cc2d8fe341519c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontact.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#ab30503de34cdab2c68cc2d8fe341519c">all_contacts</a></td></tr>
+<tr class="separator:ab30503de34cdab2c68cc2d8fe341519c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21ed0f16993b60bc32c281ac255569b3"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structhash__map.html">hash_map</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#a21ed0f16993b60bc32c281ac255569b3">entity_mapping</a></td></tr>
 <tr class="separator:a21ed0f16993b60bc32c281ac255569b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a875fed6f23d8cdf07efe2b28165df05a"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#a875fed6f23d8cdf07efe2b28165df05a">objectCount</a></td></tr>
 <tr class="separator:a875fed6f23d8cdf07efe2b28165df05a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac47282ef26158f77a9949bef56a5a7d"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#aac47282ef26158f77a9949bef56a5a7d">capacity</a></td></tr>
 <tr class="separator:aac47282ef26158f77a9949bef56a5a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3ccf19d46309158a849831f006ab429"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAABBTree.html">AABBTree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#ae3ccf19d46309158a849831f006ab429">object_aabbtree</a></td></tr>
-<tr class="separator:ae3ccf19d46309158a849831f006ab429"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7a97a91a3f111ee0500e7421d6cf4a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAABB__tree.html">AABB_tree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#af7a97a91a3f111ee0500e7421d6cf4a7">object_aabbtree</a></td></tr>
+<tr class="separator:af7a97a91a3f111ee0500e7421d6cf4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a615e1a44c5dd125fe873f5e23083ec32"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structmesh__collider.html">mesh_collider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#a615e1a44c5dd125fe873f5e23083ec32">mesh_collider</a></td></tr>
 <tr class="separator:a615e1a44c5dd125fe873f5e23083ec32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affa1dc792d60b66a1832dfd9653cf648"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#affa1dc792d60b66a1832dfd9653cf648">_moved_flags</a> [<a class="el" href="collision__scene_8h.html#a8d3d8da495b2a00a366d953e7f67076d">MAX_PHYSICS_OBJECTS</a>]</td></tr>
@@ -160,14 +160,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a2cb73118081913b9dbb4b4f27d9934ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cb73118081913b9dbb4b4f27d9934ef">&#9670;&nbsp;</a></span>all_contacts</h2>
+<a id="ab30503de34cdab2c68cc2d8fe341519c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab30503de34cdab2c68cc2d8fe341519c">&#9670;&nbsp;</a></span>all_contacts</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structcontact.html">contact</a>* collision_scene::all_contacts</td>
+          <td class="memname"><a class="el" href="structcontact.html">contact</a>* collision_scene::all_contacts</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -230,28 +230,28 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a29d2e89917c2af63fc48e24a3204bb4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29d2e89917c2af63fc48e24a3204bb4e">&#9670;&nbsp;</a></span>next_free_contact</h2>
+<a id="a7c7415aaf194a07a574a3dff941eb6a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c7415aaf194a07a574a3dff941eb6a0">&#9670;&nbsp;</a></span>next_free_contact</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structcontact.html">contact</a>* collision_scene::next_free_contact</td>
+          <td class="memname"><a class="el" href="structcontact.html">contact</a>* collision_scene::next_free_contact</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ae3ccf19d46309158a849831f006ab429"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3ccf19d46309158a849831f006ab429">&#9670;&nbsp;</a></span>object_aabbtree</h2>
+<a id="af7a97a91a3f111ee0500e7421d6cf4a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7a97a91a3f111ee0500e7421d6cf4a7">&#9670;&nbsp;</a></span>object_aabbtree</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structAABBTree.html">AABBTree</a> collision_scene::object_aabbtree</td>
+          <td class="memname"><a class="el" href="structAABB__tree.html">AABB_tree</a> collision_scene::object_aabbtree</td>
         </tr>
       </table>
 </div><div class="memdoc">

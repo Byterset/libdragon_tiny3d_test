@@ -81,11 +81,26 @@ $(function() {
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sweep_8h.html#a0db7429e7b354a4e83214ab9335ae719">sweep_support_function</a>(<span class="keyword">const</span> <span class="keywordtype">void</span>* data, <span class="keyword">const</span> <a class="code" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>* direction, <a class="code" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>* output);</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sweep_8h.html#ae8e288e1b89e9da014da0918f0384cb5">sweep_bounding_box</a>(<span class="keyword">const</span> <span class="keywordtype">void</span>* data, <span class="keyword">const</span> <a class="code" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a>* rotation, <a class="code" href="structAABB.html">AABB</a>* box);</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// Predefined Sweep Collider Definition</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="sweep_8h.html#a5cd4392608329b3ad070d68fcc19ece0">   14</a></span>&#160;<span class="preprocessor">#define SWEEP_COLLIDER(range_x, range_y, r, hh)          \</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">    .gjk_support_function = sweep_support_function, \</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">    .bounding_box_calculator = sweep_bounding_box,  \</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">    .inertia_calculator = NULL,     \</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">    .shape_type = COLLISION_SHAPE_SWEEP, \</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">    .shape_data = {                          \</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">        .sweep = {                       \</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">            .range = {{range_x, range_y}},    \</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">            .radius = r,    \</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">            .half_height = hh,    \</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">        },                             \</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">    }</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aquaternion_8h_html_a6b650dbe9845f0655da72e4a978a6358"><div class="ttname"><a href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a></div><div class="ttdeci">fm_quat_t Quaternion</div><div class="ttdef"><b>Definition:</b> quaternion.h:9</div></div>
 <div class="ttc" id="astructAABB_html"><div class="ttname"><a href="structAABB.html">AABB</a></div><div class="ttdoc">The Axis Aligned Bounding Box (AABB) structure.</div><div class="ttdef"><b>Definition:</b> aabb.h:17</div></div>
 <div class="ttc" id="asweep_8h_html_a0db7429e7b354a4e83214ab9335ae719"><div class="ttname"><a href="sweep_8h.html#a0db7429e7b354a4e83214ab9335ae719">sweep_support_function</a></div><div class="ttdeci">void sweep_support_function(const void *data, const Vector3 *direction, Vector3 *output)</div><div class="ttdef"><b>Definition:</b> sweep.c:6</div></div>
-<div class="ttc" id="asweep_8h_html_ae8e288e1b89e9da014da0918f0384cb5"><div class="ttname"><a href="sweep_8h.html#ae8e288e1b89e9da014da0918f0384cb5">sweep_bounding_box</a></div><div class="ttdeci">void sweep_bounding_box(const void *data, const Quaternion *rotation, AABB *box)</div><div class="ttdef"><b>Definition:</b> sweep.c:38</div></div>
+<div class="ttc" id="asweep_8h_html_ae8e288e1b89e9da014da0918f0384cb5"><div class="ttname"><a href="sweep_8h.html#ae8e288e1b89e9da014da0918f0384cb5">sweep_bounding_box</a></div><div class="ttdeci">void sweep_bounding_box(const void *data, const Quaternion *rotation, AABB *box)</div><div class="ttdef"><b>Definition:</b> sweep.c:35</div></div>
 <div class="ttc" id="avector3_8h_html_a9388e90302520bfda15dc15cdb488471"><div class="ttname"><a href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a></div><div class="ttdeci">fm_vec3_t Vector3</div><div class="ttdef"><b>Definition:</b> vector3.h:9</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

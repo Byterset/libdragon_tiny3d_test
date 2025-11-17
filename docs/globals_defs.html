@@ -65,17 +65,17 @@ $(function() {
 &#160;
 
 <h3><a id="index_a"></a>- a -</h3><ul>
-<li>AABBTREE_DISPLACEMENT_MULTIPLIER
-: <a class="el" href="aabbtree_8h.html#abf57bfd53bf43250657481ea09bbb2b6">aabbtree.h</a>
+<li>AABB_TREE_DISPLACEMENT_MULTIPLIER
+: <a class="el" href="aabb__tree_8h.html#aeb1f824e63163e48acc65876663a3c01">aabb_tree.h</a>
 </li>
-<li>AABBTREE_NODE_BOUNDS_MARGIN
-: <a class="el" href="aabbtree_8h.html#a649530469a9c7fe946cd333f2392f77c">aabbtree.h</a>
+<li>AABB_TREE_NODE_BOUNDS_MARGIN
+: <a class="el" href="aabb__tree_8h.html#afc45fffc5a279827e94051e0b36f541c">aabb_tree.h</a>
 </li>
-<li>AABBTREE_NODE_QUERY_STACK_SIZE
-: <a class="el" href="aabbtree_8h.html#a681900478c12993a2da5429525a96222">aabbtree.h</a>
+<li>AABB_TREE_NODE_QUERY_STACK_SIZE
+: <a class="el" href="aabb__tree_8h.html#ac394920a9634416a557a921794a09568">aabb_tree.h</a>
 </li>
-<li>AABBTREE_NULL_NODE
-: <a class="el" href="aabbtree_8h.html#ae299895df95b1a6a4caca023b73cea12">aabbtree.h</a>
+<li>AABB_TREE_NULL_NODE
+: <a class="el" href="aabb__tree_8h.html#a4fc7331b7c43e63cf0bf178fd51d0845">aabb_tree.h</a>
 </li>
 </ul>
 
@@ -83,6 +83,9 @@ $(function() {
 <h3><a id="index_b"></a>- b -</h3><ul>
 <li>BALL_RADIUS
 : <a class="el" href="ball_8c.html#a26dba4a5e7872d6f4e8e5272eefabee5">ball.c</a>
+</li>
+<li>BOX_COLLIDER
+: <a class="el" href="box_8h.html#a349256e9af69cf68442b964655331228">box.h</a>
 </li>
 </ul>
 
@@ -105,6 +108,9 @@ $(function() {
 </li>
 <li>CAMERA_WALL_COLLISION_BUFFER
 : <a class="el" href="camera__controller_8h.html#a5d5ab9292b7af29a869c9752ab391dab">camera_controller.h</a>
+</li>
+<li>CAPSULE_COLLIDER
+: <a class="el" href="capsule_8h.html#ad1ac66425432519f32747be3170aa6fa">capsule.h</a>
 </li>
 <li>CLEAR_FLAG
 : <a class="el" href="flags_8h.html#a954c9eb96af4be06c6f56d74c46c9e23">flags.h</a>
@@ -139,8 +145,14 @@ $(function() {
 <li>COMMAND_UV_GEN
 : <a class="el" href="material_8c.html#a7e3559e2cd9e3fbd30d4ec44f1ee8644">material.c</a>
 </li>
+<li>CONE_COLLIDER
+: <a class="el" href="collision_2shapes_2cone_8h.html#aa45459b434b9baf46e9af4c947f8483e">cone.h</a>
+</li>
 <li>CYCLE_TIME
 : <a class="el" href="fire_8c.html#a5d70e9efaeba022b3c72fa3cb7acf734">fire.c</a>
+</li>
+<li>CYLINDER_COLLIDER
+: <a class="el" href="collision_2shapes_2cylinder_8h.html#ab9a3a066381dfd07018f9186b2c057d7">cylinder.h</a>
 </li>
 </ul>
 
@@ -340,14 +352,20 @@ $(function() {
 <li>PHYS_OBJECT_SLEEP_STEPS
 : <a class="el" href="physics__object_8h.html#ab2b19ac7761786f798e7cf010b81cfd1">physics_object.h</a>
 </li>
-<li>PHYS_OBJECT_TERMINAL_Y_VELOCITY
-: <a class="el" href="physics__object_8h.html#a5aefdd6728e1a721e820f8ece4bb0ec7">physics_object.h</a>
+<li>PHYS_OBJECT_SPEED_SLEEP_THRESHOLD
+: <a class="el" href="physics__object_8h.html#a002e2df39dbcdd6e7fdc7ffc508dc98a">physics_object.h</a>
 </li>
-<li>PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD
-: <a class="el" href="physics__object_8h.html#ae8017d16255029e7456e8edc1acd765d">physics_object.h</a>
+<li>PHYS_OBJECT_SPEED_SLEEP_THRESHOLD_SQ
+: <a class="el" href="physics__object_8h.html#ac0010b13d0845a4e53154132cd5c0fe2">physics_object.h</a>
 </li>
-<li>PHYS_OBJECT_VELOCITY_SLEEP_THRESHOLD_SQ
-: <a class="el" href="physics__object_8h.html#a0e3a6f72a7817aebbf6a39c659da5f85">physics_object.h</a>
+<li>PHYS_OBJECT_TERMINAL_ANGULAR_SPEED
+: <a class="el" href="physics__object_8h.html#abcf9253c46899aaa7d32c7c46d3deae3">physics_object.h</a>
+</li>
+<li>PHYS_OBJECT_TERMINAL_ANGULAR_SPEED_SQ
+: <a class="el" href="physics__object_8h.html#a4c5eb6724ce447003706eebd659e7c7f">physics_object.h</a>
+</li>
+<li>PHYS_OBJECT_TERMINAL_SPEED
+: <a class="el" href="physics__object_8h.html#a064714425b6c8cf7688bad8f6aec6a76">physics_object.h</a>
 </li>
 <li>PHYSICS_TICKRATE
 : <a class="el" href="time_8h.html#acc14909795a4c4ad67102c15a58df488">time.h</a>
@@ -376,8 +394,14 @@ $(function() {
 <li>PLAYER_TURN_SPEED
 : <a class="el" href="player_8c.html#ae70792103dbd4eba86a68e2b9984f6f0">player.c</a>
 </li>
-<li>PYHS_OBJECT_ANG_SPEED_DAMPING_THRESHOLD_SQ
-: <a class="el" href="physics__object_8h.html#a4fdda934b831b899b294fb0ee34df9e6">physics_object.h</a>
+<li>PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD
+: <a class="el" href="physics__object_8h.html#a7ab47e3b9ed474795611c93acf020ab6">physics_object.h</a>
+</li>
+<li>PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD_SQ
+: <a class="el" href="physics__object_8h.html#a21c6e321c18ee2a87c2bd195d3dad631">physics_object.h</a>
+</li>
+<li>PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD_SQ_INV
+: <a class="el" href="physics__object_8h.html#a2bc77aeb8d4bd8787357285de91c74b0">physics_object.h</a>
 </li>
 </ul>
 
@@ -435,6 +459,9 @@ $(function() {
 <li>SORT_PRIORITY_TRANSPARENT
 : <a class="el" href="material_8h.html#a7f4019aac6994408a404cfffb83b1f00">material.h</a>
 </li>
+<li>SPHERE_COLLIDER
+: <a class="el" href="sphere_8h.html#adb07efdd0a26cefa72d08881211cdd3b">sphere.h</a>
+</li>
 <li>SQRT_1_2
 : <a class="el" href="collision_2shapes_2cylinder_8c.html#a85239b2c828f8da685e581dab64ea4f4">cylinder.c</a>
 </li>
@@ -443,6 +470,9 @@ $(function() {
 </li>
 <li>START_FADE
 : <a class="el" href="fire_8c.html#aea02e6f54f55014b11bfb9b7c94c57e2">fire.c</a>
+</li>
+<li>SWEEP_COLLIDER
+: <a class="el" href="sweep_8h.html#a5cd4392608329b3ad070d68fcc19ece0">sweep.h</a>
 </li>
 </ul>
 

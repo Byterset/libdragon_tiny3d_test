@@ -111,7 +111,7 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aea71bad120f57c3a6bd4ab7d15fe4991"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a>&#160;&#160;&#160;12</td></tr>
+<tr class="memitem:aea71bad120f57c3a6bd4ab7d15fe4991"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a>&#160;&#160;&#160;10</td></tr>
 <tr class="separator:aea71bad120f57c3a6bd4ab7d15fe4991"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43bc70e13a08ba885f5444e56d3107fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a43bc70e13a08ba885f5444e56d3107fd">EPA_MAX_SIMPLEX_POINTS</a>&#160;&#160;&#160;(4 + <a class="el" href="epa_8c.html#aea71bad120f57c3a6bd4ab7d15fe4991">EPA_MAX_ITERATIONS</a>)</td></tr>
 <tr class="separator:a43bc70e13a08ba885f5444e56d3107fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,12 +184,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2aec61053fa2dd19ddace5ebe2f26dff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2aec61053fa2dd19ddace5ebe2f26dff">epaSweptFindFace</a> (struct <a class="el" href="structExpandingSimplex.html">ExpandingSimplex</a> *simplex, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *direction, int *startTriangleIndex, int *startFaceEdge)</td></tr>
 <tr class="memdesc:a2aec61053fa2dd19ddace5ebe2f26dff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the face of the polytope that the sweep direction first encounters.  <a href="epa_8c.html#a2aec61053fa2dd19ddace5ebe2f26dff">More...</a><br /></td></tr>
 <tr class="separator:a2aec61053fa2dd19ddace5ebe2f26dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ab04215e88cfb4b60614d47bfb0db92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#a2ab04215e88cfb4b60614d47bfb0db92">epaSolveSwept</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectBSum, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *bStart, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *bEnd, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
-<tr class="memdesc:a2ab04215e88cfb4b60614d47bfb0db92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swept EPA for continuous collision detection (time of impact calculation).  <a href="epa_8c.html#a2ab04215e88cfb4b60614d47bfb0db92">More...</a><br /></td></tr>
-<tr class="separator:a2ab04215e88cfb4b60614d47bfb0db92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf3e9b77a5cad2a29960a73b2b322d28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#adf3e9b77a5cad2a29960a73b2b322d28">epaSwapResult</a> (struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
-<tr class="memdesc:adf3e9b77a5cad2a29960a73b2b322d28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swaps contact points and reverses the normal in an EPA result.  <a href="epa_8c.html#adf3e9b77a5cad2a29960a73b2b322d28">More...</a><br /></td></tr>
-<tr class="separator:adf3e9b77a5cad2a29960a73b2b322d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb1d4ed03fdd0e3113bd4d4c51cfa8be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="epa_8c.html#aeb1d4ed03fdd0e3113bd4d4c51cfa8be">epaSolveSwept</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *startingSimplex, void *objectA, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectBSum, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *bStart, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *bEnd, struct <a class="el" href="structEpaResult.html">EpaResult</a> *result)</td></tr>
+<tr class="memdesc:aeb1d4ed03fdd0e3113bd4d4c51cfa8be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swept EPA for continuous collision detection (time of impact calculation).  <a href="epa_8c.html#aeb1d4ed03fdd0e3113bd4d4c51cfa8be">More...</a><br /></td></tr>
+<tr class="separator:aeb1d4ed03fdd0e3113bd4d4c51cfa8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -204,7 +201,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define EPA_MAX_ITERATIONS&#160;&#160;&#160;12</td>
+          <td class="memname">#define EPA_MAX_ITERATIONS&#160;&#160;&#160;10</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -496,14 +493,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a2ab04215e88cfb4b60614d47bfb0db92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ab04215e88cfb4b60614d47bfb0db92">&#9670;&nbsp;</a></span>epaSolveSwept()</h2>
+<a id="aeb1d4ed03fdd0e3113bd4d4c51cfa8be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb1d4ed03fdd0e3113bd4d4c51cfa8be">&#9670;&nbsp;</a></span>epaSolveSwept()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int epaSolveSwept </td>
+          <td class="memname">bool epaSolveSwept </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structSimplex.html">Simplex</a> *&#160;</td>
           <td class="paramname"><em>startingSimplex</em>, </td>
@@ -573,34 +570,7 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>1 if valid collision found within the sweep, 0 otherwise </dd></dl>
-
-</div>
-</div>
-<a id="adf3e9b77a5cad2a29960a73b2b322d28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf3e9b77a5cad2a29960a73b2b322d28">&#9670;&nbsp;</a></span>epaSwapResult()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void epaSwapResult </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structEpaResult.html">EpaResult</a> *&#160;</td>
-          <td class="paramname"><em>result</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Swaps contact points and reverses the normal in an EPA result. </p>
-<p>Used when the collision detection is performed with objects in reverse order and the result needs to be corrected to match the expected perspective.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">result</td><td>EPA result to swap </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if valid collision found within the sweep, FALSE otherwise </dd></dl>
 
 </div>
 </div>

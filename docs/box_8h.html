@@ -67,6 +67,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">box.h File Reference</div>  </div>
@@ -110,15 +111,71 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="box_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a349256e9af69cf68442b964655331228"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="box_8h.html#a349256e9af69cf68442b964655331228">BOX_COLLIDER</a>(x,  y,  z)</td></tr>
+<tr class="separator:a349256e9af69cf68442b964655331228"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aba9fec6dde7c20516ff221d96bcd6c7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="box_8h.html#aba9fec6dde7c20516ff221d96bcd6c7a">box_support_function</a> (const void *data, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *direction, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *output)</td></tr>
+<tr class="memdesc:aba9fec6dde7c20516ff221d96bcd6c7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">GJK Support function (see gjk_support_function) for the box primitive.  <a href="box_8h.html#aba9fec6dde7c20516ff221d96bcd6c7a">More...</a><br /></td></tr>
 <tr class="separator:aba9fec6dde7c20516ff221d96bcd6c7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79793068438d943c24150112791fb685"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="box_8h.html#a79793068438d943c24150112791fb685">box_bounding_box</a> (const void *data, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *rotation, <a class="el" href="structAABB.html">AABB</a> *box)</td></tr>
+<tr class="memdesc:a79793068438d943c24150112791fb685"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounding Box Calculator function for the box primitive.  <a href="box_8h.html#a79793068438d943c24150112791fb685">More...</a><br /></td></tr>
 <tr class="separator:a79793068438d943c24150112791fb685"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f385c4276d9d8be00133f39494cedf2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="box_8h.html#a0f385c4276d9d8be00133f39494cedf2">box_inertia_tensor</a> (void *data, float mass, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
-<tr class="separator:a0f385c4276d9d8be00133f39494cedf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5344c8457c9e92813ca75eb3b444fb82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="box_8h.html#a5344c8457c9e92813ca75eb3b444fb82">box_inertia_tensor</a> (void *data, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
+<tr class="memdesc:a5344c8457c9e92813ca75eb3b444fb82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inertia Tensor function for the box primitive.  <a href="box_8h.html#a5344c8457c9e92813ca75eb3b444fb82">More...</a><br /></td></tr>
+<tr class="separator:a5344c8457c9e92813ca75eb3b444fb82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a349256e9af69cf68442b964655331228"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a349256e9af69cf68442b964655331228">&#9670;&nbsp;</a></span>BOX_COLLIDER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BOX_COLLIDER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">y, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">z&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    .gjk_support_function = <a class="code" href="box_8h.html#aba9fec6dde7c20516ff221d96bcd6c7a">box_support_function</a>, \</div>
+<div class="line">    .bounding_box_calculator = <a class="code" href="box_8h.html#a79793068438d943c24150112791fb685">box_bounding_box</a>,  \</div>
+<div class="line">    .inertia_calculator = <a class="code" href="box_8h.html#a5344c8457c9e92813ca75eb3b444fb82">box_inertia_tensor</a>,     \</div>
+<div class="line">    .shape_type = <a class="code" href="physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68a67e8c8eacf978084ffaa4a0e44989b1f">COLLISION_SHAPE_BOX</a>, \</div>
+<div class="line">    .shape_data = {                          \</div>
+<div class="line">        .box = {                       \</div>
+<div class="line">            .half_size = {{x, y, z}},    \</div>
+<div class="line">        },                             \</div>
+<div class="line">    }</div>
+<div class="ttc" id="abox_8h_html_a5344c8457c9e92813ca75eb3b444fb82"><div class="ttname"><a href="box_8h.html#a5344c8457c9e92813ca75eb3b444fb82">box_inertia_tensor</a></div><div class="ttdeci">void box_inertia_tensor(void *data, Vector3 *out)</div><div class="ttdoc">Inertia Tensor function for the box primitive.</div><div class="ttdef"><b>Definition:</b> box.c:50</div></div>
+<div class="ttc" id="abox_8h_html_a79793068438d943c24150112791fb685"><div class="ttname"><a href="box_8h.html#a79793068438d943c24150112791fb685">box_bounding_box</a></div><div class="ttdeci">void box_bounding_box(const void *data, const Quaternion *rotation, AABB *box)</div><div class="ttdoc">Bounding Box Calculator function for the box primitive.</div><div class="ttdef"><b>Definition:</b> box.c:15</div></div>
+<div class="ttc" id="abox_8h_html_aba9fec6dde7c20516ff221d96bcd6c7a"><div class="ttname"><a href="box_8h.html#aba9fec6dde7c20516ff221d96bcd6c7a">box_support_function</a></div><div class="ttdeci">void box_support_function(const void *data, const Vector3 *direction, Vector3 *output)</div><div class="ttdoc">GJK Support function (see gjk_support_function) for the box primitive.</div><div class="ttdef"><b>Definition:</b> box.c:6</div></div>
+<div class="ttc" id="aphysics__object_8h_html_a49af2557fdce03be977f2d4ec085ff68a67e8c8eacf978084ffaa4a0e44989b1f"><div class="ttname"><a href="physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68a67e8c8eacf978084ffaa4a0e44989b1f">COLLISION_SHAPE_BOX</a></div><div class="ttdeci">@ COLLISION_SHAPE_BOX</div><div class="ttdef"><b>Definition:</b> physics_object.h:77</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a79793068438d943c24150112791fb685"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a79793068438d943c24150112791fb685">&#9670;&nbsp;</a></span>box_bounding_box()</h2>
@@ -152,10 +209,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Bounding Box Calculator function for the box primitive. </p>
+<p>Calculates the <a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a> fully containing the (optionally rotated) box. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> holding the box collider </td></tr>
+    <tr><td class="paramname">rotation</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> rotation Quaternion (may be NULL) </td></tr>
+    <tr><td class="paramname">box</td><td>pointer to the output <a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a0f385c4276d9d8be00133f39494cedf2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f385c4276d9d8be00133f39494cedf2">&#9670;&nbsp;</a></span>box_inertia_tensor()</h2>
+<a id="a5344c8457c9e92813ca75eb3b444fb82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5344c8457c9e92813ca75eb3b444fb82">&#9670;&nbsp;</a></span>box_inertia_tensor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,12 +232,6 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>mass</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -185,6 +246,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Inertia Tensor function for the box primitive. </p>
+<p>Calculates the diagonal vector of the local inertia </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> holding the box collider </td></tr>
+    <tr><td class="paramname">out</td><td>pointer to the 3d vector representing the inertia tensor diagonal Ixx, Iyy, Izz </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -219,6 +289,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>GJK Support function (see gjk_support_function) for the box primitive. </p>
+<p>Will return the point on the box boundary furthest in the input direction. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> holding the box collider </td></tr>
+    <tr><td class="paramname">direction</td><td>input direction (is expected to be normalized and rotated if the object has rotation) </td></tr>
+    <tr><td class="paramname">output</td><td>the pointer of the vector to store the result </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

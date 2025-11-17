@@ -83,85 +83,84 @@ Include dependency graph for physics_object.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="physics__object_8c__incl.png" border="0" usemap="#asrc_2collision_2physics__object_8c" alt=""/></div>
 <map name="asrc_2collision_2physics__object_8c" id="asrc_2collision_2physics__object_8c">
-<area shape="rect" title=" " alt="" coords="1102,5,1254,47"/>
-<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="738,95,869,121"/>
-<area shape="rect" title=" " alt="" coords="1271,692,1339,719"/>
-<area shape="rect" title=" " alt="" coords="863,319,938,345"/>
-<area shape="rect" title=" " alt="" coords="1102,244,1177,271"/>
+<area shape="rect" title=" " alt="" coords="1090,5,1242,47"/>
+<area shape="rect" href="physics__object_8h.html" title=" " alt="" coords="759,95,890,121"/>
+<area shape="rect" title=" " alt="" coords="1007,692,1075,719"/>
+<area shape="rect" title=" " alt="" coords="849,244,923,271"/>
 <area shape="rect" href="time_8h.html" title=" " alt="" coords="5,319,116,345"/>
-<area shape="rect" href="minmax_8h.html" title="This file contains the definition of the MIN and MAX macros." alt="" coords="1422,95,1561,121"/>
-<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="312,393,457,420"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="933,617,1066,644"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="1163,543,1297,569"/>
-<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="592,244,708,271"/>
-<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="1062,468,1166,495"/>
-<area shape="rect" title=" " alt="" coords="270,543,353,569"/>
-<area shape="rect" title=" " alt="" coords="205,393,276,420"/>
-<area shape="rect" href="aabbtree_8h.html" title=" " alt="" coords="722,169,885,196"/>
-<area shape="rect" href="contact_8h.html" title=" " alt="" coords="343,319,426,345"/>
-<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="1195,393,1249,420"/>
-<area shape="rect" title=" " alt="" coords="897,692,992,719"/>
-<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="1017,692,1089,719"/>
-<area shape="rect" href="raycast_8h.html" title=" " alt="" coords="450,319,602,345"/>
-<area shape="rect" href="transform_8h.html" title=" " alt="" coords="788,393,936,420"/>
-<area shape="rect" href="vec_8h.html" title=" " alt="" coords="756,244,851,271"/>
-<area shape="rect" title=" " alt="" coords="677,319,743,345"/>
-<area shape="rect" title=" " alt="" coords="768,319,839,345"/>
+<area shape="rect" href="minmax_8h.html" title="This file contains the definition of the MIN and MAX macros." alt="" coords="1257,95,1395,121"/>
+<area shape="rect" title=" " alt="" coords="1419,95,1494,121"/>
+<area shape="rect" href="entity__id_8h.html" title=" " alt="" coords="856,393,1001,420"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="701,617,834,644"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="327,543,461,569"/>
+<area shape="rect" href="aabb_8h.html" title="This file provides the definition of the AABB structure and functions to work with Axis Aligned Bound..." alt="" coords="644,244,760,271"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="386,468,490,495"/>
+<area shape="rect" title=" " alt="" coords="137,543,219,569"/>
+<area shape="rect" title=" " alt="" coords="181,393,252,420"/>
+<area shape="rect" href="aabb__tree_8h.html" title=" " alt="" coords="740,169,909,196"/>
+<area shape="rect" href="contact_8h.html" title=" " alt="" coords="1049,319,1131,345"/>
+<area shape="rect" href="gjk_8h.html" title=" " alt="" coords="1025,393,1080,420"/>
+<area shape="rect" title=" " alt="" coords="347,692,441,719"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="731,692,803,719"/>
+<area shape="rect" href="raycast_8h.html" title=" " alt="" coords="505,319,657,345"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="531,393,679,420"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a72ff73356f699d8528f7c631f15d1b6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a72ff73356f699d8528f7c631f15d1b6a">physics_object_init</a> (<a class="el" href="entity__id_8h.html#a0b6e47c2160096e2e59d383c2c80dcd0">entity_id</a> <a class="el" href="entity__id_8h.html#a0b6e47c2160096e2e59d383c2c80dcd0">entity_id</a>, struct <a class="el" href="structphysics__object.html">physics_object</a> *object, struct <a class="el" href="structphysics__object__collision__data.html">physics_object_collision_data</a> *collision, uint16_t collision_layers, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *position, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *rotation, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> center_offset, float mass)</td></tr>
-<tr class="memdesc:a72ff73356f699d8528f7c631f15d1b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a physics object with the given parameters.  <a href="physics__object_8c.html#a72ff73356f699d8528f7c631f15d1b6a">More...</a><br /></td></tr>
-<tr class="separator:a72ff73356f699d8528f7c631f15d1b6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56cb0d6bb787879ba9bd012547d16487"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a56cb0d6bb787879ba9bd012547d16487">physics_object_update_euler</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object)</td></tr>
-<tr class="separator:a56cb0d6bb787879ba9bd012547d16487"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa64269913eeaeabe736d020c1e08afa5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#aa64269913eeaeabe736d020c1e08afa5">physics_object_update_implicit_euler</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *o)</td></tr>
-<tr class="separator:aa64269913eeaeabe736d020c1e08afa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd006c69848e9621054e12600d69cbd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#acd006c69848e9621054e12600d69cbd6">physics_object_update_velocity_verlet</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *o)</td></tr>
-<tr class="separator:acd006c69848e9621054e12600d69cbd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ee1b5aab1d09ed2a5c96fd89b9e4d3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a0ee1b5aab1d09ed2a5c96fd89b9e4d3d">physics_object_update_angular_velocity</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object)</td></tr>
-<tr class="separator:a0ee1b5aab1d09ed2a5c96fd89b9e4d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a361ca8b6bc848059b6f27f1d75ad7a59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a361ca8b6bc848059b6f27f1d75ad7a59">physics_object_apply_constraints</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object)</td></tr>
-<tr class="separator:a361ca8b6bc848059b6f27f1d75ad7a59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1852f8ccc2f40bfe1dc50bdfa59f9fb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a1852f8ccc2f40bfe1dc50bdfa59f9fb7">physics_object_accelerate</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *acceleration)</td></tr>
-<tr class="memdesc:a1852f8ccc2f40bfe1dc50bdfa59f9fb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accelerates the object by the given acceleration vector.  <a href="physics__object_8c.html#a1852f8ccc2f40bfe1dc50bdfa59f9fb7">More...</a><br /></td></tr>
-<tr class="separator:a1852f8ccc2f40bfe1dc50bdfa59f9fb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d9945bcb8830fd285d4eac6c1961437"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a9d9945bcb8830fd285d4eac6c1961437">physics_object_set_velocity</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *velocity)</td></tr>
-<tr class="memdesc:a9d9945bcb8830fd285d4eac6c1961437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the velocity of the object to the given velocity vector.  <a href="physics__object_8c.html#a9d9945bcb8830fd285d4eac6c1961437">More...</a><br /></td></tr>
-<tr class="separator:a9d9945bcb8830fd285d4eac6c1961437"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04451c02c4ca3be95df1c65035fe92e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a04451c02c4ca3be95df1c65035fe92e3">physics_object_apply_impulse</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *impulse)</td></tr>
-<tr class="memdesc:a04451c02c4ca3be95df1c65035fe92e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply and impulse force to the object  <a href="physics__object_8c.html#a04451c02c4ca3be95df1c65035fe92e3">More...</a><br /></td></tr>
-<tr class="separator:a04451c02c4ca3be95df1c65035fe92e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7634ade0d9afa93b09802ee3c7eaf83c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a7634ade0d9afa93b09802ee3c7eaf83c">physics_object_apply_torque</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *torque)</td></tr>
-<tr class="memdesc:a7634ade0d9afa93b09802ee3c7eaf83c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply torque to the object (accumulated and applied during physics update)  <a href="physics__object_8c.html#a7634ade0d9afa93b09802ee3c7eaf83c">More...</a><br /></td></tr>
-<tr class="separator:a7634ade0d9afa93b09802ee3c7eaf83c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a564d4199af4e72db95ac583499d74fcf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a564d4199af4e72db95ac583499d74fcf">physics_object_apply_angular_impulse</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *angular_impulse)</td></tr>
-<tr class="memdesc:a564d4199af4e72db95ac583499d74fcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply an angular impulse directly to angular velocity.  <a href="physics__object_8c.html#a564d4199af4e72db95ac583499d74fcf">More...</a><br /></td></tr>
-<tr class="separator:a564d4199af4e72db95ac583499d74fcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6c8e1cb02cc79a108a60fade4e258ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#ac6c8e1cb02cc79a108a60fade4e258ff">physics_object_apply_force_at_point</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *force, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *world_point)</td></tr>
-<tr class="memdesc:ac6c8e1cb02cc79a108a60fade4e258ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply a force at a specific world point, generating both linear and angular effects.  <a href="physics__object_8c.html#ac6c8e1cb02cc79a108a60fade4e258ff">More...</a><br /></td></tr>
-<tr class="separator:ac6c8e1cb02cc79a108a60fade4e258ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15074409ff5f587c7e3d939c4f1fa56f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a15074409ff5f587c7e3d939c4f1fa56f">physics_object_set_angular_velocity</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *angular_velocity)</td></tr>
-<tr class="memdesc:a15074409ff5f587c7e3d939c4f1fa56f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the angular velocity of the object.  <a href="physics__object_8c.html#a15074409ff5f587c7e3d939c4f1fa56f">More...</a><br /></td></tr>
-<tr class="separator:a15074409ff5f587c7e3d939c4f1fa56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3e86c2136548098a7b35b8e3599fa8a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structcontact.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#aa3e86c2136548098a7b35b8e3599fa8a">physics_object_nearest_contact</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object)</td></tr>
-<tr class="memdesc:aa3e86c2136548098a7b35b8e3599fa8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate through the active contacts of the object and return the contact with the smallest distance to the object  <a href="physics__object_8c.html#aa3e86c2136548098a7b35b8e3599fa8a">More...</a><br /></td></tr>
-<tr class="separator:aa3e86c2136548098a7b35b8e3599fa8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fcb557fd238f9bd365d891084edc57b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a7fcb557fd238f9bd365d891084edc57b">physics_object_is_touching</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="entity__id_8h.html#a0b6e47c2160096e2e59d383c2c80dcd0">entity_id</a> id)</td></tr>
-<tr class="memdesc:a7fcb557fd238f9bd365d891084edc57b"><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate through the active contacts of the object and check if the given entity id is in the list  <a href="physics__object_8c.html#a7fcb557fd238f9bd365d891084edc57b">More...</a><br /></td></tr>
-<tr class="separator:a7fcb557fd238f9bd365d891084edc57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0de4ea4eb350ea128dd5837132165d7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a0de4ea4eb350ea128dd5837132165d7e">physics_object_init</a> (<a class="el" href="entity__id_8h.html#a0b6e47c2160096e2e59d383c2c80dcd0">entity_id</a> <a class="el" href="entity__id_8h.html#a0b6e47c2160096e2e59d383c2c80dcd0">entity_id</a>, <a class="el" href="structphysics__object.html">physics_object</a> *object, struct <a class="el" href="structphysics__object__collision__data.html">physics_object_collision_data</a> *collision, uint16_t collision_layers, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *position, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *rotation, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> center_offset, float mass)</td></tr>
+<tr class="memdesc:a0de4ea4eb350ea128dd5837132165d7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a physics object with the given parameters.  <a href="physics__object_8c.html#a0de4ea4eb350ea128dd5837132165d7e">More...</a><br /></td></tr>
+<tr class="separator:a0de4ea4eb350ea128dd5837132165d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45ed64e5de17aa6642abd836cff4049a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a45ed64e5de17aa6642abd836cff4049a">physics_object_update_velocity_semi_implicit_euler</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object)</td></tr>
+<tr class="memdesc:a45ed64e5de17aa6642abd836cff4049a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will update an objects position and velocity according to the existing velocity, the accumulated acceleration, &amp; the objects position constraints.  <a href="physics__object_8c.html#a45ed64e5de17aa6642abd836cff4049a">More...</a><br /></td></tr>
+<tr class="separator:a45ed64e5de17aa6642abd836cff4049a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8274a5233fb198a7a8d438f078916e14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a8274a5233fb198a7a8d438f078916e14">physics_object_update_angular_velocity</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object)</td></tr>
+<tr class="memdesc:a8274a5233fb198a7a8d438f078916e14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will update an objects rotation and angular velocity according to the existing ang. velocity, the accumulated torque, the angular damping &amp; the objects rotational constraints.  <a href="physics__object_8c.html#a8274a5233fb198a7a8d438f078916e14">More...</a><br /></td></tr>
+<tr class="separator:a8274a5233fb198a7a8d438f078916e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7a37d64cfc600b71678ac53b61a2e5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#ac7a37d64cfc600b71678ac53b61a2e5f">physics_object_apply_position_constraints</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object)</td></tr>
+<tr class="memdesc:ac7a37d64cfc600b71678ac53b61a2e5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enforce the objects position to stay in reasonable bounds as to not crash when converting the floating point position to the fixed matrix for rendering.  <a href="physics__object_8c.html#ac7a37d64cfc600b71678ac53b61a2e5f">More...</a><br /></td></tr>
+<tr class="separator:ac7a37d64cfc600b71678ac53b61a2e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb5ef123445e07db8c7cebd20f074c81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#afb5ef123445e07db8c7cebd20f074c81">physics_object_accelerate</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *acceleration)</td></tr>
+<tr class="memdesc:afb5ef123445e07db8c7cebd20f074c81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accelerates the object by the given acceleration vector.  <a href="physics__object_8c.html#afb5ef123445e07db8c7cebd20f074c81">More...</a><br /></td></tr>
+<tr class="separator:afb5ef123445e07db8c7cebd20f074c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acecd534677a14de69cecfa39a0c54f6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#acecd534677a14de69cecfa39a0c54f6c">physics_object_set_velocity</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *velocity)</td></tr>
+<tr class="memdesc:acecd534677a14de69cecfa39a0c54f6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually set the velocity of the object to the given velocity vector.  <a href="physics__object_8c.html#acecd534677a14de69cecfa39a0c54f6c">More...</a><br /></td></tr>
+<tr class="separator:acecd534677a14de69cecfa39a0c54f6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98449b6510ddce89db44524b63b6f68c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a98449b6510ddce89db44524b63b6f68c">physics_object_apply_linear_impulse</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *impulse)</td></tr>
+<tr class="memdesc:a98449b6510ddce89db44524b63b6f68c"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply a linear impulse force to the object  <a href="physics__object_8c.html#a98449b6510ddce89db44524b63b6f68c">More...</a><br /></td></tr>
+<tr class="separator:a98449b6510ddce89db44524b63b6f68c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8de4226b681249ac4c3f96ee131f93d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#aa8de4226b681249ac4c3f96ee131f93d">physics_object_apply_torque</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *torque)</td></tr>
+<tr class="memdesc:aa8de4226b681249ac4c3f96ee131f93d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply torque to the object (accumulated and applied during physics update)  <a href="physics__object_8c.html#aa8de4226b681249ac4c3f96ee131f93d">More...</a><br /></td></tr>
+<tr class="separator:aa8de4226b681249ac4c3f96ee131f93d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdd02ad512da1775f95d6685db8e22be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#abdd02ad512da1775f95d6685db8e22be">physics_object_apply_angular_impulse</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *angular_impulse)</td></tr>
+<tr class="memdesc:abdd02ad512da1775f95d6685db8e22be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply an angular impulse directly to angular velocity.  <a href="physics__object_8c.html#abdd02ad512da1775f95d6685db8e22be">More...</a><br /></td></tr>
+<tr class="separator:abdd02ad512da1775f95d6685db8e22be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b936299531375e8a2b8711a16a9c8d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a4b936299531375e8a2b8711a16a9c8d1">physics_object_apply_force_at_point</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *force, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *world_point)</td></tr>
+<tr class="memdesc:a4b936299531375e8a2b8711a16a9c8d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply a force at a specific world point, generating both linear and angular effects.  <a href="physics__object_8c.html#a4b936299531375e8a2b8711a16a9c8d1">More...</a><br /></td></tr>
+<tr class="separator:a4b936299531375e8a2b8711a16a9c8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea7c6314d51dfe6c3c9c500ea6de3930"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#aea7c6314d51dfe6c3c9c500ea6de3930">physics_object_set_angular_velocity</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *angular_velocity)</td></tr>
+<tr class="memdesc:aea7c6314d51dfe6c3c9c500ea6de3930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually set the angular velocity of the object.  <a href="physics__object_8c.html#aea7c6314d51dfe6c3c9c500ea6de3930">More...</a><br /></td></tr>
+<tr class="separator:aea7c6314d51dfe6c3c9c500ea6de3930"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc3d7122c1f6c1a0c396693ab273ebb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontact.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#abc3d7122c1f6c1a0c396693ab273ebb2">physics_object_nearest_contact</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object)</td></tr>
+<tr class="memdesc:abc3d7122c1f6c1a0c396693ab273ebb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate through the active contacts of the object and return the contact with the smallest distance to the object  <a href="physics__object_8c.html#abc3d7122c1f6c1a0c396693ab273ebb2">More...</a><br /></td></tr>
+<tr class="separator:abc3d7122c1f6c1a0c396693ab273ebb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a3cea8d2a76640ca9d3312fe204e0d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a3a3cea8d2a76640ca9d3312fe204e0d8">physics_object_is_touching</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object, <a class="el" href="entity__id_8h.html#a0b6e47c2160096e2e59d383c2c80dcd0">entity_id</a> id)</td></tr>
+<tr class="memdesc:a3a3cea8d2a76640ca9d3312fe204e0d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">iterate through the active contacts of the object and check if the given entity id is in the list  <a href="physics__object_8c.html#a3a3cea8d2a76640ca9d3312fe204e0d8">More...</a><br /></td></tr>
+<tr class="separator:a3a3cea8d2a76640ca9d3312fe204e0d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa36d7e237f2b20f0b5f3c596f8ff80ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#aa36d7e237f2b20f0b5f3c596f8ff80ff">physics_object_set_mass</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object, float new_mass)</td></tr>
+<tr class="memdesc:aa36d7e237f2b20f0b5f3c596f8ff80ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mass of a <a class="el" href="structphysics__object.html">physics_object</a> and recalculates mass-dependent properties.  <a href="physics__object_8c.html#aa36d7e237f2b20f0b5f3c596f8ff80ff">More...</a><br /></td></tr>
+<tr class="separator:aa36d7e237f2b20f0b5f3c596f8ff80ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abec1701d3d01cc9bf9dab7d2c24d7b14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#abec1701d3d01cc9bf9dab7d2c24d7b14">physics_object_gjk_support_function</a> (const void *data, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *direction, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *output)</td></tr>
 <tr class="memdesc:abec1701d3d01cc9bf9dab7d2c24d7b14"><td class="mdescLeft">&#160;</td><td class="mdescRight">will transform the given direction vector into the local space of the object and then call the GJK support function associated with the object  <a href="physics__object_8c.html#abec1701d3d01cc9bf9dab7d2c24d7b14">More...</a><br /></td></tr>
 <tr class="separator:abec1701d3d01cc9bf9dab7d2c24d7b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95d6a697cf19ac847a3e97c1461a74bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a95d6a697cf19ac847a3e97c1461a74bb">physics_object_recalculate_aabb</a> (struct <a class="el" href="structphysics__object.html">physics_object</a> *object)</td></tr>
-<tr class="memdesc:a95d6a697cf19ac847a3e97c1461a74bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">re-caluclates the bounding box of the object using the collision type's bounding box function  <a href="physics__object_8c.html#a95d6a697cf19ac847a3e97c1461a74bb">More...</a><br /></td></tr>
-<tr class="separator:a95d6a697cf19ac847a3e97c1461a74bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f3d9597b7ab7045c8d1a2c8e934eab8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="physics__object_8c.html#a9f3d9597b7ab7045c8d1a2c8e934eab8">physics_object_recalculate_aabb</a> (<a class="el" href="structphysics__object.html">physics_object</a> *object)</td></tr>
+<tr class="memdesc:a9f3d9597b7ab7045c8d1a2c8e934eab8"><td class="mdescLeft">&#160;</td><td class="mdescRight">re-caluclates the bounding box of the object using the collision type's bounding box function.  <a href="physics__object_8c.html#a9f3d9597b7ab7045c8d1a2c8e934eab8">More...</a><br /></td></tr>
+<tr class="separator:a9f3d9597b7ab7045c8d1a2c8e934eab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a1852f8ccc2f40bfe1dc50bdfa59f9fb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1852f8ccc2f40bfe1dc50bdfa59f9fb7">&#9670;&nbsp;</a></span>physics_object_accelerate()</h2>
+<a id="afb5ef123445e07db8c7cebd20f074c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb5ef123445e07db8c7cebd20f074c81">&#9670;&nbsp;</a></span>physics_object_accelerate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -169,7 +168,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void physics_object_accelerate </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -198,8 +197,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a564d4199af4e72db95ac583499d74fcf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a564d4199af4e72db95ac583499d74fcf">&#9670;&nbsp;</a></span>physics_object_apply_angular_impulse()</h2>
+<a id="abdd02ad512da1775f95d6685db8e22be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdd02ad512da1775f95d6685db8e22be">&#9670;&nbsp;</a></span>physics_object_apply_angular_impulse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -207,7 +206,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void physics_object_apply_angular_impulse </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -225,7 +224,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Apply an angular impulse directly to angular velocity. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>This will take into account the objects rotational constraints! </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">object</td><td></td></tr>
     <tr><td class="paramname">angular_impulse</td><td>angular impulse in world space (N⋅m⋅s) </td></tr>
@@ -235,26 +234,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a361ca8b6bc848059b6f27f1d75ad7a59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a361ca8b6bc848059b6f27f1d75ad7a59">&#9670;&nbsp;</a></span>physics_object_apply_constraints()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void physics_object_apply_constraints </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
-          <td class="paramname"><em>object</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ac6c8e1cb02cc79a108a60fade4e258ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6c8e1cb02cc79a108a60fade4e258ff">&#9670;&nbsp;</a></span>physics_object_apply_force_at_point()</h2>
+<a id="a4b936299531375e8a2b8711a16a9c8d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b936299531375e8a2b8711a16a9c8d1">&#9670;&nbsp;</a></span>physics_object_apply_force_at_point()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,7 +243,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void physics_object_apply_force_at_point </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -297,16 +278,16 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a04451c02c4ca3be95df1c65035fe92e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04451c02c4ca3be95df1c65035fe92e3">&#9670;&nbsp;</a></span>physics_object_apply_impulse()</h2>
+<a id="a98449b6510ddce89db44524b63b6f68c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98449b6510ddce89db44524b63b6f68c">&#9670;&nbsp;</a></span>physics_object_apply_linear_impulse()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void physics_object_apply_impulse </td>
+          <td class="memname">void physics_object_apply_linear_impulse </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -323,19 +304,46 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>apply and impulse force to the object </p>
+<p>apply a linear impulse force to the object </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">object</td><td></td></tr>
-    <tr><td class="paramname">impulse</td><td></td></tr>
+    <tr><td class="paramname">impulse</td><td>linear impulse in world space (N⋅m⋅s) </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a7634ade0d9afa93b09802ee3c7eaf83c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7634ade0d9afa93b09802ee3c7eaf83c">&#9670;&nbsp;</a></span>physics_object_apply_torque()</h2>
+<a id="ac7a37d64cfc600b71678ac53b61a2e5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7a37d64cfc600b71678ac53b61a2e5f">&#9670;&nbsp;</a></span>physics_object_apply_position_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void physics_object_apply_position_constraints </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramname"><em>object</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enforce the objects position to stay in reasonable bounds as to not crash when converting the floating point position to the fixed matrix for rendering. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa8de4226b681249ac4c3f96ee131f93d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8de4226b681249ac4c3f96ee131f93d">&#9670;&nbsp;</a></span>physics_object_apply_torque()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -343,7 +351,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void physics_object_apply_torque </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -415,8 +423,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a72ff73356f699d8528f7c631f15d1b6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72ff73356f699d8528f7c631f15d1b6a">&#9670;&nbsp;</a></span>physics_object_init()</h2>
+<a id="a0de4ea4eb350ea128dd5837132165d7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0de4ea4eb350ea128dd5837132165d7e">&#9670;&nbsp;</a></span>physics_object_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -430,7 +438,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -480,23 +488,22 @@ Functions</h2></td></tr>
 <p>Initializes a physics object with the given parameters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">entity_id</td><td></td></tr>
-    <tr><td class="paramname">object</td><td></td></tr>
-    <tr><td class="paramname">collision</td><td></td></tr>
-    <tr><td class="paramname">collision_layers</td><td></td></tr>
-    <tr><td class="paramname">position</td><td></td></tr>
-    <tr><td class="paramname">rotation</td><td></td></tr>
-    <tr><td class="paramname">center_offset</td><td></td></tr>
-    <tr><td class="paramname">mass</td><td><br  />
- </td></tr>
+    <tr><td class="paramname">entity_id</td><td>The entity ID of the owner entity of this physics object. </td></tr>
+    <tr><td class="paramname">object</td><td>Pointer to the object to be initialized. </td></tr>
+    <tr><td class="paramname">collision</td><td>Pointer to the objects collision information. Must be set! </td></tr>
+    <tr><td class="paramname">collision_layers</td><td>Flags that define which layers the object can collide/interact with. See enum collision_layer </td></tr>
+    <tr><td class="paramname">position</td><td>Pointer to the 3D vector that represents the objects position (usually shared with the owners). Must be set! </td></tr>
+    <tr><td class="paramname">rotation</td><td>Pointer to the quaternion rotation that represents the objects rotation (usually shared with owner). May be NULL. </td></tr>
+    <tr><td class="paramname">center_offset</td><td>3D vector that describes how the phys objects collision is offset from the position (eg if the model orign is not at center) </td></tr>
+    <tr><td class="paramname">mass</td><td>The mass of the physics object. Must be &gt; 0. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a7fcb557fd238f9bd365d891084edc57b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fcb557fd238f9bd365d891084edc57b">&#9670;&nbsp;</a></span>physics_object_is_touching()</h2>
+<a id="a3a3cea8d2a76640ca9d3312fe204e0d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a3cea8d2a76640ca9d3312fe204e0d8">&#9670;&nbsp;</a></span>physics_object_is_touching()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -504,7 +511,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool physics_object_is_touching </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -533,16 +540,16 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa3e86c2136548098a7b35b8e3599fa8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3e86c2136548098a7b35b8e3599fa8a">&#9670;&nbsp;</a></span>physics_object_nearest_contact()</h2>
+<a id="abc3d7122c1f6c1a0c396693ab273ebb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc3d7122c1f6c1a0c396693ab273ebb2">&#9670;&nbsp;</a></span>physics_object_nearest_contact()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structcontact.html">contact</a>* physics_object_nearest_contact </td>
+          <td class="memname"><a class="el" href="structcontact.html">contact</a>* physics_object_nearest_contact </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em></td><td>)</td>
           <td></td>
         </tr>
@@ -560,8 +567,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a95d6a697cf19ac847a3e97c1461a74bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95d6a697cf19ac847a3e97c1461a74bb">&#9670;&nbsp;</a></span>physics_object_recalculate_aabb()</h2>
+<a id="a9f3d9597b7ab7045c8d1a2c8e934eab8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f3d9597b7ab7045c8d1a2c8e934eab8">&#9670;&nbsp;</a></span>physics_object_recalculate_aabb()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -569,26 +576,25 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void physics_object_recalculate_aabb </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>re-caluclates the bounding box of the object using the collision type's bounding box function </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>re-caluclates the bounding box of the object using the collision type's bounding box function. </p>
+<p>This will also take into account the center_offset and rotation of the object. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">object</td><td><br  />
- </td></tr>
+    <tr><td class="paramname">object</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a15074409ff5f587c7e3d939c4f1fa56f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15074409ff5f587c7e3d939c4f1fa56f">&#9670;&nbsp;</a></span>physics_object_set_angular_velocity()</h2>
+<a id="aea7c6314d51dfe6c3c9c500ea6de3930"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea7c6314d51dfe6c3c9c500ea6de3930">&#9670;&nbsp;</a></span>physics_object_set_angular_velocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -596,7 +602,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void physics_object_set_angular_velocity </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -613,7 +619,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set the angular velocity of the object. </p>
+<p>Manually set the angular velocity of the object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">object</td><td></td></tr>
@@ -624,8 +630,47 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9d9945bcb8830fd285d4eac6c1961437"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d9945bcb8830fd285d4eac6c1961437">&#9670;&nbsp;</a></span>physics_object_set_velocity()</h2>
+<a id="aa36d7e237f2b20f0b5f3c596f8ff80ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa36d7e237f2b20f0b5f3c596f8ff80ff">&#9670;&nbsp;</a></span>physics_object_set_mass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void physics_object_set_mass </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>new_mass</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the mass of a <a class="el" href="structphysics__object.html">physics_object</a> and recalculates mass-dependent properties. </p>
+<p>This includes _inv_mass, _local_inertia_tensor &amp; _inv_local_inertia_tensor.</p>
+<p>Use this function if the mass of a physics object must be adjusted after initialization instead of modifying the mass directly. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td></td></tr>
+    <tr><td class="paramname">new_mass</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acecd534677a14de69cecfa39a0c54f6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acecd534677a14de69cecfa39a0c54f6c">&#9670;&nbsp;</a></span>physics_object_set_velocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -633,7 +678,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void physics_object_set_velocity </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -650,7 +695,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set the velocity of the object to the given velocity vector. </p>
+<p>Manually set the velocity of the object to the given velocity vector. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">object</td><td></td></tr>
@@ -662,8 +707,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0ee1b5aab1d09ed2a5c96fd89b9e4d3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ee1b5aab1d09ed2a5c96fd89b9e4d3d">&#9670;&nbsp;</a></span>physics_object_update_angular_velocity()</h2>
+<a id="a8274a5233fb198a7a8d438f078916e14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8274a5233fb198a7a8d438f078916e14">&#9670;&nbsp;</a></span>physics_object_update_angular_velocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -671,66 +716,48 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void physics_object_update_angular_velocity </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+<p>Will update an objects rotation and angular velocity according to the existing ang. velocity, the accumulated torque, the angular damping &amp; the objects rotational constraints. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a56cb0d6bb787879ba9bd012547d16487"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56cb0d6bb787879ba9bd012547d16487">&#9670;&nbsp;</a></span>physics_object_update_euler()</h2>
+<a id="a45ed64e5de17aa6642abd836cff4049a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45ed64e5de17aa6642abd836cff4049a">&#9670;&nbsp;</a></span>physics_object_update_velocity_semi_implicit_euler()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void physics_object_update_euler </td>
+          <td class="memname">void physics_object_update_velocity_semi_implicit_euler </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
           <td class="paramname"><em>object</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="aa64269913eeaeabe736d020c1e08afa5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa64269913eeaeabe736d020c1e08afa5">&#9670;&nbsp;</a></span>physics_object_update_implicit_euler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void physics_object_update_implicit_euler </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
-          <td class="paramname"><em>o</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="acd006c69848e9621054e12600d69cbd6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd006c69848e9621054e12600d69cbd6">&#9670;&nbsp;</a></span>physics_object_update_velocity_verlet()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void physics_object_update_velocity_verlet </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td>
-          <td class="paramname"><em>o</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Will update an objects position and velocity according to the existing velocity, the accumulated acceleration, &amp; the objects position constraints. </p>
+<p>Uses Semi Implicit Euler </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

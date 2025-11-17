@@ -156,6 +156,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSimplex.html">Simplex</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">simplex struct (Tetrahedron) for use in the solving of the GJK  <a href="structSimplex.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -166,17 +167,20 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a043eab22c2e8c63541ea90c41f9eccff"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a>) (const void *data, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *direction, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *output)</td></tr>
+<tr class="memdesc:a043eab22c2e8c63541ea90c41f9eccff"><td class="mdescLeft">&#160;</td><td class="mdescRight">A GJK support function that returns the furthest point in a given direction on the boundary of a convex shape.  <a href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">More...</a><br /></td></tr>
 <tr class="separator:a043eab22c2e8c63541ea90c41f9eccff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a3b66502a89a2fe01e80c043ae8ce0c51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8h.html#a3b66502a89a2fe01e80c043ae8ce0c51">simplexInit</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex)</td></tr>
+<tr class="memdesc:a3b66502a89a2fe01e80c043ae8ce0c51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a <a class="el" href="structSimplex.html" title="simplex struct (Tetrahedron) for use in the solving of the GJK">Simplex</a>.  <a href="gjk_8h.html#a3b66502a89a2fe01e80c043ae8ce0c51">More...</a><br /></td></tr>
 <tr class="separator:a3b66502a89a2fe01e80c043ae8ce0c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32a94eba7a51df7a5344f2f816a85a87"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8h.html#a32a94eba7a51df7a5344f2f816a85a87">simplexCheck</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *nextDirection)</td></tr>
-<tr class="separator:a32a94eba7a51df7a5344f2f816a85a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0ec43b861f31e3a7b7a09e1eae7a151"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8h.html#ab0ec43b861f31e3a7b7a09e1eae7a151">gjkCheckForOverlap</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, void *objectA, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectASupport, void *objectB, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectBSupport, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *firstDirection)</td></tr>
-<tr class="memdesc:ab0ec43b861f31e3a7b7a09e1eae7a151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes two objects and their support functions and checks if they overlap using the GJK algorithm.  <a href="gjk_8h.html#ab0ec43b861f31e3a7b7a09e1eae7a151">More...</a><br /></td></tr>
-<tr class="separator:ab0ec43b861f31e3a7b7a09e1eae7a151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a47a9f8f15131ab42f1b0824c40c345"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8h.html#a5a47a9f8f15131ab42f1b0824c40c345">simplexCheck</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *nextDirection)</td></tr>
+<tr class="memdesc:a5a47a9f8f15131ab42f1b0824c40c345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the current simplex to determine if it encloses the origin and updates the search direction.  <a href="gjk_8h.html#a5a47a9f8f15131ab42f1b0824c40c345">More...</a><br /></td></tr>
+<tr class="separator:a5a47a9f8f15131ab42f1b0824c40c345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fddf7553432e93eda5f5547a4c03d40"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gjk_8h.html#a2fddf7553432e93eda5f5547a4c03d40">gjkCheckForOverlap</a> (struct <a class="el" href="structSimplex.html">Simplex</a> *simplex, const void *objectA, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectASupport, const void *objectB, <a class="el" href="gjk_8h.html#a043eab22c2e8c63541ea90c41f9eccff">gjk_support_function</a> objectBSupport, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *firstDirection)</td></tr>
+<tr class="memdesc:a2fddf7553432e93eda5f5547a4c03d40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes two objects and their support functions and checks if they overlap using the GJK algorithm.  <a href="gjk_8h.html#a2fddf7553432e93eda5f5547a4c03d40">More...</a><br /></td></tr>
+<tr class="separator:a2fddf7553432e93eda5f5547a4c03d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a4662a7ae239c0301facd2c67b65cb95e"></a>
@@ -206,17 +210,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>A GJK support function that returns the furthest point in a given direction on the boundary of a convex shape. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ab0ec43b861f31e3a7b7a09e1eae7a151"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0ec43b861f31e3a7b7a09e1eae7a151">&#9670;&nbsp;</a></span>gjkCheckForOverlap()</h2>
+<a id="a2fddf7553432e93eda5f5547a4c03d40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fddf7553432e93eda5f5547a4c03d40">&#9670;&nbsp;</a></span>gjkCheckForOverlap()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int gjkCheckForOverlap </td>
+          <td class="memname">bool gjkCheckForOverlap </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structSimplex.html">Simplex</a> *&#160;</td>
           <td class="paramname"><em>simplex</em>, </td>
@@ -224,7 +230,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">void *&#160;</td>
+          <td class="paramtype">const void *&#160;</td>
           <td class="paramname"><em>objectA</em>, </td>
         </tr>
         <tr>
@@ -236,7 +242,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">void *&#160;</td>
+          <td class="paramtype">const void *&#160;</td>
           <td class="paramname"><em>objectB</em>, </td>
         </tr>
         <tr>
@@ -271,18 +277,18 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>1 if the objects overlap, 0 otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if the objects overlap, FALSE otherwise </dd></dl>
 
 </div>
 </div>
-<a id="a32a94eba7a51df7a5344f2f816a85a87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32a94eba7a51df7a5344f2f816a85a87">&#9670;&nbsp;</a></span>simplexCheck()</h2>
+<a id="a5a47a9f8f15131ab42f1b0824c40c345"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a47a9f8f15131ab42f1b0824c40c345">&#9670;&nbsp;</a></span>simplexCheck()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int simplexCheck </td>
+          <td class="memname">bool simplexCheck </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structSimplex.html">Simplex</a> *&#160;</td>
           <td class="paramname"><em>simplex</em>, </td>
@@ -300,7 +306,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Checks the current simplex to determine if it encloses the origin and updates the search direction.</p>
+
+<p>Checks the current simplex to determine if it encloses the origin and updates the search direction. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">simplex</td><td>Pointer to the current simplex structure. </td></tr>
@@ -308,7 +315,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>1 if the simplex encloses the origin, 0 otherwise.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if the simplex encloses the origin, FALSE otherwise.</dd></dl>
 <p>The function performs the following steps:</p><ol type="1">
 <li>Retrieves the last added point in the simplex and calculates the vector from this point to the origin.</li>
 <li>Depending on the number of points in the simplex, different checks and updates are performed:<ul>
@@ -345,6 +352,9 @@ Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void simplexInit </td>
@@ -354,7 +364,21 @@ Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Initialize a <a class="el" href="structSimplex.html" title="simplex struct (Tetrahedron) for use in the solving of the GJK">Simplex</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simplex</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

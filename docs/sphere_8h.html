@@ -67,6 +67,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">sphere.h File Reference</div>  </div>
@@ -113,15 +114,55 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="sphere_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:adb07efdd0a26cefa72d08881211cdd3b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8h.html#adb07efdd0a26cefa72d08881211cdd3b">SPHERE_COLLIDER</a>(r)</td></tr>
+<tr class="separator:adb07efdd0a26cefa72d08881211cdd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:adee0c54f070d4f87b6f36e9c07b297d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8h.html#adee0c54f070d4f87b6f36e9c07b297d1">sphere_support_function</a> (const void *data, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *direction, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *output)</td></tr>
+<tr class="memdesc:adee0c54f070d4f87b6f36e9c07b297d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">GJK Support function (see gjk_support_function) for the sphere primitive.  <a href="sphere_8h.html#adee0c54f070d4f87b6f36e9c07b297d1">More...</a><br /></td></tr>
 <tr class="separator:adee0c54f070d4f87b6f36e9c07b297d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ed1e20b575b21337262f6614b582a00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8h.html#a8ed1e20b575b21337262f6614b582a00">sphere_bounding_box</a> (const void *data, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *rotation, <a class="el" href="structAABB.html">AABB</a> *box)</td></tr>
+<tr class="memdesc:a8ed1e20b575b21337262f6614b582a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounding Box Calculator function for the sphere primitive.  <a href="sphere_8h.html#a8ed1e20b575b21337262f6614b582a00">More...</a><br /></td></tr>
 <tr class="separator:a8ed1e20b575b21337262f6614b582a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67cae5642ad8e460c285889a2ddc9482"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8h.html#a67cae5642ad8e460c285889a2ddc9482">sphere_inertia_tensor</a> (void *data, float mass, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
-<tr class="separator:a67cae5642ad8e460c285889a2ddc9482"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa0e01bb370ba9b71c13f6566c324916"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sphere_8h.html#afa0e01bb370ba9b71c13f6566c324916">sphere_inertia_tensor</a> (void *data, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
+<tr class="memdesc:afa0e01bb370ba9b71c13f6566c324916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inertia Tensor function for the sphere primitive.  <a href="sphere_8h.html#afa0e01bb370ba9b71c13f6566c324916">More...</a><br /></td></tr>
+<tr class="separator:afa0e01bb370ba9b71c13f6566c324916"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="adb07efdd0a26cefa72d08881211cdd3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb07efdd0a26cefa72d08881211cdd3b">&#9670;&nbsp;</a></span>SPHERE_COLLIDER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPHERE_COLLIDER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">r</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    .gjk_support_function = <a class="code" href="sphere_8h.html#adee0c54f070d4f87b6f36e9c07b297d1">sphere_support_function</a>, \</div>
+<div class="line">    .bounding_box_calculator = <a class="code" href="sphere_8h.html#a8ed1e20b575b21337262f6614b582a00">sphere_bounding_box</a>,  \</div>
+<div class="line">    .inertia_calculator = <a class="code" href="sphere_8h.html#afa0e01bb370ba9b71c13f6566c324916">sphere_inertia_tensor</a>,     \</div>
+<div class="line">    .shape_type = <a class="code" href="physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68ae10016202e6305527d90461e6a908400">COLLISION_SHAPE_SPHERE</a>, \</div>
+<div class="line">    .shape_data = {                          \</div>
+<div class="line">        .sphere = {                       \</div>
+<div class="line">            .radius = r,    \</div>
+<div class="line">        },                             \</div>
+<div class="line">    }</div>
+<div class="ttc" id="aphysics__object_8h_html_a49af2557fdce03be977f2d4ec085ff68ae10016202e6305527d90461e6a908400"><div class="ttname"><a href="physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68ae10016202e6305527d90461e6a908400">COLLISION_SHAPE_SPHERE</a></div><div class="ttdeci">@ COLLISION_SHAPE_SPHERE</div><div class="ttdef"><b>Definition:</b> physics_object.h:75</div></div>
+<div class="ttc" id="asphere_8h_html_a8ed1e20b575b21337262f6614b582a00"><div class="ttname"><a href="sphere_8h.html#a8ed1e20b575b21337262f6614b582a00">sphere_bounding_box</a></div><div class="ttdeci">void sphere_bounding_box(const void *data, const Quaternion *rotation, AABB *box)</div><div class="ttdoc">Bounding Box Calculator function for the sphere primitive.</div><div class="ttdef"><b>Definition:</b> sphere.c:22</div></div>
+<div class="ttc" id="asphere_8h_html_adee0c54f070d4f87b6f36e9c07b297d1"><div class="ttname"><a href="sphere_8h.html#adee0c54f070d4f87b6f36e9c07b297d1">sphere_support_function</a></div><div class="ttdeci">void sphere_support_function(const void *data, const Vector3 *direction, Vector3 *output)</div><div class="ttdoc">GJK Support function (see gjk_support_function) for the sphere primitive.</div><div class="ttdef"><b>Definition:</b> sphere.c:8</div></div>
+<div class="ttc" id="asphere_8h_html_afa0e01bb370ba9b71c13f6566c324916"><div class="ttname"><a href="sphere_8h.html#afa0e01bb370ba9b71c13f6566c324916">sphere_inertia_tensor</a></div><div class="ttdeci">void sphere_inertia_tensor(void *data, Vector3 *out)</div><div class="ttdoc">Inertia Tensor function for the sphere primitive.</div><div class="ttdef"><b>Definition:</b> sphere.c:30</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a8ed1e20b575b21337262f6614b582a00"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ed1e20b575b21337262f6614b582a00">&#9670;&nbsp;</a></span>sphere_bounding_box()</h2>
@@ -155,10 +196,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Bounding Box Calculator function for the sphere primitive. </p>
+<p>Calculates the <a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a> fully containing the (optionally rotated) sphere. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> holding the sphere collider </td></tr>
+    <tr><td class="paramname">rotation</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> rotation Quaternion (may be NULL) </td></tr>
+    <tr><td class="paramname">box</td><td>pointer to the output <a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a67cae5642ad8e460c285889a2ddc9482"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67cae5642ad8e460c285889a2ddc9482">&#9670;&nbsp;</a></span>sphere_inertia_tensor()</h2>
+<a id="afa0e01bb370ba9b71c13f6566c324916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa0e01bb370ba9b71c13f6566c324916">&#9670;&nbsp;</a></span>sphere_inertia_tensor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -168,12 +219,6 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>mass</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -188,6 +233,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Inertia Tensor function for the sphere primitive. </p>
+<p>Calculates the diagonal vector of the local inertia </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> holding the sphere collider </td></tr>
+    <tr><td class="paramname">out</td><td>pointer to the 3d vector representing the inertia tensor diagonal Ixx, Iyy, Izz </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -222,6 +276,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>GJK Support function (see gjk_support_function) for the sphere primitive. </p>
+<p>Will return the point on the sphere boundary furthest in the input direction. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> holding the sphere collider </td></tr>
+    <tr><td class="paramname">direction</td><td>input direction (is expected to be normalized and rotated if the object has rotation) </td></tr>
+    <tr><td class="paramname">output</td><td>the pointer of the vector to store the result </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -67,6 +67,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">cone.h File Reference</div>  </div>
@@ -109,15 +110,66 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="collision_2shapes_2cone_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:aa45459b434b9baf46e9af4c947f8483e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collision_2shapes_2cone_8h.html#aa45459b434b9baf46e9af4c947f8483e">CONE_COLLIDER</a>(r,  hh)</td></tr>
+<tr class="separator:aa45459b434b9baf46e9af4c947f8483e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a554ae622011c531bad61fab012b4e27d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collision_2shapes_2cone_8h.html#a554ae622011c531bad61fab012b4e27d">cone_support_function</a> (const void *data, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *direction, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *output)</td></tr>
+<tr class="memdesc:a554ae622011c531bad61fab012b4e27d"><td class="mdescLeft">&#160;</td><td class="mdescRight">GJK Support function (see gjk_support_function) for the cone primitive.  <a href="collision_2shapes_2cone_8h.html#a554ae622011c531bad61fab012b4e27d">More...</a><br /></td></tr>
 <tr class="separator:a554ae622011c531bad61fab012b4e27d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a975fd15958c4a8cb25c69f5a176ee2c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collision_2shapes_2cone_8h.html#a975fd15958c4a8cb25c69f5a176ee2c8">cone_bounding_box</a> (const void *data, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *rotation, <a class="el" href="structAABB.html">AABB</a> *box)</td></tr>
+<tr class="memdesc:a975fd15958c4a8cb25c69f5a176ee2c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounding Box Calculator function for the cone primitive.  <a href="collision_2shapes_2cone_8h.html#a975fd15958c4a8cb25c69f5a176ee2c8">More...</a><br /></td></tr>
 <tr class="separator:a975fd15958c4a8cb25c69f5a176ee2c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa52239f8bd36a48b79b3fcfec1a4b3a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collision_2shapes_2cone_8h.html#aa52239f8bd36a48b79b3fcfec1a4b3a2">cone_inertia_tensor</a> (void *data, float mass, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
-<tr class="separator:aa52239f8bd36a48b79b3fcfec1a4b3a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40b816d17d76b4a5c990b2330a81f5ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collision_2shapes_2cone_8h.html#a40b816d17d76b4a5c990b2330a81f5ca">cone_inertia_tensor</a> (void *data, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
+<tr class="memdesc:a40b816d17d76b4a5c990b2330a81f5ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inertia Tensor function for the cone primitive.  <a href="collision_2shapes_2cone_8h.html#a40b816d17d76b4a5c990b2330a81f5ca">More...</a><br /></td></tr>
+<tr class="separator:a40b816d17d76b4a5c990b2330a81f5ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="aa45459b434b9baf46e9af4c947f8483e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa45459b434b9baf46e9af4c947f8483e">&#9670;&nbsp;</a></span>CONE_COLLIDER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CONE_COLLIDER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">r, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">hh&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    .gjk_support_function = <a class="code" href="collision_2shapes_2cone_8h.html#a554ae622011c531bad61fab012b4e27d">cone_support_function</a>, \</div>
+<div class="line">    .bounding_box_calculator = <a class="code" href="collision_2shapes_2cone_8h.html#a975fd15958c4a8cb25c69f5a176ee2c8">cone_bounding_box</a>,  \</div>
+<div class="line">    .inertia_calculator = <a class="code" href="collision_2shapes_2cone_8h.html#a40b816d17d76b4a5c990b2330a81f5ca">cone_inertia_tensor</a>,     \</div>
+<div class="line">    .shape_type = <a class="code" href="physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68ad8866c819de21a701bf9267341b960da">COLLISION_SHAPE_CONE</a>, \</div>
+<div class="line">    .shape_data = {                          \</div>
+<div class="line">        .cone = {                       \</div>
+<div class="line">            .radius = r,    \</div>
+<div class="line">            .half_height = hh \</div>
+<div class="line">        },                             \</div>
+<div class="line">    }</div>
+<div class="ttc" id="acollision_2shapes_2cone_8h_html_a40b816d17d76b4a5c990b2330a81f5ca"><div class="ttname"><a href="collision_2shapes_2cone_8h.html#a40b816d17d76b4a5c990b2330a81f5ca">cone_inertia_tensor</a></div><div class="ttdeci">void cone_inertia_tensor(void *data, Vector3 *out)</div><div class="ttdoc">Inertia Tensor function for the cone primitive.</div><div class="ttdef"><b>Definition:</b> cone.c:104</div></div>
+<div class="ttc" id="acollision_2shapes_2cone_8h_html_a554ae622011c531bad61fab012b4e27d"><div class="ttname"><a href="collision_2shapes_2cone_8h.html#a554ae622011c531bad61fab012b4e27d">cone_support_function</a></div><div class="ttdeci">void cone_support_function(const void *data, const Vector3 *direction, Vector3 *output)</div><div class="ttdoc">GJK Support function (see gjk_support_function) for the cone primitive.</div><div class="ttdef"><b>Definition:</b> cone.c:8</div></div>
+<div class="ttc" id="acollision_2shapes_2cone_8h_html_a975fd15958c4a8cb25c69f5a176ee2c8"><div class="ttname"><a href="collision_2shapes_2cone_8h.html#a975fd15958c4a8cb25c69f5a176ee2c8">cone_bounding_box</a></div><div class="ttdeci">void cone_bounding_box(const void *data, const Quaternion *rotation, AABB *box)</div><div class="ttdoc">Bounding Box Calculator function for the cone primitive.</div><div class="ttdef"><b>Definition:</b> cone.c:47</div></div>
+<div class="ttc" id="aphysics__object_8h_html_a49af2557fdce03be977f2d4ec085ff68ad8866c819de21a701bf9267341b960da"><div class="ttname"><a href="physics__object_8h.html#a49af2557fdce03be977f2d4ec085ff68ad8866c819de21a701bf9267341b960da">COLLISION_SHAPE_CONE</a></div><div class="ttdeci">@ COLLISION_SHAPE_CONE</div><div class="ttdef"><b>Definition:</b> physics_object.h:78</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a975fd15958c4a8cb25c69f5a176ee2c8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a975fd15958c4a8cb25c69f5a176ee2c8">&#9670;&nbsp;</a></span>cone_bounding_box()</h2>
@@ -151,10 +203,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Bounding Box Calculator function for the cone primitive. </p>
+<p>Calculates the <a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a> fully containing the (optionally rotated) cone. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> holding the cone collider </td></tr>
+    <tr><td class="paramname">rotation</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> rotation Quaternion (may be NULL) </td></tr>
+    <tr><td class="paramname">box</td><td>pointer to the output <a class="el" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure.">AABB</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="aa52239f8bd36a48b79b3fcfec1a4b3a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa52239f8bd36a48b79b3fcfec1a4b3a2">&#9670;&nbsp;</a></span>cone_inertia_tensor()</h2>
+<a id="a40b816d17d76b4a5c990b2330a81f5ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40b816d17d76b4a5c990b2330a81f5ca">&#9670;&nbsp;</a></span>cone_inertia_tensor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,12 +226,6 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>mass</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -184,6 +240,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Inertia Tensor function for the cone primitive. </p>
+<p>Calculates the diagonal vector of the local inertia </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> holding the cone collider </td></tr>
+    <tr><td class="paramname">out</td><td>pointer to the 3d vector representing the inertia tensor diagonal Ixx, Iyy, Izz </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -218,6 +283,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>GJK Support function (see gjk_support_function) for the cone primitive. </p>
+<p>Will return the point on the cone boundary furthest in the input direction. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>pointer to the <a class="el" href="structphysics__object.html">physics_object</a> holding the cone collider </td></tr>
+    <tr><td class="paramname">direction</td><td>input direction (is expected to be normalized and rotated if the object has rotation) </td></tr>
+    <tr><td class="paramname">output</td><td>the pointer of the vector to store the result </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
