@@ -1,15 +1,18 @@
+/**
+ * Gilbert–Johnson–Keerthi distance algorithm (GJK) implementation for collision detection.
+ *
+ * Efficiently determines if two convex shapes overlap or not by attempting to build a Simplex (Tetrahedron for 3D GJK)
+ * that contains the origin.
+ */
+
 #include "gjk.h"
 
 #define GJK_MAX_ITERATIONS  18
 
-void simplexInit(struct Simplex* simplex) {
-    simplex->nPoints = 0;
-}
-
 Vector3* simplexAddPoint(struct Simplex* simplex, Vector3* aPoint, Vector3* bPoint) {
     if (simplex->nPoints == GJK_MAX_SIMPLEX_SIZE) {
         // SHOULD never happen, but just in case
-        return 0;
+        return NULL;
     }
 
     int index = simplex->nPoints;
@@ -26,34 +29,8 @@ void simplexMovePoint(struct Simplex* simplex, int to, int from) {
     simplex->objectAPoint[to] = simplex->objectAPoint[from];
 }
 
-/**
- * Checks the current simplex to determine if it encloses the origin and updates the search direction.
- *
- * @param simplex Pointer to the current simplex structure.
- * @param nextDirection Pointer to the vector that will be updated with the next search direction.
- * @return 1 if the simplex encloses the origin, 0 otherwise.
- *
- * The function performs the following steps:
- * 1. Retrieves the last added point in the simplex and calculates the vector from this point to the origin.
- * 2. Depending on the number of points in the simplex, different checks and updates are performed:
- *    - If the simplex has 2 points:
- *      - Calculates the vector from the last added point to the other point.
- *      - Uses the triple product to find the perpendicular direction to the line segment.
- *      - If the magnitude of the new direction is very small, it uses a perpendicular vector.
- *    - If the simplex has 3 points:
- *      - Calculates the normal of the triangle formed by the points.
- *      - Checks if the origin is in front of or behind the triangle.
- *      - Depending on the position of the origin, updates the simplex and the next search direction.
- *      - If the origin is behind the triangle, changes the winding of the triangle.
- *    - If the simplex has 4 points:
- *      - Iterates through the faces of the tetrahedron formed by the points.
- *      - Determines how many faces have the origin in front of them.
- *      - If all faces are behind the origin, the origin is enclosed.
- *      - If one face is in front, updates the simplex and the next search direction.
- *      - If two faces are in front, updates the simplex and the next search direction.
- *      - If three faces are in front, resets the simplex to a single point and updates the direction.
- */
-int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
+
+bool simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
     Vector3* lastAdded = &simplex->points[simplex->nPoints - 1];
     Vector3 aToOrigin;
     vector3Negate(lastAdded, &aToOrigin);
@@ -67,7 +44,7 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
             vector3Perpendicular(&lastAddedToOther, nextDirection);
         }
 
-        return 0;
+        return false;
     } else if (simplex->nPoints == 3) {
         Vector3 normal;
         Vector3 ab;
@@ -93,7 +70,7 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
             
             simplex->nPoints = 2;
 
-            return 0;
+            return false;
         }
 
         vector3Cross(&normal, &ac, &dirCheck);
@@ -109,12 +86,12 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
             simplexMovePoint(simplex, 1, 2);
             simplex->nPoints = 2;
 
-            return 0;
+            return false;
         }
 
         if (vector3Dot(&normal, &aToOrigin) > 0.0f) {
             *nextDirection = normal;
-            return 0;
+            return false;
         }
 
         // change triangle winding
@@ -146,7 +123,7 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
         }
 
         if (isFrontCount == 0) { // origin is enclosed thus the objects overlap
-            return 1;
+            return true;
         } else if (isFrontCount == 1) { // origin is in front of one face so we need to update the simplex
             *nextDirection = normals[lastInFrontIndex];
 
@@ -186,18 +163,11 @@ int simplexCheck(struct Simplex* simplex, Vector3* nextDirection) {
         }
     }
 
-    return 0;
+    return false;
 }
 
-/// @brief Takes two objects and their support functions and checks if they overlap using the GJK algorithm.
-/// @param simplex pointer to the simplex structure to use for the GJK algorithm and EPA
-/// @param objectA first physics object
-/// @param objectASupport support function for the first object
-/// @param objectB second physics object
-/// @param objectBSupport support function for the second object
-/// @param firstDirection initial direction to search for the origin
-/// @return 1 if the objects overlap, 0 otherwise
-int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSupport, Vector3* firstDirection) {
+
+bool gjkCheckForOverlap(struct Simplex* simplex, const void* objectA, gjk_support_function objectASupport, const void* objectB, gjk_support_function objectBSupport, Vector3* firstDirection) {
     Vector3 aPoint;
     Vector3 bPoint;
     Vector3 nextDirection;
@@ -224,18 +194,18 @@ int gjkCheckForOverlap(struct Simplex* simplex, void* objectA, gjk_support_funct
         Vector3* addedPoint = simplexAddPoint(simplex, &aPoint, &bPoint);
 
         if (!addedPoint) {
-            return 0;
+            return false;
         }
         
         if (vector3Dot(addedPoint, &nextDirection) <= 0.0f) {
-            return 0;
+            return false;
         }
 
         if (simplexCheck(simplex, &nextDirection)) {
-            return 1;
+            return true;
         }
 
     }
     // if we reach here, we have not found a solution in the maximum number of iterations
-    return 0;
+    return false;
 }

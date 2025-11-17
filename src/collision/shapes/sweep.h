@@ -10,6 +10,7 @@ void sweep_support_function(const void* data, const Vector3* direction, Vector3*
 void sweep_bounding_box(const void* data, const Quaternion* rotation, AABB* box);
 
 
+// Predefined Sweep Collider Definition
 #define SWEEP_COLLIDER(range_x, range_y, r, hh)          \
     .gjk_support_function = sweep_support_function, \
     .bounding_box_calculator = sweep_bounding_box,  \

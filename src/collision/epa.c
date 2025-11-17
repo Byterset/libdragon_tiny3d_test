@@ -633,26 +633,7 @@ void epaCalculateContact(struct ExpandingSimplex* simplex, struct SimplexTriangl
     vector3AddScaled(&result->contactA, &result->normal, result->penetration, &result->contactB);
 }
 
-/**
- * @brief Solves EPA to find penetration depth and contact information for overlapping objects.
- *
- * Starting from a GJK simplex that contains the origin (indicating collision), EPA iteratively
- * expands the polytope toward the Minkowski difference boundary. Each iteration:
- *   1. Finds the face closest to the origin (min-heap root)
- *   2. Computes a new support point in that face's normal direction
- *   3. Tests convergence: if the new point barely extends the polytope, we've found the boundary
- *   4. Otherwise, expands the polytope by replacing the closest face with three new faces
- *
- * The closest face at convergence defines the penetration normal and depth.
- *
- * @param startingSimplex GJK simplex containing the origin (4-point tetrahedron)
- * @param objectA First colliding object
- * @param objectASupport Support function for object A
- * @param objectB Second colliding object
- * @param objectBSum Support function for object B
- * @param result Output: penetration depth, normal, and contact points
- * @return true if penetration info was successfully calculated, false otherwise
- */
+
 bool epaSolve(struct Simplex* startingSimplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSum, struct EpaResult* result) {
     struct ExpandingSimplex simplex;
     expandingSimplexInit(&simplex, startingSimplex, 0);
@@ -750,25 +731,8 @@ void epaSweptFindFace(struct ExpandingSimplex* simplex, Vector3* direction, int*
     }
 }
 
-/**
- * @brief Swept EPA for continuous collision detection (time of impact calculation).
- *
- * Unlike standard EPA which finds penetration for already-overlapping objects, swept EPA
- * finds the moment when a moving object (B) first touches a stationary object (A).
- * The algorithm walks the polytope surface in the sweep direction to find the first contact
- * face, then calculates the exact time and contact geometry.
- *
- * @param startingSimplex GJK simplex at the end position (objects overlapping)
- * @param objectA Stationary object
- * @param objectASupport Support function for object A
- * @param objectB Moving object
- * @param objectBSum Support function for object B
- * @param bStart Starting position of object B (modified to first contact position)
- * @param bEnd Ending position of object B
- * @param result Output: contact normal and points at time of impact
- * @return 1 if valid collision found within the sweep, 0 otherwise
- */
-int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSum, Vector3* bStart, Vector3* bEnd, struct EpaResult* result) {
+
+bool epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_function objectASupport, void* objectB, gjk_support_function objectBSum, Vector3* bStart, Vector3* bEnd, struct EpaResult* result) {
     struct ExpandingSimplex simplex;
     expandingSimplexInit(&simplex, startingSimplex, SimplexFlagsSkipDistance);
     struct SimplexTriangle* closestFace = 0;
@@ -819,7 +783,7 @@ int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_fu
         // Raycast from the origin along the sweep direction to find time of impact
         float distance;
         if (!planeRayIntersection(&facePlane, &gZeroVec, &raycastDir, &distance)) {
-            return 0;
+            return false;
         }
 
         // Add small epsilon to prevent numerical precision from causing slight overlap
@@ -833,7 +797,7 @@ int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_fu
 
         // Verify collision occurs within the sweep range
         if (distance * distance >= moveOffset + 0.01f) {
-            return 0;
+            return false;
         }
 
         // Update bEnd to the position at first contact
@@ -841,20 +805,5 @@ int epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_fu
         epaCalculateContact(&simplex, closestFace, &planePos, result);
     }
 
-    return 1;
-}
-
-/**
- * @brief Swaps contact points and reverses the normal in an EPA result.
- *
- * Used when the collision detection is performed with objects in reverse order
- * and the result needs to be corrected to match the expected perspective.
- *
- * @param result EPA result to swap
- */
-void epaSwapResult(struct EpaResult* result) {
-    Vector3 tmp = result->contactA;
-    result->contactA = result->contactB;
-    result->contactB = tmp;
-    vector3Negate(&result->normal, &result->normal);
+    return true;
 }

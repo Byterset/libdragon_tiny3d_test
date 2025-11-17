@@ -8,11 +8,12 @@
 
 typedef struct contact contact;
 
+/// @brief contact struct containing information about a collision
 typedef struct contact {
-    contact* next;
-    Vector3 point;
-    Vector3 normal;
-    entity_id other_object;
+    contact* next; // pointer to the next contact in a list
+    Vector3 point; // the 3D position in world space of the contact point on the surface of an object
+    Vector3 normal; // the collision normal pointing away from the object that was collided with
+    entity_id other_object; // entity_id of the object that was collided with
 } contact;
 
 #endif

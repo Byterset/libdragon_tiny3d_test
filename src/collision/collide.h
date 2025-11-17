@@ -6,12 +6,53 @@
 #include "physics_object.h"
 #include "epa.h"
 
-void collide_object_to_mesh(physics_object* object, struct mesh_collider* mesh);
+
+/// @brief Handles the collision between a physics_object and a static mesh collider.
+///
+/// The function will first query the mesh_colliders AABB_tree for potential collision candidates,
+/// then perform a GJK/EPA collision detection and resolution for each candidate vs the object
+/// @param object the object to collide (triggers will be ignored)
+/// @param mesh 
+void collide_object_to_mesh(physics_object* object, const struct mesh_collider* mesh);
+
+
+/// @brief Handles the collision between two physics objects.
+///
+/// The function first checks if the two object are able and supposed to collide.
+/// Then it performs a GJK/EPA collision detection and resolution.
+/// @param a physics object a
+/// @param b physics object b
 void collide_object_to_object(physics_object* a, physics_object* b);
 
-void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* result, float friction, float bounce);
-void correct_overlap(physics_object* a, physics_object* b, struct EpaResult* result);
 
-void collide_add_contact(physics_object* object, struct EpaResult* result, bool is_B, entity_id other_id);
+/// @brief Corrects the velocities of colliding objects. This can affect both the linear and angular velocities of an object
+/// depending on if it has any constraints or no rotation reference.
+///
+/// This will also correct velocities for collisions against static mesh_colliders. Here one of the input object pointers will
+/// be NULL and act as a collision against an object with infinite mass.
+/// @param a pointer to colliding physics_object a
+/// @param b pointer to colliding physics_object b
+/// @param result the result of the EPA, containing collision normal, contact points & penetration depth
+/// @param friction the combined friction of the objects
+/// @param bounce the combined bounce of the objects
+void correct_velocity(physics_object* a, physics_object* b, const struct EpaResult* result, float friction, float bounce);
+
+
+/// @brief Corrects overlaps of colliding physics_objects. This will translate them away from each other along the collision 
+/// normal. The correction depends on the mass ratio and the respective objects constraints.
+/// @param a pointer to colliding physics_object a
+/// @param b pointer to colliding physics_object b
+/// @param result the result of the EPA, containing collision normal, contact points & penetration depth
+void correct_overlap(physics_object* a, physics_object* b, const struct EpaResult* result);
+
+
+/// @brief Attempts to create a new contact in the collision_scene and add it to the physics_objects list of active contacts.
+///
+/// @note It is important to know in which order the objects were tested during the EPA so the correct contact point of the result gets added.
+/// @param object the pointer of the object to add the contact to
+/// @param result the result of the EPA, containing the calculated contact points
+/// @param is_B flag if this object was object B during EPA - EpaResult will contain both contactA and contactB
+/// @param other_id the entity_id of the object that was collided against
+void collide_add_contact(physics_object* object, const struct EpaResult* result, bool is_B, entity_id other_id);
 
 #endif

@@ -30,6 +30,7 @@ void cone_bounding_box(const void* data, const Quaternion* rotation, AABB* box);
 void cone_inertia_tensor(void* data, Vector3* out);
 
 
+// Predefined Cone Collider Definition
 #define CONE_COLLIDER(r, hh)          \
     .gjk_support_function = cone_support_function, \
     .bounding_box_calculator = cone_bounding_box,  \

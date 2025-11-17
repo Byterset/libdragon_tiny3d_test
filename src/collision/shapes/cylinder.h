@@ -30,6 +30,7 @@ void cylinder_bounding_box(const void* data, const Quaternion* rotation, AABB* b
 void cylinder_inertia_tensor(void* data, Vector3* out);
 
 
+// Predefined Cylinder Collider Definition
 #define CYLINDER_COLLIDER(r, hh)          \
     .gjk_support_function = cylinder_support_function, \
     .bounding_box_calculator = cylinder_bounding_box,  \

@@ -22,7 +22,7 @@
  * @param point A pointer to the Vector3 structure that defines the point to be checked.
  * @return Returns true if the point is within the AABB, otherwise returns false.
  */
-bool AABBContainsPoint(AABB* box, Vector3* point) {
+bool AABBContainsPoint(const AABB* box, const Vector3* point) {
     return box->min.x < point->x &&
         box->min.y < point->y &&
         box->min.z < point->z &&
@@ -39,7 +39,7 @@ bool AABBContainsPoint(AABB* box, Vector3* point) {
  * @param b 
  * @return int 
  */
-bool AABBContainsAABB(AABB *a, AABB *b)
+bool AABBContainsAABB(const AABB *a, const AABB *b)
 {
     return (a->min.x <= b->min.x && a->min.y <= b->min.y && a->min.z <= b->min.z &&
             a->max.x >= b->max.x && a->max.y >= b->max.y && a->max.z >= b->max.z);
@@ -55,7 +55,7 @@ bool AABBContainsAABB(AABB *a, AABB *b)
  * @param b Pointer to the second AABB structure.
  * @return int Returns 1 if the AABBs overlap, 0 otherwise.
  */
-bool AABBHasOverlap(AABB* a, AABB* b) {
+bool AABBHasOverlap(const AABB* a, const AABB* b) {
     return a->min.x <= b->max.x && a->max.x >= b->min.x &&
         a->min.y <= b->max.y && a->max.y >= b->min.y &&
         a->min.z <= b->max.z && a->max.z >= b->min.z;
@@ -66,7 +66,7 @@ bool AABBHasOverlap(AABB* a, AABB* b) {
 /// @param origin Origin of the ray.
 /// @param direction Direction of the ray.
 /// @param max_distance Maximum distance of the ray after which intersections should not be considered.
-bool AABBIntersectsRay(AABB *box, raycast *ray) {
+bool AABBIntersectsRay(const AABB *box, const raycast *ray) {
     if (AABBContainsPoint(box, &ray->origin)) {
         return true;
     }

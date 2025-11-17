@@ -14,7 +14,7 @@ const float baumgarteFactor = 0.3f;
 const float slop = 0.003;
 
 
-void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* result, float friction, float bounce) {
+void correct_velocity(physics_object* a, physics_object* b, const struct EpaResult* result, float friction, float bounce) {
     // EPA result normal points toward A (from B to A)
     // Parameters match EPA order:
     // - For terrain: EPA (terrain, object), call (NULL, object) - normal points toward NULL (terrain)
@@ -439,7 +439,7 @@ void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* re
     #endif
 }
 
-void correct_overlap(physics_object* a, physics_object* b, struct EpaResult* result) {
+void correct_overlap(physics_object* a, physics_object* b, const struct EpaResult* result) {
 
     const float percent = 0.7f;
 
@@ -500,13 +500,8 @@ void correct_overlap(physics_object* a, physics_object* b, struct EpaResult* res
 
 }
 
-struct object_mesh_collide_data {
-    struct mesh_collider* mesh;
-    physics_object* object;
-    struct mesh_triangle triangle;
-};
 
-bool collide_object_to_triangle(physics_object* object, struct mesh_collider* mesh, int triangle_index){
+bool collide_object_to_triangle(physics_object* object, const struct mesh_collider* mesh, int triangle_index){
     struct mesh_triangle triangle;
     triangle.triangle = mesh->triangles[triangle_index];
     triangle.normal = mesh->normals[triangle_index];
@@ -539,7 +534,7 @@ bool collide_object_to_triangle(physics_object* object, struct mesh_collider* me
     return false;
 }
 
-void collide_object_to_mesh(physics_object* object, struct mesh_collider* mesh) {   
+void collide_object_to_mesh(physics_object* object, const struct mesh_collider* mesh) {   
     if (object->is_trigger) {
         return;
     }
@@ -558,12 +553,6 @@ void collide_object_to_mesh(physics_object* object, struct mesh_collider* mesh) 
 }
 
 
-/// @brief Handles the collision between two physics objects
-///
-/// The function first checks if the two object are able and supposed to collide.
-/// Then it performs a GJK/EPA collision detection and resolution.
-/// @param a physics object a
-/// @param b physics object b
 void collide_object_to_object(physics_object* a, physics_object* b) {
     // If the Objects don't share any collision layers, don't collide
     if (!(a->collision_layers & b->collision_layers)) {
@@ -672,7 +661,7 @@ void collide_object_to_object(physics_object* a, physics_object* b) {
     collide_add_contact(b, &result, true, a ? a->entity_id : 0);
 }
 
-void collide_add_contact(physics_object* object, struct EpaResult* result, bool is_B, entity_id other_id) {
+void collide_add_contact(physics_object* object, const struct EpaResult* result, bool is_B, entity_id other_id) {
     contact* contact = collision_scene_new_contact();
 
     if (!contact) {
@@ -680,7 +669,7 @@ void collide_add_contact(physics_object* object, struct EpaResult* result, bool 
     }
 
     if(is_B){
-        vector3Negate(&contact->normal, &result->normal);
+        vector3Negate(&result->normal, &contact->normal);
         contact->point = result->contactB;
     }
     else{

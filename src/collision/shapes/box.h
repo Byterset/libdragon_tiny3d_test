@@ -29,6 +29,7 @@ void box_bounding_box(const void* data, const Quaternion* rotation, AABB* box);
 void box_inertia_tensor(void* data, Vector3* out);
 
 
+// Predefined Box Collider Definition
 #define BOX_COLLIDER(x, y, z)          \
     .gjk_support_function = box_support_function, \
     .bounding_box_calculator = box_bounding_box,  \

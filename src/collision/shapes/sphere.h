@@ -30,6 +30,7 @@ void sphere_bounding_box(const void* data, const Quaternion* rotation, AABB* box
 void sphere_inertia_tensor(void* data, Vector3* out);
 
 
+// Predefined Sphere Collider Definition
 #define SPHERE_COLLIDER(r)          \
     .gjk_support_function = sphere_support_function, \
     .bounding_box_calculator = sphere_bounding_box,  \

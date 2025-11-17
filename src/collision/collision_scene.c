@@ -135,7 +135,7 @@ void collision_scene_remove_static_collision() {
 }
 
 
-/// @brief Performs collision detection for a single physics object agains other objects in the scene.
+/// @brief Performs collision detection for a single physics object against other objects in the scene.
 ///
 /// First a broad phase detection using a AABB BVH tree is performed to find potential collision candidates.
 /// Then a narrow phase detection (GJK/EPA) is performed to check for and resolve actual collisions.
@@ -220,8 +220,7 @@ void collision_scene_step() {
                 contact *c = obj->active_contacts;
                 while (c)
                 {
-                    // If contact normal points upward (more lenient threshold)
-                    // This prevents issues with rotating platforms or numerical precision
+                    // Determine the contact normal pointing most up
                     if (c->normal.y > ground_support_factor)
                     {
                         ground_support_factor = c->normal.y;
@@ -231,6 +230,7 @@ void collision_scene_step() {
                 }
             }
             obj->_ground_support_factor = ground_support_factor;
+            // scale the applied gravity down according to how much the object is supported from underneath
             ground_support_factor = clampf(ground_support_factor, 0.0f, 0.8f);
             obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * (1.0f - ground_support_factor);
         }

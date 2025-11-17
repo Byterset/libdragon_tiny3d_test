@@ -19,15 +19,15 @@ typedef struct AABB {
     Vector3 max; /**< The maximum of the Bounding Box or the top corner*/
 } AABB;
 
-typedef bool (*AABBQueryFunction)(AABB *bounds, void *ctx);
+typedef bool (*AABB_query_function)(const AABB *bounds, const void *ctx);
 
-bool AABBContainsPoint(AABB* box, Vector3* point);
+bool AABBContainsPoint(const AABB* box, const Vector3* point);
 
-bool AABBContainsAABB(AABB* a, AABB* b);
+bool AABBContainsAABB(const AABB* a, const AABB* b);
 
-bool AABBHasOverlap(AABB* a, AABB* b);
+bool AABBHasOverlap(const AABB* a, const AABB* b);
 
-bool AABBIntersectsRay(AABB* box, raycast* ray);
+bool AABBIntersectsRay(const AABB* box, const raycast* ray);
 
 float AABBGetArea(AABB aabb);
 

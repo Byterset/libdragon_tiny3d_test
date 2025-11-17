@@ -52,7 +52,7 @@ node_proxy AABB_tree_allocate_node(AABB_tree *tree)
     if (tree->_freeList == AABB_TREE_NULL_NODE)
     {
         assert(tree->_nodeCount == tree->_nodeCapacity);
-        tree->_nodeCapacity += 20;
+        tree->_nodeCapacity *= 2;
         AABB_tree_node *nodes_new = (AABB_tree_node *)realloc(tree->nodes, sizeof(AABB_tree_node) * tree->_nodeCapacity);
         tree->nodes = nodes_new;
         int i;
@@ -87,11 +87,7 @@ void AABB_tree_free_node(AABB_tree *tree, node_proxy node)
     tree->_nodeCount--;
 }
 
-/// @brief allocate & create a new node in the AABB_tree with the given Bounds and arbitrary data
-/// @param tree 
-/// @param bounds 
-/// @param data 
-/// @return 
+
 node_proxy AABB_tree_create_node(AABB_tree *tree, AABB bounds, void* data)
 {
     node_proxy newNode = AABB_tree_allocate_node(tree);
@@ -109,17 +105,8 @@ node_proxy AABB_tree_create_node(AABB_tree *tree, AABB bounds, void* data)
     return newNode;
 }
 
-/// @brief Moves a node within an AABB tree and updates its AABB.
-///
-/// The displacement vector is used to enlarge the node bounds by anticipated future movement and reduce the number of leaf insertions.
-/// To avoid unnecessary tree updates, the node is only moved if the new AABB does not fit within the old AABB.
-/// To disable the displacement feature, set the displacement vector to zero.
-/// @param tree The AABB tree.
-/// @param node The index of the node to move.
-/// @param aabb The new AABB for the node.
-/// @param displacement The displacement vector to move the node. Difference between the old and new position
-/// @return Returns TRUE if the node was moved, FALSE otherwise.
-int AABB_tree_move_node(AABB_tree *tree, node_proxy node, AABB aabb, Vector3 *displacement)
+
+bool AABB_tree_move_node(AABB_tree *tree, node_proxy node, AABB aabb, Vector3 *displacement)
 {
     assert(0 <= node && node < tree->_nodeCapacity);
     assert(AABB_tree_node_isLeaf(&tree->nodes[node])); // only leaves can move
@@ -250,12 +237,8 @@ void AABB_tree_rotate_node(AABB_tree *tree, node_proxy node)
     }
 }
 
-/// @brief Tests if the bounds of two nodes of a Tree overlap
-/// @param tree 
-/// @param a first Node
-/// @param b second Node
-/// @return 
-int AABB_tree_node_test_node_overlap(AABB_tree *tree, node_proxy a, node_proxy b)
+
+bool AABB_tree_node_test_node_overlap(AABB_tree *tree, node_proxy a, node_proxy b)
 {
 
     assert(0 <= a && a < tree->_nodeCapacity);
@@ -264,10 +247,7 @@ int AABB_tree_node_test_node_overlap(AABB_tree *tree, node_proxy a, node_proxy b
     return AABBHasOverlap(&tree->nodes[a].bounds, &tree->nodes[b].bounds);
 }
 
-/// @brief Returns the Bounds in World Space of a given Node
-/// @param tree 
-/// @param node 
-/// @return 
+
 AABB *AABB_tree_get_node_bounds(AABB_tree *tree, node_proxy node)
 {
     assert(0 <= node && node < tree->_nodeCapacity);
@@ -403,12 +383,9 @@ node_proxy AABB_tree_insert_leaf_node(AABB_tree *tree, node_proxy leaf)
             {
                 stack[stack_top++] = (struct Candidate){tree->nodes[current]._left, inheritedCost};
                 stack[stack_top++] = (struct Candidate){tree->nodes[current]._right, inheritedCost};
-                // vec_push(stack, &(struct Candidate){tree->nodes[current]._left, inheritedCost});
-                // vec_push(stack, &(struct Candidate){tree->nodes[current]._right, inheritedCost});
             }
         }
     }
-    // vec_drop(stack);
 
     // create a new Parent
     node_proxy oldParent = tree->nodes[bestSibling]._parent;
@@ -455,12 +432,7 @@ node_proxy AABB_tree_insert_leaf_node(AABB_tree *tree, node_proxy leaf)
     return leaf;
 }
 
-/// @brief Removes a leaf from the tree structure and frees the parent/re-arranges the sibling accordingly
-///
-/// Will also free the node if the freeNode flag is set to true
-/// @param tree 
-/// @param leaf 
-/// @param freeNode 
+
 void AABB_tree_remove_leaf_node(AABB_tree *tree, node_proxy leaf, int freeNode)
 {
     assert(0 <= leaf && leaf < tree->_nodeCapacity);
@@ -524,54 +496,41 @@ void AABB_tree_remove_leaf_node(AABB_tree *tree, node_proxy leaf, int freeNode)
     }
 }
 
-/// @brief Return the Collider Data associated with the given Node
-/// @param tree
-/// @param node
-/// @return
-void* AABB_tree_get_node_data(AABB_tree *tree, node_proxy node)
+
+void* AABB_tree_get_node_data(const AABB_tree *tree, node_proxy node)
 {
     assert(0 <= node && node < tree->_nodeCapacity);
     return tree->nodes[node].data;
 }
 
+
 /// @brief Wrapper as point-aabb query function for generic tree query
 /// @param bounds 
 /// @param ctx void pointer to aabb struct
 /// @return 
-bool _queryAABBOverlap(AABB *bounds, void *ctx) {
+const bool _queryAABBOverlap(const AABB *bounds, const void *ctx) {
     AABB *query_box = (AABB*)ctx;
     return AABBHasOverlap(bounds, query_box);
 }
 
-/// @brief Query the AABB_tree for (leaf) nodes that overlap with a given AABB
-/// @param tree BVH tree
-/// @param query_box the AABB to query for
-/// @param results the pre-initialized array of NodeProxies to store the results
-/// @param result_count the amount of results found
-/// @param aabbChecks the amount of AABB checks performed
-/// @param max_results the maximum amount of results to find
-/// @param skipRootCheck if the root node should be checked
-void AABB_tree_query_bounds(AABB_tree *tree, AABB *query_box, node_proxy *results, int *result_count, int max_results)
+
+void AABB_tree_query_bounds(const AABB_tree *tree, const AABB *query_box, node_proxy *results, int *result_count, int max_results)
 {
     AABB_tree_query_generic(tree, _queryAABBOverlap, query_box, results, result_count, max_results);
 }
+
 
 /// @brief Wrapper as point-aabb query function for generic tree query
 /// @param bounds 
 /// @param ctx void pointer to vector3 struct
 /// @return 
-bool _queryAABBContainsPoint(AABB *bounds, void *ctx) {
+const bool _queryAABBContainsPoint(const AABB *bounds, const void *ctx) {
     Vector3 *point = (Vector3*)ctx;
     return AABBContainsPoint(bounds, point);
 }
 
-/// @brief Query the AABB_tree for (leaf) nodes that contain a point
-/// @param tree BVH tree
-/// @param point the point to query for
-/// @param results the pre-initialized array of NodeProxies to store the results
-/// @param result_count the amount of results found
-/// @param max_results the maximum amount of results to find
-void AABB_tree_query_point(AABB_tree *tree, Vector3 point, node_proxy *results, int *result_count, int max_results)
+
+void AABB_tree_query_point(const AABB_tree *tree, const Vector3 point, node_proxy *results, int *result_count, int max_results)
 {
     AABB_tree_query_generic(tree, _queryAABBContainsPoint, &point, results, result_count, max_results);
 }
@@ -580,33 +539,22 @@ void AABB_tree_query_point(AABB_tree *tree, Vector3 point, node_proxy *results, 
 /// @param bounds 
 /// @param ctx void pointer to raycast struct
 /// @return 
-bool _queryAABBIntersectsRay(AABB *bounds, void *ctx) {
+const bool _queryAABBIntersectsRay(const AABB *bounds, const void *ctx) {
     raycast *ray = (raycast*)ctx;
     return AABBIntersectsRay(bounds, ray);
 }
 
-/// @brief Query the AABB_tree for (leaf) nodes that are intersected by a given Ray
-/// @param tree BVH tree
-/// @param ray the ray to query for
-/// @param results the pre-initialized array of NodeProxies to store the results
-/// @param result_count the amount of results found
-/// @param max_results the maximum amount of results to find
-void AABB_tree_query_ray(AABB_tree *tree, raycast* ray, node_proxy *results, int *result_count, int max_results){
+
+
+void AABB_tree_query_ray(const AABB_tree *tree, const raycast* ray, node_proxy *results, int *result_count, int max_results){
     AABB_tree_query_generic(tree, _queryAABBIntersectsRay, ray, results, result_count, max_results);
 }
 
 
-/// @brief Query the AABB_tree for (leaf) nodes that are intersected by a given Ray
-/// @param tree BVH tree
-/// @param query_function the test function for the AABB test the query should perform
-/// @param ctx the context for the query function
-/// @param results the pre-initialized array of NodeProxies to store the results
-/// @param result_count the amount of results found
-/// @param max_results the maximum amount of results to find
 void AABB_tree_query_generic(
-    AABB_tree *tree,
-    AABBQueryFunction query_function, 
-    void* ctx, 
+    const AABB_tree *tree,
+    const AABB_query_function query_function, 
+    const void* ctx, 
     node_proxy *results, 
     int *result_count, 
     int max_results)

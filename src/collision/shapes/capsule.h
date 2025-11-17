@@ -30,6 +30,7 @@ void capsule_bounding_box(const void* data, const Quaternion* rotation, AABB* bo
 void capsule_inertia_tensor(void* data, Vector3* out);
 
 
+// Predefined Capsule Collider Definition
 #define CAPSULE_COLLIDER(r, ihh)          \
     .gjk_support_function = capsule_support_function, \
     .bounding_box_calculator = capsule_bounding_box,  \
