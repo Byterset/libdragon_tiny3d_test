@@ -234,10 +234,6 @@ void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* re
         vector3Cross(&rA, &normal, &rCrossN);
         vector3Scale(&rCrossN, &rCrossN, jN);
 
-        if(a->entity_id == 2){
-            debugf("Obj 2 impulse: (%.3f, %.3f, %.3f)\n", rCrossN.x, rCrossN.y, rCrossN.z);
-        }
-
         physics_object_apply_angular_impulse(a, &rCrossN);
 
         // Update contact velocity with angular contribution
@@ -288,9 +284,6 @@ void correct_velocity(physics_object* a, physics_object* b, struct EpaResult* re
         vector3Cross(&rB, &normal, &rCrossN);
         vector3Scale(&rCrossN, &rCrossN, -jN);
 
-        if(b->entity_id == 2){
-            debugf("Obj 2 impulse: (%.3f, %.3f, %.3f)\n", rCrossN.x, rCrossN.y, rCrossN.z);
-        }
         physics_object_apply_angular_impulse(b, &rCrossN);
 
         // Update contact velocity with angular contribution

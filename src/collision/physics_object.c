@@ -155,27 +155,20 @@ void physics_object_update_angular_velocity(physics_object* object) {
     quatMultVector(object->rotation, &local_angular_velocity, &object->angular_velocity);
 
     // dampen smaller rotations up to a threshold faster
-    // damping scales with how close the angular speed is to zero
     if (object->angular_damping > 0.0f)
     {
 
         if (angular_speed_sq < PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD_SQ)
         {
-
+            // damping scales with how close the angular speed is to zero
             float t = angular_speed_sq * PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD_SQ_INV; // 0 → 1 as speed goes 0 → threshold
-            float t_sq = t*t;
             float damping_factor = 0.8f + 0.2f * t;                                              // Range: 0.85 → 1.0
-            if (object->entity_id == 16)
-            {
-                debugf("Platform rot %.3f dampened by: %.3f \n", sqrtf(angular_speed_sq), 1.0f - damping_factor);
-            }
             vector3Scale(&object->angular_velocity, &object->angular_velocity, damping_factor);
         }
         //for objects that rotate faster than the threshold apply regular damping
         else
         {
-            float damping_factor = 1.0f - object->angular_damping;
-            vector3Scale(&object->angular_velocity, &object->angular_velocity, damping_factor);
+            vector3Scale(&object->angular_velocity, &object->angular_velocity, 1.0f - object->angular_damping);
         }
     }
     object->_prev_angular_speed_sq = angular_speed_sq;
