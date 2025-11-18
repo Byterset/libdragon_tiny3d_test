@@ -14,7 +14,7 @@ const float baumgarteFactor = 0.3f;
 const float slop = 0.003;
 
 
-void correct_velocity(physics_object* a, physics_object* b, const struct EpaResult* result, float friction, float bounce) {
+void correct_velocity(physics_object* a, physics_object* b, const struct EpaResult* result, float combined_friction, float combined_bounce) {
     // EPA result normal points toward A (from B to A)
     // Parameters match EPA order:
     // - For terrain: EPA (terrain, object), call (NULL, object) - normal points toward NULL (terrain)
@@ -136,10 +136,10 @@ void correct_velocity(physics_object* a, physics_object* b, const struct EpaResu
     }
 
     // Compute effective bounce with damping for low-velocity contacts
-    float effectiveBounce = bounce;
+    float effectiveBounce = combined_bounce;
     const float bounceThreshold = 0.5f;
     if (fabsf(vRel) < bounceThreshold) {
-        effectiveBounce = bounce * (fabsf(vRel) / bounceThreshold);
+        effectiveBounce = combined_bounce * (fabsf(vRel) / bounceThreshold);
     }
 
     // Calculate impulse denominator: 1/m_a + 1/m_b + inertia terms
@@ -313,7 +313,7 @@ void correct_velocity(physics_object* a, physics_object* b, const struct EpaResu
 
     #ifndef DEBUG_IGNORE_FRICTION
     // Handle friction
-    if (friction > 0.0f) {
+    if (combined_friction > 0.0f) {
         // Recalculate relative velocity after normal impulse
         vector3Sub(&contactVelA, &contactVelB, &relVel);
 
@@ -388,7 +388,7 @@ void correct_velocity(physics_object* a, physics_object* b, const struct EpaResu
 
             // Coulomb friction
             float jT = tangentSpeed / frictionDenominator;
-            float maxFriction = friction * jN;
+            float maxFriction = combined_friction * jN;
             if (jT > maxFriction) {
                 jT = maxFriction;
             }
@@ -650,12 +650,13 @@ void collide_object_to_object(physics_object* a, physics_object* b) {
         }
     }
 
-    float friction = a->collision->friction < b->collision->friction ? a->collision->friction : b->collision->friction;
-    float bounce = a->collision->bounce > b->collision->bounce ? a->collision->bounce : b->collision->bounce;
+    //Combined friction and Bounce is just minimum of both
+    float combined_friction = minf(a->collision->friction, b->collision->friction);
+    float combined_bounce = minf(a->collision->bounce, b->collision->bounce);
 
 
     correct_overlap(a, b, &result);
-    correct_velocity(a, b, &result, friction, bounce);
+    correct_velocity(a, b, &result, combined_friction, combined_bounce);
 
     collide_add_contact(a, &result, false, b ? b->entity_id : 0);
     collide_add_contact(b, &result, true, a ? a->entity_id : 0);
