@@ -11,7 +11,9 @@
 #include <math.h>
 
 const float baumgarteFactor = 0.3f;
-const float slop = 0.003;
+const float steeringConstant = 0.5f;
+const float maxCorrection = 0.04f;
+const float slop = 0.005;
 
 
 void correct_velocity(physics_object* a, physics_object* b, const struct EpaResult* result, float combined_friction, float combined_bounce) {
@@ -126,20 +128,20 @@ void correct_velocity(physics_object* a, physics_object* b, const struct EpaResu
     vector3Sub(&contactVelA, &contactVelB, &relVel);
 
     // Project relative velocity onto collision normal (which points from B toward A)
-    // If vRel > 0: objects are separating (A moving away from B along normal)
-    // If vRel < 0: objects are approaching (A moving toward B, collision active)
-    float vRel = vector3Dot(&relVel, &normal);
+    // If normalVelocity > 0: objects are separating (A moving away from B along normal)
+    // If normalVelocity < 0: objects are approaching (A moving toward B, collision active)
+    float normalVelocity = vector3Dot(&relVel, &normal);
 
     // If objects are separating, don't apply impulse
-    if (vRel >= 0.0f) {
+    if (normalVelocity >= 0.0f) {
         return;
     }
 
     // Compute effective bounce with damping for low-velocity contacts
     float effectiveBounce = combined_bounce;
     const float bounceThreshold = 0.5f;
-    if (fabsf(vRel) < bounceThreshold) {
-        effectiveBounce = combined_bounce * (fabsf(vRel) / bounceThreshold);
+    if (fabsf(normalVelocity) < bounceThreshold) {
+        effectiveBounce = combined_bounce * (fabsf(normalVelocity) / bounceThreshold);
     }
 
     // Calculate impulse denominator: 1/m_a + 1/m_b + inertia terms
@@ -205,7 +207,7 @@ void correct_velocity(physics_object* a, physics_object* b, const struct EpaResu
     if (denominator < EPSILON) denominator = EPSILON;
 
     // Calculate normal impulse magnitude
-    float jN = (-(1.0f + effectiveBounce) * vRel + baumgarteBias) / denominator;
+    float jN = (-(1.0f + effectiveBounce) * normalVelocity + baumgarteBias) / denominator;
 
     if (jN < 0.0f) {
         return;
@@ -441,9 +443,16 @@ void correct_velocity(physics_object* a, physics_object* b, const struct EpaResu
 
 void correct_overlap(physics_object* a, physics_object* b, const struct EpaResult* result) {
 
+    if (result->penetration < slop) return;
+
+    const float steeringForce = clampf(steeringConstant * (result->penetration + slop), 0, maxCorrection);
+
+
+
+
     const float percent = 0.7f;
 
-    if (result->penetration < slop) return;
+    
 
     // Check if movement is fully constrained for each object
     bool aMovementConstrained = a && (a->is_kinematic || ((a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
@@ -485,7 +494,7 @@ void correct_overlap(physics_object* a, physics_object* b, const struct EpaResul
     float invMassSum = invMassA + invMassB;
     if (invMassSum == 0.0f) return;
 
-    float correctionMag = (percent * result->penetration) / invMassSum;
+    float correctionMag = steeringForce / invMassSum;
 
     // Apply correction proportional to inverse mass
     if (a && invMassA > 0.0f)

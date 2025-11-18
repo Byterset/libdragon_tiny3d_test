@@ -32,7 +32,7 @@ void crate_init(struct crate* crate, struct generic_object_pos_definition* def){
         &crate_collision,
         COLLISION_LAYER_TANGIBLE,
         &crate->transform.position,
-        &crate->transform.rotation,
+        NULL, //&crate->transform.rotation,
         gZeroVec,
         200.0f
     );

@@ -83,6 +83,7 @@ void physics_object_update_velocity_semi_implicit_euler(physics_object* object) 
     object->is_grounded = false;
 }
 
+
 void physics_object_update_angular_velocity(physics_object* object) {
     // Skip if trigger, kinematic, or no rotation quaternion
     if (object->is_trigger || object->is_kinematic || !object->rotation) {
