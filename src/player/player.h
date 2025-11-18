@@ -37,6 +37,7 @@ struct player {
     raycast_hit ray_down_hit;
     raycast_hit ray_fwd_hit;
     Vector3 ground_normal;
+    Vector3* look_target;
 };
 
 void player_init(struct player* player, struct player_definition* definition, Transform* camera_transform);

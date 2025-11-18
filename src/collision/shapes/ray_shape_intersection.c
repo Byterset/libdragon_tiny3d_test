@@ -97,14 +97,14 @@ bool ray_sphere_intersection(
     raycast_hit* hit,
     entity_id entity_id
 ) {
-    // Calculate vector from ray origin to sphere center
-    Vector3 oc;
-    vector3Sub(&ray->origin, center, &oc);
+    // Calculate vector from sphere center to ray origin
+    Vector3 co;
+    vector3FromTo(center, &ray->origin, &co);
     
     // Calculate quadratic coefficients
     float a = vector3Dot(&ray->dir, &ray->dir);  // Should be 1.0 if ray direction is normalized
-    float b = 2.0f * vector3Dot(&oc, &ray->dir);
-    float c = vector3Dot(&oc, &oc) - radius * radius;
+    float b = 2.0f * vector3Dot(&co, &ray->dir);
+    float c = vector3Dot(&co, &co) - radius * radius;
     
     // Calculate discriminant
     float discriminant = b * b - 4.0f * a * c;
@@ -139,7 +139,7 @@ bool ray_sphere_intersection(
     
     // Calculate the normal at the intersection point (points outward from sphere center)
     Vector3 normal;
-    vector3Sub(&hit->point, center, &normal);
+    vector3FromTo(center, &hit->point, &normal);
     vector3Normalize(&normal, &hit->normal);
     
     // Set the entity ID

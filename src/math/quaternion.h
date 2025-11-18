@@ -16,6 +16,78 @@ inline void quatIdent(Quaternion* q) {
 }
 
 
+/// @brief Normalizes a quaternion
+/// @param q 
+/// @param out 
+inline void quatNormalize(const Quaternion* q, Quaternion* out) {
+    float magSqr = q->x * q->x + q->y * q->y + q->z * q->z + q->w * q->w;
+
+    if (magSqr < EPSILON) {
+        quatIdent(out);
+        return;
+    } 
+    
+    magSqr = 1.0f / sqrtf(magSqr);
+    *out = (Quaternion){{ q->x * magSqr, q->y * magSqr, q->z * magSqr, q->w * magSqr }};    
+}
+
+
+/// @brief Computes the Conjugate of a quaternion.
+///
+/// The conjugate represents the inverse rotation if the quaternion is unit length.
+/// @param in 
+/// @param out 
+inline void quatConjugate(const Quaternion* in, Quaternion* out) {
+    out->x = -in->x;
+    out->y = -in->y;
+    out->z = -in->z;
+    out->w = in->w;
+}
+
+
+/// @brief Multiply two Quaternions
+///
+/// Intuitively the result can be understood as "First apply rotation B, then apply rotation A."
+/// @param a 
+/// @param b 
+/// @param out The Quaternion representing the combined Rotation of A and B
+inline void quatMultiply(const Quaternion* a, const Quaternion* b, Quaternion* out) {
+    *out = (Quaternion){{ a->v[3] * b->v[0] + a->v[0] * b->v[3] + a->v[1] * b->v[2] - a->v[2] * b->v[1],
+                         a->v[3] * b->v[1] - a->v[0] * b->v[2] + a->v[1] * b->v[3] + a->v[2] * b->v[0],
+                         a->v[3] * b->v[2] + a->v[0] * b->v[1] - a->v[1] * b->v[0] + a->v[2] * b->v[3],
+                         a->v[3] * b->v[3] - a->v[0] * b->v[0] - a->v[1] * b->v[1] - a->v[2] * b->v[2] }};
+}
+
+
+/// @brief Adds two Quaternions together component-wise.
+/// @param a 
+/// @param b 
+/// @param out 
+inline void quatAdd(const Quaternion* a, const Quaternion* b, Quaternion* out) {
+    out->x = a->x + b->x;
+    out->y = a->y + b->y;
+    out->z = a->z + b->z;
+    out->w = a->w + b->w;
+}
+
+
+/// @brief Compute the dot product of two quaternions
+/// @param a 
+/// @param b 
+/// @return 
+inline float quatDot(const Quaternion* a, const Quaternion* b) {
+    return a->x * b->x + a->y * b->y + a->z * b->z + a->w * b->w;
+}
+
+/// @brief Checks if two quaternions are the same component-wise
+/// @param a 
+/// @param b 
+/// @return 
+inline bool quatIsIdentical(const Quaternion* a, const Quaternion* b) {
+    return (a->x == b->x) && (a->y == b->y) && (a->z == b->z) && (a->w == b->w);
+}
+
+
 /// @brief Constructs a Quaternion representing a rotation around an axis by a given angle.
 /// @param axis Axis to rotate around (must be normalized)
 /// @param angle Rotation Angle in Radians
@@ -31,22 +103,6 @@ void quatAxisAngle(const Vector3* axis, float angle, Quaternion* out);
 void quatAxisComplex(const Vector3* axis, const Vector2* complex, Quaternion* out);
 
 
-/// @brief Computes the Conjugate of a quaternion.
-///
-/// The conjugate represents the inverse rotation if the quaternion is unit length.
-/// @param in 
-/// @param out 
-void quatConjugate(const Quaternion* in, Quaternion* out);
-
-
-/// @brief Flips the sign of all components of the input Quaternion.
-///
-/// Result is -q and should be mathmatically equivalent to q.
-/// @param in 
-/// @param out 
-void quatNegate(const Quaternion* in, Quaternion* out);
-
-
 /// @brief Multiplies a quaternion by a vector.
 ///
 /// This function takes a quaternion `q` and a vector `a`, and performs the
@@ -58,30 +114,10 @@ void quatNegate(const Quaternion* in, Quaternion* out);
 void quatMultVector(const Quaternion* q, const Vector3* a, Vector3* out);
 
 
-/// @brief Multiply two Quaternions
-/// @param a 
-/// @param b 
-/// @param out The Quaternion representing the combine Rotation
-void quatMultiply(const Quaternion* a, const Quaternion* b, Quaternion* out);
-
-
-/// @brief Adds two Quaternions together component-wise.
-/// @param a 
-/// @param b 
-/// @param out 
-void quatAdd(const Quaternion* a, const Quaternion* b, Quaternion* out);
-
-
 /// @brief Converts an input quaternion into an equivalent 4x4 rotation matrix
 /// @param q 
 /// @param out 
 void quatToMatrix(const Quaternion* q, float out[4][4]);
-
-
-/// @brief Normalized a quaternion
-/// @param q 
-/// @param out 
-void quatNormalize(const Quaternion* q, Quaternion* out);
 
 
 /// @brief Generate a pseudo-random quaternion rotation
@@ -140,20 +176,5 @@ void quatDecompose(const Quaternion* input, Vector3* axis, float* angle);
 /// @param out 
 void quatRotateAxisEuler(const Quaternion* q, const Vector3* axis, float angle, Quaternion* out);
 
-/// @brief Compute the dot product of two quaternions
-/// @param a 
-/// @param b 
-/// @return 
-inline float quatDot(const Quaternion* a, const Quaternion* b) {
-    return a->x * b->x + a->y * b->y + a->z * b->z + a->w * b->w;
-}
-
-/// @brief Checks if two quaternions are the same component-wise
-/// @param a 
-/// @param b 
-/// @return 
-inline bool quatIsIdentical(const Quaternion* a, const Quaternion* b) {
-    return (a->x == b->x) && (a->y == b->y) && (a->z == b->z) && (a->w == b->w);
-}
 
 #endif

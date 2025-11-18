@@ -152,7 +152,7 @@ typedef struct physics_object {
     Vector3 _torque_accumulator;
     Vector3 _local_inertia_tensor; // must be recalculated if mass or collision changes!
     Vector3 _inv_local_intertia_tensor; // must be recalculated if _local_inertia_tensor changes!
-    float angular_damping; // defines the decay rate of an objects angular velocity. Higher = object rotation slows down faster. Default 0.05
+    float angular_damping; // defines the decay rate of an objects angular velocity. Higher = object rotation slows down faster.
     float _prev_angular_speed_sq;
     float _ground_support_factor;
 } physics_object;

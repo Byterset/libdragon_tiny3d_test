@@ -15,6 +15,7 @@ void quatAxisAngle(const Vector3* axis, float angle, Quaternion* out) {
     out->w = cosTheta;
 }
 
+
 void quatAxisComplex(const Vector3* axis, const Vector2* complex, Quaternion* out) {
     float sinTheta = 0.5f - complex->x * 0.5f;
 
@@ -42,19 +43,6 @@ void quatAxisComplex(const Vector3* axis, const Vector2* complex, Quaternion* ou
     out->w = cosTheta;
 }
 
-void quatConjugate(const Quaternion* in, Quaternion* out) {
-    out->x = -in->x;
-    out->y = -in->y;
-    out->z = -in->z;
-    out->w = in->w;
-}
-
-void quatNegate(const Quaternion* in, Quaternion* out) {
-    out->x = -in->x;
-    out->y = -in->y;
-    out->z = -in->z;
-    out->w = -in->w;
-}
 
 void quatEulerAngles(const Vector3* angles, Quaternion* out) {
     float c1, c2, c3, s1, s2, s3;
@@ -85,19 +73,6 @@ void quatMultVector(const Quaternion* q, const Vector3* a, Vector3* out) {
 
 }
 
-inline void quatMultiply(const Quaternion* a, const Quaternion* b, Quaternion* out) {
-    *out = (Quaternion){{ a->v[3] * b->v[0] + a->v[0] * b->v[3] + a->v[1] * b->v[2] - a->v[2] * b->v[1],
-                         a->v[3] * b->v[1] - a->v[0] * b->v[2] + a->v[1] * b->v[3] + a->v[2] * b->v[0],
-                         a->v[3] * b->v[2] + a->v[0] * b->v[1] - a->v[1] * b->v[0] + a->v[2] * b->v[3],
-                         a->v[3] * b->v[3] - a->v[0] * b->v[0] - a->v[1] * b->v[1] - a->v[2] * b->v[2] }};
-}
-
-inline void quatAdd(const Quaternion* a, const Quaternion* b, Quaternion* out) {
-    out->x = a->x + b->x;
-    out->y = a->y + b->y;
-    out->z = a->z + b->z;
-    out->w = a->w + b->w;
-}
 
 void quatToMatrix(const Quaternion* q, float out[4][4]) {
     float xx = q->x*q->x;
@@ -130,17 +105,6 @@ void quatToMatrix(const Quaternion* q, float out[4][4]) {
     out[3][3] = 1.0f;
 }
 
-inline void quatNormalize(const Quaternion* q, Quaternion* out) {
-    float magSqr = q->x * q->x + q->y * q->y + q->z * q->z + q->w * q->w;
-
-    if (magSqr < EPSILON) {
-        quatIdent(out);
-        return;
-    } 
-    
-    magSqr = 1.0f / sqrtf(magSqr);
-    *out = (Quaternion){{ q->x * magSqr, q->y * magSqr, q->z * magSqr, q->w * magSqr }};    
-}
 
 void quatRandom(Quaternion* q) {
     q->x = mathfRandomFloat() - 0.5f;
@@ -149,6 +113,7 @@ void quatRandom(Quaternion* q) {
     q->w = mathfRandomFloat() - 0.5f;
     quatNormalize(q, q);
 }
+
 
 void quatLook(const Vector3* lookDir, const Vector3* up, Quaternion* out) {
     // Build orthonormal basis
@@ -194,6 +159,7 @@ void quatLook(const Vector3* lookDir, const Vector3* up, Quaternion* out) {
     }
 }
 
+
 void quatLerp(const Quaternion* a, const Quaternion* b, float t, Quaternion* out) {
     float tInv = 1.0f - t;
 
@@ -207,6 +173,7 @@ void quatLerp(const Quaternion* a, const Quaternion* b, float t, Quaternion* out
 
     quatNormalize(out, out);
 }
+
 
 void quatApplyAngularVelocity(const Quaternion* input, const Vector3* w, float timeStep, Quaternion* output) {
     Quaternion velocityAsQuat;
@@ -239,6 +206,7 @@ void quatDecompose(const Quaternion* input, Vector3* axis, float* angle) {
     axis->z = input->z * magInv;
     *angle = sinf(axisMag) * 2.0f;
 }
+
 
 void quatRotateAxisEuler(const Quaternion *q, const Vector3 *axis, float angleRad, Quaternion *out)
 {

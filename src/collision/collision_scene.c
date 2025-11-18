@@ -170,16 +170,16 @@ void collision_scene_collide_object_to_static(physics_object* object, Vector3* p
 
     for (int i = 0; i < MAX_SWEPT_ITERATIONS; i += 1)
     {
-        Vector3 offset;
-        vector3Sub(object->position, prev_pos, &offset);
+        Vector3 displacement;
+        vector3FromTo(prev_pos, object->position, &displacement);
         Vector3 bounding_box_size;
         vector3Sub(&object->bounding_box.max, &object->bounding_box.min, &bounding_box_size);
         vector3Scale(&bounding_box_size, &bounding_box_size, 0.5f);
 
         // if the object has moved more than the bounding box size perform a swept collision check
-        if (fabs(offset.x) > bounding_box_size.x ||
-            fabs(offset.y) > bounding_box_size.y ||
-            fabs(offset.z) > bounding_box_size.z)
+        if (fabs(displacement.x) > bounding_box_size.x ||
+            fabs(displacement.y) > bounding_box_size.y ||
+            fabs(displacement.z) > bounding_box_size.z)
         {
             if (!collide_object_to_mesh_swept(object, g_scene.mesh_collider, prev_pos))
             {
@@ -217,21 +217,21 @@ void collision_scene_step() {
             float ground_support_factor = 0.0f;
             if (obj->active_contacts)
             {
-                contact *c = obj->active_contacts;
-                while (c)
+                contact *contact = obj->active_contacts;
+                while (contact)
                 {
                     // Determine the contact normal pointing most up
-                    if (c->normal.y > ground_support_factor)
+                    if (contact->normal.y > ground_support_factor && contact->other_object != 0)
                     {
-                        ground_support_factor = c->normal.y;
+                        ground_support_factor = contact->normal.y;
                         break;
                     }
-                    c = c->next;
+                    contact = contact->next;
                 }
             }
             obj->_ground_support_factor = ground_support_factor;
             // scale the applied gravity down according to how much the object is supported from underneath
-            ground_support_factor = clampf(ground_support_factor, 0.0f, 0.8f);
+            ground_support_factor = clampf(ground_support_factor, 0.0f, 0.75f);
             obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar * (1.0f - ground_support_factor);
         }
 
@@ -250,7 +250,7 @@ void collision_scene_step() {
 
             physics_object_recalculate_aabb(obj);
             Vector3 displacement;
-            vector3Sub(obj->position, &obj->_prev_step_pos, &displacement);
+            vector3FromTo(&obj->_prev_step_pos, obj->position, &displacement);
             AABB_tree_move_node(&g_scene.object_aabbtree, obj->_aabb_tree_node_id,
                             obj->bounding_box, &displacement);
         }

@@ -39,7 +39,7 @@ void physics_object_init(
     object->collision_layers = collision_layers;
     object->collision_group = 0;
     object->active_contacts = 0;
-    object->angular_damping = 0.05f * (60.0f/PHYSICS_TICKRATE);
+    object->angular_damping = 0.03f * (60.0f/PHYSICS_TICKRATE);
     object->angular_velocity = gZeroVec;
     object->_prev_angular_speed_sq = 0;
     object->_torque_accumulator = gZeroVec;

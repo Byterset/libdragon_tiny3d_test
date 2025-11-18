@@ -578,7 +578,7 @@ void collide_object_to_object(physics_object* a, physics_object* b) {
     bool is_sphere_sphere = a->collision->shape_type == COLLISION_SHAPE_SPHERE && b->collision->shape_type == COLLISION_SHAPE_SPHERE;
     //Sphere-Sphere Optimization
     if(is_sphere_sphere){
-        vector3Sub(a->position, b->position, &delta); //vector from B to A
+        vector3FromTo(b->position, a->position, &delta);
         dist_sq = vector3MagSqrd(&delta);
         radii_sum = a->collision->shape_data.sphere.radius + b->collision->shape_data.sphere.radius;
         float radii_sum_sq = radii_sum * radii_sum;

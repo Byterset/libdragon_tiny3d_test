@@ -97,6 +97,7 @@ inline void vector3Sub(const Vector3* a, const Vector3* b, Vector3* out) {
     out->z = a->z - b->z;
 }
 
+
 /// @brief Subtract b from a component-wise in place
 /// @param a 
 /// @param b 
@@ -105,6 +106,7 @@ inline void vector3SubFromSelf(Vector3* a, const Vector3* b) {
     a->y -= b->y;
     a->z -= b->z;
 }
+
 
 /// @brief Multiply two vectors component-wise
 /// @param a 
@@ -138,6 +140,15 @@ inline void vector3Normalize(const Vector3* in, Vector3* out) {
 /// @param self 
 inline void vector3NormalizeSelf(Vector3* self) {
     vector3Normalize(self, self);
+}
+
+
+/// @brief A small helper that is a bit more intuitive than calling vector3Sub in reverse order
+/// @param from 
+/// @param to 
+/// @param out 
+inline void vector3FromTo(const Vector3* from, const Vector3* to, Vector3* out) {
+    vector3Sub(to, from, out);
 }
 
 /// @brief Linearly interpolate between two vectors by factor 't'

@@ -12,7 +12,7 @@ void camera_controller_update_position(struct camera_controller* controller, Tra
     } else {
         // Smooth the direction change
         Vector3 current_offset;
-        vector3Sub(&target->position, &controller->camera->transform.position, &current_offset);
+        vector3FromTo(&controller->camera->transform.position, &target->position, &current_offset);
         current_offset.y = 0.0f;
         
         float mag = vector3Mag(&current_offset);
@@ -35,7 +35,7 @@ void camera_controller_update_position(struct camera_controller* controller, Tra
     ray_origin.y += 0.5f; // Slight offset to avoid ground collision
 
     Vector3 ray_dir;
-    vector3Sub(&desiredCamPos, &ray_origin, &ray_dir);
+    vector3FromTo(&ray_origin, &desiredCamPos, &ray_dir);
     float desired_distance = vector3Mag(&ray_dir);
     vector3NormalizeSelf(&ray_dir);
     
@@ -89,7 +89,7 @@ void camera_controller_update_position(struct camera_controller* controller, Tra
     //5. Multi-stage smooth movement
     Vector3 current_pos = controller->camera->transform.position;
     Vector3 to_desired;
-    vector3Sub(&desiredCamPos, &current_pos, &to_desired);
+    vector3FromTo(&current_pos, &desiredCamPos, &to_desired);
     float distance_to_desired = vector3Mag(&to_desired);
     
     // Variable lerp speed based on distance
@@ -106,7 +106,7 @@ void camera_controller_update_position(struct camera_controller* controller, Tra
     
     //6. Smooth look-at with damping
     Vector3 look_dir;
-    vector3Sub(&target->position, &controller->camera->transform.position, &look_dir);
+    vector3FromTo(&controller->camera->transform.position, &target->position, &look_dir);
     
     // Add slight upward bias to avoid looking directly at feet
     look_dir.y += 0.2f;

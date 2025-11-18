@@ -25,7 +25,8 @@ static Vector2 player_max_rotation;
 
 static struct physics_object_collision_data player_collision = {
     CAPSULE_COLLIDER(1.0f, 0.7f),
-    .friction = 0.5f
+    .friction = 0.5f,
+    .bounce = 0
 };
 
 void player_handle_contacts(struct player* player){
@@ -82,18 +83,7 @@ void player_reset_state(struct player* player){
     player->ground_normal = gZeroVec;
 }
 
-void adjust_velocity(struct player* player){
 
-}
-
-Vector3 ProjectOnContactPlane(Vector3 vector, Vector3 contactNormal)
-{
-    Vector3 out;
-    float dot = vector3Dot(&vector, &contactNormal);
-    vector3Scale(&contactNormal, &out, dot);
-    vector3Sub(&vector, &out, &out);
-    return out;
-}
 
 void player_fixed_update(struct player* player){
 
@@ -108,8 +98,10 @@ void player_fixed_update(struct player* player){
     {
         player->ground_normal = gUp;
     }
-    Vector3 xAxis = ProjectOnContactPlane(gRight, player->ground_normal);
-    Vector3 zAxis = ProjectOnContactPlane(gForward, player->ground_normal);
+    Vector3 xAxis;
+    vector3ProjectPlane(&gRight, &player->ground_normal, &xAxis);
+    Vector3 zAxis;
+    vector3ProjectPlane(&gForward, &player->ground_normal, &zAxis);
     vector3Normalize(&xAxis, &xAxis);
     vector3Normalize(&zAxis, &zAxis);
     float currentX = vector3Dot(&player->physics.velocity, &xAxis);
@@ -241,6 +233,10 @@ void player_update(struct player* player) {
         float jumpVelocity = sqrtf(-2.0f * (PHYS_GRAVITY_CONSTANT * player->physics.gravity_scalar) * PLAYER_JUMP_HEIGHT); // v = sqrt(2gh)
         player->physics.velocity.y = jumpVelocity;
     }
+    if (pressed.d_down){
+        struct collision_scene* cs = collision_scene_get();
+        player->look_target = cs->elements[randomInRange(0, cs->objectCount)].object->position;
+    }
 
     // Update the animation and modify the skeleton, this will however NOT recalculate the matrices
     t3d_anim_update(&player->animations.idle, deltatime_sec);
@@ -306,48 +302,38 @@ void player_update(struct player* player) {
 
     player->desired_velocity = (Vector3){{directionWorld.x * max_speed, 0.0f, directionWorld.z * max_speed}};
 
+    if (player->look_target)
+    {
 
-    Vector3 snakeLookTarget = {{87, 10, -127}}; // target in world space
-    
-    Vector3 lookDir;
 
-    t3d_skeleton_update(&player->renderable.model->skeleton);
+        Quaternion mouthForwardOffset;
 
-    int head_index = t3d_skeleton_find_bone(&player->renderable.model->skeleton, "Mouth");
-    T3DBone* head = &player->renderable.model->skeleton.bones[head_index];
+        quatEulerAngles(&(Vector3){{0, 0, T3D_DEG_TO_RAD(-90)}}, &mouthForwardOffset);
 
-    // Get head position in world space using the skeleton's transform matrix
-    // (You may need to call t3d_skeleton_update first if not already done this frame)
-    Vector3 snakeHeadPos_world;
-    // Assuming the skeleton has computed world matrices:
-    // snakeHeadPos_world = extract position from skeleton.bones[head_index].matrixWorld
-    // OR build it manually from the bone hierarchy
-    T3DMat4* headMatrix = &head->matrix;
-    
-    snakeHeadPos_world = (Vector3){{headMatrix->m[3][0], // Adjust based on your fixed-point format
-                                    headMatrix->m[3][1],
-                                    headMatrix->m[3][2]}};
-    quatMultVector(&player->transform.rotation, &snakeHeadPos_world, &snakeHeadPos_world);
-    vector3Add(&snakeHeadPos_world, &player->transform.position, &snakeHeadPos_world);
+        Vector3 lookDir;
 
-    vector3Sub(&snakeLookTarget, &snakeHeadPos_world, &lookDir);
-    vector3NormalizeSelf(&lookDir);
+        int head_index = t3d_skeleton_find_bone(&player->renderable.model->skeleton, "Mouth");
+        T3DBone *head_bone = &player->renderable.model->skeleton.bones[head_index];
 
-    // Transform to player-local space
-    Quaternion inverse_player_rot;
-    quatConjugate(&player->transform.rotation, &inverse_player_rot);
-    Vector3 dir_local;
-    quatMultVector(&inverse_player_rot, &lookDir, &dir_local);
+        // TODO: actually derive the head bones position in world space somehow - for now use the player position
+        vector3FromTo(&player->transform.position, player->look_target, &lookDir);
 
-    // Create look-at rotation
-    Quaternion lookAtQuat;
-    quatLook(&dir_local, &gUp, &lookAtQuat);
+        // Negate effect of player rotation
+        Quaternion inverse_player_rot;
+        quatConjugate(&player->transform.rotation, &inverse_player_rot);
 
-    Quaternion head_orig_rot = (Quaternion)player->renderable.model->skeleton.bones[head_index].rotation;
+        // Create look-at rotation
+        Quaternion lookAtQuat;
+        quatLook(&lookDir, &gUp, &lookAtQuat);
+        Quaternion finalHeadRot;
 
-    // Set the bone rotation (replace original, don't multiply)
-    player->renderable.model->skeleton.bones[head_index].rotation = lookAtQuat;
-    player->renderable.model->skeleton.bones[head_index].hasChanged = true;
+        quatMultiply(&lookAtQuat, &mouthForwardOffset, &finalHeadRot);
+        quatMultiply(&inverse_player_rot, &finalHeadRot, &finalHeadRot);
+
+        // Set the bone rotation (replace original, don't multiply)
+        player->renderable.model->skeleton.bones[head_index].rotation = finalHeadRot;
+        player->renderable.model->skeleton.bones[head_index].hasChanged = true;
+    }
 
     t3d_skeleton_update(&player->renderable.model->skeleton);
 
