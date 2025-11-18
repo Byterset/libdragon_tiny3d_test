@@ -214,10 +214,18 @@ void physics_object_apply_force_at_point(physics_object* object, Vector3* force,
 
 /// @brief Will update an objects position and velocity according to the existing velocity, the accumulated acceleration,
 /// & the objects position constraints.
-/// 
+///
 /// Uses Semi Implicit Euler
-/// @param object 
+/// @param object
 void physics_object_update_velocity_semi_implicit_euler(physics_object* object);
+
+/// @brief Integrate acceleration into velocity (first half of semi-implicit Euler)
+/// @param object
+void physics_object_integrate_velocity(physics_object* object);
+
+/// @brief Integrate velocity into position (second half of semi-implicit Euler)
+/// @param object
+void physics_object_integrate_position(physics_object* object);
 
 /// @brief Accelerates the object by the given acceleration vector. 
 /// @param object 

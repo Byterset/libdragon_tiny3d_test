@@ -10,6 +10,7 @@
 typedef int collision_id;
 
 #define MAX_PHYSICS_OBJECTS 64
+#define MAX_CACHED_CONTACTS 256
 
 struct collision_scene_element {
     physics_object* object;
@@ -27,6 +28,10 @@ struct collision_scene {
     bool _moved_flags[MAX_PHYSICS_OBJECTS];
     bool _rotated_flags[MAX_PHYSICS_OBJECTS];
     uint16_t _sleepy_count;
+
+    // Iterative constraint solver data
+    contact_constraint* cached_contacts;
+    int cached_contact_count;
 };
 
 void collision_scene_reset();

@@ -55,4 +55,36 @@ void correct_overlap(physics_object* a, physics_object* b, const struct EpaResul
 /// @param other_id the entity_id of the object that was collided against
 void collide_add_contact(physics_object* object, const struct EpaResult* result, bool is_B, entity_id other_id);
 
+
+// -------- NEW: DETECTION-ONLY FUNCTIONS FOR ITERATIVE SOLVER --------
+
+/// @brief Detects collision between two physics objects and stores the contact in the constraint cache.
+/// Does NOT resolve the collision - that happens later in the solver phases.
+/// @param a physics object a
+/// @param b physics object b
+void detect_contact_object_to_object(physics_object* a, physics_object* b);
+
+/// @brief Detects collisions between a physics object and a static mesh collider, storing contacts in the constraint cache.
+/// Does NOT resolve collisions - that happens later in the solver phases.
+/// @param object the object to detect collisions for
+/// @param mesh the static mesh collider
+void detect_contacts_object_to_mesh(physics_object* object, const struct mesh_collider* mesh);
+
+/// @brief Detects collision between a physics object and a single triangle from a mesh.
+/// @param object the physics object
+/// @param mesh the mesh collider
+/// @param triangle_index the index of the triangle to check
+/// @return true if collision was detected and cached
+bool detect_contact_object_to_triangle(physics_object* object, const struct mesh_collider* mesh, int triangle_index);
+
+/// @brief Stores a detected contact in the global constraint cache for later solving.
+/// @param entity_a first entity ID (0 for static mesh)
+/// @param entity_b second entity ID
+/// @param result EPA result containing contact information
+/// @param combined_friction combined friction coefficient
+/// @param combined_bounce combined bounce coefficient
+/// @param is_trigger whether this is a trigger contact
+void cache_contact_constraint(physics_object* objectA, physics_object* objectB, const struct EpaResult* result,
+                               float combined_friction, float combined_bounce, bool is_trigger);
+
 #endif

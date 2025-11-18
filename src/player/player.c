@@ -25,7 +25,7 @@ static Vector2 player_max_rotation;
 
 static struct physics_object_collision_data player_collision = {
     CAPSULE_COLLIDER(1.0f, 0.7f),
-    .friction = 0.5f,
+    .friction = 0.3f,
     .bounce = 0
 };
 

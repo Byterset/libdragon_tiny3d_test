@@ -67,7 +67,7 @@ void physics_object_update_velocity_semi_implicit_euler(physics_object* object) 
 
     // Update velocity first
     vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
-    
+
     // Clamp Velocity to maxSpeed
     vector3ClampMag(&object->velocity, &object->velocity, PHYS_OBJECT_TERMINAL_SPEED);
 
@@ -80,6 +80,32 @@ void physics_object_update_velocity_semi_implicit_euler(physics_object* object) 
     vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME  * object->time_scalar, object->position);
 
     object->acceleration = gZeroVec;
+    object->is_grounded = false;
+}
+
+void physics_object_integrate_velocity(physics_object* object) {
+    if (object->is_trigger || object->is_kinematic) return;
+
+    // Update velocity from acceleration
+    vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
+
+    // Clamp Velocity to maxSpeed
+    vector3ClampMag(&object->velocity, &object->velocity, PHYS_OBJECT_TERMINAL_SPEED);
+
+    // Apply movement constraints
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_X) object->velocity.x = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_Y) object->velocity.y = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_Z) object->velocity.z = 0.0f;
+
+    object->acceleration = gZeroVec;
+}
+
+void physics_object_integrate_position(physics_object* object) {
+    if (object->is_trigger || object->is_kinematic) return;
+
+    // Update position using current velocity
+    vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
+
     object->is_grounded = false;
 }
 

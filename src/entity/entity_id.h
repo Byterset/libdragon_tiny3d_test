@@ -1,7 +1,8 @@
 #ifndef __ENTITY_ID_H__
 #define __ENTITY_ID_H__
+#include <stdint.h>
 
-typedef unsigned short entity_id;
+typedef uint16_t entity_id;
 
 entity_id entity_id_new();
 
