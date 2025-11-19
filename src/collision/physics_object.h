@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define PHYS_GLOBAL_GRAVITY_MULT 2.0f // adjust this according to general world scale
+#define PHYS_GLOBAL_GRAVITY_MULT 1.0f // adjust this according to general world scale
 #define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default gravity in m/s^2
 
 #define PHYS_OBJECT_TERMINAL_SPEED   90.0f // terminal linear speed / velocity magnitude (units/s)
@@ -210,22 +210,24 @@ void physics_object_set_mass(physics_object* object, float new_mass);
 /// @param world_point the point in world space where the force is applied
 void physics_object_apply_force_at_point(physics_object* object, Vector3* force, Vector3* world_point);
 
-// -------- LINEAR --------
 
-/// @brief Will update an objects position and velocity according to the existing velocity, the accumulated acceleration,
-/// & the objects position constraints.
-///
-/// Uses Semi Implicit Euler
-/// @param object
-void physics_object_update_velocity_semi_implicit_euler(physics_object* object);
+// -------- LINEAR --------
 
 /// @brief Integrate acceleration into velocity (first half of semi-implicit Euler)
 /// @param object
 void physics_object_integrate_velocity(physics_object* object);
 
+/// @brief Integrate torque into angular velocity
+/// @param object
+void physics_object_integrate_angular_velocity(physics_object* object);
+
 /// @brief Integrate velocity into position (second half of semi-implicit Euler)
 /// @param object
 void physics_object_integrate_position(physics_object* object);
+
+/// @brief Integrate angular velocity into rotation
+/// @param object
+void physics_object_integrate_rotation(physics_object* object);
 
 /// @brief Accelerates the object by the given acceleration vector. 
 /// @param object 
@@ -246,11 +248,6 @@ void physics_object_apply_linear_impulse(physics_object* object, Vector3* impuls
 
 
 // -------- ANGULAR --------
-
-/// @brief Will update an objects rotation and angular velocity according to the existing ang. velocity, the accumulated torque,
-/// the angular damping & the objects rotational constraints
-/// @param object 
-void physics_object_update_angular_velocity(physics_object* object);
 
 
 /// @brief Apply torque to the object (accumulated and applied during physics update)

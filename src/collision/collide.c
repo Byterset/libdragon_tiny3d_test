@@ -912,7 +912,7 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
 
     // Combined friction and bounce
     float combined_friction = minf(a->collision->friction, b->collision->friction);
-    float combined_bounce = minf(a->collision->bounce, b->collision->bounce);
+    float combined_bounce = a->collision->bounce * b->collision->bounce;//minf(a->collision->bounce, b->collision->bounce);
 
     // Cache the contact constraint
     cache_contact_constraint(a, b, &result, combined_friction, combined_bounce, false);

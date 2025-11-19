@@ -286,9 +286,12 @@ static void collision_scene_detect_all_contacts() {
         for (int i = 0; i < g_scene.objectCount; i++) {
             physics_object* obj = g_scene.elements[i].object;
 
+            // Skip if all position axes are frozen (object can't move anyway)
+            bool all_position_frozen = (obj->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL;
+
             // Detect mesh collision for all non-sleeping, non-kinematic, tangible objects
             // We need to check even stationary objects because they might have gravity or be resting on the mesh
-            if (!obj->_is_sleeping && !obj->is_kinematic &&
+            if (!obj->_is_sleeping && !obj->is_kinematic && !all_position_frozen &&
                 (obj->collision_layers & COLLISION_LAYER_TANGIBLE)) {
                 detect_contacts_object_to_mesh(obj, g_scene.mesh_collider);
             }
@@ -977,7 +980,7 @@ void collision_scene_step() {
         physics_object_integrate_velocity(obj);
 
         // Update angular velocity
-        physics_object_update_angular_velocity(obj);
+        physics_object_integrate_angular_velocity(obj);
     }
 
     // ========================================================================
@@ -998,7 +1001,7 @@ void collision_scene_step() {
     // ========================================================================
     // PHASE 5: Solve velocity constraints iteratively
     // ========================================================================
-    for (int iter = 0; iter < 3; iter++) {
+    for (int iter = 0; iter < 8; iter++) {
         collision_scene_solve_velocity_constraints();
     }
 
@@ -1011,6 +1014,9 @@ void collision_scene_step() {
 
         // Integrate velocity into position
         physics_object_integrate_position(obj);
+
+        // Integrate angular velocity into rotation
+        physics_object_integrate_rotation(obj);
 
         // Recalculate AABB if object is awake (position may have changed due to velocity integration or solver)
         if (!obj->_is_sleeping) {

@@ -62,29 +62,13 @@ void physics_object_init(
 }
 
 
-void physics_object_update_velocity_semi_implicit_euler(physics_object* object) {
-    if (object->is_trigger || object->is_kinematic) return;
-
-    // Update velocity first
-    vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
-
-    // Clamp Velocity to maxSpeed
-    vector3ClampMag(&object->velocity, &object->velocity, PHYS_OBJECT_TERMINAL_SPEED);
-
-    // Apply movement constraints
-    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_X) object->velocity.x = 0.0f;
-    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_Y) object->velocity.y = 0.0f;
-    if (object->constraints & CONSTRAINTS_FREEZE_POSITION_Z) object->velocity.z = 0.0f;
-
-    // Update position using new velocity
-    vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME  * object->time_scalar, object->position);
-
-    object->acceleration = gZeroVec;
-    object->is_grounded = false;
-}
-
 void physics_object_integrate_velocity(physics_object* object) {
     if (object->is_trigger || object->is_kinematic) return;
+
+    // Skip if all linear axes are constrained
+    if ((object->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL) {
+        return;
+    }
 
     // Update velocity from acceleration
     vector3AddScaled(&object->velocity, &object->acceleration, FIXED_DELTATIME * object->time_scalar, &object->velocity);
@@ -100,18 +84,8 @@ void physics_object_integrate_velocity(physics_object* object) {
     object->acceleration = gZeroVec;
 }
 
-void physics_object_integrate_position(physics_object* object) {
-    if (object->is_trigger || object->is_kinematic) return;
-
-    // Update position using current velocity
-    vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
-
-    object->is_grounded = false;
-}
-
-
-void physics_object_update_angular_velocity(physics_object* object) {
-    // Skip if trigger, kinematic, or no rotation quaternion
+void physics_object_integrate_angular_velocity(physics_object* object) {
+ // Skip if trigger, kinematic, or no rotation quaternion
     if (object->is_trigger || object->is_kinematic || !object->rotation) {
         return;
     }
@@ -199,6 +173,19 @@ void physics_object_update_angular_velocity(physics_object* object) {
         }
     }
     object->_prev_angular_speed_sq = angular_speed_sq;
+}
+
+void physics_object_integrate_position(physics_object* object) {
+    if (object->is_trigger || object->is_kinematic) return;
+
+    // Update position using current velocity
+    vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
+
+    object->is_grounded = false;
+}
+
+void physics_object_integrate_rotation(physics_object* object) {
+    if (object->is_trigger || object->is_kinematic) return;
 
     // Calculate rotated center offset before rotation
     Vector3 center_offset_old;
@@ -220,6 +207,7 @@ void physics_object_update_angular_velocity(physics_object* object) {
     vector3Sub(&center_offset_old, &center_offset_new, &position_adjustment);
     vector3Add(object->position, &position_adjustment, object->position);
 }
+
 
 void physics_object_apply_position_constraints(physics_object* object){
     if (object->position->y <= -20){
