@@ -7,23 +7,6 @@
 #include "epa.h"
 
 
-/// @brief Handles the collision between a physics_object and a static mesh collider.
-///
-/// The function will first query the mesh_colliders AABB_tree for potential collision candidates,
-/// then perform a GJK/EPA collision detection and resolution for each candidate vs the object
-/// @param object the object to collide (triggers will be ignored)
-/// @param mesh 
-void collide_object_to_mesh(physics_object* object, const struct mesh_collider* mesh);
-
-
-/// @brief Handles the collision between two physics objects.
-///
-/// The function first checks if the two object are able and supposed to collide.
-/// Then it performs a GJK/EPA collision detection and resolution.
-/// @param a physics object a
-/// @param b physics object b
-void collide_object_to_object(physics_object* a, physics_object* b);
-
 
 /// @brief Corrects the velocities of colliding objects. This can affect both the linear and angular velocities of an object
 /// depending on if it has any constraints or no rotation reference.

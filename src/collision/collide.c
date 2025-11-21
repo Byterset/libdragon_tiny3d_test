@@ -1,8 +1,7 @@
+#include "collision_scene.h"
 #include "collide.h"
 
 #include "epa.h"
-
-#include "collision_scene.h"
 #include "../util/flags.h"
 #include "../math/matrix.h"
 #include "../math/mathf.h"
@@ -543,133 +542,7 @@ bool collide_object_to_triangle(physics_object* object, const struct mesh_collid
     return false;
 }
 
-void collide_object_to_mesh(physics_object* object, const struct mesh_collider* mesh) {   
-    if (object->is_trigger) {
-        return;
-    }
 
-    int result_count = 0;
-    int max_results = 20;
-    node_proxy results[max_results];
-
-    AABB_tree_query_bounds(&mesh->aabbtree, &object->bounding_box, results, &result_count, max_results);
-    for (size_t j = 0; j < result_count; j++)
-    {
-        int triangle_index = (int)AABB_tree_get_node_data(&mesh->aabbtree, results[j]);
-
-        collide_object_to_triangle(object, mesh, triangle_index);
-    }    
-}
-
-
-void collide_object_to_object(physics_object* a, physics_object* b) {
-    // If the Objects don't share any collision layers, don't collide
-    if (!(a->collision_layers & b->collision_layers)) {
-        return;
-    }
-
-    // If the objects are in the same collision group, don't collide (eg. multiple projectiles emmited by enemies)
-    if (a->collision_group && (a->collision_group == b->collision_group)) {
-        return;
-    }
-
-    // triggers can't collide with each other
-    if (a->is_trigger && b->is_trigger) {
-        return;
-    }
-
-    struct Simplex simplex;
-    struct EpaResult result;
-
-    Vector3 delta;
-    float dist_sq;
-    float radii_sum;
-    bool is_sphere_sphere = a->collision->shape_type == COLLISION_SHAPE_SPHERE && b->collision->shape_type == COLLISION_SHAPE_SPHERE;
-    //Sphere-Sphere Optimization
-    if(is_sphere_sphere){
-        vector3FromTo(b->position, a->position, &delta);
-        dist_sq = vector3MagSqrd(&delta);
-        radii_sum = a->collision->shape_data.sphere.radius + b->collision->shape_data.sphere.radius;
-        float radii_sum_sq = radii_sum * radii_sum;
-        if(dist_sq >= radii_sum_sq)
-            return;
-    }
-    else{
-        Vector3 firstDir = gRight;
-        if (!gjkCheckForOverlap(&simplex, a, physics_object_gjk_support_function, b, physics_object_gjk_support_function, &firstDir))
-        {
-            return;
-        }
-    }
-
-
-    if (a->is_trigger || b->is_trigger) {
-        contact* contact = collision_scene_new_contact();
-
-        if (!contact) {
-            return;
-        }
-
-        if (a->is_trigger) {
-            contact->normal = gZeroVec;
-            contact->point = *a->position;
-            contact->other_object = a->entity_id;
-
-            contact->next = b->active_contacts;
-            b->active_contacts = contact;
-        } else {
-            contact->normal = gZeroVec;
-            contact->point = *b->position;
-            contact->other_object = b->entity_id;
-
-            contact->next = a->active_contacts;
-            a->active_contacts = contact;
-        }
-
-        return;
-    }
-    if (a && !a->is_kinematic) { a->_is_sleeping = false; a->_sleep_counter = 0; }
-    if (b && !b->is_kinematic) { b->_is_sleeping = false; b->_sleep_counter = 0; }
-
-
-    if(is_sphere_sphere){
-
-        float dist = sqrtf(dist_sq);
-        result.penetration = radii_sum - dist;
-        if (dist > EPSILON)
-            vector3Normalize(&delta, &result.normal);
-        else
-            result.normal = gUp;
-
-        vector3AddScaled(a->position, &result.normal, -a->collision->shape_data.sphere.radius, &result.contactA);
-        vector3AddScaled(b->position, &result.normal, b->collision->shape_data.sphere.radius, &result.contactB);
-    }
-    else{
-        bool epa_success = epaSolve(
-            &simplex,
-            a,
-            physics_object_gjk_support_function,
-            b,
-            physics_object_gjk_support_function,
-            &result);
-
-        if (!epa_success)
-        {
-            return; // Skip collision resolution if EPA fails
-        }
-    }
-
-    //Combined friction and Bounce is just minimum of both
-    float combined_friction = minf(a->collision->friction, b->collision->friction);
-    float combined_bounce = minf(a->collision->bounce, b->collision->bounce);
-
-
-    correct_overlap(a, b, &result);
-    correct_velocity(a, b, &result, combined_friction, combined_bounce);
-
-    collide_add_contact(a, &result, false, b ? b->entity_id : 0);
-    collide_add_contact(b, &result, true, a ? a->entity_id : 0);
-}
 
 void collide_add_contact(physics_object* object, const struct EpaResult* result, bool is_B, entity_id other_id) {
     contact* contact = collision_scene_new_contact();
@@ -702,62 +575,96 @@ void cache_contact_constraint(physics_object* objectA, physics_object* objectB, 
                                float combined_friction, float combined_bounce, bool is_trigger) {
     struct collision_scene* scene = collision_scene_get();
 
-    contact_id id = get_contact_id(objectA ? objectA->entity_id : 0, objectB ? objectB->entity_id : 0);
+    contact_id id = get_contact_id(objectA ? objectA->entity_id : (entity_id)0, objectB ? objectB->entity_id : (entity_id)0);
 
-    // GENERAL SOLUTION: Allow multiple contact points per entity pair
-    // Match contacts by PROXIMITY within the same pair
-    // This allows: ground + wall contacts for mesh, multiple contact points for object-object
-    contact_constraint* existing = NULL;
-    float best_dist_sq = 0.2f; // contacts within this distance are considered the same
-
+    // Find existing constraint for this entity pair
+    contact_constraint* cc = NULL;
     for (int i = 0; i < scene->cached_contact_count; i++) {
-        // Only consider contacts with the same entity pair
-        if (scene->cached_contacts[i].id != id) {
-            continue;
-        }
-
-        // Check proximity of contact points
-        float dist_a = vector3DistSqrd(&scene->cached_contacts[i].contactA, &result->contactA);
-        float dist_b = vector3DistSqrd(&scene->cached_contacts[i].contactB, &result->contactB);
-        float min_dist = fminf(dist_a, dist_b);
-
-        if (min_dist < best_dist_sq) {
-            best_dist_sq = min_dist;
-            existing = &scene->cached_contacts[i];
+        if (scene->cached_contacts[i].id == id) {
+            cc = &scene->cached_contacts[i];
+            break;
         }
     }
 
-    contact_constraint* cc;
-    if (existing) {
-        // Reuse existing contact
-        cc = existing;
-    } else {
-        // Need to create new contact - check if we have room
+    // If no existing constraint, create a new one
+    if (!cc) {
         if (scene->cached_contact_count >= MAX_CACHED_CONTACTS) {
             return; // No more room in cache
         }
 
-        // New contact
         cc = &scene->cached_contacts[scene->cached_contact_count];
         scene->cached_contact_count++;
         cc->id = id;
-        cc->accumulated_normal_impulse = 0.0f;
-        cc->accumulated_tangent_impulse_u = 0.0f;
-        cc->accumulated_tangent_impulse_v = 0.0f;
+        cc->point_count = 0;
     }
 
-    // Update contact data
+    // Update shared constraint data
     cc->objectA = objectA;
     cc->objectB = objectB;
-    cc->point = result->contactA;
     cc->normal = result->normal;
-    cc->contactA = result->contactA;
-    cc->contactB = result->contactB;
-    cc->penetration = result->penetration;
     cc->combined_friction = combined_friction;
     cc->combined_bounce = combined_bounce;
     cc->is_trigger = is_trigger;
     cc->is_active = true;
+
+    // Try to match this contact point with an existing point by proximity
+    const float match_distance_sq = 0.04f; // 0.2^2 - points within 0.2 units are considered the same
+    int matched_point_index = -1;
+    float best_dist_sq = match_distance_sq;
+
+    for (int i = 0; i < cc->point_count; i++) {
+        float dist_a = vector3DistSqrd(&cc->points[i].contactA, &result->contactA);
+        float dist_b = vector3DistSqrd(&cc->points[i].contactB, &result->contactB);
+        float min_dist = fminf(dist_a, dist_b);
+
+        if (min_dist < best_dist_sq) {
+            best_dist_sq = min_dist;
+            matched_point_index = i;
+        }
+    }
+
+    contact_point* cp;
+    if (matched_point_index >= 0) {
+        // Reuse existing contact point (preserve accumulated impulses for warm starting)
+        cp = &cc->points[matched_point_index];
+    } else {
+        // Add new contact point if we have room
+        if (cc->point_count >= MAX_CONTACT_POINTS_PER_PAIR) {
+            // Replace the point with smallest penetration (least important)
+            int min_pen_index = 0;
+            float min_pen = cc->points[0].penetration;
+            for (int i = 1; i < cc->point_count; i++) {
+                if (cc->points[i].penetration < min_pen) {
+                    min_pen = cc->points[i].penetration;
+                    min_pen_index = i;
+                }
+            }
+            // Only replace if new point has deeper penetration
+            if (result->penetration > min_pen) {
+                cp = &cc->points[min_pen_index];
+                // Reset accumulated impulses for new point
+                cp->accumulated_normal_impulse = 0.0f;
+                cp->accumulated_tangent_impulse_u = 0.0f;
+                cp->accumulated_tangent_impulse_v = 0.0f;
+            } else {
+                return; // Don't add this point
+            }
+        } else {
+            // Add new point
+            cp = &cc->points[cc->point_count];
+            cc->point_count++;
+            // Initialize accumulated impulses
+            cp->accumulated_normal_impulse = 0.0f;
+            cp->accumulated_tangent_impulse_u = 0.0f;
+            cp->accumulated_tangent_impulse_v = 0.0f;
+        }
+    }
+
+    // Update contact point data
+    cp->point = result->contactA;
+    cp->contactA = result->contactA;
+    cp->contactB = result->contactB;
+    cp->penetration = result->penetration;
 }
 
 bool detect_contact_object_to_triangle(physics_object* object, const struct mesh_collider* mesh, int triangle_index) {

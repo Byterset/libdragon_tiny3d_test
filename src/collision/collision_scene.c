@@ -141,76 +141,64 @@ void collision_scene_remove_static_collision() {
 }
 
 
-/// @brief Performs collision detection for a single physics object against other objects in the scene.
-///
-/// First a broad phase detection using a AABB BVH tree is performed to find potential collision candidates.
-/// Then a narrow phase detection (GJK/EPA) is performed to check for and resolve actual collisions.
-/// @param element the scene element (phys object) to check for collisions
-void collision_scene_collide_phys_object(struct collision_scene_element* element) {
-
-    //perform a broad phase check to find potential collision candidates by traversing the AABB BVH tree
-    //and collecting leaf nodes that overlap with the object's bounding box
-    int result_count = 0;
-    int max_results = 10;
-    node_proxy results[max_results];
-    AABB_tree_query_bounds(&g_scene.object_aabbtree, &element->object->bounding_box, results, &result_count, max_results);
-
-    //iterate over the list of candidates and perform detailed collision detection
-    for (size_t i = 0; i < result_count; i++)
-    {
-        physics_object *other = (physics_object *)AABB_tree_get_node_data(&g_scene.object_aabbtree, results[i]);
-        // skip narrow phase if there is no physics object associated with the result node
-        // or if it is the same object as the one queried
-        if (!other || other == element->object)
-        {
-            continue;
-        }
-        collide_object_to_object(element->object, other);
-
-    }
-}
-
-#define MAX_SWEPT_ITERATIONS    5
-
-void collision_scene_collide_object_to_static(physics_object* object, Vector3* prev_pos) {
-
-    for (int i = 0; i < MAX_SWEPT_ITERATIONS; i += 1)
-    {
-        Vector3 displacement;
-        vector3FromTo(prev_pos, object->position, &displacement);
-        Vector3 bounding_box_size;
-        vector3Sub(&object->bounding_box.max, &object->bounding_box.min, &bounding_box_size);
-        vector3Scale(&bounding_box_size, &bounding_box_size, 0.5f);
-
-        // if the object has moved more than the bounding box size perform a swept collision check
-        if (fabs(displacement.x) > bounding_box_size.x ||
-            fabs(displacement.y) > bounding_box_size.y ||
-            fabs(displacement.z) > bounding_box_size.z)
-        {
-            if (!collide_object_to_mesh_swept(object, g_scene.mesh_collider, prev_pos))
-            {
-                return;
-            }
-        }
-        // otherwise just do a normal collision check
-        else
-        {
-            collide_object_to_mesh(object, g_scene.mesh_collider);
-
-            return;
-        }
-    }
-
-    // too many swept iterations
-    // to prevent tunneling just move the object back
-    // to the previous known valid location
-    *object->position = *prev_pos;
-}
-
 
 // ============================================================================
 // NEW: ITERATIVE CONSTRAINT SOLVER PHASES
 // ============================================================================
+
+/// @brief Helper function to apply angular impulse directly to rotation (for position solver)
+static void physics_object_apply_angular_impulse_to_rotation(physics_object* object, Vector3* angular_impulse) {
+    if (object->is_kinematic || !object->rotation) {
+        return;
+    }
+
+    // Skip if all rotation axes are constrained
+    if ((object->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL) {
+        return;
+    }
+
+    // Transform angular impulse from world space to local space
+    Quaternion rotation_inverse;
+    quatConjugate(object->rotation, &rotation_inverse);
+    Vector3 local_angular_impulse;
+    quatMultVector(&rotation_inverse, angular_impulse, &local_angular_impulse);
+
+    // Δθ = I^-1 * angular_impulse (in local space)
+    Vector3 local_rotation_change;
+    local_rotation_change.x = local_angular_impulse.x * object->_inv_local_intertia_tensor.x;
+    local_rotation_change.y = local_angular_impulse.y * object->_inv_local_intertia_tensor.y;
+    local_rotation_change.z = local_angular_impulse.z * object->_inv_local_intertia_tensor.z;
+
+    // Apply per-axis constraints in LOCAL space
+    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_rotation_change.x = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_rotation_change.y = 0.0f;
+    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_rotation_change.z = 0.0f;
+
+    // Transform rotation change back to world space
+    Vector3 rotation_change;
+    quatMultVector(object->rotation, &local_rotation_change, &rotation_change);
+
+    // Apply rotation change to quaternion
+    // Approximation for small angles: q_new = q + 0.5 * w * q
+    // But here 'rotation_change' is a rotation vector (axis * angle), not angular velocity.
+    // For position correction, we can convert the rotation vector to a quaternion and multiply.
+    float angle = vector3Mag(&rotation_change);
+    if (angle > EPSILON) {
+        Vector3 axis;
+        vector3Scale(&rotation_change, &axis, 1.0f / angle);
+        Quaternion delta_q;
+        quatAxisAngle(&axis, angle, &delta_q);
+        
+        // Apply delta_q to object->rotation
+        // Note: Order depends on whether delta is global or local.
+        // We calculated rotation_change in WORLD space, so we multiply on the left?
+        // Or we can use the local_rotation_change and multiply on the right.
+        // Let's use world space: q_new = delta_q * q_old
+        Quaternion new_rot;
+        quatMultiply(&delta_q, object->rotation, &new_rot);
+        quatNormalize(&new_rot, object->rotation);
+    }
+}
 
 /// @brief Helper function to calculate tangent vectors orthogonal to normal
 static void calculate_tangent_vectors(const Vector3* normal, Vector3* tangent_u, Vector3* tangent_v) {
@@ -291,8 +279,7 @@ static void collision_scene_detect_all_contacts() {
 
             // Detect mesh collision for all non-sleeping, non-kinematic, tangible objects
             // We need to check even stationary objects because they might have gravity or be resting on the mesh
-            if (!obj->_is_sleeping && !obj->is_kinematic && !all_position_frozen &&
-                (obj->collision_layers & COLLISION_LAYER_TANGIBLE)) {
+            if (!obj->_is_sleeping && !obj->is_kinematic && !all_position_frozen && (obj->collision_layers & COLLISION_LAYER_TANGIBLE)) {
                 detect_contacts_object_to_mesh(obj, g_scene.mesh_collider);
             }
         }
@@ -312,7 +299,7 @@ static void collision_scene_pre_solve_contacts() {
         physics_object* a = cc->objectA;
         physics_object* b = cc->objectB;
 
-        // Calculate center of mass for both objects
+        // Calculate center of mass for both objects (shared across all points)
         Vector3 centerOfMassA = gZeroVec;
         Vector3 centerOfMassB = gZeroVec;
 
@@ -336,194 +323,221 @@ static void collision_scene_pre_solve_contacts() {
             }
         }
 
-        // Calculate rA and rB (contact point relative to center of mass)
-        // IMPORTANT: For static mesh (entity_a = 0), contactA is on mesh surface, contactB is on object
-        // For object-object, contactA is on A, contactB is on B
-        if (a) {
-            // A is a physics object, use contactA
-            vector3Sub(&cc->contactA, &centerOfMassA, &cc->rA);
-        } else {
-            // A is static mesh (entity_a = 0), no center of mass, rA is zero
-            cc->rA = gZeroVec;
-        }
-
-        if (b) {
-            // B is a physics object, use contactB
-            vector3Sub(&cc->contactB, &centerOfMassB, &cc->rB);
-        } else {
-            // This shouldn't happen (B is always an object), but handle it
-            cc->rB = gZeroVec;
-        }
-
-        // Calculate tangent vectors for friction
+        // Calculate tangent vectors for friction (shared across all points)
         calculate_tangent_vectors(&cc->normal, &cc->tangent_u, &cc->tangent_v);
 
-        // Calculate effective mass for normal direction (same as denominator in correct_velocity)
-        // This is the full logic from correct_velocity preserving all constraint handling
+        // Process each contact point
+        for (int p = 0; p < cc->point_count; p++) {
+            contact_point* cp = &cc->points[p];
 
-        bool aMovementConstrained = a && (a->is_kinematic || ((a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
-        bool bMovementConstrained = b && (b->is_kinematic || ((b->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
+            // Calculate rA and rB (contact point relative to center of mass)
+            if (a) {
+                vector3Sub(&cp->contactA, &centerOfMassA, &cp->rA);
+            } else {
+                cp->rA = gZeroVec;
+            }
 
-        float invMassA = 0.0f;
-        float invMassB = 0.0f;
+            if (b) {
+                vector3Sub(&cp->contactB, &centerOfMassB, &cp->rB);
+            } else {
+                cp->rB = gZeroVec;
+            }
 
-        if (a && !aMovementConstrained) {
-            bool constrainedAlongNormal = ((a->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(cc->normal.x) > 0.01f) ||
-                                          ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(cc->normal.y) > 0.01f) ||
-                                          ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(cc->normal.z) > 0.01f);
-            invMassA = constrainedAlongNormal ? 0.0f : a->_inv_mass;
+            // Calculate effective mass for normal direction
+            bool aMovementConstrained = a && (a->is_kinematic || ((a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
+            bool bMovementConstrained = b && (b->is_kinematic || ((b->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
+
+            float invMassA = 0.0f;
+            float invMassB = 0.0f;
+
+            if (a && !aMovementConstrained) {
+                bool constrainedAlongNormal = ((a->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(cc->normal.x) > 0.01f) ||
+                                              ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(cc->normal.y) > 0.01f) ||
+                                              ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(cc->normal.z) > 0.01f);
+                invMassA = constrainedAlongNormal ? 0.0f : a->_inv_mass;
+            }
+
+            if (b && !bMovementConstrained) {
+                bool constrainedAlongNormal = ((b->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(cc->normal.x) > 0.01f) ||
+                                              ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(cc->normal.y) > 0.01f) ||
+                                              ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(cc->normal.z) > 0.01f);
+                invMassB = constrainedAlongNormal ? 0.0f : b->_inv_mass;
+            }
+
+            float denominator = invMassA + invMassB;
+
+            // Add rotational inertia term for A
+            if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
+                Vector3 rCrossN;
+                vector3Cross(&cp->rA, &cc->normal, &rCrossN);
+
+                Quaternion rotation_inverse_a;
+                quatConjugate(a->rotation, &rotation_inverse_a);
+
+                Vector3 local_rCrossN;
+                quatMultVector(&rotation_inverse_a, &rCrossN, &local_rCrossN);
+
+                Vector3 local_torquePerImpulse;
+                local_torquePerImpulse.x = local_rCrossN.x * a->_inv_local_intertia_tensor.x;
+                local_torquePerImpulse.y = local_rCrossN.y * a->_inv_local_intertia_tensor.y;
+                local_torquePerImpulse.z = local_rCrossN.z * a->_inv_local_intertia_tensor.z;
+
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+
+                Vector3 torquePerImpulse;
+                quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+                denominator += vector3Dot(&rCrossN, &torquePerImpulse);
+            }
+
+            // Add rotational inertia term for B
+            if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
+                Vector3 rCrossN;
+                vector3Cross(&cp->rB, &cc->normal, &rCrossN);
+
+                Quaternion rotation_inverse_b;
+                quatConjugate(b->rotation, &rotation_inverse_b);
+
+                Vector3 local_rCrossN;
+                quatMultVector(&rotation_inverse_b, &rCrossN, &local_rCrossN);
+
+                Vector3 local_torquePerImpulse;
+                local_torquePerImpulse.x = local_rCrossN.x * b->_inv_local_intertia_tensor.x;
+                local_torquePerImpulse.y = local_rCrossN.y * b->_inv_local_intertia_tensor.y;
+                local_torquePerImpulse.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
+
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+
+                Vector3 torquePerImpulse;
+                quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+                denominator += vector3Dot(&rCrossN, &torquePerImpulse);
+            }
+
+            if (denominator < EPSILON) denominator = EPSILON;
+            cp->normal_mass = 1.0f / denominator;
+
+            // Calculate effective mass for tangent U
+            float denominator_u = invMassA + invMassB;
+            if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
+                Vector3 rCrossT;
+                vector3Cross(&cp->rA, &cc->tangent_u, &rCrossT);
+                Quaternion rotation_inverse_a;
+                quatConjugate(a->rotation, &rotation_inverse_a);
+                Vector3 local_rCrossT;
+                quatMultVector(&rotation_inverse_a, &rCrossT, &local_rCrossT);
+                Vector3 local_torquePerImpulse;
+                local_torquePerImpulse.x = local_rCrossT.x * a->_inv_local_intertia_tensor.x;
+                local_torquePerImpulse.y = local_rCrossT.y * a->_inv_local_intertia_tensor.y;
+                local_torquePerImpulse.z = local_rCrossT.z * a->_inv_local_intertia_tensor.z;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+                Vector3 torquePerImpulse;
+                quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
+                denominator_u += vector3Dot(&rCrossT, &torquePerImpulse);
+            }
+            if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
+                Vector3 rCrossT;
+                vector3Cross(&cp->rB, &cc->tangent_u, &rCrossT);
+                Quaternion rotation_inverse_b;
+                quatConjugate(b->rotation, &rotation_inverse_b);
+                Vector3 local_rCrossT;
+                quatMultVector(&rotation_inverse_b, &rCrossT, &local_rCrossT);
+                Vector3 local_torquePerImpulse;
+                local_torquePerImpulse.x = local_rCrossT.x * b->_inv_local_intertia_tensor.x;
+                local_torquePerImpulse.y = local_rCrossT.y * b->_inv_local_intertia_tensor.y;
+                local_torquePerImpulse.z = local_rCrossT.z * b->_inv_local_intertia_tensor.z;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+                Vector3 torquePerImpulse;
+                quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+                denominator_u += vector3Dot(&rCrossT, &torquePerImpulse);
+            }
+            if (denominator_u < EPSILON) denominator_u = EPSILON;
+            cp->tangent_mass_u = 1.0f / denominator_u;
+
+            // Calculate effective mass for tangent V
+            float denominator_v = invMassA + invMassB;
+            if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
+                Vector3 rCrossT;
+                vector3Cross(&cp->rA, &cc->tangent_v, &rCrossT);
+                Quaternion rotation_inverse_a;
+                quatConjugate(a->rotation, &rotation_inverse_a);
+                Vector3 local_rCrossT;
+                quatMultVector(&rotation_inverse_a, &rCrossT, &local_rCrossT);
+                Vector3 local_torquePerImpulse;
+                local_torquePerImpulse.x = local_rCrossT.x * a->_inv_local_intertia_tensor.x;
+                local_torquePerImpulse.y = local_rCrossT.y * a->_inv_local_intertia_tensor.y;
+                local_torquePerImpulse.z = local_rCrossT.z * a->_inv_local_intertia_tensor.z;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+                Vector3 torquePerImpulse;
+                quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
+                denominator_v += vector3Dot(&rCrossT, &torquePerImpulse);
+            }
+            if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
+                Vector3 rCrossT;
+                vector3Cross(&cp->rB, &cc->tangent_v, &rCrossT);
+                Quaternion rotation_inverse_b;
+                quatConjugate(b->rotation, &rotation_inverse_b);
+                Vector3 local_rCrossT;
+                quatMultVector(&rotation_inverse_b, &rCrossT, &local_rCrossT);
+                Vector3 local_torquePerImpulse;
+                local_torquePerImpulse.x = local_rCrossT.x * b->_inv_local_intertia_tensor.x;
+                local_torquePerImpulse.y = local_rCrossT.y * b->_inv_local_intertia_tensor.y;
+                local_torquePerImpulse.z = local_rCrossT.z * b->_inv_local_intertia_tensor.z;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+                Vector3 torquePerImpulse;
+                quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+                denominator_v += vector3Dot(&rCrossT, &torquePerImpulse);
+            }
+            if (denominator_v < EPSILON) denominator_v = EPSILON;
+            cp->tangent_mass_v = 1.0f / denominator_v;
+
+            // Calculate relative velocity for restitution
+            Vector3 contactVelA = gZeroVec;
+            Vector3 contactVelB = gZeroVec;
+
+            if (a && !a->is_kinematic) {
+                contactVelA = a->velocity;
+                if (a->rotation) {
+                    Vector3 angularContribution;
+                    vector3Cross(&a->angular_velocity, &cp->rA, &angularContribution);
+                    vector3Add(&contactVelA, &angularContribution, &contactVelA);
+                }
+            }
+
+            if (b && !b->is_kinematic) {
+                contactVelB = b->velocity;
+                if (b->rotation) {
+                    Vector3 angularContribution;
+                    vector3Cross(&b->angular_velocity, &cp->rB, &angularContribution);
+                    vector3Add(&contactVelB, &angularContribution, &contactVelB);
+                }
+            }
+
+            Vector3 relVel;
+            vector3Sub(&contactVelA, &contactVelB, &relVel);
+            float normalVelocity = vector3Dot(&relVel, &cc->normal);
+
+            // Calculate velocity bias (restitution)
+            cp->velocity_bias = 0.0f;
+            if (normalVelocity < -1.0f) { // Threshold for bouncing
+                cp->velocity_bias = -cc->combined_bounce * normalVelocity;
+            }
         }
-
-        if (b && !bMovementConstrained) {
-            bool constrainedAlongNormal = ((b->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(cc->normal.x) > 0.01f) ||
-                                          ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(cc->normal.y) > 0.01f) ||
-                                          ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(cc->normal.z) > 0.01f);
-            invMassB = constrainedAlongNormal ? 0.0f : b->_inv_mass;
-        }
-
-        float denominator = invMassA + invMassB;
-
-        // Add rotational inertia term for A (from correct_velocity)
-        if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
-            Vector3 rCrossN;
-            vector3Cross(&cc->rA, &cc->normal, &rCrossN);
-
-            Quaternion rotation_inverse_a;
-            quatConjugate(a->rotation, &rotation_inverse_a);
-
-            Vector3 local_rCrossN;
-            quatMultVector(&rotation_inverse_a, &rCrossN, &local_rCrossN);
-
-            Vector3 local_torquePerImpulse;
-            local_torquePerImpulse.x = local_rCrossN.x * a->_inv_local_intertia_tensor.x;
-            local_torquePerImpulse.y = local_rCrossN.y * a->_inv_local_intertia_tensor.y;
-            local_torquePerImpulse.z = local_rCrossN.z * a->_inv_local_intertia_tensor.z;
-
-            if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-            if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-            if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
-
-            Vector3 torquePerImpulse;
-            quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
-
-            denominator += vector3Dot(&rCrossN, &torquePerImpulse);
-        }
-
-        // Add rotational inertia term for B
-        if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
-            Vector3 rCrossN;
-            vector3Cross(&cc->rB, &cc->normal, &rCrossN);
-
-            Quaternion rotation_inverse_b;
-            quatConjugate(b->rotation, &rotation_inverse_b);
-
-            Vector3 local_rCrossN;
-            quatMultVector(&rotation_inverse_b, &rCrossN, &local_rCrossN);
-
-            Vector3 local_torquePerImpulse;
-            local_torquePerImpulse.x = local_rCrossN.x * b->_inv_local_intertia_tensor.x;
-            local_torquePerImpulse.y = local_rCrossN.y * b->_inv_local_intertia_tensor.y;
-            local_torquePerImpulse.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
-
-            if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-            if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-            if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
-
-            Vector3 torquePerImpulse;
-            quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
-
-            denominator += vector3Dot(&rCrossN, &torquePerImpulse);
-        }
-
-        if (denominator < EPSILON) denominator = EPSILON;
-        cc->normal_mass = 1.0f / denominator;
-
-        // Calculate effective mass for tangent directions (for friction)
-        // We need to calculate this properly for each tangent direction
-
-        // Tangent U effective mass
-        float denominator_u = invMassA + invMassB;
-        if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
-            Vector3 rCrossT;
-            vector3Cross(&cc->rA, &cc->tangent_u, &rCrossT);
-            Quaternion rotation_inverse_a;
-            quatConjugate(a->rotation, &rotation_inverse_a);
-            Vector3 local_rCrossT;
-            quatMultVector(&rotation_inverse_a, &rCrossT, &local_rCrossT);
-            Vector3 local_torquePerImpulse;
-            local_torquePerImpulse.x = local_rCrossT.x * a->_inv_local_intertia_tensor.x;
-            local_torquePerImpulse.y = local_rCrossT.y * a->_inv_local_intertia_tensor.y;
-            local_torquePerImpulse.z = local_rCrossT.z * a->_inv_local_intertia_tensor.z;
-            if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-            if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-            if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
-            Vector3 torquePerImpulse;
-            quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
-            denominator_u += vector3Dot(&rCrossT, &torquePerImpulse);
-        }
-        if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
-            Vector3 rCrossT;
-            vector3Cross(&cc->rB, &cc->tangent_u, &rCrossT);
-            Quaternion rotation_inverse_b;
-            quatConjugate(b->rotation, &rotation_inverse_b);
-            Vector3 local_rCrossT;
-            quatMultVector(&rotation_inverse_b, &rCrossT, &local_rCrossT);
-            Vector3 local_torquePerImpulse;
-            local_torquePerImpulse.x = local_rCrossT.x * b->_inv_local_intertia_tensor.x;
-            local_torquePerImpulse.y = local_rCrossT.y * b->_inv_local_intertia_tensor.y;
-            local_torquePerImpulse.z = local_rCrossT.z * b->_inv_local_intertia_tensor.z;
-            if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-            if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-            if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
-            Vector3 torquePerImpulse;
-            quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
-            denominator_u += vector3Dot(&rCrossT, &torquePerImpulse);
-        }
-        if (denominator_u < EPSILON) denominator_u = EPSILON;
-        cc->tangent_mass_u = 1.0f / denominator_u;
-
-        // Tangent V effective mass
-        float denominator_v = invMassA + invMassB;
-        if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
-            Vector3 rCrossT;
-            vector3Cross(&cc->rA, &cc->tangent_v, &rCrossT);
-            Quaternion rotation_inverse_a;
-            quatConjugate(a->rotation, &rotation_inverse_a);
-            Vector3 local_rCrossT;
-            quatMultVector(&rotation_inverse_a, &rCrossT, &local_rCrossT);
-            Vector3 local_torquePerImpulse;
-            local_torquePerImpulse.x = local_rCrossT.x * a->_inv_local_intertia_tensor.x;
-            local_torquePerImpulse.y = local_rCrossT.y * a->_inv_local_intertia_tensor.y;
-            local_torquePerImpulse.z = local_rCrossT.z * a->_inv_local_intertia_tensor.z;
-            if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-            if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-            if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
-            Vector3 torquePerImpulse;
-            quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
-            denominator_v += vector3Dot(&rCrossT, &torquePerImpulse);
-        }
-        if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
-            Vector3 rCrossT;
-            vector3Cross(&cc->rB, &cc->tangent_v, &rCrossT);
-            Quaternion rotation_inverse_b;
-            quatConjugate(b->rotation, &rotation_inverse_b);
-            Vector3 local_rCrossT;
-            quatMultVector(&rotation_inverse_b, &rCrossT, &local_rCrossT);
-            Vector3 local_torquePerImpulse;
-            local_torquePerImpulse.x = local_rCrossT.x * b->_inv_local_intertia_tensor.x;
-            local_torquePerImpulse.y = local_rCrossT.y * b->_inv_local_intertia_tensor.y;
-            local_torquePerImpulse.z = local_rCrossT.z * b->_inv_local_intertia_tensor.z;
-            if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-            if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-            if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
-            Vector3 torquePerImpulse;
-            quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
-            denominator_v += vector3Dot(&rCrossT, &torquePerImpulse);
-        }
-        if (denominator_v < EPSILON) denominator_v = EPSILON;
-        cc->tangent_mass_v = 1.0f / denominator_v;
     }
 }
+
 
 /// @brief Warm start: apply accumulated impulses from previous frame
 static void collision_scene_warm_start() {
@@ -535,339 +549,412 @@ static void collision_scene_warm_start() {
         physics_object* a = cc->objectA;
         physics_object* b = cc->objectB;
 
-        // Apply accumulated normal impulse
-        Vector3 impulse;
-        vector3Scale(&cc->normal, &impulse, cc->accumulated_normal_impulse);
+        // Process each contact point
+        for (int p = 0; p < cc->point_count; p++)
+        {
+            contact_point *cp = &cc->points[p];
+            // Apply accumulated normal impulse
+            Vector3 impulse;
+            vector3Scale(&cc->normal, &impulse, cp->accumulated_normal_impulse);
 
-        // Apply to object A
-        if (a && !a->is_kinematic) {
-            Vector3 linearImpulse;
-            vector3Scale(&impulse, &linearImpulse, a->_inv_mass);
+            // Apply to object A
+            if (a && !a->is_kinematic)
+            {
+                Vector3 linearImpulse;
+                vector3Scale(&impulse, &linearImpulse, a->_inv_mass);
 
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X)) a->velocity.x += linearImpulse.x;
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) a->velocity.y += linearImpulse.y;
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) a->velocity.z += linearImpulse.z;
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                    a->velocity.x += linearImpulse.x;
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                    a->velocity.y += linearImpulse.y;
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                    a->velocity.z += linearImpulse.z;
 
-            if (a->rotation) {
-                Vector3 angularImpulse;
-                vector3Cross(&cc->rA, &impulse, &angularImpulse);
-                physics_object_apply_angular_impulse(a, &angularImpulse);
+                if (a->rotation)
+                {
+                    Vector3 angularImpulse;
+                    vector3Cross(&cp->rA, &impulse, &angularImpulse);
+                    physics_object_apply_angular_impulse(a, &angularImpulse);
+                }
             }
-        }
 
-        // Apply to object B (opposite direction)
-        if (b && !b->is_kinematic) {
-            Vector3 linearImpulse;
-            vector3Scale(&impulse, &linearImpulse, -b->_inv_mass);
+            // Apply to object B (opposite direction)
+            if (b && !b->is_kinematic)
+            {
+                Vector3 linearImpulse;
+                vector3Scale(&impulse, &linearImpulse, -b->_inv_mass);
 
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X)) b->velocity.x += linearImpulse.x;
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) b->velocity.y += linearImpulse.y;
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) b->velocity.z += linearImpulse.z;
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                    b->velocity.x += linearImpulse.x;
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                    b->velocity.y += linearImpulse.y;
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                    b->velocity.z += linearImpulse.z;
 
-            if (b->rotation) {
-                Vector3 angularImpulse;
-                vector3Cross(&cc->rB, &impulse, &angularImpulse);
-                vector3Negate(&angularImpulse, &angularImpulse);
-                physics_object_apply_angular_impulse(b, &angularImpulse);
+                if (b->rotation)
+                {
+                    Vector3 angularImpulse;
+                    vector3Cross(&cp->rB, &impulse, &angularImpulse);
+                    vector3Negate(&angularImpulse, &angularImpulse);
+                    physics_object_apply_angular_impulse(b, &angularImpulse);
+                }
             }
-        }
 
-        // Apply accumulated tangent impulses for friction
-        Vector3 tangentImpulseU;
-        vector3Scale(&cc->tangent_u, &tangentImpulseU, cc->accumulated_tangent_impulse_u);
+            // Apply accumulated tangent impulses for friction
+            Vector3 tangentImpulseU;
+            vector3Scale(&cc->tangent_u, &tangentImpulseU, cp->accumulated_tangent_impulse_u);
 
-        Vector3 tangentImpulseV;
-        vector3Scale(&cc->tangent_v, &tangentImpulseV, cc->accumulated_tangent_impulse_v);
+            Vector3 tangentImpulseV;
+            vector3Scale(&cc->tangent_v, &tangentImpulseV, cp->accumulated_tangent_impulse_v);
 
-        // Apply tangent_u to A
-        if (a && !a->is_kinematic) {
-            Vector3 linearTangentU;
-            vector3Scale(&tangentImpulseU, &linearTangentU, a->_inv_mass);
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X)) a->velocity.x += linearTangentU.x;
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) a->velocity.y += linearTangentU.y;
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) a->velocity.z += linearTangentU.z;
+            // Apply tangent_u to A
+            if (a && !a->is_kinematic)
+            {
+                Vector3 linearTangentU;
+                vector3Scale(&tangentImpulseU, &linearTangentU, a->_inv_mass);
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                    a->velocity.x += linearTangentU.x;
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                    a->velocity.y += linearTangentU.y;
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                    a->velocity.z += linearTangentU.z;
 
-            if (a->rotation) {
-                Vector3 angularTangentU;
-                vector3Cross(&cc->rA, &tangentImpulseU, &angularTangentU);
-                physics_object_apply_angular_impulse(a, &angularTangentU);
+                if (a->rotation)
+                {
+                    Vector3 angularTangentU;
+                    vector3Cross(&cp->rA, &tangentImpulseU, &angularTangentU);
+                    physics_object_apply_angular_impulse(a, &angularTangentU);
+                }
             }
-        }
 
-        // Apply tangent_u to B (opposite)
-        if (b && !b->is_kinematic) {
-            Vector3 linearTangentU;
-            vector3Scale(&tangentImpulseU, &linearTangentU, -b->_inv_mass);
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X)) b->velocity.x += linearTangentU.x;
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) b->velocity.y += linearTangentU.y;
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) b->velocity.z += linearTangentU.z;
+            // Apply tangent_u to B (opposite)
+            if (b && !b->is_kinematic)
+            {
+                Vector3 linearTangentU;
+                vector3Scale(&tangentImpulseU, &linearTangentU, -b->_inv_mass);
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                    b->velocity.x += linearTangentU.x;
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                    b->velocity.y += linearTangentU.y;
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                    b->velocity.z += linearTangentU.z;
 
-            if (b->rotation) {
-                Vector3 angularTangentU;
-                vector3Cross(&cc->rB, &tangentImpulseU, &angularTangentU);
-                vector3Negate(&angularTangentU, &angularTangentU);
-                physics_object_apply_angular_impulse(b, &angularTangentU);
+                if (b->rotation)
+                {
+                    Vector3 angularTangentU;
+                    vector3Cross(&cp->rB, &tangentImpulseU, &angularTangentU);
+                    vector3Negate(&angularTangentU, &angularTangentU);
+                    physics_object_apply_angular_impulse(b, &angularTangentU);
+                }
             }
-        }
 
-        // Apply tangent_v to A
-        if (a && !a->is_kinematic) {
-            Vector3 linearTangentV;
-            vector3Scale(&tangentImpulseV, &linearTangentV, a->_inv_mass);
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X)) a->velocity.x += linearTangentV.x;
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) a->velocity.y += linearTangentV.y;
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) a->velocity.z += linearTangentV.z;
+            // Apply tangent_v to A
+            if (a && !a->is_kinematic)
+            {
+                Vector3 linearTangentV;
+                vector3Scale(&tangentImpulseV, &linearTangentV, a->_inv_mass);
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                    a->velocity.x += linearTangentV.x;
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                    a->velocity.y += linearTangentV.y;
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                    a->velocity.z += linearTangentV.z;
 
-            if (a->rotation) {
-                Vector3 angularTangentV;
-                vector3Cross(&cc->rA, &tangentImpulseV, &angularTangentV);
-                physics_object_apply_angular_impulse(a, &angularTangentV);
+                if (a->rotation)
+                {
+                    Vector3 angularTangentV;
+                    vector3Cross(&cp->rA, &tangentImpulseV, &angularTangentV);
+                    physics_object_apply_angular_impulse(a, &angularTangentV);
+                }
             }
-        }
 
-        // Apply tangent_v to B (opposite)
-        if (b && !b->is_kinematic) {
-            Vector3 linearTangentV;
-            vector3Scale(&tangentImpulseV, &linearTangentV, -b->_inv_mass);
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X)) b->velocity.x += linearTangentV.x;
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) b->velocity.y += linearTangentV.y;
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) b->velocity.z += linearTangentV.z;
+            // Apply tangent_v to B (opposite)
+            if (b && !b->is_kinematic)
+            {
+                Vector3 linearTangentV;
+                vector3Scale(&tangentImpulseV, &linearTangentV, -b->_inv_mass);
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                    b->velocity.x += linearTangentV.x;
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                    b->velocity.y += linearTangentV.y;
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                    b->velocity.z += linearTangentV.z;
 
-            if (b->rotation) {
-                Vector3 angularTangentV;
-                vector3Cross(&cc->rB, &tangentImpulseV, &angularTangentV);
-                vector3Negate(&angularTangentV, &angularTangentV);
-                physics_object_apply_angular_impulse(b, &angularTangentV);
+                if (b->rotation)
+                {
+                    Vector3 angularTangentV;
+                    vector3Cross(&cp->rB, &tangentImpulseV, &angularTangentV);
+                    vector3Negate(&angularTangentV, &angularTangentV);
+                    physics_object_apply_angular_impulse(b, &angularTangentV);
+                }
             }
         }
     }
 }
 
 /// @brief Solve velocity constraints iteratively
-static void collision_scene_solve_velocity_constraints() {
-    const float slop = 0.005f;
+static void collision_scene_solve_velocity_constraints()
+{
     const float bounceThreshold = 0.5f;
 
-    for (int i = 0; i < g_scene.cached_contact_count; i++) {
-        contact_constraint* cc = &g_scene.cached_contacts[i];
+    for (int i = 0; i < g_scene.cached_contact_count; i++)
+    {
+        contact_constraint *cc = &g_scene.cached_contacts[i];
 
-        if (!cc->is_active || cc->is_trigger) continue;
+        if (!cc->is_active || cc->is_trigger)
+            continue;
 
-        physics_object* a = cc->objectA;
-        physics_object* b = cc->objectB;
+        physics_object *a = cc->objectA;
+        physics_object *b = cc->objectB;
 
-        // Calculate contact velocities
-        Vector3 contactVelA = gZeroVec;
-        Vector3 contactVelB = gZeroVec;
+        // Process each contact point
+        for (int p = 0; p < cc->point_count; p++)
+        {
+            contact_point *cp = &cc->points[p];
 
-        if (a && !a->is_kinematic) {
-            contactVelA = a->velocity;
-            if (a->rotation) {
-                Vector3 angularContribution;
-                vector3Cross(&a->angular_velocity, &cc->rA, &angularContribution);
-                vector3Add(&contactVelA, &angularContribution, &contactVelA);
-            }
-        }
+            // Calculate contact velocities
+            Vector3 contactVelA = gZeroVec;
+            Vector3 contactVelB = gZeroVec;
 
-        if (b && !b->is_kinematic) {
-            contactVelB = b->velocity;
-            if (b->rotation) {
-                Vector3 angularContribution;
-                vector3Cross(&b->angular_velocity, &cc->rB, &angularContribution);
-                vector3Add(&contactVelB, &angularContribution, &contactVelB);
-            }
-        }
-
-        // Calculate relative velocity
-        Vector3 relVel;
-        vector3Sub(&contactVelA, &contactVelB, &relVel);
-        float normalVelocity = vector3Dot(&relVel, &cc->normal);
-
-        // Compute bounce with damping for low-velocity contacts
-        float effectiveBounce = cc->combined_bounce;
-        if (fabsf(normalVelocity) < bounceThreshold) {
-            effectiveBounce = cc->combined_bounce * (fabsf(normalVelocity) / bounceThreshold);
-        }
-
-        // Add Baumgarte stabilization bias to prevent penetration
-        const float baumgarteFactor = 0.2f; // Conservative bias
-        float baumgarteBias = 0.0f;
-        if (cc->penetration > slop) {
-            baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * (cc->penetration - slop);
-        }
-
-        // Calculate lambda (impulse change)
-        float lambda = -(normalVelocity * (1.0f + effectiveBounce) - baumgarteBias) * cc->normal_mass;
-
-        // Clamp accumulated impulse (key difference from old approach!)
-        float oldImpulse = cc->accumulated_normal_impulse;
-        cc->accumulated_normal_impulse = maxf(oldImpulse + lambda, 0.0f);
-        lambda = cc->accumulated_normal_impulse - oldImpulse;
-
-        if (fabsf(lambda) < EPSILON) continue;
-
-        // Apply lambda (the change, not total)
-        Vector3 impulse;
-        vector3Scale(&cc->normal, &impulse, lambda);
-
-        // Apply to object A
-        if (a && !a->is_kinematic) {
-            Vector3 linearImpulse;
-            vector3Scale(&impulse, &linearImpulse, a->_inv_mass);
-
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X)) a->velocity.x += linearImpulse.x;
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) a->velocity.y += linearImpulse.y;
-            if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) a->velocity.z += linearImpulse.z;
-
-            if (a->rotation) {
-                Vector3 angularImpulse;
-                vector3Cross(&cc->rA, &impulse, &angularImpulse);
-                physics_object_apply_angular_impulse(a, &angularImpulse);
-            }
-        }
-
-        // Apply to object B
-        if (b && !b->is_kinematic) {
-            Vector3 linearImpulse;
-            vector3Scale(&impulse, &linearImpulse, -b->_inv_mass);
-
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X)) b->velocity.x += linearImpulse.x;
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) b->velocity.y += linearImpulse.y;
-            if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) b->velocity.z += linearImpulse.z;
-
-            if (b->rotation) {
-                Vector3 angularImpulse;
-                vector3Cross(&cc->rB, &impulse, &angularImpulse);
-                vector3Negate(&angularImpulse, &angularImpulse);
-                physics_object_apply_angular_impulse(b, &angularImpulse);
-            }
-        }
-
-        #ifndef DEBUG_IGNORE_FRICTION
-        // Handle friction with proper accumulation
-        if (cc->combined_friction > 0.0f) {
-            // Recalculate relative velocity after normal impulse
-            if (a && !a->is_kinematic) {
+            if (a && !a->is_kinematic)
+            {
                 contactVelA = a->velocity;
-                if (a->rotation) {
+                if (a->rotation)
+                {
                     Vector3 angularContribution;
-                    vector3Cross(&a->angular_velocity, &cc->rA, &angularContribution);
+                    vector3Cross(&a->angular_velocity, &cp->rA, &angularContribution);
                     vector3Add(&contactVelA, &angularContribution, &contactVelA);
                 }
             }
 
-            if (b && !b->is_kinematic) {
+            if (b && !b->is_kinematic)
+            {
                 contactVelB = b->velocity;
-                if (b->rotation) {
+                if (b->rotation)
+                {
                     Vector3 angularContribution;
-                    vector3Cross(&b->angular_velocity, &cc->rB, &angularContribution);
+                    vector3Cross(&b->angular_velocity, &cp->rB, &angularContribution);
                     vector3Add(&contactVelB, &angularContribution, &contactVelB);
                 }
             }
 
+            // Calculate relative velocity
+            Vector3 relVel;
             vector3Sub(&contactVelA, &contactVelB, &relVel);
+            float normalVelocity = vector3Dot(&relVel, &cc->normal);
 
-            // Calculate tangential velocity components along tangent_u and tangent_v
-            float vTangentU = vector3Dot(&relVel, &cc->tangent_u);
-            float vTangentV = vector3Dot(&relVel, &cc->tangent_v);
+            // Calculate lambda (impulse change)
+            // Use pre-calculated velocity bias (restitution)
+            float lambda = -(normalVelocity + cp->velocity_bias) * cp->normal_mass;
 
-            // Calculate friction impulse changes (lambda) for both tangent directions
-            float lambdaU = -vTangentU * cc->tangent_mass_u;
-            float lambdaV = -vTangentV * cc->tangent_mass_v;
+            // Clamp accumulated impulse (key difference from old approach!)
+            float oldImpulse = cp->accumulated_normal_impulse;
+            cp->accumulated_normal_impulse = maxf(oldImpulse + lambda, 0.0f);
+            lambda = cp->accumulated_normal_impulse - oldImpulse;
 
-            // Calculate new accumulated tangent impulses
-            float newAccumU = cc->accumulated_tangent_impulse_u + lambdaU;
-            float newAccumV = cc->accumulated_tangent_impulse_v + lambdaV;
+            if (fabsf(lambda) < EPSILON)
+                continue;
 
-            // Clamp to friction cone (Coulomb's law: |tangent_impulse| <= friction * normal_impulse)
-            float maxFriction = cc->combined_friction * cc->accumulated_normal_impulse;
-            float tangentMagnitude = sqrtf(newAccumU * newAccumU + newAccumV * newAccumV);
+            // Apply lambda (the change, not total)
+            Vector3 impulse;
+            vector3Scale(&cc->normal, &impulse, lambda);
 
-            if (tangentMagnitude > maxFriction) {
-                float scale = maxFriction / tangentMagnitude;
-                newAccumU *= scale;
-                newAccumV *= scale;
-            }
+            // Apply to object A
+            if (a && !a->is_kinematic)
+            {
+                Vector3 linearImpulse;
+                vector3Scale(&impulse, &linearImpulse, a->_inv_mass);
 
-            // Calculate actual impulse deltas to apply
-            lambdaU = newAccumU - cc->accumulated_tangent_impulse_u;
-            lambdaV = newAccumV - cc->accumulated_tangent_impulse_v;
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                    a->velocity.x += linearImpulse.x;
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                    a->velocity.y += linearImpulse.y;
+                if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                    a->velocity.z += linearImpulse.z;
 
-            // Update accumulated values
-            cc->accumulated_tangent_impulse_u = newAccumU;
-            cc->accumulated_tangent_impulse_v = newAccumV;
-
-            // Apply tangent_u impulse
-            if (fabsf(lambdaU) > EPSILON) {
-                Vector3 tangentImpulseU;
-                vector3Scale(&cc->tangent_u, &tangentImpulseU, lambdaU);
-
-                if (a && !a->is_kinematic) {
-                    Vector3 linearImpulse;
-                    vector3Scale(&tangentImpulseU, &linearImpulse, a->_inv_mass);
-                    if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X)) a->velocity.x += linearImpulse.x;
-                    if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) a->velocity.y += linearImpulse.y;
-                    if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) a->velocity.z += linearImpulse.z;
-
-                    if (a->rotation) {
-                        Vector3 angularImpulse;
-                        vector3Cross(&cc->rA, &tangentImpulseU, &angularImpulse);
-                        physics_object_apply_angular_impulse(a, &angularImpulse);
-                    }
-                }
-
-                if (b && !b->is_kinematic) {
-                    Vector3 linearImpulse;
-                    vector3Scale(&tangentImpulseU, &linearImpulse, -b->_inv_mass);
-                    if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X)) b->velocity.x += linearImpulse.x;
-                    if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) b->velocity.y += linearImpulse.y;
-                    if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) b->velocity.z += linearImpulse.z;
-
-                    if (b->rotation) {
-                        Vector3 angularImpulse;
-                        vector3Cross(&cc->rB, &tangentImpulseU, &angularImpulse);
-                        vector3Negate(&angularImpulse, &angularImpulse);
-                        physics_object_apply_angular_impulse(b, &angularImpulse);
-                    }
+                if (a->rotation)
+                {
+                    Vector3 angularImpulse;
+                    vector3Cross(&cp->rA, &impulse, &angularImpulse);
+                    physics_object_apply_angular_impulse(a, &angularImpulse);
                 }
             }
 
-            // Apply tangent_v impulse
-            if (fabsf(lambdaV) > EPSILON) {
-                Vector3 tangentImpulseV;
-                vector3Scale(&cc->tangent_v, &tangentImpulseV, lambdaV);
+            // Apply to object B
+            if (b && !b->is_kinematic)
+            {
+                Vector3 linearImpulse;
+                vector3Scale(&impulse, &linearImpulse, -b->_inv_mass);
 
-                if (a && !a->is_kinematic) {
-                    Vector3 linearImpulse;
-                    vector3Scale(&tangentImpulseV, &linearImpulse, a->_inv_mass);
-                    if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X)) a->velocity.x += linearImpulse.x;
-                    if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) a->velocity.y += linearImpulse.y;
-                    if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) a->velocity.z += linearImpulse.z;
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                    b->velocity.x += linearImpulse.x;
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                    b->velocity.y += linearImpulse.y;
+                if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                    b->velocity.z += linearImpulse.z;
 
-                    if (a->rotation) {
-                        Vector3 angularImpulse;
-                        vector3Cross(&cc->rA, &tangentImpulseV, &angularImpulse);
-                        physics_object_apply_angular_impulse(a, &angularImpulse);
+                if (b->rotation)
+                {
+                    Vector3 angularImpulse;
+                    vector3Cross(&cp->rB, &impulse, &angularImpulse);
+                    vector3Negate(&angularImpulse, &angularImpulse);
+                    physics_object_apply_angular_impulse(b, &angularImpulse);
+                }
+            }
+#ifndef DEBUG_IGNORE_FRICTION
+            // Handle friction with proper accumulation
+            if (cc->combined_friction > 0.0f)
+            {
+                // Recalculate relative velocity after normal impulse
+                if (a && !a->is_kinematic)
+                {
+                    contactVelA = a->velocity;
+                    if (a->rotation)
+                    {
+                        Vector3 angularContribution;
+                        vector3Cross(&a->angular_velocity, &cp->rA, &angularContribution);
+                        vector3Add(&contactVelA, &angularContribution, &contactVelA);
                     }
                 }
 
-                if (b && !b->is_kinematic) {
-                    Vector3 linearImpulse;
-                    vector3Scale(&tangentImpulseV, &linearImpulse, -b->_inv_mass);
-                    if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X)) b->velocity.x += linearImpulse.x;
-                    if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y)) b->velocity.y += linearImpulse.y;
-                    if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z)) b->velocity.z += linearImpulse.z;
+                if (b && !b->is_kinematic)
+                {
+                    contactVelB = b->velocity;
+                    if (b->rotation)
+                    {
+                        Vector3 angularContribution;
+                        vector3Cross(&b->angular_velocity, &cp->rB, &angularContribution);
+                        vector3Add(&contactVelB, &angularContribution, &contactVelB);
+                    }
+                }
 
-                    if (b->rotation) {
-                        Vector3 angularImpulse;
-                        vector3Cross(&cc->rB, &tangentImpulseV, &angularImpulse);
-                        vector3Negate(&angularImpulse, &angularImpulse);
-                        physics_object_apply_angular_impulse(b, &angularImpulse);
+                vector3Sub(&contactVelA, &contactVelB, &relVel);
+
+                // Calculate tangential velocity components along tangent_u and tangent_v
+                float vTangentU = vector3Dot(&relVel, &cc->tangent_u);
+                float vTangentV = vector3Dot(&relVel, &cc->tangent_v);
+
+                // Calculate friction impulse changes (lambda) for both tangent directions
+                float lambdaU = -vTangentU * cp->tangent_mass_u;
+                float lambdaV = -vTangentV * cp->tangent_mass_v;
+
+                // Calculate new accumulated tangent impulses
+                float newAccumU = cp->accumulated_tangent_impulse_u + lambdaU;
+                float newAccumV = cp->accumulated_tangent_impulse_v + lambdaV;
+
+                // Clamp to friction cone (Coulomb's law: |tangent_impulse| <= friction * normal_impulse)
+                float maxFriction = cc->combined_friction * cp->accumulated_normal_impulse;
+                float tangentMagnitude = sqrtf(newAccumU * newAccumU + newAccumV * newAccumV);
+
+                if (tangentMagnitude > maxFriction)
+                {
+                    float scale = maxFriction / tangentMagnitude;
+                    newAccumU *= scale;
+                    newAccumV *= scale;
+                }
+
+                // Calculate actual impulse deltas to apply
+                lambdaU = newAccumU - cp->accumulated_tangent_impulse_u;
+                lambdaV = newAccumV - cp->accumulated_tangent_impulse_v;
+
+                // Update accumulated values
+                cp->accumulated_tangent_impulse_u = newAccumU;
+                cp->accumulated_tangent_impulse_v = newAccumV;
+
+                // Apply tangent_u impulse
+                if (fabsf(lambdaU) > EPSILON)
+                {
+                    Vector3 tangentImpulseU;
+                    vector3Scale(&cc->tangent_u, &tangentImpulseU, lambdaU);
+
+                    if (a && !a->is_kinematic)
+                    {
+                        Vector3 linearImpulse;
+                        vector3Scale(&tangentImpulseU, &linearImpulse, a->_inv_mass);
+                        if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                            a->velocity.x += linearImpulse.x;
+                        if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                            a->velocity.y += linearImpulse.y;
+                        if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                            a->velocity.z += linearImpulse.z;
+
+                        if (a->rotation)
+                        {
+                            Vector3 angularImpulse;
+                            vector3Cross(&cp->rA, &tangentImpulseU, &angularImpulse);
+                            physics_object_apply_angular_impulse(a, &angularImpulse);
+                        }
+                    }
+
+                    if (b && !b->is_kinematic)
+                    {
+                        Vector3 linearImpulse;
+                        vector3Scale(&tangentImpulseU, &linearImpulse, -b->_inv_mass);
+                        if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                            b->velocity.x += linearImpulse.x;
+                        if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                            b->velocity.y += linearImpulse.y;
+                        if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                            b->velocity.z += linearImpulse.z;
+
+                        if (b->rotation)
+                        {
+                            Vector3 angularImpulse;
+                            vector3Cross(&cp->rB, &tangentImpulseU, &angularImpulse);
+                            vector3Negate(&angularImpulse, &angularImpulse);
+                            physics_object_apply_angular_impulse(b, &angularImpulse);
+                        }
+                    }
+                }
+
+                // Apply tangent_v impulse
+                if (fabsf(lambdaV) > EPSILON)
+                {
+                    Vector3 tangentImpulseV;
+                    vector3Scale(&cc->tangent_v, &tangentImpulseV, lambdaV);
+
+                    if (a && !a->is_kinematic)
+                    {
+                        Vector3 linearImpulse;
+                        vector3Scale(&tangentImpulseV, &linearImpulse, a->_inv_mass);
+                        if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                            a->velocity.x += linearImpulse.x;
+                        if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                            a->velocity.y += linearImpulse.y;
+                        if (!(a->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                            a->velocity.z += linearImpulse.z;
+
+                        if (a->rotation)
+                        {
+                            Vector3 angularImpulse;
+                            vector3Cross(&cp->rA, &tangentImpulseV, &angularImpulse);
+                            physics_object_apply_angular_impulse(a, &angularImpulse);
+                        }
+                    }
+
+                    if (b && !b->is_kinematic)
+                    {
+                        Vector3 linearImpulse;
+                        vector3Scale(&tangentImpulseV, &linearImpulse, -b->_inv_mass);
+                        if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_X))
+                            b->velocity.x += linearImpulse.x;
+                        if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Y))
+                            b->velocity.y += linearImpulse.y;
+                        if (!(b->constraints & CONSTRAINTS_FREEZE_POSITION_Z))
+                            b->velocity.z += linearImpulse.z;
+
+                        if (b->rotation)
+                        {
+                            Vector3 angularImpulse;
+                            vector3Cross(&cp->rB, &tangentImpulseV, &angularImpulse);
+                            vector3Negate(&angularImpulse, &angularImpulse);
+                            physics_object_apply_angular_impulse(b, &angularImpulse);
+                        }
                     }
                 }
             }
+#endif
         }
-        #endif
     }
 }
 
@@ -881,60 +968,145 @@ static void collision_scene_solve_position_constraints() {
         contact_constraint* cc = &g_scene.cached_contacts[i];
 
         if (!cc->is_active || cc->is_trigger) continue;
-        if (cc->penetration < slop) continue;
+        
 
         physics_object* a = cc->objectA;
         physics_object* b = cc->objectB;
 
-        const float steeringForce = clampf(steeringConstant * (cc->penetration + slop), 0, maxCorrection);
+        // Process each contact point
+        for (int p = 0; p < cc->point_count; p++)
+        {
+            contact_point *cp = &cc->points[p];
+            if (cp->penetration < slop)
+                continue;
 
-        bool aMovementConstrained = a && (a->is_kinematic || ((a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
-        bool bMovementConstrained = b && (b->is_kinematic || ((b->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
+            const float steeringForce = clampf(steeringConstant * (cp->penetration + slop), 0, maxCorrection);
 
-        float invMassA = 0.0f;
-        float invMassB = 0.0f;
+            bool aMovementConstrained = a && (a->is_kinematic || ((a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
+            bool bMovementConstrained = b && (b->is_kinematic || ((b->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
 
-        Vector3 effectiveNormalA = cc->normal;
-        Vector3 effectiveNormalB = cc->normal;
+            float invMassA = 0.0f;
+            float invMassB = 0.0f;
 
-        float normal_dot_inv = 1.0f / vector3Dot(&cc->normal, &cc->normal);
+            Vector3 effectiveNormalA = cc->normal;
+            Vector3 effectiveNormalB = cc->normal;
 
-        if (a && !aMovementConstrained) {
-            if (a->constraints & CONSTRAINTS_FREEZE_POSITION_X)
-                effectiveNormalA.x = 0.0f;
-            if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Y)
-                effectiveNormalA.y = 0.0f;
-            if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Z)
-                effectiveNormalA.z = 0.0f;
+            float normal_dot_inv = 1.0f / vector3Dot(&cc->normal, &cc->normal);
 
-            float normalDotA = vector3Dot(&effectiveNormalA, &cc->normal);
-            invMassA = a->_inv_mass * (normalDotA * normalDotA) * normal_dot_inv;
-        }
+            if (a && !aMovementConstrained)
+            {
+                if (a->constraints & CONSTRAINTS_FREEZE_POSITION_X)
+                    effectiveNormalA.x = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Y)
+                    effectiveNormalA.y = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Z)
+                    effectiveNormalA.z = 0.0f;
 
-        if (b && !bMovementConstrained) {
-            if (b->constraints & CONSTRAINTS_FREEZE_POSITION_X)
-                effectiveNormalB.x = 0.0f;
-            if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Y)
-                effectiveNormalB.y = 0.0f;
-            if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Z)
-                effectiveNormalB.z = 0.0f;
+                float normalDotA = vector3Dot(&effectiveNormalA, &cc->normal);
+                invMassA = a->_inv_mass * (normalDotA * normalDotA) * normal_dot_inv;
+            }
 
-            float normalDotB = vector3Dot(&effectiveNormalB, &cc->normal);
-            invMassB = b->_inv_mass * (normalDotB * normalDotB) * normal_dot_inv;
-        }
+            if (b && !bMovementConstrained)
+            {
+                if (b->constraints & CONSTRAINTS_FREEZE_POSITION_X)
+                    effectiveNormalB.x = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Y)
+                    effectiveNormalB.y = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Z)
+                    effectiveNormalB.z = 0.0f;
 
-        float invMassSum = invMassA + invMassB;
-        if (invMassSum == 0.0f) continue;
+                float normalDotB = vector3Dot(&effectiveNormalB, &cc->normal);
+                invMassB = b->_inv_mass * (normalDotB * normalDotB) * normal_dot_inv;
+            }
 
-        float correctionMag = steeringForce / invMassSum;
+            float invMassSum = invMassA + invMassB;
 
-        // Apply correction
-        if (a && invMassA > 0.0f) {
-            vector3AddScaled(a->position, &effectiveNormalA, correctionMag * invMassA, a->position);
-        }
+            // Add rotational inertia term for A
+            if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
+                Vector3 rCrossN;
+                vector3Cross(&cp->rA, &cc->normal, &rCrossN);
 
-        if (b && invMassB > 0.0f) {
-            vector3AddScaled(b->position, &effectiveNormalB, -correctionMag * invMassB, b->position);
+                Quaternion rotation_inverse_a;
+                quatConjugate(a->rotation, &rotation_inverse_a);
+
+                Vector3 local_rCrossN;
+                quatMultVector(&rotation_inverse_a, &rCrossN, &local_rCrossN);
+
+                Vector3 local_torquePerImpulse;
+                local_torquePerImpulse.x = local_rCrossN.x * a->_inv_local_intertia_tensor.x;
+                local_torquePerImpulse.y = local_rCrossN.y * a->_inv_local_intertia_tensor.y;
+                local_torquePerImpulse.z = local_rCrossN.z * a->_inv_local_intertia_tensor.z;
+
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+
+                Vector3 torquePerImpulse;
+                quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+                invMassSum += vector3Dot(&rCrossN, &torquePerImpulse);
+            }
+
+            // Add rotational inertia term for B
+            if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
+                Vector3 rCrossN;
+                vector3Cross(&cp->rB, &cc->normal, &rCrossN);
+
+                Quaternion rotation_inverse_b;
+                quatConjugate(b->rotation, &rotation_inverse_b);
+
+                Vector3 local_rCrossN;
+                quatMultVector(&rotation_inverse_b, &rCrossN, &local_rCrossN);
+
+                Vector3 local_torquePerImpulse;
+                local_torquePerImpulse.x = local_rCrossN.x * b->_inv_local_intertia_tensor.x;
+                local_torquePerImpulse.y = local_rCrossN.y * b->_inv_local_intertia_tensor.y;
+                local_torquePerImpulse.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
+
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+
+                Vector3 torquePerImpulse;
+                quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+                invMassSum += vector3Dot(&rCrossN, &torquePerImpulse);
+            }
+
+            if (invMassSum == 0.0f)
+                continue;
+
+            float correctionMag = steeringForce / invMassSum;
+            Vector3 impulse;
+            vector3Scale(&cc->normal, &impulse, correctionMag);
+
+            // Apply correction
+            if (a && !aMovementConstrained)
+            {
+                if (invMassA > 0.0f) {
+                    vector3AddScaled(a->position, &effectiveNormalA, correctionMag * invMassA, a->position);
+                }
+                
+                if (a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
+                    Vector3 angularImpulse;
+                    vector3Cross(&cp->rA, &impulse, &angularImpulse);
+                    physics_object_apply_angular_impulse_to_rotation(a, &angularImpulse);
+                }
+            }
+
+            if (b && !bMovementConstrained)
+            {
+                if (invMassB > 0.0f) {
+                    vector3AddScaled(b->position, &effectiveNormalB, -correctionMag * invMassB, b->position);
+                }
+
+                if (b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
+                    Vector3 angularImpulse;
+                    vector3Cross(&cp->rB, &impulse, &angularImpulse);
+                    vector3Negate(&angularImpulse, &angularImpulse);
+                    physics_object_apply_angular_impulse_to_rotation(b, &angularImpulse);
+                }
+            }
         }
     }
 }
@@ -1001,7 +1173,7 @@ void collision_scene_step() {
     // ========================================================================
     // PHASE 5: Solve velocity constraints iteratively
     // ========================================================================
-    for (int iter = 0; iter < 8; iter++) {
+    for (int iter = 0; iter < 5; iter++) {
         collision_scene_solve_velocity_constraints();
     }
 

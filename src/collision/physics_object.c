@@ -185,7 +185,7 @@ void physics_object_integrate_position(physics_object* object) {
 }
 
 void physics_object_integrate_rotation(physics_object* object) {
-    if (object->is_trigger || object->is_kinematic) return;
+    if (object->is_trigger || object->is_kinematic ||!object->rotation) return;
 
     // Calculate rotated center offset before rotation
     Vector3 center_offset_old;
