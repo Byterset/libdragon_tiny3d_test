@@ -217,21 +217,21 @@ void render()
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "ray fwd hit (%.2f, %.2f, %.2f)", player.ray_fwd_hit.point.x, player.ray_fwd_hit.point.y, player.ray_fwd_hit.point.z);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "cached contacts: %i", c_scene->cached_contact_count);
 
-    contact_id id = get_contact_id( 0, player.physics.entity_id);
+    contact_pair_id id = contact_pair_id_get( 0, crates[1].physics.entity_id);
 
     // Find existing constraint for this entity pair
     contact_constraint* cc = NULL;
     for (int i = 0; i < c_scene->cached_contact_count; i++) {
-        if (c_scene->cached_contacts[i].id == id) {
+        if (c_scene->cached_contacts[i].pid == id) {
             cc = &c_scene->cached_contacts[i];
             break;
         }
     }
     if(cc){
-        rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "player-static contact points: %i", cc->point_count);
+        rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "crate-static contact points: %i", cc->point_count);
     }
     else{
-        rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "no contact points player-static");
+        rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "no contact points crate-static");
     }
     
 

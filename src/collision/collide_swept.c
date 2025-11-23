@@ -126,7 +126,7 @@ void collide_object_swept_bounce(
     vector3Add(&move_amount, &object->bounding_box.max, &object->bounding_box.max);
 
     //Add new contact to object (object is contact Point B in the case of mesh collision)
-    collide_add_contact(object, &collide_data->hit_result, true, 0);
+    collide_add_contact(object, &collide_data->hit_result, true, NULL);
 }
 
 bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* mesh, Vector3* prev_pos){

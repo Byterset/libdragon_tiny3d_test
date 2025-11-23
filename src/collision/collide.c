@@ -534,7 +534,7 @@ bool collide_object_to_triangle(physics_object* object, const struct mesh_collid
         correct_velocity(NULL, object, &result, object->collision->friction, object->collision->bounce);
         
         //Add new contact to object (object is contact Point B in the case of mesh collision)
-        collide_add_contact(object, &result, true, 0);
+        collide_add_contact(object, &result, true, NULL);
 
         return true;
     }
@@ -544,7 +544,7 @@ bool collide_object_to_triangle(physics_object* object, const struct mesh_collid
 
 
 
-void collide_add_contact(physics_object* object, const struct EpaResult* result, bool is_B, entity_id other_id) {
+void collide_add_contact(physics_object* object, const struct EpaResult* result, bool is_B, physics_object* other_object) {
     contact* contact = collision_scene_new_contact();
 
     if (!contact) {
@@ -559,8 +559,9 @@ void collide_add_contact(physics_object* object, const struct EpaResult* result,
         contact->normal = result->normal;
         contact->point = result->contactA;
     }
-
-    contact->other_object = other_id;
+    contact->pid = contact_pair_id_get(object? object->entity_id : 0, other_object? other_object->entity_id : 0);
+    contact->object = object;
+    contact->other_object = other_object;
 
     contact->next = object->active_contacts;
     object->active_contacts = contact;
@@ -571,50 +572,52 @@ void collide_add_contact(physics_object* object, const struct EpaResult* result,
 // NEW: DETECTION-ONLY FUNCTIONS FOR ITERATIVE CONSTRAINT SOLVER
 // ============================================================================
 
-void cache_contact_constraint(physics_object* objectA, physics_object* objectB, const struct EpaResult* result,
+void cache_contact_constraint(physics_object* a, physics_object* b, const struct EpaResult* result,
                                float combined_friction, float combined_bounce, bool is_trigger) {
     struct collision_scene* scene = collision_scene_get();
 
-    contact_id id = get_contact_id(objectA ? objectA->entity_id : (entity_id)0, objectB ? objectB->entity_id : (entity_id)0);
+    contact_pair_id pid = contact_pair_id_get(a ? a->entity_id : (entity_id)0, b ? b->entity_id : (entity_id)0);
 
     // Find existing constraint for this entity pair
-    contact_constraint* cc = NULL;
+    contact_constraint* cont_constraint = NULL;
     for (int i = 0; i < scene->cached_contact_count; i++) {
-        if (scene->cached_contacts[i].id == id) {
-            cc = &scene->cached_contacts[i];
+        if (scene->cached_contacts[i].pid == pid) {
+            cont_constraint = &scene->cached_contacts[i];
             break;
         }
     }
 
     // If no existing constraint, create a new one
-    if (!cc) {
+    if (!cont_constraint) {
         if (scene->cached_contact_count >= MAX_CACHED_CONTACTS) {
             return; // No more room in cache
         }
 
-        cc = &scene->cached_contacts[scene->cached_contact_count];
+        cont_constraint = &scene->cached_contacts[scene->cached_contact_count];
         scene->cached_contact_count++;
-        cc->id = id;
-        cc->point_count = 0;
+        cont_constraint->pid = pid;
+        cont_constraint->point_count = 0;
     }
 
     // Update shared constraint data
-    cc->objectA = objectA;
-    cc->objectB = objectB;
-    cc->normal = result->normal;
-    cc->combined_friction = combined_friction;
-    cc->combined_bounce = combined_bounce;
-    cc->is_trigger = is_trigger;
-    cc->is_active = true;
+    cont_constraint->objectA = a;
+    cont_constraint->objectB = b;
+    cont_constraint->normal = result->normal;
+    cont_constraint->combined_friction = combined_friction;
+    cont_constraint->combined_bounce = combined_bounce;
+    cont_constraint->is_trigger = is_trigger;
+    cont_constraint->is_active = true;
+
 
     // Try to match this contact point with an existing point by proximity
     const float match_distance_sq = 0.04f; // 0.2^2 - points within 0.2 units are considered the same
     int matched_point_index = -1;
     float best_dist_sq = match_distance_sq;
 
-    for (int i = 0; i < cc->point_count; i++) {
-        float dist_a = vector3DistSqrd(&cc->points[i].contactA, &result->contactA);
-        float dist_b = vector3DistSqrd(&cc->points[i].contactB, &result->contactB);
+
+    for (int i = 0; i < cont_constraint->point_count; i++) {
+        float dist_a = vector3DistSqrd(&cont_constraint->points[i].contactA, &result->contactA);
+        float dist_b = vector3DistSqrd(&cont_constraint->points[i].contactB, &result->contactB);
         float min_dist = fminf(dist_a, dist_b);
 
         if (min_dist < best_dist_sq) {
@@ -623,48 +626,48 @@ void cache_contact_constraint(physics_object* objectA, physics_object* objectB, 
         }
     }
 
-    contact_point* cp;
+    contact_point* cont_point;
     if (matched_point_index >= 0) {
         // Reuse existing contact point (preserve accumulated impulses for warm starting)
-        cp = &cc->points[matched_point_index];
+        cont_point = &cont_constraint->points[matched_point_index];
     } else {
         // Add new contact point if we have room
-        if (cc->point_count >= MAX_CONTACT_POINTS_PER_PAIR) {
+        if (cont_constraint->point_count >= MAX_CONTACT_POINTS_PER_PAIR) {
             // Replace the point with smallest penetration (least important)
             int min_pen_index = 0;
-            float min_pen = cc->points[0].penetration;
-            for (int i = 1; i < cc->point_count; i++) {
-                if (cc->points[i].penetration < min_pen) {
-                    min_pen = cc->points[i].penetration;
+            float min_pen = cont_constraint->points[0].penetration;
+            for (int i = 1; i < cont_constraint->point_count; i++) {
+                if (cont_constraint->points[i].penetration < min_pen) {
+                    min_pen = cont_constraint->points[i].penetration;
                     min_pen_index = i;
                 }
             }
             // Only replace if new point has deeper penetration
             if (result->penetration > min_pen) {
-                cp = &cc->points[min_pen_index];
+                cont_point = &cont_constraint->points[min_pen_index];
                 // Reset accumulated impulses for new point
-                cp->accumulated_normal_impulse = 0.0f;
-                cp->accumulated_tangent_impulse_u = 0.0f;
-                cp->accumulated_tangent_impulse_v = 0.0f;
+                cont_point->accumulated_normal_impulse = 0.0f;
+                cont_point->accumulated_tangent_impulse_u = 0.0f;
+                cont_point->accumulated_tangent_impulse_v = 0.0f;
             } else {
                 return; // Don't add this point
             }
         } else {
             // Add new point
-            cp = &cc->points[cc->point_count];
-            cc->point_count++;
+            cont_point = &cont_constraint->points[cont_constraint->point_count];
+            cont_constraint->point_count++;
             // Initialize accumulated impulses
-            cp->accumulated_normal_impulse = 0.0f;
-            cp->accumulated_tangent_impulse_u = 0.0f;
-            cp->accumulated_tangent_impulse_v = 0.0f;
+            cont_point->accumulated_normal_impulse = 0.0f;
+            cont_point->accumulated_tangent_impulse_u = 0.0f;
+            cont_point->accumulated_tangent_impulse_v = 0.0f;
         }
     }
 
     // Update contact point data
-    cp->point = result->contactA;
-    cp->contactA = result->contactA;
-    cp->contactB = result->contactB;
-    cp->penetration = result->penetration;
+    cont_point->point = result->contactA;
+    cont_point->contactA = result->contactA;
+    cont_point->contactB = result->contactB;
+    cont_point->penetration = result->penetration;
 }
 
 bool detect_contact_object_to_triangle(physics_object* object, const struct mesh_collider* mesh, int triangle_index) {
@@ -693,7 +696,7 @@ bool detect_contact_object_to_triangle(physics_object* object, const struct mesh
         cache_contact_constraint(NULL, object, &result, object->collision->friction, object->collision->bounce, false);
 
         // Still add to old contact list for ground detection logic
-        collide_add_contact(object, &result, true, 0);
+        collide_add_contact(object, &result, true, NULL);
 
         return true;
     }
@@ -770,14 +773,16 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
         if (a->is_trigger) {
             contact->normal = gZeroVec;
             contact->point = *a->position;
-            contact->other_object = a->entity_id;
+            contact->object = b;
+            contact->other_object = a;
 
             contact->next = b->active_contacts;
             b->active_contacts = contact;
         } else {
             contact->normal = gZeroVec;
             contact->point = *b->position;
-            contact->other_object = b->entity_id;
+            contact->object = a;
+            contact->other_object = b;
 
             contact->next = a->active_contacts;
             a->active_contacts = contact;
@@ -825,6 +830,6 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
     cache_contact_constraint(a, b, &result, combined_friction, combined_bounce, false);
 
     // Still add to old contact lists for compatibility
-    collide_add_contact(a, &result, false, b ? b->entity_id : 0);
-    collide_add_contact(b, &result, true, a ? a->entity_id : 0);
+    collide_add_contact(a, &result, false, b);
+    collide_add_contact(b, &result, true, a);
 }

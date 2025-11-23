@@ -53,3 +53,14 @@ bool vector3Refract(const Vector3 *in, const Vector3 *normal, float eta, Vector3
     vector3SubFromSelf(out, &tmp);
     return true;
 }
+
+/// @brief Helper function to calculate tangent vectors orthogonal to normal
+void vector3CalculateTangents(const Vector3* normal, Vector3* tangent_u, Vector3* tangent_v) {
+
+    // First tangent is normal cross axis
+    vector3Perpendicular(normal, tangent_u);
+
+    // Second tangent is normal cross first tangent
+    vector3Cross(normal, tangent_u, tangent_v);
+    vector3Normalize(tangent_v, tangent_v);
+}

@@ -33,18 +33,14 @@ void player_handle_contacts(struct player* player){
     contact *contact = player->physics.active_contacts;
     while (contact)
     {
-        struct collectable *collectable = collectable_get(contact->other_object);
-        physics_object *other = collision_scene_find_object(contact->other_object); 
-        if (contact->other_object != 0)
-        {
-            // debugf("Collision with %d\n", contact->other_object);
-        }
+        struct collectable *collectable = contact->other_object ? collectable_get(contact->other_object->entity_id) : NULL;
+
         if (collectable)
         {
             collectable_collected(collectable);
         }
 
-        if ((other && other->collision_layers & COLLISION_LAYER_TANGIBLE) || contact->other_object == 0)
+        if ((contact->other_object && contact->other_object->collision_layers & COLLISION_LAYER_TANGIBLE) || !contact->other_object)
         {
             if (contact->normal.y >= PLAYER_MAX_ANGLE_GROUND_DOT)
             {

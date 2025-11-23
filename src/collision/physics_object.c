@@ -346,7 +346,7 @@ bool physics_object_is_touching(physics_object* object, entity_id id) {
     contact* current = object->active_contacts;
 
     while (current) {
-        if (current->other_object == id) {
+        if (current->other_object->entity_id == id) {
             return true;
         }
             

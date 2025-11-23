@@ -200,25 +200,6 @@ static void physics_object_apply_angular_impulse_to_rotation(physics_object* obj
     }
 }
 
-/// @brief Helper function to calculate tangent vectors orthogonal to normal
-static void calculate_tangent_vectors(const Vector3* normal, Vector3* tangent_u, Vector3* tangent_v) {
-    // Choose an axis that's not parallel to the normal
-    Vector3 axis;
-    if (fabsf(normal->x) > 0.9f) {
-        axis = (Vector3){{0.0f, 1.0f, 0.0f}};
-    } else {
-        axis = (Vector3){{1.0f, 0.0f, 0.0f}};
-    }
-
-    // First tangent is normal cross axis
-    vector3Cross(normal, &axis, tangent_u);
-    vector3Normalize(tangent_u, tangent_u);
-
-    // Second tangent is normal cross first tangent
-    vector3Cross(normal, tangent_u, tangent_v);
-    vector3Normalize(tangent_v, tangent_v);
-}
-
 /// @brief Mark all cached contacts as inactive before detection phase
 static void collision_scene_mark_contacts_inactive() {
     for (int i = 0; i < g_scene.cached_contact_count; i++) {
@@ -292,16 +273,18 @@ static void collision_scene_detect_all_contacts() {
 /// @brief Pre-solve: calculate effective masses and prepare constraint data
 static void collision_scene_pre_solve_contacts() {
     for (int i = 0; i < g_scene.cached_contact_count; i++) {
-        contact_constraint* cc = &g_scene.cached_contacts[i];
+        contact_constraint* cont_constraint = &g_scene.cached_contacts[i];
 
-        if (!cc->is_active || cc->is_trigger) continue;
+        if (!cont_constraint->is_active || cont_constraint->is_trigger) continue;
 
-        physics_object* a = cc->objectA;
-        physics_object* b = cc->objectB;
+        physics_object* a = cont_constraint->objectA;
+        physics_object* b = cont_constraint->objectB;
 
         // Calculate center of mass for both objects (shared across all points)
         Vector3 centerOfMassA = gZeroVec;
         Vector3 centerOfMassB = gZeroVec;
+
+        Vector3 normal = cont_constraint->normal;
 
         if (a) {
             if (a->rotation) {
@@ -324,23 +307,23 @@ static void collision_scene_pre_solve_contacts() {
         }
 
         // Calculate tangent vectors for friction (shared across all points)
-        calculate_tangent_vectors(&cc->normal, &cc->tangent_u, &cc->tangent_v);
+        vector3CalculateTangents(&cont_constraint->normal, &cont_constraint->tangent_u, &cont_constraint->tangent_v);
 
         // Process each contact point
-        for (int p = 0; p < cc->point_count; p++) {
-            contact_point* cp = &cc->points[p];
+        for (int p = 0; p < cont_constraint->point_count; p++) {
+            contact_point* cont_point = &cont_constraint->points[p];
 
             // Calculate rA and rB (contact point relative to center of mass)
             if (a) {
-                vector3Sub(&cp->contactA, &centerOfMassA, &cp->rA);
+                vector3Sub(&cont_point->contactA, &centerOfMassA, &cont_point->a_to_contact);
             } else {
-                cp->rA = gZeroVec;
+                cont_point->a_to_contact = gZeroVec;
             }
 
             if (b) {
-                vector3Sub(&cp->contactB, &centerOfMassB, &cp->rB);
+                vector3Sub(&cont_point->contactB, &centerOfMassB, &cont_point->b_to_contact);
             } else {
-                cp->rB = gZeroVec;
+                cont_point->b_to_contact = gZeroVec;
             }
 
             // Calculate effective mass for normal direction
@@ -351,16 +334,16 @@ static void collision_scene_pre_solve_contacts() {
             float invMassB = 0.0f;
 
             if (a && !aMovementConstrained) {
-                bool constrainedAlongNormal = ((a->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(cc->normal.x) > 0.01f) ||
-                                              ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(cc->normal.y) > 0.01f) ||
-                                              ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(cc->normal.z) > 0.01f);
+                bool constrainedAlongNormal = ((a->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(normal.x) > 0.01f) ||
+                                              ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(normal.y) > 0.01f) ||
+                                              ((a->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(normal.z) > 0.01f);
                 invMassA = constrainedAlongNormal ? 0.0f : a->_inv_mass;
             }
 
             if (b && !bMovementConstrained) {
-                bool constrainedAlongNormal = ((b->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(cc->normal.x) > 0.01f) ||
-                                              ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(cc->normal.y) > 0.01f) ||
-                                              ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(cc->normal.z) > 0.01f);
+                bool constrainedAlongNormal = ((b->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(normal.x) > 0.01f) ||
+                                              ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(normal.y) > 0.01f) ||
+                                              ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(normal.z) > 0.01f);
                 invMassB = constrainedAlongNormal ? 0.0f : b->_inv_mass;
             }
 
@@ -369,7 +352,7 @@ static void collision_scene_pre_solve_contacts() {
             // Add rotational inertia term for A
             if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossN;
-                vector3Cross(&cp->rA, &cc->normal, &rCrossN);
+                vector3Cross(&cont_point->a_to_contact, &normal, &rCrossN);
 
                 Quaternion rotation_inverse_a;
                 quatConjugate(a->rotation, &rotation_inverse_a);
@@ -395,7 +378,7 @@ static void collision_scene_pre_solve_contacts() {
             // Add rotational inertia term for B
             if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossN;
-                vector3Cross(&cp->rB, &cc->normal, &rCrossN);
+                vector3Cross(&cont_point->b_to_contact, &normal, &rCrossN);
 
                 Quaternion rotation_inverse_b;
                 quatConjugate(b->rotation, &rotation_inverse_b);
@@ -419,13 +402,13 @@ static void collision_scene_pre_solve_contacts() {
             }
 
             if (denominator < EPSILON) denominator = EPSILON;
-            cp->normal_mass = 1.0f / denominator;
+            cont_point->normal_mass = 1.0f / denominator;
 
             // Calculate effective mass for tangent U
             float denominator_u = invMassA + invMassB;
             if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossT;
-                vector3Cross(&cp->rA, &cc->tangent_u, &rCrossT);
+                vector3Cross(&cont_point->a_to_contact, &cont_constraint->tangent_u, &rCrossT);
                 Quaternion rotation_inverse_a;
                 quatConjugate(a->rotation, &rotation_inverse_a);
                 Vector3 local_rCrossT;
@@ -443,7 +426,7 @@ static void collision_scene_pre_solve_contacts() {
             }
             if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossT;
-                vector3Cross(&cp->rB, &cc->tangent_u, &rCrossT);
+                vector3Cross(&cont_point->b_to_contact, &cont_constraint->tangent_u, &rCrossT);
                 Quaternion rotation_inverse_b;
                 quatConjugate(b->rotation, &rotation_inverse_b);
                 Vector3 local_rCrossT;
@@ -460,13 +443,13 @@ static void collision_scene_pre_solve_contacts() {
                 denominator_u += vector3Dot(&rCrossT, &torquePerImpulse);
             }
             if (denominator_u < EPSILON) denominator_u = EPSILON;
-            cp->tangent_mass_u = 1.0f / denominator_u;
+            cont_point->tangent_mass_u = 1.0f / denominator_u;
 
             // Calculate effective mass for tangent V
             float denominator_v = invMassA + invMassB;
             if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossT;
-                vector3Cross(&cp->rA, &cc->tangent_v, &rCrossT);
+                vector3Cross(&cont_point->a_to_contact, &cont_constraint->tangent_v, &rCrossT);
                 Quaternion rotation_inverse_a;
                 quatConjugate(a->rotation, &rotation_inverse_a);
                 Vector3 local_rCrossT;
@@ -484,7 +467,7 @@ static void collision_scene_pre_solve_contacts() {
             }
             if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossT;
-                vector3Cross(&cp->rB, &cc->tangent_v, &rCrossT);
+                vector3Cross(&cont_point->b_to_contact, &cont_constraint->tangent_v, &rCrossT);
                 Quaternion rotation_inverse_b;
                 quatConjugate(b->rotation, &rotation_inverse_b);
                 Vector3 local_rCrossT;
@@ -501,7 +484,7 @@ static void collision_scene_pre_solve_contacts() {
                 denominator_v += vector3Dot(&rCrossT, &torquePerImpulse);
             }
             if (denominator_v < EPSILON) denominator_v = EPSILON;
-            cp->tangent_mass_v = 1.0f / denominator_v;
+            cont_point->tangent_mass_v = 1.0f / denominator_v;
 
             // Calculate relative velocity for restitution
             Vector3 contactVelA = gZeroVec;
@@ -511,7 +494,7 @@ static void collision_scene_pre_solve_contacts() {
                 contactVelA = a->velocity;
                 if (a->rotation) {
                     Vector3 angularContribution;
-                    vector3Cross(&a->angular_velocity, &cp->rA, &angularContribution);
+                    vector3Cross(&a->angular_velocity, &cont_point->a_to_contact, &angularContribution);
                     vector3Add(&contactVelA, &angularContribution, &contactVelA);
                 }
             }
@@ -520,19 +503,19 @@ static void collision_scene_pre_solve_contacts() {
                 contactVelB = b->velocity;
                 if (b->rotation) {
                     Vector3 angularContribution;
-                    vector3Cross(&b->angular_velocity, &cp->rB, &angularContribution);
+                    vector3Cross(&b->angular_velocity, &cont_point->b_to_contact, &angularContribution);
                     vector3Add(&contactVelB, &angularContribution, &contactVelB);
                 }
             }
 
             Vector3 relVel;
             vector3Sub(&contactVelA, &contactVelB, &relVel);
-            float normalVelocity = vector3Dot(&relVel, &cc->normal);
+            float normalVelocity = vector3Dot(&relVel, &cont_constraint->normal);
 
             // Calculate velocity bias (restitution)
-            cp->velocity_bias = 0.0f;
+            cont_point->velocity_bias = 0.0f;
             if (normalVelocity < -1.0f) { // Threshold for bouncing
-                cp->velocity_bias = -cc->combined_bounce * normalVelocity;
+                cont_point->velocity_bias = -cont_constraint->combined_bounce * normalVelocity;
             }
         }
     }
@@ -573,7 +556,7 @@ static void collision_scene_warm_start() {
                 if (a->rotation)
                 {
                     Vector3 angularImpulse;
-                    vector3Cross(&cp->rA, &impulse, &angularImpulse);
+                    vector3Cross(&cp->a_to_contact, &impulse, &angularImpulse);
                     physics_object_apply_angular_impulse(a, &angularImpulse);
                 }
             }
@@ -594,7 +577,7 @@ static void collision_scene_warm_start() {
                 if (b->rotation)
                 {
                     Vector3 angularImpulse;
-                    vector3Cross(&cp->rB, &impulse, &angularImpulse);
+                    vector3Cross(&cp->b_to_contact, &impulse, &angularImpulse);
                     vector3Negate(&angularImpulse, &angularImpulse);
                     physics_object_apply_angular_impulse(b, &angularImpulse);
                 }
@@ -622,7 +605,7 @@ static void collision_scene_warm_start() {
                 if (a->rotation)
                 {
                     Vector3 angularTangentU;
-                    vector3Cross(&cp->rA, &tangentImpulseU, &angularTangentU);
+                    vector3Cross(&cp->a_to_contact, &tangentImpulseU, &angularTangentU);
                     physics_object_apply_angular_impulse(a, &angularTangentU);
                 }
             }
@@ -642,7 +625,7 @@ static void collision_scene_warm_start() {
                 if (b->rotation)
                 {
                     Vector3 angularTangentU;
-                    vector3Cross(&cp->rB, &tangentImpulseU, &angularTangentU);
+                    vector3Cross(&cp->b_to_contact, &tangentImpulseU, &angularTangentU);
                     vector3Negate(&angularTangentU, &angularTangentU);
                     physics_object_apply_angular_impulse(b, &angularTangentU);
                 }
@@ -663,7 +646,7 @@ static void collision_scene_warm_start() {
                 if (a->rotation)
                 {
                     Vector3 angularTangentV;
-                    vector3Cross(&cp->rA, &tangentImpulseV, &angularTangentV);
+                    vector3Cross(&cp->a_to_contact, &tangentImpulseV, &angularTangentV);
                     physics_object_apply_angular_impulse(a, &angularTangentV);
                 }
             }
@@ -683,7 +666,7 @@ static void collision_scene_warm_start() {
                 if (b->rotation)
                 {
                     Vector3 angularTangentV;
-                    vector3Cross(&cp->rB, &tangentImpulseV, &angularTangentV);
+                    vector3Cross(&cp->b_to_contact, &tangentImpulseV, &angularTangentV);
                     vector3Negate(&angularTangentV, &angularTangentV);
                     physics_object_apply_angular_impulse(b, &angularTangentV);
                 }
@@ -722,7 +705,7 @@ static void collision_scene_solve_velocity_constraints()
                 if (a->rotation)
                 {
                     Vector3 angularContribution;
-                    vector3Cross(&a->angular_velocity, &cp->rA, &angularContribution);
+                    vector3Cross(&a->angular_velocity, &cp->a_to_contact, &angularContribution);
                     vector3Add(&contactVelA, &angularContribution, &contactVelA);
                 }
             }
@@ -733,7 +716,7 @@ static void collision_scene_solve_velocity_constraints()
                 if (b->rotation)
                 {
                     Vector3 angularContribution;
-                    vector3Cross(&b->angular_velocity, &cp->rB, &angularContribution);
+                    vector3Cross(&b->angular_velocity, &cp->b_to_contact, &angularContribution);
                     vector3Add(&contactVelB, &angularContribution, &contactVelB);
                 }
             }
@@ -775,7 +758,7 @@ static void collision_scene_solve_velocity_constraints()
                 if (a->rotation)
                 {
                     Vector3 angularImpulse;
-                    vector3Cross(&cp->rA, &impulse, &angularImpulse);
+                    vector3Cross(&cp->a_to_contact, &impulse, &angularImpulse);
                     physics_object_apply_angular_impulse(a, &angularImpulse);
                 }
             }
@@ -796,7 +779,7 @@ static void collision_scene_solve_velocity_constraints()
                 if (b->rotation)
                 {
                     Vector3 angularImpulse;
-                    vector3Cross(&cp->rB, &impulse, &angularImpulse);
+                    vector3Cross(&cp->b_to_contact, &impulse, &angularImpulse);
                     vector3Negate(&angularImpulse, &angularImpulse);
                     physics_object_apply_angular_impulse(b, &angularImpulse);
                 }
@@ -812,7 +795,7 @@ static void collision_scene_solve_velocity_constraints()
                     if (a->rotation)
                     {
                         Vector3 angularContribution;
-                        vector3Cross(&a->angular_velocity, &cp->rA, &angularContribution);
+                        vector3Cross(&a->angular_velocity, &cp->a_to_contact, &angularContribution);
                         vector3Add(&contactVelA, &angularContribution, &contactVelA);
                     }
                 }
@@ -823,7 +806,7 @@ static void collision_scene_solve_velocity_constraints()
                     if (b->rotation)
                     {
                         Vector3 angularContribution;
-                        vector3Cross(&b->angular_velocity, &cp->rB, &angularContribution);
+                        vector3Cross(&b->angular_velocity, &cp->b_to_contact, &angularContribution);
                         vector3Add(&contactVelB, &angularContribution, &contactVelB);
                     }
                 }
@@ -881,7 +864,7 @@ static void collision_scene_solve_velocity_constraints()
                         if (a->rotation)
                         {
                             Vector3 angularImpulse;
-                            vector3Cross(&cp->rA, &tangentImpulseU, &angularImpulse);
+                            vector3Cross(&cp->a_to_contact, &tangentImpulseU, &angularImpulse);
                             physics_object_apply_angular_impulse(a, &angularImpulse);
                         }
                     }
@@ -900,7 +883,7 @@ static void collision_scene_solve_velocity_constraints()
                         if (b->rotation)
                         {
                             Vector3 angularImpulse;
-                            vector3Cross(&cp->rB, &tangentImpulseU, &angularImpulse);
+                            vector3Cross(&cp->b_to_contact, &tangentImpulseU, &angularImpulse);
                             vector3Negate(&angularImpulse, &angularImpulse);
                             physics_object_apply_angular_impulse(b, &angularImpulse);
                         }
@@ -927,7 +910,7 @@ static void collision_scene_solve_velocity_constraints()
                         if (a->rotation)
                         {
                             Vector3 angularImpulse;
-                            vector3Cross(&cp->rA, &tangentImpulseV, &angularImpulse);
+                            vector3Cross(&cp->a_to_contact, &tangentImpulseV, &angularImpulse);
                             physics_object_apply_angular_impulse(a, &angularImpulse);
                         }
                     }
@@ -946,7 +929,7 @@ static void collision_scene_solve_velocity_constraints()
                         if (b->rotation)
                         {
                             Vector3 angularImpulse;
-                            vector3Cross(&cp->rB, &tangentImpulseV, &angularImpulse);
+                            vector3Cross(&cp->b_to_contact, &tangentImpulseV, &angularImpulse);
                             vector3Negate(&angularImpulse, &angularImpulse);
                             physics_object_apply_angular_impulse(b, &angularImpulse);
                         }
@@ -1024,7 +1007,7 @@ static void collision_scene_solve_position_constraints() {
             // Add rotational inertia term for A
             if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossN;
-                vector3Cross(&cp->rA, &cc->normal, &rCrossN);
+                vector3Cross(&cp->a_to_contact, &cc->normal, &rCrossN);
 
                 Quaternion rotation_inverse_a;
                 quatConjugate(a->rotation, &rotation_inverse_a);
@@ -1050,7 +1033,7 @@ static void collision_scene_solve_position_constraints() {
             // Add rotational inertia term for B
             if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossN;
-                vector3Cross(&cp->rB, &cc->normal, &rCrossN);
+                vector3Cross(&cp->b_to_contact, &cc->normal, &rCrossN);
 
                 Quaternion rotation_inverse_b;
                 quatConjugate(b->rotation, &rotation_inverse_b);
@@ -1089,7 +1072,7 @@ static void collision_scene_solve_position_constraints() {
                 
                 if (a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                     Vector3 angularImpulse;
-                    vector3Cross(&cp->rA, &impulse, &angularImpulse);
+                    vector3Cross(&cp->a_to_contact, &impulse, &angularImpulse);
                     physics_object_apply_angular_impulse_to_rotation(a, &angularImpulse);
                 }
             }
@@ -1102,7 +1085,7 @@ static void collision_scene_solve_position_constraints() {
 
                 if (b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                     Vector3 angularImpulse;
-                    vector3Cross(&cp->rB, &impulse, &angularImpulse);
+                    vector3Cross(&cp->b_to_contact, &impulse, &angularImpulse);
                     vector3Negate(&angularImpulse, &angularImpulse);
                     physics_object_apply_angular_impulse_to_rotation(b, &angularImpulse);
                 }

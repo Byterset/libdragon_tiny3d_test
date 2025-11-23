@@ -243,6 +243,9 @@ inline void vector3Perpendicular(const Vector3* a, Vector3* out) {
     }
 }
 
+/// @brief Helper function to calculate tangent vectors orthogonal to normal
+void vector3CalculateTangents(const Vector3* normal, Vector3* tangent_u, Vector3* tangent_v);
+
 /// @brief Gives the component of in parallel to normal
 /// @param in 
 /// @param normal must be normalized

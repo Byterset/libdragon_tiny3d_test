@@ -36,7 +36,7 @@ void correct_overlap(physics_object* a, physics_object* b, const struct EpaResul
 /// @param result the result of the EPA, containing the calculated contact points
 /// @param is_B flag if this object was object B during EPA - EpaResult will contain both contactA and contactB
 /// @param other_id the entity_id of the object that was collided against
-void collide_add_contact(physics_object* object, const struct EpaResult* result, bool is_B, entity_id other_id);
+void collide_add_contact(physics_object* object, const struct EpaResult* result, bool is_B, physics_object* other_object);
 
 
 // -------- NEW: DETECTION-ONLY FUNCTIONS FOR ITERATIVE SOLVER --------

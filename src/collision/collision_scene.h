@@ -7,7 +7,6 @@
 #include "../collision/aabb_tree.h"
 #include "contact.h"
 
-typedef int collision_id;
 
 #define MAX_PHYSICS_OBJECTS 64
 #define MAX_CACHED_CONTACTS 256

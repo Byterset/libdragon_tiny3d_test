@@ -9,14 +9,16 @@
 #define MAX_CONTACT_POINTS_PER_PAIR 4
 
 typedef struct contact contact;
-typedef uint32_t contact_id; //unique combination of two entity ids (enity_id is uint16_t)
+typedef uint32_t contact_pair_id; //unique combination of two entity ids (enity_id is uint16_t)
 typedef struct physics_object physics_object;
 /// @brief contact struct containing information about a collision
 typedef struct contact {
     contact* next; // pointer to the next contact in a list
+    contact_pair_id pid;
     Vector3 point; // the 3D position in world space of the contact point on the surface of an object
     Vector3 normal; // the collision normal pointing away from the object that was collided with
-    entity_id other_object; // entity_id of the object that was collided with
+    physics_object* object;
+    physics_object* other_object; // entity_id of the object that was collided with
 } contact;
 
 /// @brief Single contact point data within a contact constraint
@@ -25,6 +27,7 @@ typedef struct contact_point {
     Vector3 contactA; // contact point on surface A (local to pair, not object)
     Vector3 contactB; // contact point on surface B (local to pair, not object)
     float penetration; // depth of penetration for this point
+    bool remove;
 
     // Cached data for warm starting and iterative solving (per point)
     float accumulated_normal_impulse; // accumulated normal impulse for warm starting
@@ -34,13 +37,13 @@ typedef struct contact_point {
     float tangent_mass_u; // cached effective mass for first tangent direction
     float tangent_mass_v; // cached effective mass for second tangent direction
     float velocity_bias; // velocity bias for restitution
-    Vector3 rA; // contact point relative to A's center of mass
-    Vector3 rB; // contact point relative to B's center of mass
+    Vector3 a_to_contact; // contact point relative to A's center of mass
+    Vector3 b_to_contact; // contact point relative to B's center of mass
 } contact_point;
 
 /// @brief contact constraint containing multiple contact points for a pair of objects
 typedef struct contact_constraint {
-    contact_id id; // unique ID for this contact pair (combination of both entity IDs)
+    contact_pair_id pid; // unique ID for this contact pair (combination of both entity IDs)
     physics_object* objectA; // first object in the contact pair
     physics_object* objectB; // second object in the contact pair
     
@@ -63,7 +66,7 @@ typedef struct contact_constraint {
 } contact_constraint;
 
 
-inline contact_id get_contact_id(entity_id a, entity_id b){
+inline contact_pair_id contact_pair_id_get(entity_id a, entity_id b){
     if (a < b)
         return ((uint32_t)a << 16) | b;
     else
