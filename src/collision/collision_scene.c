@@ -24,8 +24,10 @@ void collision_scene_reset() {
     free(g_scene.cached_contacts);
     AABB_tree_free(&g_scene.object_aabbtree);
     hash_map_destroy(&g_scene.entity_mapping);
+    hash_map_destroy(&g_scene.contact_map);
 
     hash_map_init(&g_scene.entity_mapping, MAX_PHYSICS_OBJECTS);
+    hash_map_init(&g_scene.contact_map, MAX_CACHED_CONTACTS);
     AABB_tree_init(&g_scene.object_aabbtree, MAX_PHYSICS_OBJECTS);
     g_scene.elements = malloc(sizeof(struct collision_scene_element) * MAX_PHYSICS_OBJECTS);
     g_scene.capacity = MAX_PHYSICS_OBJECTS;
@@ -262,6 +264,21 @@ static void collision_scene_remove_inactive_contacts() {
         }
     }
     g_scene.cached_contact_count = write_index;
+
+    // Rebuild contact map
+    hash_map_clear(&g_scene.contact_map);
+
+    for (int i = 0; i < g_scene.cached_contact_count; i++) {
+        contact_constraint* c = &g_scene.cached_contacts[i];
+        c->next_same_pid_index = -1;
+        
+        intptr_t existing_idx_plus_1 = (intptr_t)hash_map_get(&g_scene.contact_map, c->pid);
+        
+        if (existing_idx_plus_1 != 0) {
+            c->next_same_pid_index = (int)existing_idx_plus_1 - 1;
+        }
+        hash_map_set(&g_scene.contact_map, c->pid, (void*)(intptr_t)(i + 1));
+    }
 }
 
 /// @brief Detect all contacts (object-to-object and object-to-mesh)

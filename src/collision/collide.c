@@ -582,20 +582,24 @@ void cache_contact_constraint(physics_object* a, physics_object* b, const struct
     contact_constraint* cont_constraint = NULL;
     float best_normal_dot = 0.90f; // Threshold for matching normals (approx 25 degrees)
 
-    for (int i = 0; i < scene->cached_contact_count; i++) {
-        if (scene->cached_contacts[i].pid == pid) {
-            // Check if normals are similar
-            // This allows multiple constraints for the same pair if they have different normals (e.g. corner, or static mesh triangles)
-            float dot = vector3Dot(&scene->cached_contacts[i].normal, &result->normal);
-            if (dot > best_normal_dot) {
-                cont_constraint = &scene->cached_contacts[i];
+    // OPTIMIZATION: Use hash map to find constraints with same PID
+    intptr_t idx_plus_1 = (intptr_t)hash_map_get(&scene->contact_map, pid);
+    int idx = (int)idx_plus_1 - 1;
+
+    while (idx >= 0) {
+        contact_constraint* c = &scene->cached_contacts[idx];
+        // Verify PID (should match if map is correct)
+        if (c->pid == pid)
+        {
+            float dot = vector3Dot(&c->normal, &result->normal);
+            if (dot > best_normal_dot)
+            {
+                cont_constraint = c;
                 best_normal_dot = dot;
-                // We found a good match, use it.
-                // Note: We could keep searching for a *better* match, but first good match is usually sufficient
-                // and prevents jumping between constraints if they are close.
-                break; 
+                break;
             }
         }
+        idx = c->next_same_pid_index;
     }
 
     // If no existing constraint, create a new one
@@ -604,10 +608,19 @@ void cache_contact_constraint(physics_object* a, physics_object* b, const struct
             return; // No more room in cache
         }
 
-        cont_constraint = &scene->cached_contacts[scene->cached_contact_count];
+        int new_idx = scene->cached_contact_count;
+        cont_constraint = &scene->cached_contacts[new_idx];
         scene->cached_contact_count++;
         cont_constraint->pid = pid;
         cont_constraint->point_count = 0;
+
+        // Add to map/list
+        cont_constraint->next_same_pid_index = -1;
+        intptr_t existing_head_plus_1 = (intptr_t)hash_map_get(&scene->contact_map, pid);
+        if (existing_head_plus_1 != 0) {
+            cont_constraint->next_same_pid_index = (int)existing_head_plus_1 - 1;
+        }
+        hash_map_set(&scene->contact_map, pid, (void*)(intptr_t)(new_idx + 1));
     }
 
     // Update shared constraint data

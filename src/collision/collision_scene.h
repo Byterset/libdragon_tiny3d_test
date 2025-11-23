@@ -31,6 +31,7 @@ struct collision_scene {
     // Iterative constraint solver data
     contact_constraint* cached_contacts;
     int cached_contact_count;
+    struct hash_map contact_map;
 };
 
 void collision_scene_reset();

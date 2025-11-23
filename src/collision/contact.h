@@ -62,6 +62,9 @@ typedef struct contact_constraint {
     bool is_active; // was this contact found this frame?
     bool is_trigger; // is this a trigger contact (no resolution)?
 
+    // Optimization: Linked list of constraints with the same PID
+    int next_same_pid_index;
+
     // Multiple contact points for this pair
     contact_point points[MAX_CONTACT_POINTS_PER_PAIR];
     int point_count; // number of active contact points (1-4 typically)

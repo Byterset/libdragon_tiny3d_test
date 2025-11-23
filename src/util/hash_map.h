@@ -17,6 +17,7 @@ struct hash_map {
 // capacity must be a power of 2
 void hash_map_init(struct hash_map* hash_map, int capacity);
 void hash_map_destroy(struct hash_map* hash_map);
+void hash_map_clear(struct hash_map* hash_map);
 
 void* hash_map_get(struct hash_map* hash_map, int key);
 void hash_map_set(struct hash_map* hash_map, int key, void* value);

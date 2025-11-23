@@ -99,3 +99,8 @@ void hash_map_delete(struct hash_map* hash_map, int key) {
         entry->value = 0;
     }
 }
+
+void hash_map_clear(struct hash_map* hash_map) {
+    memset(hash_map->entries, 0, sizeof(struct hash_map_entry) * hash_map->capacity);
+    hash_map->count = 0;
+}

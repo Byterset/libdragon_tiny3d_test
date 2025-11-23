@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define PHYS_GLOBAL_GRAVITY_MULT 1.0f // adjust this according to general world scale
+#define PHYS_GLOBAL_GRAVITY_MULT 1.5f // adjust this according to general world scale
 #define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default gravity in m/s^2
 
 #define PHYS_OBJECT_TERMINAL_SPEED   90.0f // terminal linear speed / velocity magnitude (units/s)
