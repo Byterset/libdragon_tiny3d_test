@@ -293,6 +293,16 @@ void physics_object_update_world_inertia(physics_object* object);
 
 /// @brief Wakes up the object (resets sleep timer and state)
 /// @param object
-void physics_object_wake(physics_object* object);
+inline void physics_object_wake(physics_object* object) {
+    object->_is_sleeping = false;
+    object->_sleep_counter = 0;
+};
+
+inline void physics_object_sleep(physics_object* object) {
+    object->_is_sleeping = true;
+    // Get rid of any residual velocity so object is actually at rest
+    object->velocity = gZeroVec;
+    object->angular_velocity = gZeroVec;
+};
 
 #endif

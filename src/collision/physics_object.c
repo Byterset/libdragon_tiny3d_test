@@ -466,8 +466,3 @@ void physics_object_update_world_inertia(physics_object* object) {
     object->_inv_world_inertia_tensor[7] = object->_inv_world_inertia_tensor[5]; // Symmetric
     object->_inv_world_inertia_tensor[8] = r20*r20*ix + r21*r21*iy + r22*r22*iz;
 }
-
-void physics_object_wake(physics_object* object) {
-    object->_is_sleeping = false;
-    object->_sleep_counter = 0;
-}

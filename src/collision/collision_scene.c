@@ -291,7 +291,8 @@ static void collision_scene_detect_all_contacts() {
             // Optimization: Skip duplicate pairs
             // Since contact_pair_id is symmetric, we only need to check each pair once.
             // We enforce a < b by entity_id.
-            if (a->entity_id > b->entity_id) continue;
+            // However, if b is sleeping, it won't perform the check, so we must do it regardless of ID order.
+            if (!b->_is_sleeping && a->entity_id > b->entity_id) continue;
 
             // Narrow phase - only detect, don't resolve!
             detect_contact_object_to_object(a, b);
@@ -1336,10 +1337,7 @@ void collision_scene_step() {
             }
             else
             {
-                obj->_is_sleeping = true;
-                // Get rid of any residual velocity so object is actually at rest
-                obj->velocity = gZeroVec;
-                obj->angular_velocity = gZeroVec;
+                physics_object_sleep(obj);
             }
         }
         else
