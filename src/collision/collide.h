@@ -21,14 +21,6 @@
 void correct_velocity(physics_object* a, physics_object* b, const struct EpaResult* result, float friction, float bounce);
 
 
-/// @brief Corrects overlaps of colliding physics_objects. This will translate them away from each other along the collision 
-/// normal. The correction depends on the mass ratio and the respective objects constraints.
-/// @param a pointer to colliding physics_object a
-/// @param b pointer to colliding physics_object b
-/// @param result the result of the EPA, containing collision normal, contact points & penetration depth
-void correct_overlap(physics_object* a, physics_object* b, const struct EpaResult* result);
-
-
 /// @brief Attempts to create a new contact in the collision_scene and add it to the physics_objects list of active contacts.
 ///
 /// @note It is important to know in which order the objects were tested during the EPA so the correct contact point of the result gets added.

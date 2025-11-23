@@ -68,7 +68,8 @@ struct soda_can soda_can;
 struct fire fire;
 struct skybox_flat skybox_flat;
 struct mesh_collider test_mesh_collider;
-int render_collision = 0;
+bool render_collision = false;
+bool render_contacts = false;
 
 struct camera camera;
 struct camera_controller camera_controller;
@@ -259,11 +260,11 @@ int main()
 
         if(joypad_get_buttons_pressed(0).start){
             render_collision = !render_collision;
-            // render_collision ? update_pause_layers(UPDATE_LAYER_WORLD) : update_unpause_layers(UPDATE_LAYER_WORLD);
         }
 
         if(joypad_get_buttons_pressed(0).d_left){
-            crate_destroy(&crates[0]);
+            render_contacts = !render_contacts;
+            // crate_destroy(&crates[0]);
         }
         
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //
@@ -319,6 +320,32 @@ int main()
             struct collision_scene *collision_scene = collision_scene_get();
             debugDrawBVTree(buff, &collision_scene->object_aabbtree, t3d_viewport_get(),
                             &t3d_viewport_get()->viewFrustum, 1, 3, 15);
+        }
+
+        if(render_contacts){
+            struct collision_scene *collision_scene = collision_scene_get();
+            
+            for (int i = 0; i < collision_scene->cached_contact_constraint_count; i++) {
+                contact_constraint* cc = &collision_scene->cached_contact_constraints[i];
+                
+                if (!cc->is_active || (cc->objectA != &player.physics && cc->objectB != &player.physics)) continue;
+
+                for (int j = 0; j < cc->point_count; j++){
+                    Vector3 cA = cc->points[j].contactA;
+                    Vector3 normal = cc->normal;
+                    Vector3 contact_line_end;
+                    vector3Scale(&normal, &contact_line_end, 2.0f);
+                    vector3AddToSelf(&contact_line_end, &cA);
+
+                    T3DVec3 vp_start;
+                    T3DVec3 vp_end;
+
+                    t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &vp_start, (T3DVec3*)&cA);
+                    t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &vp_end, (T3DVec3*)&contact_line_end);
+                    
+                    debugDrawLineVec3(buff, &vp_start, &vp_end, color_to_packed16(RGBA16(31,0,0,1)));
+                }
+            }
         }
 
         rdpq_detach_wait();

@@ -440,109 +440,6 @@ void correct_velocity(physics_object* a, physics_object* b, const struct EpaResu
     #endif
 }
 
-void correct_overlap(physics_object* a, physics_object* b, const struct EpaResult* result) {
-
-    if (result->penetration < slop) return;
-
-    const float steeringForce = clampf(steeringConstant * (result->penetration + slop), 0, maxCorrection);
-
-
-
-
-    const float percent = 0.7f;
-
-    
-
-    // Check if movement is fully constrained for each object
-    bool aMovementConstrained = a && (a->is_kinematic || ((a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
-    bool bMovementConstrained = b && (b->is_kinematic || ((b->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
-
-    // For objects with movement constraints, check if constrained along collision normal
-    float invMassA = 0.0f;
-    float invMassB = 0.0f;
-
-    // Calculate the effective normal after applying constraints
-    Vector3 effectiveNormalA = result->normal;
-    Vector3 effectiveNormalB = result->normal;;
-
-    float normal_dot_inv = 1.0f / vector3Dot(&result->normal, &result->normal);
-    if (a && !aMovementConstrained) {
-        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_X)
-            effectiveNormalA.x = 0.0f;
-        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Y)
-            effectiveNormalA.y = 0.0f;
-        if (a->constraints & CONSTRAINTS_FREEZE_POSITION_Z)
-            effectiveNormalA.z = 0.0f;
-        // Project the effective normal onto the actual normal to get the "effective mobility"
-        float normalDotA = vector3Dot(&effectiveNormalA, &result->normal);
-        invMassA = a->_inv_mass * (normalDotA * normalDotA) * normal_dot_inv;
-    }
-
-    if (b && !bMovementConstrained) {
-        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_X)
-            effectiveNormalB.x = 0.0f;
-        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Y)
-            effectiveNormalB.y = 0.0f;
-        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Z)
-            effectiveNormalB.z = 0.0f;
-        // Project the effective normal onto the actual normal to get the "effective mobility"
-        float normalDotB = vector3Dot(&effectiveNormalB, &result->normal);
-        invMassB = b->_inv_mass * (normalDotB * normalDotB) * normal_dot_inv;
-    }
-
-    float invMassSum = invMassA + invMassB;
-    if (invMassSum == 0.0f) return;
-
-    float correctionMag = steeringForce / invMassSum;
-
-    // Apply correction proportional to inverse mass
-    if (a && invMassA > 0.0f)
-    {
-        vector3AddScaled(a->position, &effectiveNormalA, correctionMag * invMassA, a->position);
-    }
-
-    if (b && invMassB > 0.0f)
-    {
-        vector3AddScaled(b->position, &effectiveNormalB, -correctionMag * invMassB, b->position);
-    }
-
-}
-
-
-bool collide_object_to_triangle(physics_object* object, const struct mesh_collider* mesh, int triangle_index){
-    struct mesh_triangle triangle;
-    triangle.triangle = mesh->triangles[triangle_index];
-    triangle.normal = mesh->normals[triangle_index];
-    triangle.vertices = mesh->vertices;
-
-    struct Simplex simplex;
-    Vector3 firstDir = gRight;
-    if (!gjkCheckForOverlap(&simplex, &triangle, mesh_triangle_gjk_support_function, object, physics_object_gjk_support_function, &firstDir))
-    {
-        return false;
-    }
-    struct EpaResult result;
-    if (epaSolve(
-            &simplex,
-            &triangle,
-            mesh_triangle_gjk_support_function,
-            object,
-            physics_object_gjk_support_function,
-            &result))
-    {
-        correct_overlap(NULL, object, &result);
-        correct_velocity(NULL, object, &result, object->collision->friction, object->collision->bounce);
-        
-        //Add new contact to object (object is contact Point B in the case of mesh collision)
-        collide_add_contact(object, &result, true, NULL);
-
-        return true;
-    }
-
-    return false;
-}
-
-
 
 void collide_add_contact(physics_object* object, const struct EpaResult* result, bool is_B, physics_object* other_object) {
     contact* contact = collision_scene_new_contact();
@@ -633,23 +530,30 @@ void cache_contact_constraint(physics_object* a, physics_object* b, const struct
     cont_constraint->is_active = true;
 
     // Calculate local points for the new contact
-    Vector3 localA, localB;
-    Vector3 diffA, diffB;
+    Vector3 localA = result->contactA;
+    Vector3 localB = result->contactB;
+
     
     if (a) {
-        vector3Sub(&result->contactA, a->position, &diffA);
-        Quaternion invRotA;
-        quatConjugate(a->rotation, &invRotA);
-        quatMultVector(&invRotA, &diffA, &localA);
+        vector3Sub(&localA, a->position, &localA);
+        if (a->rotation)
+        {
+            Quaternion invRotA;
+            quatConjugate(a->rotation, &invRotA);
+            quatMultVector(&invRotA, &localA, &localA);
+        }
     } else {
         localA = result->contactA;
     }
 
     if (b) {
-        vector3Sub(&result->contactB, b->position, &diffB);
-        Quaternion invRotB;
-        quatConjugate(b->rotation, &invRotB);
-        quatMultVector(&invRotB, &diffB, &localB);
+        vector3Sub(&localB, b->position, &localB);
+        if (b->rotation)
+        {
+            Quaternion invRotB;
+            quatConjugate(b->rotation, &invRotB);
+            quatMultVector(&invRotB, &localB, &localB);
+        }
     } else {
         localB = result->contactB;
     }

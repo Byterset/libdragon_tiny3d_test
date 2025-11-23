@@ -328,16 +328,16 @@ static void collision_scene_refresh_contacts() {
 
             // Update world positions from local
             if (a) {
-                Vector3 rA;
-                quatMultVector(a->rotation, &cp->localPointA, &rA);
+                Vector3 rA = cp->localPointA;
+                if (a->rotation )quatMultVector(a->rotation, &rA, &rA);
                 vector3Add(a->position, &rA, &cp->contactA);
             } else {
                 cp->contactA = cp->localPointA;
             }
             
             if (b) {
-                Vector3 rB;
-                quatMultVector(b->rotation, &cp->localPointB, &rB);
+                Vector3 rB = cp->localPointB;
+                if (b->rotation )quatMultVector(b->rotation, &rB, &rB);
                 vector3Add(b->position, &rB, &cp->contactB);
             } else {
                 cp->contactB = cp->localPointB;
