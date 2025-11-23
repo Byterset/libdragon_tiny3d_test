@@ -340,7 +340,7 @@ void render_batch_execute(struct render_batch *batch, Matrix4x4 view_proj_matrix
 
                 // Transform sprite position to view projection space
                 Vector4 transformed;
-                matrixVec3Mul(view_proj_matrix.m, &sprite.position, &transformed);
+                matrix4Vec3Mul(&view_proj_matrix, &sprite.position, &transformed);
 
                 // w is the homogeneous coordinate, if it is less than 0 the point is behind the camera
                 

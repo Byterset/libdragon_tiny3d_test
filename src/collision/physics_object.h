@@ -6,13 +6,14 @@
 #include "../math/vector2.h"
 #include "../math/aabb.h"
 #include "../math/quaternion.h"
+#include "../math/matrix.h"
 #include "../collision/aabb_tree.h"
 #include "contact.h"
 #include "gjk.h"
 #include <stdint.h>
 #include <stdbool.h>
 
-#define PHYS_GLOBAL_GRAVITY_MULT 1.0f // adjust this according to general world scale
+#define PHYS_GLOBAL_GRAVITY_MULT 1.5f // adjust this according to general world scale
 #define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default gravity in m/s^2
 
 #define PHYS_OBJECT_TERMINAL_SPEED   90.0f // terminal linear speed / velocity magnitude (units/s)
@@ -152,7 +153,9 @@ typedef struct physics_object {
     Vector3 _torque_accumulator;
     Vector3 _local_inertia_tensor; // must be recalculated if mass or collision changes!
     Vector3 _inv_local_intertia_tensor; // must be recalculated if _local_inertia_tensor changes!
-    float _inv_world_inertia_tensor[9]; // 3x3 matrix, recalculated every frame
+    Matrix3x3 _inv_world_inertia_tensor; // 3x3 matrix, recalculated every frame
+    Matrix3x3 _rotation_matrix; // 3x3 rotation matrix, cached every frame
+    Vector3 _world_center_of_mass; // cached world center of mass
     float angular_damping; // defines the decay rate of an objects angular velocity. Higher = object rotation slows down faster.
     float _prev_angular_speed_sq;
     float _ground_support_factor;
@@ -304,5 +307,9 @@ inline void physics_object_sleep(physics_object* object) {
     object->velocity = gZeroVec;
     object->angular_velocity = gZeroVec;
 };
+
+static inline void physics_object_apply_world_inertia(physics_object* obj, Vector3* in, Vector3* out) {
+    matrix3Vec3Mul(&obj->_inv_world_inertia_tensor, in, out);
+}
 
 #endif

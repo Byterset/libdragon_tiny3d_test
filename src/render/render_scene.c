@@ -41,7 +41,7 @@ void render_scene_render_renderable(void* data, struct render_batch* batch) {
     }
 
     Matrix4x4 mtx;
-    transformToMatrix(renderable->transform, mtx.m);
+    transformToMatrix(renderable->transform, &mtx);
 
     t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4*)mtx.m);
 

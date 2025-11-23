@@ -5,6 +5,7 @@
 #include "vector3.h"
 #include "vector2.h"
 #include <stdbool.h>
+#include "matrix.h"
 
 typedef fm_quat_t Quaternion;
 
@@ -117,7 +118,13 @@ void quatMultVector(const Quaternion* q, const Vector3* a, Vector3* out);
 /// @brief Converts an input quaternion into an equivalent 4x4 rotation matrix
 /// @param q 
 /// @param out 
-void quatToMatrix(const Quaternion* q, float out[4][4]);
+void quatToMatrix4(const Quaternion* q, Matrix4x4* out);
+
+
+/// @brief Converts an input quaternion into an equivalent 3x3 rotation matrix
+/// @param q 
+/// @param out 
+void quatToMatrix3(const Quaternion* q, Matrix3x3* out);
 
 
 /// @brief Generate a pseudo-random quaternion rotation

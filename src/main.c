@@ -69,7 +69,7 @@ struct fire fire;
 struct skybox_flat skybox_flat;
 struct mesh_collider test_mesh_collider;
 bool render_collision = false;
-bool render_contacts = false;
+bool render_contacts = true;
 
 struct camera camera;
 struct camera_controller camera_controller;
@@ -328,13 +328,13 @@ int main()
             for (int i = 0; i < collision_scene->cached_contact_constraint_count; i++) {
                 contact_constraint* cc = &collision_scene->cached_contact_constraints[i];
                 
-                // if (!cc->is_active) continue;
+                if (!cc->is_active) continue;
 
                 for (int j = 0; j < cc->point_count; j++){
                     Vector3 cA = cc->points[j].contactA;
                     Vector3 normal = cc->normal;
                     Vector3 contact_line_end;
-                    vector3Scale(&normal, &contact_line_end, 2.0f);
+                    vector3Scale(&normal, &contact_line_end, 1.0f);
                     vector3AddToSelf(&contact_line_end, &cA);
 
                     T3DVec3 vp_start;

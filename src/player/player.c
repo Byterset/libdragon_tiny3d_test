@@ -143,9 +143,9 @@ void player_render_callback(void* data, struct render_batch* batch) {
     }
 
     Matrix4x4 mtx;
-    transformToMatrix(&player->transform, mtx.m);
+    transformToMatrix(&player->transform, &mtx);
     
-    t3d_mat4_to_fixed_3x4(mtxfp, (T3DMat4 *)mtx.m);
+    t3d_mat4_to_fixed_3x4(mtxfp, &mtx);
 
     rdpq_mode_persp(true);
     t3d_state_set_drawflags(T3D_FLAG_DEPTH | T3D_FLAG_SHADED | T3D_FLAG_TEXTURED | T3D_FLAG_CULL_BACK);
@@ -378,6 +378,7 @@ void player_init(struct player* player, struct player_definition* definition, Tr
 
     player->physics.collision_group = COLLISION_GROUP_PLAYER;
     player->physics.constraints |= CONSTRAINTS_FREEZE_ROTATION_ALL;
+    player->physics.gravity_scalar = 1.5f;
 
     collision_scene_add(&player->physics);
 

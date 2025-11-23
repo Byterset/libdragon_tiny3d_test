@@ -3,6 +3,7 @@
 
 #include "vector3.h"
 #include "quaternion.h"
+#include "matrix.h"
 
 typedef struct Transform {
     Vector3 position;
@@ -11,7 +12,7 @@ typedef struct Transform {
 } Transform;
 
 void transformInitIdentity(Transform* in);
-void transformToMatrix(Transform* in, float mtx[4][4]);
+void transformToMatrix(Transform* in, Matrix4x4* mtx);
 void transformInvert(Transform* in, Transform* out);
 void transformPoint(Transform* transform, Vector3* in, Vector3* out);
 void transformPointInverse(Transform* transform, Vector3* in, Vector3* out);

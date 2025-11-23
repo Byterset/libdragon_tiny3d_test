@@ -14,16 +14,12 @@ void transformInitIdentity(Transform* in) {
 /// This is done to ensure that the model is rendered at its original size
 /// @param in 
 /// @param mtx 
-void transformToMatrix(Transform* in, float mtx[4][4]) {
-    quatToMatrix(&in->rotation, mtx);
+void transformToMatrix(Transform* in, Matrix4x4* mtx) {
 
-    mtx[0][0] *= in->scale.x * INV_MODEL_SCALE; mtx[0][1] *= in->scale.x * INV_MODEL_SCALE; mtx[0][2] *= in->scale.x * INV_MODEL_SCALE;
-    mtx[1][0] *= in->scale.y * INV_MODEL_SCALE; mtx[1][1] *= in->scale.y * INV_MODEL_SCALE; mtx[1][2] *= in->scale.y * INV_MODEL_SCALE;
-    mtx[2][0] *= in->scale.z * INV_MODEL_SCALE; mtx[2][1] *= in->scale.z * INV_MODEL_SCALE; mtx[2][2] *= in->scale.z * INV_MODEL_SCALE;
+    Vector3 totalScale;
+    vector3Scale(&in->scale, &totalScale, INV_MODEL_SCALE);
+    fm_mat4_from_srt(mtx, &totalScale, &in->rotation, &in->position);
 
-    mtx[3][0] = in->position.x;
-    mtx[3][1] = in->position.y;
-    mtx[3][2] = in->position.z;
 }
 
 /// @brief Creates an inverted transform from the input transform

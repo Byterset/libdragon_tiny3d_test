@@ -74,7 +74,7 @@ void quatMultVector(const Quaternion* q, const Vector3* a, Vector3* out) {
 }
 
 
-void quatToMatrix(const Quaternion* q, float out[4][4]) {
+void quatToMatrix4(const Quaternion* q, Matrix4x4* out) {
     float xx = q->x*q->x;
     float yy = q->y*q->y;
     float zz = q->z*q->z;
@@ -87,22 +87,57 @@ void quatToMatrix(const Quaternion* q, float out[4][4]) {
     float yw = q->y*q->w;
     float zw = q->z*q->w;
 
-    out[0][0] = 1.0f - 2.0f * (yy + zz);
-    out[0][1] = 2.0f * (xy + zw);
-    out[0][2] = 2.0f * (xz - yw);
-    out[0][3] = 0.0f;
-    out[1][0] = 2.0f * (xy - zw);
-    out[1][1] = 1.0f - 2.0f * (xx + zz);
-    out[1][2] = 2.0f * (yz + xw);
-    out[1][3] = 0.0f;
-    out[2][0] = 2.0f * (xz + yw);
-    out[2][1] = 2.0f * (yz - xw);
-    out[2][2] = 1.0f - 2.0f * (xx + yy);
-    out[2][3] = 0.0f;
-    out[3][0] = 0.0f;
-    out[3][1] = 0.0f;
-    out[3][2] = 0.0f;
-    out[3][3] = 1.0f;
+    Matrix4x4 tmp;
+
+    tmp.m[0][0] = 1.0f - 2.0f * (yy + zz);
+    tmp.m[0][1] = 2.0f * (xy + zw);
+    tmp.m[0][2] = 2.0f * (xz - yw);
+    tmp.m[0][3] = 0.0f;
+    tmp.m[1][0] = 2.0f * (xy - zw);
+    tmp.m[1][1] = 1.0f - 2.0f * (xx + zz);
+    tmp.m[1][2] = 2.0f * (yz + xw);
+    tmp.m[1][3] = 0.0f;
+    tmp.m[2][0] = 2.0f * (xz + yw);
+    tmp.m[2][1] = 2.0f * (yz - xw);
+    tmp.m[2][2] = 1.0f - 2.0f * (xx + yy);
+    tmp.m[2][3] = 0.0f;
+    tmp.m[3][0] = 0.0f;
+    tmp.m[3][1] = 0.0f;
+    tmp.m[3][2] = 0.0f;
+    tmp.m[3][3] = 1.0f;
+
+    *out = tmp;
+}
+
+void quatToMatrix3(const Quaternion* q, Matrix3x3* out) {
+    float xx = q->x*q->x;
+    float yy = q->y*q->y;
+    float zz = q->z*q->z;
+
+    float xy = q->x*q->y;
+    float yz = q->y*q->z;
+    float xz = q->x*q->z;
+
+    float xw = q->x*q->w;
+    float yw = q->y*q->w;
+    float zw = q->z*q->w;
+
+    Matrix3x3 tmp;
+
+    tmp.m[0][0] = 1.0f - 2.0f * (yy + zz);
+    tmp.m[0][1] = 2.0f * (xy + zw);
+    tmp.m[0][2] = 2.0f * (xz - yw);
+
+    tmp.m[1][0] = 2.0f * (xy - zw);
+    tmp.m[1][1] = 1.0f - 2.0f * (xx + zz);
+    tmp.m[1][2] = 2.0f * (yz + xw);
+
+    tmp.m[2][0] = 2.0f * (xz + yw);
+    tmp.m[2][1] = 2.0f * (yz - xw);
+    tmp.m[2][2] = 1.0f - 2.0f * (xx + yy);
+
+    *out = tmp;
+
 }
 
 

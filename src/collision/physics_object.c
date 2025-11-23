@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stddef.h>
 
+
 void physics_object_init(
     entity_id entity_id,
     physics_object* object, 
@@ -267,27 +268,10 @@ void physics_object_apply_angular_impulse(physics_object* object, Vector3* angul
         return;
     }
 
-    // Transform angular impulse from world space to local space
-    Quaternion rotation_inverse;
-    quatConjugate(object->rotation, &rotation_inverse);
-    Vector3 local_angular_impulse;
-    quatMultVector(&rotation_inverse, angular_impulse, &local_angular_impulse);
-
-    // Δω = I^-1 * angular_impulse (in local space)
-    // Since we store diagonal inertia tensor, inverse is just 1/Ixx, 1/Iyy, 1/Izz
-    Vector3 local_angular_velocity_change;
-    local_angular_velocity_change.x = local_angular_impulse.x * object->_inv_local_intertia_tensor.x;
-    local_angular_velocity_change.y = local_angular_impulse.y * object->_inv_local_intertia_tensor.y;
-    local_angular_velocity_change.z = local_angular_impulse.z * object->_inv_local_intertia_tensor.z;
-
-    // Apply per-axis constraints in LOCAL space
-    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_angular_velocity_change.x = 0.0f;
-    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_angular_velocity_change.y = 0.0f;
-    if (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_angular_velocity_change.z = 0.0f;
-
-    // Transform angular velocity change back to world space
+    // Δω = I^-1 * angular_impulse
+    // _inv_world_inertia_tensor already accounts for rotation and constraints!
     Vector3 angular_velocity_change;
-    quatMultVector(object->rotation, &local_angular_velocity_change, &angular_velocity_change);
+    physics_object_apply_world_inertia(object, angular_impulse, &angular_velocity_change);
 
     vector3Add(&object->angular_velocity, &angular_velocity_change, &object->angular_velocity);
 }
@@ -377,28 +361,39 @@ void physics_object_set_mass(physics_object* object, float new_mass){
 
 void physics_object_gjk_support_function(const void* data, const Vector3* direction, Vector3* output) {
     physics_object* object = (physics_object*)data;
-    Vector3 world_center;
     Vector3 localDir;
+    
     if(object->rotation){
-        Quaternion inv_rotation;
-        quatConjugate(object->rotation, &inv_rotation);
-        quatMultVector(&inv_rotation, direction, &localDir);
-        quatMultVector(object->rotation, &object->center_offset, &world_center);
+        // localDir = R^T * direction
+        // Since R is orthogonal, R^T = R^-1.
+        // We can use matrix3Vec3Mul with the transpose of the rotation matrix.
+        // Or we can manually do the transpose multiply:
+        // x = R[0][0]*dx + R[0][1]*dy + R[0][2]*dz
+        // y = R[1][0]*dx + R[1][1]*dy + R[1][2]*dz
+        // z = R[2][0]*dx + R[2][1]*dy + R[2][2]*dz
+        // This matches the manual code I wrote before, which is correct for R^T * v
+        // But let's use the library function if possible.
+        // matrix3Vec3Mul does M * v.
+        // So we need M^T.
+        Matrix3x3 rotation_transpose;
+        matrix3Transpose(&object->_rotation_matrix, &rotation_transpose);
+        matrix3Vec3Mul(&rotation_transpose, direction, &localDir);
     }
     else{
         vector3Copy(direction, &localDir);
-        vector3Copy(&object->center_offset, &world_center);
     }
 
     vector3Normalize(&localDir, &localDir);
     object->collision->gjk_support_function(object, &localDir, output);
 
     if(object->rotation){
-        quatMultVector(object->rotation, output, output);
+        // output = R * output
+        Vector3 rotated;
+        matrix3Vec3Mul(&object->_rotation_matrix, output, &rotated);
+        *output = rotated;
     }
 
-    vector3Add(output, object->position, output);
-    vector3Add(output, &world_center, output);
+    vector3Add(output, &object->_world_center_of_mass, output);
 }
 
 
@@ -423,46 +418,51 @@ void physics_object_recalculate_aabb(physics_object* object) {
 }
 
 void physics_object_update_world_inertia(physics_object* object) {
+    // Update World Center of Mass
+    if (object->rotation) {
+        Vector3 rotated_offset;
+        quatMultVector(object->rotation, &object->center_offset, &rotated_offset);
+        vector3Add(object->position, &rotated_offset, &object->_world_center_of_mass);
+    } else {
+        vector3Add(object->position, &object->center_offset, &object->_world_center_of_mass);
+    }
+
     if (!object->rotation) {
         // Identity rotation
-        object->_inv_world_inertia_tensor[0] = object->_inv_local_intertia_tensor.x;
-        object->_inv_world_inertia_tensor[1] = 0.0f;
-        object->_inv_world_inertia_tensor[2] = 0.0f;
-        object->_inv_world_inertia_tensor[3] = 0.0f;
-        object->_inv_world_inertia_tensor[4] = object->_inv_local_intertia_tensor.y;
-        object->_inv_world_inertia_tensor[5] = 0.0f;
-        object->_inv_world_inertia_tensor[6] = 0.0f;
-        object->_inv_world_inertia_tensor[7] = 0.0f;
-        object->_inv_world_inertia_tensor[8] = object->_inv_local_intertia_tensor.z;
+        matrix3Identity(&object->_rotation_matrix);
+
+        // Apply constraints to local inertia
+        float ix = (object->constraints & CONSTRAINTS_FREEZE_ROTATION_X) ? 0.0f : object->_inv_local_intertia_tensor.x;
+        float iy = (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) ? 0.0f : object->_inv_local_intertia_tensor.y;
+        float iz = (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) ? 0.0f : object->_inv_local_intertia_tensor.z;
+
+        matrix3Identity(&object->_inv_world_inertia_tensor);
+        object->_inv_world_inertia_tensor.m[0][0] = ix;
+        object->_inv_world_inertia_tensor.m[1][1] = iy;
+        object->_inv_world_inertia_tensor.m[2][2] = iz;
         return;
     }
 
-    // R * I_inv * R^T
-    float x = object->rotation->x, y = object->rotation->y, z = object->rotation->z, w = object->rotation->w;
-    float xx = x*x, yy = y*y, zz = z*z;
-    float xy = x*y, xz = x*z, yz = y*z;
-    float wx = w*x, wy = w*y, wz = w*z;
+    // Calculate Rotation Matrix
+    quatToMatrix3(object->rotation, &object->_rotation_matrix);
 
-    float r00 = 1 - 2*(yy + zz), r01 = 2*(xy - wz), r02 = 2*(xz + wy);
-    float r10 = 2*(xy + wz),     r11 = 1 - 2*(xx + zz), r12 = 2*(yz - wx);
-    float r20 = 2*(xz - wy),     r21 = 2*(yz + wx),     r22 = 1 - 2*(xx + yy);
+    // Apply constraints to local inertia
+    float ix = (object->constraints & CONSTRAINTS_FREEZE_ROTATION_X) ? 0.0f : object->_inv_local_intertia_tensor.x;
+    float iy = (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) ? 0.0f : object->_inv_local_intertia_tensor.y;
+    float iz = (object->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) ? 0.0f : object->_inv_local_intertia_tensor.z;
 
-    float ix = object->_inv_local_intertia_tensor.x;
-    float iy = object->_inv_local_intertia_tensor.y;
-    float iz = object->_inv_local_intertia_tensor.z;
+    // Construct Inverse Local Inertia Matrix (Diagonal)
+    Matrix3x3 inv_local_inertia;
+    matrix3Identity(&inv_local_inertia);
+    inv_local_inertia.m[0][0] = ix;
+    inv_local_inertia.m[1][1] = iy;
+    inv_local_inertia.m[2][2] = iz;
 
-    // Row 0
-    object->_inv_world_inertia_tensor[0] = r00*r00*ix + r01*r01*iy + r02*r02*iz;
-    object->_inv_world_inertia_tensor[1] = r00*r10*ix + r01*r11*iy + r02*r12*iz;
-    object->_inv_world_inertia_tensor[2] = r00*r20*ix + r01*r21*iy + r02*r22*iz;
+    // Calculate World Inverse Inertia Tensor: I_world_inv = R * I_local_inv * R^T
+    Matrix3x3 rotation_transpose;
+    matrix3Transpose(&object->_rotation_matrix, &rotation_transpose);
 
-    // Row 1
-    object->_inv_world_inertia_tensor[3] = object->_inv_world_inertia_tensor[1]; // Symmetric
-    object->_inv_world_inertia_tensor[4] = r10*r10*ix + r11*r11*iy + r12*r12*iz;
-    object->_inv_world_inertia_tensor[5] = r10*r20*ix + r11*r21*iy + r12*r22*iz;
-
-    // Row 2
-    object->_inv_world_inertia_tensor[6] = object->_inv_world_inertia_tensor[2]; // Symmetric
-    object->_inv_world_inertia_tensor[7] = object->_inv_world_inertia_tensor[5]; // Symmetric
-    object->_inv_world_inertia_tensor[8] = r20*r20*ix + r21*r21*iy + r22*r22*iz;
+    Matrix3x3 temp;
+    matrix3Mul(&object->_rotation_matrix, &inv_local_inertia, &temp);
+    matrix3Mul(&temp, &rotation_transpose, &object->_inv_world_inertia_tensor);
 }
