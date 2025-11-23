@@ -38,14 +38,12 @@ void physics_object_init(
     object->_is_sleeping = false;
     object->constraints = CONSTRAINTS_NONE;
     object->collision_layers = collision_layers;
-    object->collision_group = 0;
-    object->active_contacts = 0;
+    object->collision_group = COLLISION_GROUP_NONE;
+    object->active_contacts = NULL;
     object->angular_damping = 0.03f * (60.0f/PHYSICS_TICKRATE);
     object->angular_velocity = gZeroVec;
-    object->_prev_angular_speed_sq = 0;
     object->_torque_accumulator = gZeroVec;
     object->acceleration = gZeroVec;
-    object->_ground_support_factor = 0;
 
     // Calculate inertia tensor if inertia calculator is provided
     if (collision && collision->inertia_calculator) {
@@ -173,7 +171,6 @@ void physics_object_integrate_angular_velocity(physics_object* object) {
             vector3Scale(&object->angular_velocity, &object->angular_velocity, 1.0f - object->angular_damping);
         }
     }
-    object->_prev_angular_speed_sq = angular_speed_sq;
 }
 
 void physics_object_integrate_position(physics_object* object) {
@@ -313,10 +310,12 @@ contact* physics_object_nearest_contact(physics_object* object) {
     float distance = 0.0f;
 
     while (current) {
-        float check = vector3DistSqrd(&current->point, object->position);
-        if (!nearest_target || check < distance) {
-            distance = check;
-            nearest_target = current;
+        if (current->constraint->point_count > 0) {
+            float check = vector3DistSqrd(&current->constraint->points[0].point, object->position);
+            if (!nearest_target || check < distance) {
+                distance = check;
+                nearest_target = current;
+            }
         }
 
         current = current->next;

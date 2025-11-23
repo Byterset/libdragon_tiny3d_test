@@ -1153,27 +1153,9 @@ void collision_scene_step() {
     for (int i = 0; i < g_scene.objectCount; i++) {
         element = &g_scene.elements[i];
         physics_object* obj = element->object;
-        obj->_ground_support_factor = 0;
 
         if (!obj->_is_sleeping && obj->has_gravity && !obj->is_kinematic)
         {
-            // Check if object has ground contact (using old contact list)
-            float ground_support_factor = 0.0f;
-            if (obj->active_contacts)
-            {
-                contact *contact = obj->active_contacts;
-                while (contact)
-                {
-                    // Determine the contact normal pointing most up
-                    if (contact->normal.y > ground_support_factor && contact->other_object != 0)
-                    {
-                        ground_support_factor = contact->normal.y;
-                        break;
-                    }
-                    contact = contact->next;
-                }
-            }
-            obj->_ground_support_factor = ground_support_factor;
             obj->acceleration.y += PHYS_GRAVITY_CONSTANT * obj->gravity_scalar;
         }
 

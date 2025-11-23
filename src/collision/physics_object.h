@@ -124,31 +124,17 @@ struct physics_object_collision_data {
 
 /// @brief 
 typedef struct physics_object {
-    entity_id entity_id;
     struct physics_object_collision_data* collision; // information about the collision shape
     Vector3* position;
-    Vector3 _prev_step_pos;
     Quaternion* rotation;
+    contact* active_contacts; // contacts with other objects from the last physics step
+    
+    Vector3 _prev_step_pos;
     Quaternion _prev_step_rot;
     Vector3 velocity;
     Vector3 acceleration;
     Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
     AABB bounding_box; // the bounding box fitting the object collider, used for broad phase collision detection
-    float time_scalar; // a scalar to adjust the time step for the object, default is 1.0
-    float _mass; // the mass of the object, cannot be zero - change only via physics_object_set_mass!
-    float _inv_mass; //must be recalculated if mass changes!
-    float gravity_scalar; // how much gravity affects the object, default is 1.0
-    bool has_gravity: true;
-    bool is_trigger: true;
-    bool is_kinematic: true;
-    bool is_grounded: true;
-    bool _is_sleeping: true;
-    uint16_t constraints; // flags that control which degrees of freedom are allowed for the simulation of this object
-    uint16_t _sleep_counter;
-    uint16_t collision_layers; // objects that share at least one layer can collide
-    uint16_t collision_group; // objects of the same group do not collide
-    contact* active_contacts; // contacts with other objects from the last physics step
-    node_proxy _aabb_tree_node_id; // the node id of the object in the phys-object AABB tree of the collision scene
     Vector3 angular_velocity;
     Vector3 _torque_accumulator;
     Vector3 _local_inertia_tensor; // must be recalculated if mass or collision changes!
@@ -156,9 +142,26 @@ typedef struct physics_object {
     Matrix3x3 _inv_world_inertia_tensor; // 3x3 matrix, recalculated every frame
     Matrix3x3 _rotation_matrix; // 3x3 rotation matrix, cached every frame
     Vector3 _world_center_of_mass; // cached world center of mass
+
+    float time_scalar; // a scalar to adjust the time step for the object, default is 1.0
+    float _mass; // the mass of the object, cannot be zero - change only via physics_object_set_mass!
+    float _inv_mass; //must be recalculated if mass changes!
+    float gravity_scalar; // how much gravity affects the object, default is 1.0
     float angular_damping; // defines the decay rate of an objects angular velocity. Higher = object rotation slows down faster.
-    float _prev_angular_speed_sq;
-    float _ground_support_factor;
+
+    node_proxy _aabb_tree_node_id; // the node id of the object in the phys-object AABB tree of the collision scene
+
+    entity_id entity_id;
+    uint16_t constraints; // flags that control which degrees of freedom are allowed for the simulation of this object
+    uint16_t _sleep_counter;
+    uint16_t collision_layers; // objects that share at least one layer can collide
+    uint16_t collision_group; // objects of the same group do not collide
+
+    bool has_gravity: true;
+    bool is_trigger: true;
+    bool is_kinematic: true;
+    bool is_grounded: true;
+    bool _is_sleeping: true;
 } physics_object;
 
 

@@ -28,7 +28,7 @@ void correct_velocity(physics_object* a, physics_object* b, const struct EpaResu
 /// @param result the result of the EPA, containing the calculated contact points
 /// @param is_B flag if this object was object B during EPA - EpaResult will contain both contactA and contactB
 /// @param other_id the entity_id of the object that was collided against
-void collide_add_contact(physics_object* object, const struct EpaResult* result, bool is_B, physics_object* other_object);
+void collide_add_contact(physics_object* object, contact_constraint* constraint, physics_object* other_object);
 
 
 // -------- NEW: DETECTION-ONLY FUNCTIONS FOR ITERATIVE SOLVER --------
@@ -59,7 +59,7 @@ bool detect_contact_object_to_triangle(physics_object* object, const struct mesh
 /// @param combined_friction combined friction coefficient
 /// @param combined_bounce combined bounce coefficient
 /// @param is_trigger whether this is a trigger contact
-void cache_contact_constraint(physics_object* objectA, physics_object* objectB, const struct EpaResult* result,
+contact_constraint* cache_contact_constraint(physics_object* objectA, physics_object* objectB, const struct EpaResult* result,
                                float combined_friction, float combined_bounce, bool is_trigger);
 
 #endif

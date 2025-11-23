@@ -5,19 +5,16 @@
 #include "../entity/entity_id.h"
 #include "physics_object.h"
 
-#define MAX_ACTIVE_CONTACTS 128
 #define MAX_CONTACT_POINTS_PER_PAIR 4
 
+typedef struct contact_constraint contact_constraint;
 typedef struct contact contact;
 typedef uint32_t contact_pair_id; //unique combination of two entity ids (enity_id is uint16_t)
 typedef struct physics_object physics_object;
 /// @brief contact struct containing information about a collision
 typedef struct contact {
     contact* next; // pointer to the next contact in a list
-    contact_pair_id pid;
-    Vector3 point; // the 3D position in world space of the contact point on the surface of an object
-    Vector3 normal; // the collision normal pointing away from the object that was collided with
-    physics_object* object;
+    contact_constraint* constraint; // pointer to the shared constraint data
     physics_object* other_object; // entity_id of the object that was collided with
 } contact;
 

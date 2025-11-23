@@ -36,7 +36,7 @@ void ball_init(struct ball* ball, struct generic_object_pos_definition* def){
         &ball->transform.position,
         &ball->transform.rotation,
         gZeroVec,
-        100.0f
+        10.0f
     );
     ball->physics.angular_damping = 0.02f;
     collision_scene_add(&ball->physics);

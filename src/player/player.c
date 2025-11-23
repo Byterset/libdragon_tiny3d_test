@@ -42,10 +42,10 @@ void player_handle_contacts(struct player* player){
 
         if ((contact->other_object && contact->other_object->collision_layers & COLLISION_LAYER_TANGIBLE) || !contact->other_object)
         {
-            if (contact->normal.y >= PLAYER_MAX_ANGLE_GROUND_DOT)
+            if (contact->constraint->normal.y >= PLAYER_MAX_ANGLE_GROUND_DOT)
             {
                 player->is_on_ground = true;
-                vector3Add(&player->ground_normal, &contact->normal, &player->ground_normal);
+                vector3Add(&player->ground_normal, &contact->constraint->normal, &player->ground_normal);
             }
         }
 

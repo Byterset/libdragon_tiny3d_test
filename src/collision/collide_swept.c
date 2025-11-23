@@ -125,8 +125,12 @@ void collide_object_swept_bounce(
     vector3Add(&move_amount, &object->bounding_box.min, &object->bounding_box.min);
     vector3Add(&move_amount, &object->bounding_box.max, &object->bounding_box.max);
 
-    //Add new contact to object (object is contact Point B in the case of mesh collision)
-    collide_add_contact(object, &collide_data->hit_result, true, NULL);
+    // Cache the contact (entity_a = NULL for static mesh)
+    contact_constraint *constraint = cache_contact_constraint(NULL, object, &collide_data->hit_result, object->collision->friction, 0, false);
+
+    // Still add to old contact list for ground detection logic
+    collide_add_contact(object, constraint, NULL);
+
 }
 
 bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* mesh, Vector3* prev_pos){
