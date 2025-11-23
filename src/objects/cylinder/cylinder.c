@@ -42,7 +42,7 @@ void cylinder_init(struct cylinder* cylinder, struct generic_object_pos_definiti
 
     cylinder->physics.has_gravity = true;
     cylinder->physics.is_kinematic = false;
-    cylinder->physics.constraints |= CONSTRAINTS_FREEZE_POSITION_ALL;
+    // cylinder->physics.constraints |= CONSTRAINTS_FREEZE_POSITION_ALL;
 
     collision_scene_add(&cylinder->physics);
 }

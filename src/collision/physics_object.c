@@ -421,3 +421,53 @@ void physics_object_recalculate_aabb(physics_object* object) {
     vector3Add(&object->bounding_box.max, &offset, &object->bounding_box.max);
     object->collision->collider_world_center = offset;
 }
+
+void physics_object_update_world_inertia(physics_object* object) {
+    if (!object->rotation) {
+        // Identity rotation
+        object->_inv_world_inertia_tensor[0] = object->_inv_local_intertia_tensor.x;
+        object->_inv_world_inertia_tensor[1] = 0.0f;
+        object->_inv_world_inertia_tensor[2] = 0.0f;
+        object->_inv_world_inertia_tensor[3] = 0.0f;
+        object->_inv_world_inertia_tensor[4] = object->_inv_local_intertia_tensor.y;
+        object->_inv_world_inertia_tensor[5] = 0.0f;
+        object->_inv_world_inertia_tensor[6] = 0.0f;
+        object->_inv_world_inertia_tensor[7] = 0.0f;
+        object->_inv_world_inertia_tensor[8] = object->_inv_local_intertia_tensor.z;
+        return;
+    }
+
+    // R * I_inv * R^T
+    float x = object->rotation->x, y = object->rotation->y, z = object->rotation->z, w = object->rotation->w;
+    float xx = x*x, yy = y*y, zz = z*z;
+    float xy = x*y, xz = x*z, yz = y*z;
+    float wx = w*x, wy = w*y, wz = w*z;
+
+    float r00 = 1 - 2*(yy + zz), r01 = 2*(xy - wz), r02 = 2*(xz + wy);
+    float r10 = 2*(xy + wz),     r11 = 1 - 2*(xx + zz), r12 = 2*(yz - wx);
+    float r20 = 2*(xz - wy),     r21 = 2*(yz + wx),     r22 = 1 - 2*(xx + yy);
+
+    float ix = object->_inv_local_intertia_tensor.x;
+    float iy = object->_inv_local_intertia_tensor.y;
+    float iz = object->_inv_local_intertia_tensor.z;
+
+    // Row 0
+    object->_inv_world_inertia_tensor[0] = r00*r00*ix + r01*r01*iy + r02*r02*iz;
+    object->_inv_world_inertia_tensor[1] = r00*r10*ix + r01*r11*iy + r02*r12*iz;
+    object->_inv_world_inertia_tensor[2] = r00*r20*ix + r01*r21*iy + r02*r22*iz;
+
+    // Row 1
+    object->_inv_world_inertia_tensor[3] = object->_inv_world_inertia_tensor[1]; // Symmetric
+    object->_inv_world_inertia_tensor[4] = r10*r10*ix + r11*r11*iy + r12*r12*iz;
+    object->_inv_world_inertia_tensor[5] = r10*r20*ix + r11*r21*iy + r12*r22*iz;
+
+    // Row 2
+    object->_inv_world_inertia_tensor[6] = object->_inv_world_inertia_tensor[2]; // Symmetric
+    object->_inv_world_inertia_tensor[7] = object->_inv_world_inertia_tensor[5]; // Symmetric
+    object->_inv_world_inertia_tensor[8] = r20*r20*ix + r21*r21*iy + r22*r22*iz;
+}
+
+void physics_object_wake(physics_object* object) {
+    object->_is_sleeping = false;
+    object->_sleep_counter = 0;
+}

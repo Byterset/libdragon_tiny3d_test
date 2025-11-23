@@ -852,8 +852,8 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
     }
 
     // Wake up sleeping objects
-    if (a && !a->is_kinematic) { a->_is_sleeping = false; a->_sleep_counter = 0; }
-    if (b && !b->is_kinematic) { b->_is_sleeping = false; b->_sleep_counter = 0; }
+    if (a && !a->is_kinematic) { physics_object_wake(a); }
+    if (b && !b->is_kinematic) { physics_object_wake(b); }
 
     // Compute EPA result
     if(is_sphere_sphere){

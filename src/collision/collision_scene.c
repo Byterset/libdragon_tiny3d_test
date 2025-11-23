@@ -287,6 +287,11 @@ static void collision_scene_detect_all_contacts() {
                 &g_scene.object_aabbtree, results[j]);
 
             if (!b || b == a) continue;
+            
+            // Optimization: Skip duplicate pairs
+            // Since contact_pair_id is symmetric, we only need to check each pair once.
+            // We enforce a < b by entity_id.
+            if (a->entity_id > b->entity_id) continue;
 
             // Narrow phase - only detect, don't resolve!
             detect_contact_object_to_object(a, b);
@@ -396,24 +401,28 @@ static void collision_scene_pre_solve_contacts() {
             if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossN;
                 vector3Cross(&cont_point->a_to_contact, &normal, &rCrossN);
-
-                Quaternion rotation_inverse_a;
-                quatConjugate(a->rotation, &rotation_inverse_a);
-
-                Vector3 local_rCrossN;
-                quatMultVector(&rotation_inverse_a, &rCrossN, &local_rCrossN);
-
-                Vector3 local_torquePerImpulse;
-                local_torquePerImpulse.x = local_rCrossN.x * a->_inv_local_intertia_tensor.x;
-                local_torquePerImpulse.y = local_rCrossN.y * a->_inv_local_intertia_tensor.y;
-                local_torquePerImpulse.z = local_rCrossN.z * a->_inv_local_intertia_tensor.z;
-
-                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
-
                 Vector3 torquePerImpulse;
-                quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+                if (a->constraints & (CONSTRAINTS_FREEZE_ROTATION_X | CONSTRAINTS_FREEZE_ROTATION_Y | CONSTRAINTS_FREEZE_ROTATION_Z)) {
+                    Quaternion rotation_inverse_a;
+                    quatConjugate(a->rotation, &rotation_inverse_a);
+
+                    Vector3 local_rCrossN;
+                    quatMultVector(&rotation_inverse_a, &rCrossN, &local_rCrossN);
+
+                    Vector3 local_torquePerImpulse;
+                    local_torquePerImpulse.x = local_rCrossN.x * a->_inv_local_intertia_tensor.x;
+                    local_torquePerImpulse.y = local_rCrossN.y * a->_inv_local_intertia_tensor.y;
+                    local_torquePerImpulse.z = local_rCrossN.z * a->_inv_local_intertia_tensor.z;
+
+                    if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                    if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                    if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+
+                    quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
+                } else {
+                    apply_world_inertia(a, &rCrossN, &torquePerImpulse);
+                }
 
                 denominator += vector3Dot(&rCrossN, &torquePerImpulse);
             }
@@ -422,24 +431,28 @@ static void collision_scene_pre_solve_contacts() {
             if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossN;
                 vector3Cross(&cont_point->b_to_contact, &normal, &rCrossN);
-
-                Quaternion rotation_inverse_b;
-                quatConjugate(b->rotation, &rotation_inverse_b);
-
-                Vector3 local_rCrossN;
-                quatMultVector(&rotation_inverse_b, &rCrossN, &local_rCrossN);
-
-                Vector3 local_torquePerImpulse;
-                local_torquePerImpulse.x = local_rCrossN.x * b->_inv_local_intertia_tensor.x;
-                local_torquePerImpulse.y = local_rCrossN.y * b->_inv_local_intertia_tensor.y;
-                local_torquePerImpulse.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
-
-                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
-
                 Vector3 torquePerImpulse;
-                quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+                if (b->constraints & (CONSTRAINTS_FREEZE_ROTATION_X | CONSTRAINTS_FREEZE_ROTATION_Y | CONSTRAINTS_FREEZE_ROTATION_Z)) {
+                    Quaternion rotation_inverse_b;
+                    quatConjugate(b->rotation, &rotation_inverse_b);
+
+                    Vector3 local_rCrossN;
+                    quatMultVector(&rotation_inverse_b, &rCrossN, &local_rCrossN);
+
+                    Vector3 local_torquePerImpulse;
+                    local_torquePerImpulse.x = local_rCrossN.x * b->_inv_local_intertia_tensor.x;
+                    local_torquePerImpulse.y = local_rCrossN.y * b->_inv_local_intertia_tensor.y;
+                    local_torquePerImpulse.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
+
+                    if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                    if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                    if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+
+                    quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+                } else {
+                    apply_world_inertia(b, &rCrossN, &torquePerImpulse);
+                }
 
                 denominator += vector3Dot(&rCrossN, &torquePerImpulse);
             }
@@ -452,37 +465,47 @@ static void collision_scene_pre_solve_contacts() {
             if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossT;
                 vector3Cross(&cont_point->a_to_contact, &cont_constraint->tangent_u, &rCrossT);
-                Quaternion rotation_inverse_a;
-                quatConjugate(a->rotation, &rotation_inverse_a);
-                Vector3 local_rCrossT;
-                quatMultVector(&rotation_inverse_a, &rCrossT, &local_rCrossT);
-                Vector3 local_torquePerImpulse;
-                local_torquePerImpulse.x = local_rCrossT.x * a->_inv_local_intertia_tensor.x;
-                local_torquePerImpulse.y = local_rCrossT.y * a->_inv_local_intertia_tensor.y;
-                local_torquePerImpulse.z = local_rCrossT.z * a->_inv_local_intertia_tensor.z;
-                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
                 Vector3 torquePerImpulse;
-                quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+                if (a->constraints & (CONSTRAINTS_FREEZE_ROTATION_X | CONSTRAINTS_FREEZE_ROTATION_Y | CONSTRAINTS_FREEZE_ROTATION_Z)) {
+                    Quaternion rotation_inverse_a;
+                    quatConjugate(a->rotation, &rotation_inverse_a);
+                    Vector3 local_rCrossT;
+                    quatMultVector(&rotation_inverse_a, &rCrossT, &local_rCrossT);
+                    Vector3 local_torquePerImpulse;
+                    local_torquePerImpulse.x = local_rCrossT.x * a->_inv_local_intertia_tensor.x;
+                    local_torquePerImpulse.y = local_rCrossT.y * a->_inv_local_intertia_tensor.y;
+                    local_torquePerImpulse.z = local_rCrossT.z * a->_inv_local_intertia_tensor.z;
+                    if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                    if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                    if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+                    quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
+                } else {
+                    apply_world_inertia(a, &rCrossT, &torquePerImpulse);
+                }
                 denominator_u += vector3Dot(&rCrossT, &torquePerImpulse);
             }
             if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossT;
                 vector3Cross(&cont_point->b_to_contact, &cont_constraint->tangent_u, &rCrossT);
-                Quaternion rotation_inverse_b;
-                quatConjugate(b->rotation, &rotation_inverse_b);
-                Vector3 local_rCrossT;
-                quatMultVector(&rotation_inverse_b, &rCrossT, &local_rCrossT);
-                Vector3 local_torquePerImpulse;
-                local_torquePerImpulse.x = local_rCrossT.x * b->_inv_local_intertia_tensor.x;
-                local_torquePerImpulse.y = local_rCrossT.y * b->_inv_local_intertia_tensor.y;
-                local_torquePerImpulse.z = local_rCrossT.z * b->_inv_local_intertia_tensor.z;
-                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
                 Vector3 torquePerImpulse;
-                quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+                if (b->constraints & (CONSTRAINTS_FREEZE_ROTATION_X | CONSTRAINTS_FREEZE_ROTATION_Y | CONSTRAINTS_FREEZE_ROTATION_Z)) {
+                    Quaternion rotation_inverse_b;
+                    quatConjugate(b->rotation, &rotation_inverse_b);
+                    Vector3 local_rCrossT;
+                    quatMultVector(&rotation_inverse_b, &rCrossT, &local_rCrossT);
+                    Vector3 local_torquePerImpulse;
+                    local_torquePerImpulse.x = local_rCrossT.x * b->_inv_local_intertia_tensor.x;
+                    local_torquePerImpulse.y = local_rCrossT.y * b->_inv_local_intertia_tensor.y;
+                    local_torquePerImpulse.z = local_rCrossT.z * b->_inv_local_intertia_tensor.z;
+                    if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                    if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                    if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+                    quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+                } else {
+                    apply_world_inertia(b, &rCrossT, &torquePerImpulse);
+                }
                 denominator_u += vector3Dot(&rCrossT, &torquePerImpulse);
             }
             if (denominator_u < EPSILON) denominator_u = EPSILON;
@@ -493,37 +516,47 @@ static void collision_scene_pre_solve_contacts() {
             if (a && a->rotation && !((a->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossT;
                 vector3Cross(&cont_point->a_to_contact, &cont_constraint->tangent_v, &rCrossT);
-                Quaternion rotation_inverse_a;
-                quatConjugate(a->rotation, &rotation_inverse_a);
-                Vector3 local_rCrossT;
-                quatMultVector(&rotation_inverse_a, &rCrossT, &local_rCrossT);
-                Vector3 local_torquePerImpulse;
-                local_torquePerImpulse.x = local_rCrossT.x * a->_inv_local_intertia_tensor.x;
-                local_torquePerImpulse.y = local_rCrossT.y * a->_inv_local_intertia_tensor.y;
-                local_torquePerImpulse.z = local_rCrossT.z * a->_inv_local_intertia_tensor.z;
-                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-                if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
                 Vector3 torquePerImpulse;
-                quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+                if (a->constraints & (CONSTRAINTS_FREEZE_ROTATION_X | CONSTRAINTS_FREEZE_ROTATION_Y | CONSTRAINTS_FREEZE_ROTATION_Z)) {
+                    Quaternion rotation_inverse_a;
+                    quatConjugate(a->rotation, &rotation_inverse_a);
+                    Vector3 local_rCrossT;
+                    quatMultVector(&rotation_inverse_a, &rCrossT, &local_rCrossT);
+                    Vector3 local_torquePerImpulse;
+                    local_torquePerImpulse.x = local_rCrossT.x * a->_inv_local_intertia_tensor.x;
+                    local_torquePerImpulse.y = local_rCrossT.y * a->_inv_local_intertia_tensor.y;
+                    local_torquePerImpulse.z = local_rCrossT.z * a->_inv_local_intertia_tensor.z;
+                    if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                    if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                    if (a->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+                    quatMultVector(a->rotation, &local_torquePerImpulse, &torquePerImpulse);
+                } else {
+                    apply_world_inertia(a, &rCrossT, &torquePerImpulse);
+                }
                 denominator_v += vector3Dot(&rCrossT, &torquePerImpulse);
             }
             if (b && b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL)) {
                 Vector3 rCrossT;
                 vector3Cross(&cont_point->b_to_contact, &cont_constraint->tangent_v, &rCrossT);
-                Quaternion rotation_inverse_b;
-                quatConjugate(b->rotation, &rotation_inverse_b);
-                Vector3 local_rCrossT;
-                quatMultVector(&rotation_inverse_b, &rCrossT, &local_rCrossT);
-                Vector3 local_torquePerImpulse;
-                local_torquePerImpulse.x = local_rCrossT.x * b->_inv_local_intertia_tensor.x;
-                local_torquePerImpulse.y = local_rCrossT.y * b->_inv_local_intertia_tensor.y;
-                local_torquePerImpulse.z = local_rCrossT.z * b->_inv_local_intertia_tensor.z;
-                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
-                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
-                if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
                 Vector3 torquePerImpulse;
-                quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+                if (b->constraints & (CONSTRAINTS_FREEZE_ROTATION_X | CONSTRAINTS_FREEZE_ROTATION_Y | CONSTRAINTS_FREEZE_ROTATION_Z)) {
+                    Quaternion rotation_inverse_b;
+                    quatConjugate(b->rotation, &rotation_inverse_b);
+                    Vector3 local_rCrossT;
+                    quatMultVector(&rotation_inverse_b, &rCrossT, &local_rCrossT);
+                    Vector3 local_torquePerImpulse;
+                    local_torquePerImpulse.x = local_rCrossT.x * b->_inv_local_intertia_tensor.x;
+                    local_torquePerImpulse.y = local_rCrossT.y * b->_inv_local_intertia_tensor.y;
+                    local_torquePerImpulse.z = local_rCrossT.z * b->_inv_local_intertia_tensor.z;
+                    if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+                    if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+                    if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+                    quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+                } else {
+                    apply_world_inertia(b, &rCrossT, &torquePerImpulse);
+                }
                 denominator_v += vector3Dot(&rCrossT, &torquePerImpulse);
             }
             if (denominator_v < EPSILON) denominator_v = EPSILON;
@@ -802,7 +835,14 @@ static void collision_scene_solve_velocity_constraints()
                 {
                     Vector3 angularImpulse;
                     vector3Cross(&cp->a_to_contact, &impulse, &angularImpulse);
-                    physics_object_apply_angular_impulse(a, &angularImpulse);
+                    
+                    if (a->constraints & (CONSTRAINTS_FREEZE_ROTATION_X | CONSTRAINTS_FREEZE_ROTATION_Y | CONSTRAINTS_FREEZE_ROTATION_Z)) {
+                        physics_object_apply_angular_impulse(a, &angularImpulse);
+                    } else {
+                        Vector3 deltaOmega;
+                        apply_world_inertia(a, &angularImpulse, &deltaOmega);
+                        vector3Add(&a->angular_velocity, &deltaOmega, &a->angular_velocity);
+                    }
                 }
             }
 
@@ -824,7 +864,14 @@ static void collision_scene_solve_velocity_constraints()
                     Vector3 angularImpulse;
                     vector3Cross(&cp->b_to_contact, &impulse, &angularImpulse);
                     vector3Negate(&angularImpulse, &angularImpulse);
-                    physics_object_apply_angular_impulse(b, &angularImpulse);
+                    
+                    if (b->constraints & (CONSTRAINTS_FREEZE_ROTATION_X | CONSTRAINTS_FREEZE_ROTATION_Y | CONSTRAINTS_FREEZE_ROTATION_Z)) {
+                        physics_object_apply_angular_impulse(b, &angularImpulse);
+                    } else {
+                        Vector3 deltaOmega;
+                        apply_world_inertia(b, &angularImpulse, &deltaOmega);
+                        vector3Add(&b->angular_velocity, &deltaOmega, &b->angular_velocity);
+                    }
                 }
             }
 #ifndef DEBUG_IGNORE_FRICTION
@@ -1142,6 +1189,16 @@ void collision_scene_step() {
     struct collision_scene_element* element;
 
     // ========================================================================
+    // PHASE 0: Update world inertia tensors
+    // ========================================================================
+    for (int i = 0; i < g_scene.objectCount; i++) {
+        physics_object* obj = g_scene.elements[i].object;
+        if (!obj->_is_sleeping) {
+            physics_object_update_world_inertia(obj);
+        }
+    }
+
+    // ========================================================================
     // PHASE 1: Apply gravity and integrate velocities
     // ========================================================================
     for (int i = 0; i < g_scene.objectCount; i++) {
@@ -1287,8 +1344,7 @@ void collision_scene_step() {
         }
         else
         {
-            obj->_is_sleeping = false;
-            obj->_sleep_counter = 0;
+            physics_object_wake(obj);
         }
 
         if(!obj->_is_sleeping){

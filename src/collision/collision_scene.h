@@ -47,4 +47,11 @@ void collision_scene_step();
 
 contact* collision_scene_new_contact();
 
+static inline void apply_world_inertia(physics_object* obj, Vector3* in, Vector3* out) {
+    float* m = obj->_inv_world_inertia_tensor;
+    out->x = m[0]*in->x + m[1]*in->y + m[2]*in->z;
+    out->y = m[3]*in->x + m[4]*in->y + m[5]*in->z;
+    out->z = m[6]*in->x + m[7]*in->y + m[8]*in->z;
+}
+
 #endif

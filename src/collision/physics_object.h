@@ -152,6 +152,7 @@ typedef struct physics_object {
     Vector3 _torque_accumulator;
     Vector3 _local_inertia_tensor; // must be recalculated if mass or collision changes!
     Vector3 _inv_local_intertia_tensor; // must be recalculated if _local_inertia_tensor changes!
+    float _inv_world_inertia_tensor[9]; // 3x3 matrix, recalculated every frame
     float angular_damping; // defines the decay rate of an objects angular velocity. Higher = object rotation slows down faster.
     float _prev_angular_speed_sq;
     float _ground_support_factor;
@@ -285,5 +286,13 @@ void physics_object_gjk_support_function(const void* data, const Vector3* direct
 /// This will also take into account the center_offset and rotation of the object.
 /// @param object
 void physics_object_recalculate_aabb(physics_object* object);
+
+/// @brief Updates the world space inverse inertia tensor based on current rotation
+/// @param object
+void physics_object_update_world_inertia(physics_object* object);
+
+/// @brief Wakes up the object (resets sleep timer and state)
+/// @param object
+void physics_object_wake(physics_object* object);
 
 #endif
