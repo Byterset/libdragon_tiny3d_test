@@ -578,12 +578,23 @@ void cache_contact_constraint(physics_object* a, physics_object* b, const struct
 
     contact_pair_id pid = contact_pair_id_get(a ? a->entity_id : (entity_id)0, b ? b->entity_id : (entity_id)0);
 
-    // Find existing constraint for this entity pair
+    // Find existing constraint for this entity pair with similar normal
     contact_constraint* cont_constraint = NULL;
+    float best_normal_dot = 0.90f; // Threshold for matching normals (approx 25 degrees)
+
     for (int i = 0; i < scene->cached_contact_count; i++) {
         if (scene->cached_contacts[i].pid == pid) {
-            cont_constraint = &scene->cached_contacts[i];
-            break;
+            // Check if normals are similar
+            // This allows multiple constraints for the same pair if they have different normals (e.g. corner, or static mesh triangles)
+            float dot = vector3Dot(&scene->cached_contacts[i].normal, &result->normal);
+            if (dot > best_normal_dot) {
+                cont_constraint = &scene->cached_contacts[i];
+                best_normal_dot = dot;
+                // We found a good match, use it.
+                // Note: We could keep searching for a *better* match, but first good match is usually sufficient
+                // and prevents jumping between constraints if they are close.
+                break; 
+            }
         }
     }
 
@@ -607,6 +618,28 @@ void cache_contact_constraint(physics_object* a, physics_object* b, const struct
     cont_constraint->combined_bounce = combined_bounce;
     cont_constraint->is_trigger = is_trigger;
     cont_constraint->is_active = true;
+
+    // Calculate local points for the new contact
+    Vector3 localA, localB;
+    Vector3 diffA, diffB;
+    
+    if (a) {
+        vector3Sub(&result->contactA, a->position, &diffA);
+        Quaternion invRotA;
+        quatConjugate(a->rotation, &invRotA);
+        quatMultVector(&invRotA, &diffA, &localA);
+    } else {
+        localA = result->contactA;
+    }
+
+    if (b) {
+        vector3Sub(&result->contactB, b->position, &diffB);
+        Quaternion invRotB;
+        quatConjugate(b->rotation, &invRotB);
+        quatMultVector(&invRotB, &diffB, &localB);
+    } else {
+        localB = result->contactB;
+    }
 
 
     // Try to match this contact point with an existing point by proximity
@@ -650,7 +683,8 @@ void cache_contact_constraint(physics_object* a, physics_object* b, const struct
                 cont_point->accumulated_tangent_impulse_u = 0.0f;
                 cont_point->accumulated_tangent_impulse_v = 0.0f;
             } else {
-                return; // Don't add this point
+                // Don't add this point, but we still need to validate others!
+                goto validate_others;
             }
         } else {
             // Add new point
@@ -667,7 +701,33 @@ void cache_contact_constraint(physics_object* a, physics_object* b, const struct
     cont_point->point = result->contactA;
     cont_point->contactA = result->contactA;
     cont_point->contactB = result->contactB;
+    cont_point->localPointA = localA;
+    cont_point->localPointB = localB;
     cont_point->penetration = result->penetration;
+    cont_point->active = true;
+
+validate_others:
+    // Validate other points against the new normal
+    for (int i = 0; i < cont_constraint->point_count; i++) {
+        contact_point* cp = &cont_constraint->points[i];
+        if (cp->active) continue; // Already processed
+
+        // Calculate penetration depth along the new normal
+        // Normal points B -> A
+        // diff = A - B
+        // If overlapping, A is "behind" B relative to normal, so dot(diff, normal) is negative
+        // We want penetration to be positive for overlap, so we negate the dot product
+        Vector3 diff;
+        vector3Sub(&cp->contactA, &cp->contactB, &diff);
+        float pen = -vector3Dot(&diff, &cont_constraint->normal);
+
+        // Keep point if it's still penetrating or very close (allow small separation)
+        // pen > -0.05f means "separation < 0.05"
+        if (pen > -0.05f) {
+            cp->penetration = pen;
+            cp->active = true;
+        }
+    }
 }
 
 bool detect_contact_object_to_triangle(physics_object* object, const struct mesh_collider* mesh, int triangle_index) {

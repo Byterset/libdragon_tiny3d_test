@@ -200,10 +200,39 @@ static void physics_object_apply_angular_impulse_to_rotation(physics_object* obj
     }
 }
 
-/// @brief Mark all cached contacts as inactive before detection phase
-static void collision_scene_mark_contacts_inactive() {
+/// @brief Refresh contacts: update world positions from local and mark as inactive
+static void collision_scene_refresh_contacts() {
     for (int i = 0; i < g_scene.cached_contact_count; i++) {
-        g_scene.cached_contacts[i].is_active = false;
+        contact_constraint* constraint = &g_scene.cached_contacts[i];
+        constraint->is_active = false;
+        
+        physics_object* a = constraint->objectA;
+        physics_object* b = constraint->objectB;
+
+        for (int j = 0; j < constraint->point_count; j++) {
+            contact_point* cp = &constraint->points[j];
+            cp->active = false;
+
+            // Update world positions from local
+            if (a) {
+                Vector3 rA;
+                quatMultVector(a->rotation, &cp->localPointA, &rA);
+                vector3Add(a->position, &rA, &cp->contactA);
+            } else {
+                cp->contactA = cp->localPointA;
+            }
+            
+            if (b) {
+                Vector3 rB;
+                quatMultVector(b->rotation, &cp->localPointB, &rB);
+                vector3Add(b->position, &rB, &cp->contactB);
+            } else {
+                cp->contactB = cp->localPointB;
+            }
+            
+            // Update the main point to be on A (arbitrary choice, consistent with cache_contact_constraint)
+            cp->point = cp->contactA;
+        }
     }
 }
 
@@ -211,7 +240,21 @@ static void collision_scene_mark_contacts_inactive() {
 static void collision_scene_remove_inactive_contacts() {
     int write_index = 0;
     for (int read_index = 0; read_index < g_scene.cached_contact_count; read_index++) {
-        if (g_scene.cached_contacts[read_index].is_active) {
+        contact_constraint* constraint = &g_scene.cached_contacts[read_index];
+        
+        // Prune inactive points
+        int point_write_index = 0;
+        for (int point_read_index = 0; point_read_index < constraint->point_count; point_read_index++) {
+            if (constraint->points[point_read_index].active) {
+                if (point_write_index != point_read_index) {
+                    constraint->points[point_write_index] = constraint->points[point_read_index];
+                }
+                point_write_index++;
+            }
+        }
+        constraint->point_count = point_write_index;
+
+        if (constraint->is_active && constraint->point_count > 0) {
             if (write_index != read_index) {
                 g_scene.cached_contacts[write_index] = g_scene.cached_contacts[read_index];
             }
@@ -223,8 +266,8 @@ static void collision_scene_remove_inactive_contacts() {
 
 /// @brief Detect all contacts (object-to-object and object-to-mesh)
 static void collision_scene_detect_all_contacts() {
-    // Mark all existing contacts as inactive
-    collision_scene_mark_contacts_inactive();
+    // Refresh contacts (update world pos, mark inactive)
+    collision_scene_refresh_contacts();
 
     // Detect object-to-object collisions
     for (int i = 0; i < g_scene.objectCount; i++) {

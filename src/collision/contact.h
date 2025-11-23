@@ -24,10 +24,12 @@ typedef struct contact {
 /// @brief Single contact point data within a contact constraint
 typedef struct contact_point {
     Vector3 point; // the 3D position in world space of the contact point
-    Vector3 contactA; // contact point on surface A (local to pair, not object)
-    Vector3 contactB; // contact point on surface B (local to pair, not object)
+    Vector3 contactA; // contact point on surface A (world space)
+    Vector3 contactB; // contact point on surface B (world space)
+    Vector3 localPointA; // contact point on surface A (local space)
+    Vector3 localPointB; // contact point on surface B (local space)
     float penetration; // depth of penetration for this point
-    bool remove;
+    bool active; // whether this point was updated/validated this frame
 
     // Cached data for warm starting and iterative solving (per point)
     float accumulated_normal_impulse; // accumulated normal impulse for warm starting

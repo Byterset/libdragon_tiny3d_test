@@ -9,7 +9,7 @@
 
 
 #define MAX_PHYSICS_OBJECTS 64
-#define MAX_CACHED_CONTACTS 256
+#define MAX_CACHED_CONTACTS 512
 
 struct collision_scene_element {
     physics_object* object;
