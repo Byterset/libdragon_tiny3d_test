@@ -215,26 +215,8 @@ void render()
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 30, "ray dwn hit (%.2f, %.2f, %.2f)", player.ray_down_hit.point.x, player.ray_down_hit.point.y, player.ray_down_hit.point.z);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "ray fwd dist %.1f, entity_id: %d", player.ray_fwd_hit.distance, player.ray_fwd_hit.hit_entity_id);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "ray fwd hit (%.2f, %.2f, %.2f)", player.ray_fwd_hit.point.x, player.ray_fwd_hit.point.y, player.ray_fwd_hit.point.z);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "cached contacts: %i", c_scene->cached_contact_count);
-
-    contact_pair_id id = contact_pair_id_get( 0, crates[1].physics.entity_id);
-
-    // Find existing constraint for this entity pair
-    contact_constraint* cc = NULL;
-    for (int i = 0; i < c_scene->cached_contact_count; i++) {
-        if (c_scene->cached_contacts[i].pid == id) {
-            cc = &c_scene->cached_contacts[i];
-            break;
-        }
-    }
-    if(cc){
-        rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "crate-static contact points: %i", cc->point_count);
-    }
-    else{
-        rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "no contact points crate-static");
-    }
-    
-
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "cached contacts: %i", c_scene->cached_contact_constraint_count);
+    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "sleeping: %i", player.physics._is_sleeping);
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Vel: %.2f, %.2f, %.2f", player.physics.velocity.x, player.physics.velocity.y, player.physics.velocity.z);
@@ -280,9 +262,9 @@ int main()
             // render_collision ? update_pause_layers(UPDATE_LAYER_WORLD) : update_unpause_layers(UPDATE_LAYER_WORLD);
         }
 
-        // if(joypad_get_buttons_held(0).d_left){
-        //     physics_object_apply_torque(&crates[0].physics, &(Vector3){{9000,7000,-7000}});
-        // }
+        if(joypad_get_buttons_pressed(0).d_left){
+            crate_destroy(&crates[0]);
+        }
         
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //
         while (accumulator_ticks >= l_fixed_dt_ticks)

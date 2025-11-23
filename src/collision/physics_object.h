@@ -42,7 +42,7 @@
 #define PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD_SQ (PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD * PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD)
 #define PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD_SQ_INV (1.0f / PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD_SQ)
 
-#define PHYS_OBJECT_SLEEP_STEPS 20 // number of timesteps the object has to be still for before it goes to sleep
+#define PHYS_OBJECT_SLEEP_STEPS 60 // number of timesteps the object has to be still for before it goes to sleep
 
 
 /// @brief Enum of collision layers a physics object can be part of or interact with

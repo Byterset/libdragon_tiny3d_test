@@ -21,7 +21,7 @@ struct collision_scene g_scene;
 void collision_scene_reset() {
     free(g_scene.elements);
     free(g_scene.all_contacts);
-    free(g_scene.cached_contacts);
+    free(g_scene.cached_contact_constraints);
     AABB_tree_free(&g_scene.object_aabbtree);
     hash_map_destroy(&g_scene.entity_mapping);
     hash_map_destroy(&g_scene.contact_map);
@@ -48,8 +48,8 @@ void collision_scene_reset() {
     g_scene.all_contacts[MAX_ACTIVE_CONTACTS - 1].next = NULL;
 
     // Initialize constraint cache for iterative solver
-    g_scene.cached_contacts = malloc(sizeof(contact_constraint) * MAX_CACHED_CONTACTS);
-    g_scene.cached_contact_count = 0;
+    g_scene.cached_contact_constraints = malloc(sizeof(contact_constraint) * MAX_CACHED_CONTACTS);
+    g_scene.cached_contact_constraint_count = 0;
 }
 
 struct collision_scene* collision_scene_get() {
@@ -91,16 +91,58 @@ physics_object* collision_scene_find_object(entity_id id) {
  * @param object Pointer to the physics object whose active contacts are to be returned.
  */
 void collision_scene_release_object_contacts(physics_object* object) {
-    contact* last_contact = object->active_contacts;
+    if (!object->_is_sleeping) {
+        contact* last_contact = object->active_contacts;
 
-    while (last_contact && last_contact->next) {
-        last_contact = last_contact->next;
+        while (last_contact && last_contact->next) {
+            last_contact = last_contact->next;
+        }
+
+        if (last_contact) {
+            last_contact->next = g_scene.next_free_contact;
+            g_scene.next_free_contact = object->active_contacts;
+            object->active_contacts = NULL;
+        }
+    } else {
+        contact** pp = &object->active_contacts;
+        while (*pp) {
+            contact* c = *pp;
+            physics_object* other = c->other_object;
+            
+            // If other object is awake, it will perform collision detection and re-add the contact.
+            // So we must remove it here to avoid duplicates.
+            // If other object is sleeping (or static), no detection will happen, so we keep the contact.
+            if (other && !other->_is_sleeping) {
+                *pp = c->next;
+                c->next = g_scene.next_free_contact;
+                g_scene.next_free_contact = c;
+            } else {
+                pp = &c->next;
+            }
+        }
     }
+}
 
-    if (last_contact) {
-        last_contact->next = g_scene.next_free_contact;
-        g_scene.next_free_contact = object->active_contacts;
-        object->active_contacts = NULL;
+/// @brief recursively wake up connected objects so they can react to a change in one of their neighbors
+/// @param obj 
+static void collision_scene_wake_island(physics_object* obj) {
+    if (obj->_is_sleeping) {
+        physics_object_wake(obj);
+        // Recurse on ALL contacts
+        contact* c = obj->active_contacts;
+        while (c) {
+            if (c->other_object) collision_scene_wake_island(c->other_object);
+            c = c->next;
+        }
+    } else {
+        // If already awake, only recurse on SLEEPING contacts to avoid cycles
+        contact* c = obj->active_contacts;
+        while (c) {
+            if (c->other_object && c->other_object->_is_sleeping) {
+                collision_scene_wake_island(c->other_object);
+            }
+            c = c->next;
+        }
     }
 }
 
@@ -110,6 +152,31 @@ void collision_scene_release_object_contacts(physics_object* object) {
 /// All contacts associated with the object will be released.
 /// @param object 
 void collision_scene_remove(physics_object* object) {
+    if(!collision_scene_find_object(object->entity_id))return;
+
+    // Cleanup back-references in neighbors
+    contact* c = object->active_contacts;
+    while (c) {
+        physics_object* neighbor = c->other_object;
+        if (neighbor) {
+            // Wake up the neighbor so it can react to the removal (e.g. fall if it was resting on this object)
+            collision_scene_wake_island(neighbor);
+
+            contact** pp = &neighbor->active_contacts;
+            while (*pp) {
+                contact* neighbor_c = *pp;
+                if (neighbor_c->other_object == object) {
+                    *pp = neighbor_c->next;
+                    neighbor_c->next = g_scene.next_free_contact;
+                    g_scene.next_free_contact = neighbor_c;
+                    break;
+                }
+                pp = &(*pp)->next;
+            }
+        }
+        c = c->next;
+    }
+
     bool has_found = false;
 
     for (int i = 0; i < g_scene.objectCount; i++) {
@@ -128,6 +195,41 @@ void collision_scene_remove(physics_object* object) {
     }
     AABB_tree_remove_leaf_node(&g_scene.object_aabbtree, object->_aabb_tree_node_id, true);
     hash_map_delete(&g_scene.entity_mapping, object->entity_id);
+
+    // Remove cached constraints involving this object
+    int write_index = 0;
+    bool constraints_removed = false;
+    for (int read_index = 0; read_index < g_scene.cached_contact_constraint_count; read_index++) {
+        contact_constraint* constraint = &g_scene.cached_contact_constraints[read_index];
+        
+        if (constraint->objectA == object || constraint->objectB == object) {
+            constraints_removed = true;
+            continue; // Skip this constraint (remove it)
+        }
+
+        if (write_index != read_index) {
+            g_scene.cached_contact_constraints[write_index] = g_scene.cached_contact_constraints[read_index];
+        }
+        write_index++;
+    }
+    g_scene.cached_contact_constraint_count = write_index;
+
+    // Rebuild contact map if we removed anything
+    if (constraints_removed) {
+        hash_map_clear(&g_scene.contact_map);
+
+        for (int i = 0; i < g_scene.cached_contact_constraint_count; i++) {
+            contact_constraint* c = &g_scene.cached_contact_constraints[i];
+            c->next_same_pid_index = -1;
+            
+            intptr_t existing_idx_plus_1 = (intptr_t)hash_map_get(&g_scene.contact_map, c->pid);
+            
+            if (existing_idx_plus_1 != 0) {
+                c->next_same_pid_index = (int)existing_idx_plus_1 - 1;
+            }
+            hash_map_set(&g_scene.contact_map, c->pid, (void*)(intptr_t)(i + 1));
+        }
+    }
 }
 
 
@@ -204,13 +306,22 @@ static void physics_object_apply_angular_impulse_to_rotation(physics_object* obj
 
 /// @brief Refresh contacts: update world positions from local and mark as inactive
 static void collision_scene_refresh_contacts() {
-    for (int i = 0; i < g_scene.cached_contact_count; i++) {
-        contact_constraint* constraint = &g_scene.cached_contacts[i];
-        constraint->is_active = false;
+    for (int i = 0; i < g_scene.cached_contact_constraint_count; i++) {
+        contact_constraint* constraint = &g_scene.cached_contact_constraints[i];
         
         physics_object* a = constraint->objectA;
         physics_object* b = constraint->objectB;
 
+        // If both objects are sleeping (or static), we should keep the contact active without re-detecting
+        bool a_sleeping = !a || a->_is_sleeping;
+        bool b_sleeping = !b || b->_is_sleeping;
+
+        if (a_sleeping && b_sleeping) {
+             constraint->is_active = true;
+        } else {
+             constraint->is_active = false;
+        }
+        
         for (int j = 0; j < constraint->point_count; j++) {
             contact_point* cp = &constraint->points[j];
             cp->active = false;
@@ -241,8 +352,8 @@ static void collision_scene_refresh_contacts() {
 /// @brief Remove inactive contacts and compact the array
 static void collision_scene_remove_inactive_contacts() {
     int write_index = 0;
-    for (int read_index = 0; read_index < g_scene.cached_contact_count; read_index++) {
-        contact_constraint* constraint = &g_scene.cached_contacts[read_index];
+    for (int read_index = 0; read_index < g_scene.cached_contact_constraint_count; read_index++) {
+        contact_constraint* constraint = &g_scene.cached_contact_constraints[read_index];
         
         // Prune inactive points
         int point_write_index = 0;
@@ -258,18 +369,18 @@ static void collision_scene_remove_inactive_contacts() {
 
         if (constraint->is_active && constraint->point_count > 0) {
             if (write_index != read_index) {
-                g_scene.cached_contacts[write_index] = g_scene.cached_contacts[read_index];
+                g_scene.cached_contact_constraints[write_index] = g_scene.cached_contact_constraints[read_index];
             }
             write_index++;
         }
     }
-    g_scene.cached_contact_count = write_index;
+    g_scene.cached_contact_constraint_count = write_index;
 
     // Rebuild contact map
     hash_map_clear(&g_scene.contact_map);
 
-    for (int i = 0; i < g_scene.cached_contact_count; i++) {
-        contact_constraint* c = &g_scene.cached_contacts[i];
+    for (int i = 0; i < g_scene.cached_contact_constraint_count; i++) {
+        contact_constraint* c = &g_scene.cached_contact_constraints[i];
         c->next_same_pid_index = -1;
         
         intptr_t existing_idx_plus_1 = (intptr_t)hash_map_get(&g_scene.contact_map, c->pid);
@@ -338,8 +449,8 @@ static void collision_scene_detect_all_contacts() {
 
 /// @brief Pre-solve: calculate effective masses and prepare constraint data
 static void collision_scene_pre_solve_contacts() {
-    for (int i = 0; i < g_scene.cached_contact_count; i++) {
-        contact_constraint* cont_constraint = &g_scene.cached_contacts[i];
+    for (int i = 0; i < g_scene.cached_contact_constraint_count; i++) {
+        contact_constraint* cont_constraint = &g_scene.cached_contact_constraints[i];
 
         if (!cont_constraint->is_active || cont_constraint->is_trigger) continue;
 
@@ -618,8 +729,8 @@ static void collision_scene_pre_solve_contacts() {
 
 /// @brief Warm start: apply accumulated impulses from previous frame
 static void collision_scene_warm_start() {
-    for (int i = 0; i < g_scene.cached_contact_count; i++) {
-        contact_constraint* cc = &g_scene.cached_contacts[i];
+    for (int i = 0; i < g_scene.cached_contact_constraint_count; i++) {
+        contact_constraint* cc = &g_scene.cached_contact_constraints[i];
 
         if (!cc->is_active || cc->is_trigger) continue;
 
@@ -774,9 +885,9 @@ static void collision_scene_solve_velocity_constraints()
 {
     const float bounceThreshold = 0.5f;
 
-    for (int i = 0; i < g_scene.cached_contact_count; i++)
+    for (int i = 0; i < g_scene.cached_contact_constraint_count; i++)
     {
-        contact_constraint *cc = &g_scene.cached_contacts[i];
+        contact_constraint *cc = &g_scene.cached_contact_constraints[i];
 
         if (!cc->is_active || cc->is_trigger)
             continue;
@@ -1055,8 +1166,8 @@ static void collision_scene_solve_position_constraints() {
     const float steeringConstant = 0.2f;
     const float maxCorrection = 0.08f;
 
-    for (int i = 0; i < g_scene.cached_contact_count; i++) {
-        contact_constraint* cc = &g_scene.cached_contacts[i];
+    for (int i = 0; i < g_scene.cached_contact_constraint_count; i++) {
+        contact_constraint* cc = &g_scene.cached_contact_constraints[i];
 
         if (!cc->is_active || cc->is_trigger) continue;
         

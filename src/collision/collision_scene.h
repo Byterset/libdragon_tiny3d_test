@@ -29,8 +29,8 @@ struct collision_scene {
     uint16_t _sleepy_count;
 
     // Iterative constraint solver data
-    contact_constraint* cached_contacts;
-    int cached_contact_count;
+    contact_constraint* cached_contact_constraints;
+    int cached_contact_constraint_count;
     struct hash_map contact_map;
 };
 

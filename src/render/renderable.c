@@ -13,6 +13,7 @@ void renderable_init(struct renderable* renderable, Transform* transform, const 
 /// This will also destroy the associated model, T3DModel & skeleton as well as remove it from the cache
 /// @param renderable 
 void renderable_destroy(struct renderable* renderable) {
+    if(!renderable->model) return;
     model_cache_release(renderable->model);
     renderable->model = NULL;
 }

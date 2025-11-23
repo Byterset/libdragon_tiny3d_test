@@ -587,7 +587,7 @@ void cache_contact_constraint(physics_object* a, physics_object* b, const struct
     int idx = (int)idx_plus_1 - 1;
 
     while (idx >= 0) {
-        contact_constraint* c = &scene->cached_contacts[idx];
+        contact_constraint* c = &scene->cached_contact_constraints[idx];
         // Verify PID (should match if map is correct)
         if (c->pid == pid)
         {
@@ -604,13 +604,13 @@ void cache_contact_constraint(physics_object* a, physics_object* b, const struct
 
     // If no existing constraint, create a new one
     if (!cont_constraint) {
-        if (scene->cached_contact_count >= MAX_CACHED_CONTACTS) {
+        if (scene->cached_contact_constraint_count >= MAX_CACHED_CONTACTS) {
             return; // No more room in cache
         }
 
-        int new_idx = scene->cached_contact_count;
-        cont_constraint = &scene->cached_contacts[new_idx];
-        scene->cached_contact_count++;
+        int new_idx = scene->cached_contact_constraint_count;
+        cont_constraint = &scene->cached_contact_constraints[new_idx];
+        scene->cached_contact_constraint_count++;
         cont_constraint->pid = pid;
         cont_constraint->point_count = 0;
 
@@ -864,10 +864,6 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
         return;
     }
 
-    // Wake up sleeping objects
-    if (a && !a->is_kinematic) { physics_object_wake(a); }
-    if (b && !b->is_kinematic) { physics_object_wake(b); }
-
     // Compute EPA result
     if(is_sphere_sphere){
         float dist = sqrtf(dist_sq);
@@ -894,6 +890,58 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
             return; // Skip if EPA fails
         }
     }
+
+    // Wake up sleeping objects only if the collision is energetic enough
+    // This allows stacked objects to sleep
+    Vector3 velA = gZeroVec;
+    Vector3 velB = gZeroVec;
+
+    if (a && !a->is_kinematic) {
+        velA = a->velocity;
+        if (a->rotation) {
+            Vector3 centerOfMassA;
+            Vector3 rotatedOffset;
+            quatMultVector(a->rotation, &a->center_offset, &rotatedOffset);
+            vector3Add(a->position, &rotatedOffset, &centerOfMassA);
+            
+            Vector3 rA;
+            vector3Sub(&result.contactA, &centerOfMassA, &rA);
+            Vector3 angularPart;
+            vector3Cross(&a->angular_velocity, &rA, &angularPart);
+            vector3Add(&velA, &angularPart, &velA);
+        }
+    }
+
+    if (b && !b->is_kinematic) {
+        velB = b->velocity;
+        if (b->rotation) {
+            Vector3 centerOfMassB;
+            Vector3 rotatedOffset;
+            quatMultVector(b->rotation, &b->center_offset, &rotatedOffset);
+            vector3Add(b->position, &rotatedOffset, &centerOfMassB);
+            
+            Vector3 rB;
+            vector3Sub(&result.contactB, &centerOfMassB, &rB);
+            Vector3 angularPart;
+            vector3Cross(&b->angular_velocity, &rB, &angularPart);
+            vector3Add(&velB, &angularPart, &velB);
+        }
+    }
+
+    Vector3 relVel;
+    vector3Sub(&velA, &velB, &relVel);
+    float impactSpeedSq = vector3MagSqrd(&relVel);
+    
+    // Use a threshold slightly higher than the sleep threshold to ensure stability.
+    // If objects are moving slower than the sleep threshold, they shouldn't wake each other up.
+    const float wake_threshold_sq = PHYS_OBJECT_SPEED_SLEEP_THRESHOLD_SQ * 1.5f;
+
+    if (impactSpeedSq > wake_threshold_sq) {
+        if (a && !a->is_kinematic) physics_object_wake(a);
+        if (b && !b->is_kinematic) physics_object_wake(b);
+    } 
+    // The solver will transfer momentum if necessary, and if the resulting velocity
+    // is high enough, the object will wake up in the next update cycle.
 
     // Combined friction and bounce
     float combined_friction = minf(a->collision->friction, b->collision->friction);
