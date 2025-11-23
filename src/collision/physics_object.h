@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define PHYS_GLOBAL_GRAVITY_MULT 1.5f // adjust this according to general world scale
+#define PHYS_GLOBAL_GRAVITY_MULT 1.0f // adjust this according to general world scale
 #define PHYS_GRAVITY_CONSTANT    -9.8f * PHYS_GLOBAL_GRAVITY_MULT // default gravity in m/s^2
 
 #define PHYS_OBJECT_TERMINAL_SPEED   90.0f // terminal linear speed / velocity magnitude (units/s)
@@ -20,20 +20,20 @@
 #define PHYS_OBJECT_TERMINAL_ANGULAR_SPEED_SQ (PHYS_OBJECT_TERMINAL_ANGULAR_SPEED * PHYS_OBJECT_TERMINAL_ANGULAR_SPEED)
 
 // The minimum amount of units an object has to move between physics ticks to be considered to have changed position
-#define PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD 0.013f // the amount the object needs to move in one step to be considered in motion
+#define PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD 0.015f // the amount the object needs to move in one step to be considered in motion
 #define PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD * PHYS_OBJECT_POS_CHANGE_SLEEP_THRESHOLD)
 
 // The minimum speed an object needs to have to be considered in motion
 // Keep in mind the speed is in units/second not units/physics_tick
-#define PHYS_OBJECT_SPEED_SLEEP_THRESHOLD 0.6f 
+#define PHYS_OBJECT_SPEED_SLEEP_THRESHOLD 0.65f 
 #define PHYS_OBJECT_SPEED_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_SPEED_SLEEP_THRESHOLD * PHYS_OBJECT_SPEED_SLEEP_THRESHOLD)
 
 // The similarity of quaternion rotations between physics ticks to consider the rotation unchanged
-#define PHYS_OBJECT_ROT_SIMILARITY_SLEEP_THRESHOLD 0.999999f
+#define PHYS_OBJECT_ROT_SIMILARITY_SLEEP_THRESHOLD 0.9999988f
 
 // The minimum angular speed an object needs to have to be considered rotating
 // Keep in mind the speed is in rad/second not rad/physics_tick
-#define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD 0.1f
+#define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD 0.12f
 #define PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD_SQ (PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD * PHYS_OBJECT_ANGULAR_CHANGE_SLEEP_THRESHOLD)
 
 // The threshold for the angular speed (in rad/sec) under which the angular velocity will be dampened more aggressively

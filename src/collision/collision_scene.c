@@ -719,8 +719,8 @@ static void collision_scene_pre_solve_contacts() {
 
             // Calculate velocity bias (restitution)
             cont_point->velocity_bias = 0.0f;
-            if (normalVelocity < -1.0f) { // Threshold for bouncing
-                cont_point->velocity_bias = -cont_constraint->combined_bounce * normalVelocity;
+            if (normalVelocity < -0.5f) { // Threshold for bouncing
+                cont_point->velocity_bias = cont_constraint->combined_bounce * normalVelocity;
             }
         }
     }

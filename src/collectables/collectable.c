@@ -10,17 +10,7 @@
 #define COLLECTABLE_RADIUS  0.75f
 
 static struct physics_object_collision_data collectable_collision = {
-    .gjk_support_function = sphere_support_function,
-    .bounding_box_calculator = sphere_bounding_box,
-    .inertia_calculator = sphere_inertia_tensor,
-    .shape_data = {
-        .sphere = {
-            .radius = COLLECTABLE_RADIUS,
-        }
-    },
-    .bounce = 0.2f,
-    .friction = 0.25f,
-    .shape_type = COLLISION_SHAPE_SPHERE,
+    SPHERE_COLLIDER(COLLECTABLE_RADIUS),
 };
 
 static struct hash_map collectable_hash_map;

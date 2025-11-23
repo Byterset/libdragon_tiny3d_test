@@ -560,7 +560,7 @@ void cache_contact_constraint(physics_object* a, physics_object* b, const struct
 
 
     // Try to match this contact point with an existing point by proximity
-    const float match_distance_sq = 0.04f; // 0.2^2 - points within 0.2 units are considered the same
+    const float match_distance_sq = 0.05f; // sqrt(x) units are considered the same
     int matched_point_index = -1;
     float best_dist_sq = match_distance_sq;
 

@@ -13,8 +13,8 @@
 
 static struct physics_object_collision_data ball_collision = {
     SPHERE_COLLIDER(BALL_RADIUS),
-    .friction = 0.6,
-    .bounce = 0.3
+    .friction = 0.5,
+    .bounce = 0.4
 };
 
 void ball_init(struct ball* ball, struct generic_object_pos_definition* def){
