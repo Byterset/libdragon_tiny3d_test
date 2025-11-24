@@ -315,11 +315,29 @@ int main()
         t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &ray_end_view, (T3DVec3*)&ray_end);
         debugDrawLineVec3(buff, &ray_start_view, &ray_end_view, 0xfd41);
 
+        static uint16_t DEBUG_COLORS[8] = {
+            0x037f,
+            0x92ff,
+            0xca7f,
+            0xeab9,
+            0xfb31,
+            0xfbe7,
+            0xfc9b,
+            0xfd41,
+        };
         if (render_collision)
         {
             struct collision_scene *collision_scene = collision_scene_get();
-            debugDrawBVTree(buff, &collision_scene->object_aabbtree, t3d_viewport_get(),
-                            &t3d_viewport_get()->viewFrustum, 1, 3, 15);
+            T3DViewport* vp = t3d_viewport_get();
+
+            for (int i = 0; i < collision_scene->objectCount; i++)
+            {
+                physics_object *obj = collision_scene->elements[i].object;
+                debugDrawAABB(buff, &obj->bounding_box.min, &obj->bounding_box.max, vp, 1, DEBUG_COLORS[i & 7]);
+            }
+            
+            // debugDrawBVTree(buff, &collision_scene->object_aabbtree, t3d_viewport_get(),
+            //                 &t3d_viewport_get()->viewFrustum, 1, 3, 15);
         }
 
         if(render_contacts){
@@ -340,10 +358,12 @@ int main()
                     T3DVec3 vp_start;
                     T3DVec3 vp_end;
 
-                    t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &vp_start, (T3DVec3*)&cA);
-                    t3d_viewport_calc_viewspace_pos(t3d_viewport_get(), &vp_end, (T3DVec3*)&contact_line_end);
+                    bool visible_start = debugProjectPoint(t3d_viewport_get(), &vp_start, (T3DVec3*)&cA);
+                    bool visible_end = debugProjectPoint(t3d_viewport_get(), &vp_end, (T3DVec3*)&contact_line_end);
                     
-                    debugDrawLineVec3(buff, &vp_start, &vp_end, color_to_packed16(RGBA16(31,0,0,1)));
+                    if(visible_start && visible_end) {
+                        debugDrawLineVec3(buff, &vp_start, &vp_end, color_to_packed16(RGBA16(31,0,0,1)));
+                    }
                 }
             }
         }

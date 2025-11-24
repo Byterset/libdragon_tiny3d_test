@@ -15,6 +15,185 @@ const float maxCorrection = 0.04f;
 const float slop = 0.005;
 
 
+void correct_velocity(physics_object* b, const struct EpaResult* result, float friction, float bounce) {
+    // EPA result normal points toward A (from B to A), A in this case would be the static mesh collision
+    // Parameters match EPA order:
+    // When A is on top of B, normal points upward (from B toward A)
+
+    if (!b) return;
+
+    // Normal points from B toward A
+    Vector3 normal = result->normal;
+
+    // Check if movement is fully constrained for each object
+    bool bMovementConstrained = b && (b->is_kinematic || ((b->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
+
+    // For objects with movement constraints, check if constrained along collision normal
+    float invMassB = 0.0f;
+
+    if (b && !bMovementConstrained) {
+        // Check if movement is constrained along the normal direction (opposite direction)
+        bool constrainedAlongNormal = ((b->constraints & CONSTRAINTS_FREEZE_POSITION_X) && fabsf(normal.x) > 0.01f) ||
+                                      ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) && fabsf(normal.y) > 0.01f) ||
+                                      ((b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) && fabsf(normal.z) > 0.01f);
+        invMassB = constrainedAlongNormal ? 0.0f : b->_inv_mass;
+    }
+
+
+    if (invMassB == 0.0f) {
+        return; // Both objects have constrained movement along collision normal
+    }
+
+
+    // Calculate contact velocity for object B
+    Vector3 contactVelB = gZeroVec;
+    Vector3 rB = gZeroVec;
+
+    bool hasLinearB = invMassB > 0.0f;
+    bool hasRotationB = false;
+    Quaternion rotation_inverse_b;
+
+    Vector3 centerOfMassB;
+    if (b->rotation)
+    {
+        Vector3 rotatedOffset;
+        quatMultVector(b->rotation, &b->center_offset, &rotatedOffset);
+        vector3Add(b->position, &rotatedOffset, &centerOfMassB);
+    }
+    else
+    {
+        vector3Add(b->position, &b->center_offset, &centerOfMassB);
+    }
+
+    vector3Sub(&result->contactA, &centerOfMassB, &rB);
+
+    contactVelB = b->velocity;
+    hasRotationB = b->rotation && !((b->constraints & CONSTRAINTS_FREEZE_ROTATION_ALL) == CONSTRAINTS_FREEZE_ROTATION_ALL);
+    if (hasRotationB)
+    {
+        // Pre-calculate inverse rotation for B (used multiple times below)
+        quatConjugate(b->rotation, &rotation_inverse_b);
+
+        Vector3 angularContribution;
+        vector3Cross(&b->angular_velocity, &rB, &angularContribution);
+        vector3Add(&contactVelB, &angularContribution, &contactVelB);
+    }
+
+    // Calculate relative velocity (A relative to B)
+    Vector3 relVel;
+    vector3Sub(&gZeroVec, &contactVelB, &relVel);
+
+    // Project relative velocity onto collision normal (which points from B toward A)
+    // If vRel > 0: objects are separating (A moving away from B along normal)
+    // If vRel < 0: objects are approaching (A moving toward B, collision active)
+    float vRel = vector3Dot(&relVel, &normal);
+
+    // If objects are separating, don't apply impulse
+    if (vRel >= 0.0f) {
+        return;
+    }
+
+    // Compute effective bounce with damping for low-velocity contacts
+    float effectiveBounce = bounce;
+    const float bounceThreshold = 0.5f;
+    if (fabsf(vRel) < bounceThreshold) {
+        effectiveBounce = bounce * (fabsf(vRel) / bounceThreshold);
+    }
+
+    // Calculate impulse denominator: 1/m_a + 1/m_b + inertia terms
+    float denominator = invMassB;
+
+
+    // Add rotational inertia term for B
+    if (hasRotationB) {
+        Vector3 rCrossN;
+        vector3Cross(&rB, &normal, &rCrossN);
+
+        // Transform torque to local space (using pre-calculated inverse)
+        Vector3 local_rCrossN;
+        quatMultVector(&rotation_inverse_b, &rCrossN, &local_rCrossN);
+
+        // Apply local inertia tensor
+        Vector3 local_torquePerImpulse;
+        local_torquePerImpulse.x = local_rCrossN.x * b->_inv_local_intertia_tensor.x;
+        local_torquePerImpulse.y = local_rCrossN.y * b->_inv_local_intertia_tensor.y;
+        local_torquePerImpulse.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
+
+        // Apply constraints in LOCAL space
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_torquePerImpulse.x = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_torquePerImpulse.y = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_torquePerImpulse.z = 0.0f;
+
+        // Transform back to world space
+        Vector3 torquePerImpulse;
+        quatMultVector(b->rotation, &local_torquePerImpulse, &torquePerImpulse);
+
+        denominator += vector3Dot(&rCrossN, &torquePerImpulse);
+    }
+
+    float baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * result->penetration;
+
+
+    if (denominator < EPSILON) denominator = EPSILON;
+
+    // Calculate normal impulse magnitude
+    float jN = (-(1.0f + effectiveBounce) * vRel + baumgarteBias) / denominator;
+
+    if (jN < 0.0f) {
+        return;
+    }
+
+    // Apply normal impulse to B (opposite direction)
+    // Linear response only if object has non-zero effective mass
+    if (hasLinearB) {
+        Vector3 impulseB;
+        vector3Scale(&normal, &impulseB, -jN * invMassB);
+
+        // Apply to linear velocity with per-axis constraints
+        Vector3 linearImpulse = impulseB;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_X) linearImpulse.x = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Y) linearImpulse.y = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_POSITION_Z) linearImpulse.z = 0.0f;
+        vector3Add(&b->velocity, &linearImpulse, &b->velocity);
+
+        // Update contact velocity with linear impulse
+        vector3Add(&contactVelB, &linearImpulse, &contactVelB);
+    }
+
+    // Angular response independent of linear constraints
+    if (hasRotationB) {
+        Vector3 rCrossN;
+        vector3Cross(&rB, &normal, &rCrossN);
+        vector3Scale(&rCrossN, &rCrossN, -jN);
+
+        physics_object_apply_angular_impulse(b, &rCrossN);
+
+        // Update contact velocity with angular contribution
+        // Transform angular impulse to local space (using pre-calculated inverse)
+        Vector3 local_rCrossN;
+        quatMultVector(&rotation_inverse_b, &rCrossN, &local_rCrossN);
+
+        // Apply local inertia tensor
+        Vector3 local_deltaAngularVel;
+        local_deltaAngularVel.x = local_rCrossN.x * b->_inv_local_intertia_tensor.x;
+        local_deltaAngularVel.y = local_rCrossN.y * b->_inv_local_intertia_tensor.y;
+        local_deltaAngularVel.z = local_rCrossN.z * b->_inv_local_intertia_tensor.z;
+
+        // Apply constraints in LOCAL space
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_X) local_deltaAngularVel.x = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Y) local_deltaAngularVel.y = 0.0f;
+        if (b->constraints & CONSTRAINTS_FREEZE_ROTATION_Z) local_deltaAngularVel.z = 0.0f;
+
+        // Transform back to world space
+        Vector3 deltaAngularVel;
+        quatMultVector(b->rotation, &local_deltaAngularVel, &deltaAngularVel);
+
+        Vector3 deltaContactVel;
+        vector3Cross(&deltaAngularVel, &rB, &deltaContactVel);
+        vector3Add(&contactVelB, &deltaContactVel, &contactVelB);
+    }
+}
+
 
 void collide_add_contact(physics_object* object, contact_constraint* constraint, physics_object* other_object) {
     contact* contact = collision_scene_new_contact();

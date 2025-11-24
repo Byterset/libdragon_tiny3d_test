@@ -7,11 +7,11 @@
 
 
 struct object_mesh_collide_data {
+    Vector3* prev_pos;
     struct mesh_collider* mesh;
-    Vector3 offset;
     physics_object* object;
     struct EpaResult hit_result;
 };
 
-bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* mesh, Vector3 offset);
+bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* mesh, Vector3* prev_pos);
 #endif

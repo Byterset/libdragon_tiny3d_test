@@ -13,9 +13,9 @@
 #include "../render/defs.h"
 #include "../collectables/collectable.h"
 
-#define PLAYER_MAX_SPEED    50.0f
+#define PLAYER_MAX_SPEED    30.0f
 #define PLAYER_MAX_ACC       80.0f
-#define PLAYER_MAX_ACC_AIR   40.0f
+#define PLAYER_MAX_ACC_AIR   50.0f
 #define PLAYER_MAX_ANGLE_GROUND 45.0f
 #define PLAYER_MAX_ANGLE_GROUND_DOT cosf(T3D_DEG_TO_RAD(PLAYER_MAX_ANGLE_GROUND))
 #define PLAYER_JUMP_HEIGHT  5.2f

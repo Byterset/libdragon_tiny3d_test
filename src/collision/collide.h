@@ -16,6 +16,7 @@
 /// @param other_id the entity_id of the object that was collided against
 void collide_add_contact(physics_object* object, contact_constraint* constraint, physics_object* other_object);
 
+void correct_velocity(physics_object* b, const struct EpaResult* result, float friction, float bounce);
 
 // -------- NEW: DETECTION-ONLY FUNCTIONS FOR ITERATIVE SOLVER --------
 

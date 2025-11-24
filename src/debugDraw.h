@@ -46,21 +46,54 @@ static inline void debugDrawLineVec3(uint16_t *fb, const T3DVec3 *p0, const T3DV
   debugDrawLine(fb, (int)p0->v[0], (int)p0->v[1], (int)p1->v[0], (int)p1->v[1], color);
 }
 
+static bool debugProjectPoint(T3DViewport *vp, T3DVec3 *out, const T3DVec3 *pos)
+{
+  T3DVec4 posScreen;
+
+  if(vp->_isCamProjDirty) {
+    t3d_mat4_mul(&vp->matCamProj, &vp->matProj, &vp->matCamera);
+    vp->_isCamProjDirty = false;
+  }
+
+  t3d_mat4_mul_vec3(&posScreen, &vp->matCamProj, pos);
+
+  if(posScreen.v[3] <= 0.0f) {
+    return false; // Behind camera
+  }
+
+  float invW = 1.0f / posScreen.v[3];
+  out->v[0] = posScreen.v[0] * invW;
+  out->v[1] = posScreen.v[1] * invW;
+  out->v[2] = posScreen.v[2] * invW;
+
+  out->v[0] *= vp->size[0] * 0.5f;
+  out->v[1] *= -vp->size[1] * 0.5f;
+
+  out->v[0] += vp->size[0] * 0.5f;
+  out->v[1] += vp->size[1] * 0.5f;
+
+  out->v[0] += vp->offset[0];
+  out->v[1] += vp->offset[1];
+  
+  return true;
+}
+
 static void debugDrawAABB(uint16_t *fb, Vector3 *min, const Vector3 *max, T3DViewport *vp, float scale, uint16_t color)
 {
   // transform min/max to screen space
   T3DVec3 points[8];
+  bool visible[8];
   T3DVec3 pt0 = {{min->x*scale, min->y*scale, min->z*scale}};
   T3DVec3 pt1 = {{max->x*scale, min->y*scale, min->z*scale}};
 
-  t3d_viewport_calc_viewspace_pos(vp, &points[0], &pt0);
-  t3d_viewport_calc_viewspace_pos(vp, &points[1], &pt1); pt0.v[1] = max->y*scale;
-  t3d_viewport_calc_viewspace_pos(vp, &points[2], &pt0); pt1.v[1] = max->y*scale;
-  t3d_viewport_calc_viewspace_pos(vp, &points[3], &pt1); pt0.v[2] = max->z*scale;
-  t3d_viewport_calc_viewspace_pos(vp, &points[4], &pt0); pt1.v[2] = max->z*scale;
-  t3d_viewport_calc_viewspace_pos(vp, &points[5], &pt1); pt0.v[1] = min->y*scale;
-  t3d_viewport_calc_viewspace_pos(vp, &points[6], &pt0); pt1.v[1] = min->y*scale;
-  t3d_viewport_calc_viewspace_pos(vp, &points[7], &pt1);
+  visible[0] = debugProjectPoint(vp, &points[0], &pt0);
+  visible[1] = debugProjectPoint(vp, &points[1], &pt1); pt0.v[1] = max->y*scale;
+  visible[2] = debugProjectPoint(vp, &points[2], &pt0); pt1.v[1] = max->y*scale;
+  visible[3] = debugProjectPoint(vp, &points[3], &pt1); pt0.v[2] = max->z*scale;
+  visible[4] = debugProjectPoint(vp, &points[4], &pt0); pt1.v[2] = max->z*scale;
+  visible[5] = debugProjectPoint(vp, &points[5], &pt1); pt0.v[1] = min->y*scale;
+  visible[6] = debugProjectPoint(vp, &points[6], &pt0); pt1.v[1] = min->y*scale;
+  visible[7] = debugProjectPoint(vp, &points[7], &pt1);
 
   // draw min/max as wireframe cube
   const int indices[24] = {
@@ -69,7 +102,9 @@ static void debugDrawAABB(uint16_t *fb, Vector3 *min, const Vector3 *max, T3DVie
     0, 6, 1, 7, 2, 4, 3, 5
   };
   for(int i=0; i<24; i+=2) {
-    debugDrawLineVec3(fb, &points[indices[i]], &points[indices[i+1]], color);
+    if(visible[indices[i]] && visible[indices[i+1]]) {
+      debugDrawLineVec3(fb, &points[indices[i]], &points[indices[i+1]], color);
+    }
   }
 }
 

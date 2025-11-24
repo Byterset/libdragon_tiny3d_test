@@ -26,28 +26,20 @@ void swept_physics_object_gjk_support_function(const void* data, const Vector3* 
 
 void object_mesh_collide_data_init(
     struct object_mesh_collide_data* data,
+    Vector3* prev_pos,
     struct mesh_collider* mesh,
-    physics_object* object,
-    Vector3 offset
+    physics_object* object
 ) {
+    data->prev_pos = prev_pos;
     data->mesh = mesh;
     data->object = object;
-    data->offset = offset;
 }
 
-bool check_swept_collision_with_triangle(
-    struct object_mesh_collide_data* collide_data,
-    int triangle_index,
-    Vector3* out_hit_pos,
-    struct EpaResult* out_result
-) {
+bool collide_object_swept_to_triangle(void* data, int triangle_index) {
+    struct object_mesh_collide_data* collide_data = (struct object_mesh_collide_data*)data;
     struct swept_physics_object swept;
     swept.object = collide_data->object;
-    swept.offset = collide_data->offset;
-    
-    Vector3 start_pos = *collide_data->object->position;
-    Vector3 projected_end;
-    vector3Add(&start_pos, &collide_data->offset, &projected_end);
+    vector3Sub(collide_data->prev_pos, collide_data->object->position, &swept.offset);
 
     struct mesh_triangle triangle;
     triangle.vertices = collide_data->mesh->vertices;
@@ -60,97 +52,127 @@ bool check_swept_collision_with_triangle(
         return false;
     }
 
+    struct EpaResult result;
     if (epaSolveSwept(
             &simplex,
             &triangle,
             mesh_triangle_gjk_support_function,
             &swept,
             swept_physics_object_gjk_support_function,
-            &start_pos,
-            &projected_end,
-            out_result))
+            collide_data->prev_pos,
+            collide_data->object->position,
+            &result))
     {
-        *out_hit_pos = start_pos;
+        collide_data->hit_result = result;
         return true;
     }
 
-    // Fallback: check static collision at start position if swept failed but GJK overlapped
+    Vector3 final_pos = *collide_data->object->position;
+    *collide_data->object->position = *collide_data->prev_pos;
+
     if (epaSolve(
             &simplex,
             &triangle,
             mesh_triangle_gjk_support_function,
             collide_data->object,
             physics_object_gjk_support_function,
-            out_result))
+            &result))
     {
-        *out_hit_pos = *collide_data->object->position;
+        collide_data->hit_result = result;
         return true;
     }
+    *collide_data->object->position = final_pos;
 
     return false;
 }
 
+void collide_object_swept_bounce(
+    physics_object* object, 
+    struct object_mesh_collide_data* collide_data,
+    Vector3* start_pos
+) {
+    // this is the new prev position when iterating
+    // over mulitple swept collisions
+    *collide_data->prev_pos = *object->position;
 
-bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* mesh, Vector3 offset){
+    Vector3 move_amount;
+    vector3Sub(start_pos, object->position, &move_amount);
+
+    // split the move amount due to the collision into normal and tangent components
+    Vector3 move_amount_normal;
+    vector3Project(&move_amount, &collide_data->hit_result.normal, &move_amount_normal);
+    Vector3 move_amount_tangent;
+    vector3Sub(&move_amount, &move_amount_normal, &move_amount_tangent);
+
+    vector3Scale(&move_amount_normal, &move_amount_normal, -object->collision->bounce);
+
+
+    vector3Add(object->position, &move_amount_normal, object->position);
+    vector3Add(object->position, &move_amount_tangent, object->position);
+    // don't include friction on a bounce
+    correct_velocity(object, &collide_data->hit_result, 0.0f, object->collision->bounce);
+
+    vector3Sub(object->position, start_pos, &move_amount);
+    vector3Add(&move_amount, &object->bounding_box.min, &object->bounding_box.min);
+    vector3Add(&move_amount, &object->bounding_box.max, &object->bounding_box.max);
+
+    //Add new contact to object (object is contact Point B in the case of mesh collision)
+    // Cache the contact (entity_a = 0 for static mesh)
+    contact_constraint *constraint = cache_contact_constraint(NULL, object, &collide_data->hit_result, 0, object->collision->bounce, false);
+    constraint->is_active = false;
+    // Still add to old contact list for ground detection logic
+    collide_add_contact(object, constraint, NULL);
+}
+
+
+bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* mesh, Vector3* prev_pos){
+    if (object->is_trigger) {
+        return false;
+    }
+
     struct object_mesh_collide_data collide_data;
-    object_mesh_collide_data_init(&collide_data, mesh, object, offset);
+    object_mesh_collide_data_init(&collide_data, prev_pos, mesh, object);
 
     Vector3 start_pos = *object->position;
-    Vector3 projected_pos = *object->position;
-    Vector3 proj_pos_buff;
-    vector3AddToSelf(&projected_pos, &offset);
-    vector3AddScaled(object->position, &offset, 1.1f, &proj_pos_buff);
+
+    Vector3 offset;
+
+
+    vector3Sub(
+        object->position,
+        prev_pos,
+        &offset);
 
     Vector3 box_extent;
     vector3Sub(&object->bounding_box.max, &object->bounding_box.min, &box_extent);
     vector3Scale(&box_extent, &box_extent, 0.5f);
-
-    AABB proj_box;
-    vector3Sub(&proj_pos_buff, &box_extent, &proj_box.min);
-    vector3Add(&proj_pos_buff, &box_extent, &proj_box.max);
+    AABB prev_box;
+    vector3Sub(prev_pos, &box_extent, &prev_box.min);
+    vector3Add(prev_pos, &box_extent, &prev_box.max);
 
     // span a box from the previous position to the current position to catch all possible triangle collisions
-    AABB expanded_box = AABBUnion(&proj_box, &object->bounding_box);
+    AABB expanded_box = AABBUnion(&prev_box, &object->bounding_box);
 
 
     int result_count = 0;
-    int max_results = 128;
+    int max_results = 20;
     node_proxy results[max_results];
 
     AABB_tree_query_bounds(&mesh->aabbtree, &expanded_box, results, &result_count, max_results);
-
+    
     bool did_hit = false;
-    float min_dist_sq = FLT_MAX;
-    Vector3 best_hit_pos = projected_pos;
-    struct EpaResult best_result;
-
     for (size_t j = 0; j < result_count; j++)
     {
         int triangle_index = (int)AABB_tree_get_node_data(&mesh->aabbtree, results[j]);
-        
-        Vector3 hit_pos;
-        struct EpaResult result;
-        if (check_swept_collision_with_triangle(&collide_data, triangle_index, &hit_pos, &result)) {
-            float dist_sq = vector3DistSqrd(&start_pos, &hit_pos);
-            if (dist_sq < min_dist_sq) {
-                min_dist_sq = dist_sq;
-                best_hit_pos = hit_pos;
-                best_result = result;
-                did_hit = true;
-            }
-        }
-    }
 
-    if (did_hit) {
-        *object->position = best_hit_pos;
-        collide_data.hit_result = best_result;
-        // Cache constraint
-        contact_constraint *constraint = cache_contact_constraint(NULL, object, &collide_data.hit_result, object->collision->friction, object->collision->bounce, false);
-        // Add to active contacts (for gameplay logic etc)
-        collide_add_contact(object, constraint, NULL);
-        return true;
-    } else {
-        *object->position = projected_pos;
+        did_hit = did_hit | collide_object_swept_to_triangle(&collide_data, triangle_index);
+    }
+    if (!did_hit)
+    {
         return false;
     }
+
+    collide_object_swept_bounce(object, &collide_data, &start_pos);
+
+    return true;
 }

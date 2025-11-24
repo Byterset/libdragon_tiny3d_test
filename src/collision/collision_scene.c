@@ -370,41 +370,8 @@ static void collision_scene_remove_inactive_contacts() {
     }
 }
 
-/// @brief Detect all contacts (object-to-object and object-to-mesh)
-static void collision_scene_detect_all_contacts() {
-    // Refresh contacts (update world pos, mark inactive)
-    collision_scene_refresh_contacts();
-
-    // Detect object-to-object collisions
-    for (int i = 0; i < g_scene.objectCount; i++) {
-        physics_object* a = g_scene.elements[i].object;
-
-        if (a->_is_sleeping) continue;
-
-        // Broad phase
-        int result_count = 0;
-        int max_results = 10;
-        node_proxy results[max_results];
-        AABB_tree_query_bounds(&g_scene.object_aabbtree, &a->bounding_box,
-                               results, &result_count, max_results);
-
-        for (int j = 0; j < result_count; j++) {
-            physics_object* b = (physics_object*)AABB_tree_get_node_data(
-                &g_scene.object_aabbtree, results[j]);
-
-            if (!b || b == a) continue;
-            
-            // Optimization: Skip duplicate pairs
-            // Since contact_pair_id is symmetric, we only need to check each pair once.
-            // We enforce a < b by entity_id.
-            // However, if b is sleeping, it won't perform the check, so we must do it regardless of ID order.
-            if (!b->_is_sleeping && a->entity_id > b->entity_id) continue;
-
-            // Narrow phase - only detect, don't resolve!
-            detect_contact_object_to_object(a, b);
-        }
-    }
-    #define MAX_SWEPT_ITERATIONS    6
+static void collision_scene_fix_sweep_collisions() {
+    #define MAX_SWEPT_ITERATIONS    5
     // Detect object-to-mesh collisions
     if (g_scene.mesh_collider) {
         for (int i = 0; i < g_scene.objectCount; i++)
@@ -418,39 +385,92 @@ static void collision_scene_detect_all_contacts() {
             if (obj->_is_sleeping || obj->is_trigger || obj->is_kinematic || all_position_frozen || !(obj->collision_layers & COLLISION_LAYER_TANGIBLE)) {
                 continue;
             }
-
+            Vector3* prev_pos = &obj->_prev_step_pos;
             for (int i = 0; i < MAX_SWEPT_ITERATIONS; i += 1)
             {
-                Vector3 displacement = obj->velocity;
-                vector3Scale(&displacement, &displacement, FIXED_DELTATIME * obj->time_scalar);
-                Vector3 position_copy = *obj->position;
-
+                Vector3 offset;
+                vector3Sub(obj->position, prev_pos, &offset);
                 Vector3 bounding_box_size;
                 vector3Sub(&obj->bounding_box.max, &obj->bounding_box.min, &bounding_box_size);
                 vector3Scale(&bounding_box_size, &bounding_box_size, 0.5f);
 
-                // if the object has moved more than the bounding box size perform a swept collision check with immediate response
-                if (fabs(displacement.x) > bounding_box_size.x ||
-                    fabs(displacement.y) > bounding_box_size.y ||
-                    fabs(displacement.z) > bounding_box_size.z)
+                // if the object has moved more than the bounding box size perform a swept collision check
+                if (fabs(offset.x) > bounding_box_size.x ||
+                    fabs(offset.y) > bounding_box_size.y ||
+                    fabs(offset.z) > bounding_box_size.z)
                 {
-                    // obj->velocity = gZeroVec;
-                    // break;
-                    if (!collide_object_to_mesh_swept(obj, g_scene.mesh_collider, displacement))
+                    if (!collide_object_to_mesh_swept(obj, g_scene.mesh_collider, prev_pos))
                     {
-                        break;
+                        return;
                     }
                 }
-                // otherwise just do a normal collision check
-                else
-                {
-                    detect_contacts_object_to_mesh(obj, g_scene.mesh_collider);
-                    break;
+                else {
+                    return;
                 }
             }
-        
+
+            // too many swept iterations
+            // to prevent tunneling just move the object back to the previous known valid location
+            //currently commented out because it causes the player to stall. TODO: figure this out
+            // *obj->position = *prev_pos;
         }
     }
+}
+
+/// @brief Detect all contacts (object-to-object and object-to-mesh)
+static void collision_scene_detect_all_contacts() {
+    // Refresh contacts (update world pos, mark inactive)
+    collision_scene_refresh_contacts();
+
+    // Detect object-to-object collisions
+    for (int i = 0; i < g_scene.objectCount; i++) {
+        physics_object* a = g_scene.elements[i].object;
+
+        if (!a->_is_sleeping)
+        {
+            // Broad phase
+            int result_count = 0;
+            int max_results = 10;
+            node_proxy results[max_results];
+            AABB_tree_query_bounds(&g_scene.object_aabbtree, &a->bounding_box,
+                                   results, &result_count, max_results);
+
+            for (int j = 0; j < result_count; j++)
+            {
+                physics_object *b = (physics_object *)AABB_tree_get_node_data(
+                    &g_scene.object_aabbtree, results[j]);
+
+                if (!b || b == a)
+                    continue;
+
+                // Optimization: Skip duplicate pairs
+                // Since contact_pair_id is symmetric, we only need to check each pair once.
+                // We enforce a < b by entity_id.
+                // However, if b is sleeping, it won't perform the check, so we must do it regardless of ID order.
+                if (!b->_is_sleeping && a->entity_id > b->entity_id)
+                    continue;
+
+                // Narrow phase - only detect, don't resolve!
+                detect_contact_object_to_object(a, b);
+            }
+        }
+
+            // Detect object-to-mesh collisions
+        if (g_scene.mesh_collider)
+        {
+
+            // Skip if all position axes are frozen (object can't move anyway)
+            bool all_position_frozen = (a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL;
+
+            // Detect mesh collision for all non-sleeping, non-kinematic, tangible objects
+            if (a->_is_sleeping || a->is_trigger || a->is_kinematic || all_position_frozen || !(a->collision_layers & COLLISION_LAYER_TANGIBLE))
+            {
+                continue;
+            }
+            detect_contacts_object_to_mesh(a, g_scene.mesh_collider);
+        }
+    }
+
 
     // Remove contacts that were not detected this frame
     collision_scene_remove_inactive_contacts();
@@ -1257,6 +1277,8 @@ void collision_scene_step() {
     for (int iter = 0; iter < POSITION_CONSTRAINT_SOLVER_ITERATIONS; iter++) {
         collision_scene_solve_position_constraints();
     }
+
+    collision_scene_fix_sweep_collisions();
 
     // ========================================================================
     // PHASE 8: Apply position constraints and update sleep states
