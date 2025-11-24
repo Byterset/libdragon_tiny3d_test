@@ -147,34 +147,81 @@ bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* 
         prev_pos,
         &offset);
 
+    Vector3 box_center;
+    vector3Add(&object->bounding_box.min, &object->bounding_box.max, &box_center);
+    vector3Scale(&box_center, &box_center, 0.5f);
+
+    Vector3 center_offset_from_pos;
+    vector3Sub(&box_center, object->position, &center_offset_from_pos);
+
+    Vector3 prev_box_center;
+    vector3Add(prev_pos, &center_offset_from_pos, &prev_box_center);
+
     Vector3 box_extent;
     vector3Sub(&object->bounding_box.max, &object->bounding_box.min, &box_extent);
     vector3Scale(&box_extent, &box_extent, 0.5f);
     AABB prev_box;
-    vector3Sub(prev_pos, &box_extent, &prev_box.min);
-    vector3Add(prev_pos, &box_extent, &prev_box.max);
+    vector3Sub(&prev_box_center, &box_extent, &prev_box.min);
+    vector3Add(&prev_box_center, &box_extent, &prev_box.max);
 
     // span a box from the previous position to the current position to catch all possible triangle collisions
     AABB expanded_box = AABBUnion(&prev_box, &object->bounding_box);
 
 
     int result_count = 0;
-    int max_results = 20;
+    int max_results = 128;
     node_proxy results[max_results];
 
     AABB_tree_query_bounds(&mesh->aabbtree, &expanded_box, results, &result_count, max_results);
     
-    bool did_hit = false;
+    Vector3 original_prev_pos = *prev_pos;
+    Vector3 best_hit_pos = *object->position;
+    struct EpaResult best_result;
+    bool any_hit = false;
+    float min_dist_sq = -1.0f;
+
     for (size_t j = 0; j < result_count; j++)
     {
         int triangle_index = (int)AABB_tree_get_node_data(&mesh->aabbtree, results[j]);
 
-        did_hit = did_hit | collide_object_swept_to_triangle(&collide_data, triangle_index);
+        // Use a temp prev_pos for this check to avoid modifying the global state
+        // until we find the best hit
+        Vector3 temp_prev_pos = original_prev_pos;
+        collide_data.prev_pos = &temp_prev_pos;
+
+        if (collide_object_swept_to_triangle(&collide_data, triangle_index)) {
+            Vector3 diff;
+            vector3Sub(&temp_prev_pos, &original_prev_pos, &diff);
+            float dist_sq = vector3Dot(&diff, &diff);
+            
+            // If we hit something, we want the earliest hit (smallest distance from start)
+            // But if dist_sq is 0, it means we are already overlapping at the start.
+            // We should prioritize non-zero distance hits (actual swept collisions) over initial overlaps?
+            // Or maybe initial overlaps are more critical?
+            // Actually, if we are overlapping at start, we might be stuck.
+            // Let's treat all hits equally based on distance.
+            
+            if (!any_hit || dist_sq < min_dist_sq) {
+                min_dist_sq = dist_sq;
+                best_hit_pos = temp_prev_pos;
+                best_result = collide_data.hit_result;
+                any_hit = true;
+            }
+        }
     }
-    if (!did_hit)
+
+    if (!any_hit)
     {
         return false;
     }
+
+    // Restore the best hit into the actual prev_pos pointer
+    *prev_pos = best_hit_pos;
+    collide_data.prev_pos = prev_pos;
+    collide_data.hit_result = best_result;
+
+    // Move object to the contact point so the bounce calculation is correct
+    *object->position = best_hit_pos;
 
     collide_object_swept_bounce(object, &collide_data, &start_pos);
 

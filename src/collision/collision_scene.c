@@ -404,7 +404,7 @@ static void collision_scene_detect_all_contacts() {
             detect_contact_object_to_object(a, b);
         }
     }
-    #define MAX_SWEPT_ITERATIONS    5
+    #define MAX_SWEPT_ITERATIONS    6
     // Detect object-to-mesh collisions
     if (g_scene.mesh_collider) {
         for (int i = 0; i < g_scene.objectCount; i++)

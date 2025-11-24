@@ -796,7 +796,8 @@ bool epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_f
         float moveOffset = vector3DistSqrd(bStart, bEnd);
 
         // Verify collision occurs within the sweep range
-        if (distance * distance >= moveOffset + 0.01f) {
+        // Use a slightly larger epsilon for the check to avoid false negatives due to precision
+        if (distance * distance >= moveOffset + 0.1f) {
             return false;
         }
 
