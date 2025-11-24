@@ -7,20 +7,6 @@
 #include "epa.h"
 
 
-
-/// @brief Corrects the velocities of colliding objects. This can affect both the linear and angular velocities of an object
-/// depending on if it has any constraints or no rotation reference.
-///
-/// This will also correct velocities for collisions against static mesh_colliders. Here one of the input object pointers will
-/// be NULL and act as a collision against an object with infinite mass.
-/// @param a pointer to colliding physics_object a
-/// @param b pointer to colliding physics_object b
-/// @param result the result of the EPA, containing collision normal, contact points & penetration depth
-/// @param friction the combined friction of the objects
-/// @param bounce the combined bounce of the objects
-void correct_velocity(physics_object* a, physics_object* b, const struct EpaResult* result, float friction, float bounce);
-
-
 /// @brief Attempts to create a new contact in the collision_scene and add it to the physics_objects list of active contacts.
 ///
 /// @note It is important to know in which order the objects were tested during the EPA so the correct contact point of the result gets added.

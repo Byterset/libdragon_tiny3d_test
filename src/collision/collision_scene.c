@@ -421,8 +421,10 @@ static void collision_scene_detect_all_contacts() {
 
             for (int i = 0; i < MAX_SWEPT_ITERATIONS; i += 1)
             {
-                Vector3 displacement;
-                vector3FromTo(&obj->_prev_step_pos, obj->position, &displacement);
+                Vector3 displacement = obj->velocity;
+                vector3Scale(&displacement, &displacement, FIXED_DELTATIME * obj->time_scalar);
+                Vector3 position_copy = *obj->position;
+
                 Vector3 bounding_box_size;
                 vector3Sub(&obj->bounding_box.max, &obj->bounding_box.min, &bounding_box_size);
                 vector3Scale(&bounding_box_size, &bounding_box_size, 0.5f);
@@ -432,7 +434,9 @@ static void collision_scene_detect_all_contacts() {
                     fabs(displacement.y) > bounding_box_size.y ||
                     fabs(displacement.z) > bounding_box_size.z)
                 {
-                    if (!collide_object_to_mesh_swept(obj, g_scene.mesh_collider, &obj->_prev_step_pos))
+                    // obj->velocity = gZeroVec;
+                    // break;
+                    if (!collide_object_to_mesh_swept(obj, g_scene.mesh_collider, displacement))
                     {
                         break;
                     }
