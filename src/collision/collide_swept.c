@@ -134,10 +134,6 @@ void collide_object_swept_bounce(
 }
 
 bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* mesh, Vector3* prev_pos){
-    if (object->is_trigger) {
-        return false;
-    }
-
     struct object_mesh_collide_data collide_data;
     object_mesh_collide_data_init(&collide_data, prev_pos, mesh, object);
 

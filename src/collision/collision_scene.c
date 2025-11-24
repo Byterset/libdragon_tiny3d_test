@@ -404,20 +404,47 @@ static void collision_scene_detect_all_contacts() {
             detect_contact_object_to_object(a, b);
         }
     }
-
+    #define MAX_SWEPT_ITERATIONS    5
     // Detect object-to-mesh collisions
     if (g_scene.mesh_collider) {
-        for (int i = 0; i < g_scene.objectCount; i++) {
+        for (int i = 0; i < g_scene.objectCount; i++)
+        {
             physics_object* obj = g_scene.elements[i].object;
 
             // Skip if all position axes are frozen (object can't move anyway)
             bool all_position_frozen = (obj->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL;
 
             // Detect mesh collision for all non-sleeping, non-kinematic, tangible objects
-            // We need to check even stationary objects because they might have gravity or be resting on the mesh
-            if (!obj->_is_sleeping && !obj->is_kinematic && !all_position_frozen && (obj->collision_layers & COLLISION_LAYER_TANGIBLE)) {
-                detect_contacts_object_to_mesh(obj, g_scene.mesh_collider);
+            if (obj->_is_sleeping || obj->is_trigger || obj->is_kinematic || all_position_frozen || !(obj->collision_layers & COLLISION_LAYER_TANGIBLE)) {
+                continue;
             }
+
+            for (int i = 0; i < MAX_SWEPT_ITERATIONS; i += 1)
+            {
+                Vector3 displacement;
+                vector3FromTo(&obj->_prev_step_pos, obj->position, &displacement);
+                Vector3 bounding_box_size;
+                vector3Sub(&obj->bounding_box.max, &obj->bounding_box.min, &bounding_box_size);
+                vector3Scale(&bounding_box_size, &bounding_box_size, 0.5f);
+
+                // if the object has moved more than the bounding box size perform a swept collision check with immediate response
+                if (fabs(displacement.x) > bounding_box_size.x ||
+                    fabs(displacement.y) > bounding_box_size.y ||
+                    fabs(displacement.z) > bounding_box_size.z)
+                {
+                    if (!collide_object_to_mesh_swept(obj, g_scene.mesh_collider, &obj->_prev_step_pos))
+                    {
+                        break;
+                    }
+                }
+                // otherwise just do a normal collision check
+                else
+                {
+                    detect_contacts_object_to_mesh(obj, g_scene.mesh_collider);
+                    break;
+                }
+            }
+        
         }
     }
 

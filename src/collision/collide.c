@@ -675,10 +675,6 @@ bool detect_contact_object_to_triangle(physics_object* object, const struct mesh
 }
 
 void detect_contacts_object_to_mesh(physics_object* object, const struct mesh_collider* mesh) {
-    if (object->is_trigger) {
-        return;
-    }
-
     int result_count = 0;
     int max_results = 64; // Increased from 20 to handle complex geometry with multiple simultaneous contacts
     node_proxy results[max_results];

@@ -13,7 +13,7 @@
 #define MAX_CACHED_CONTACTS 256
 
 #define VELOCITY_CONSTRAINT_SOLVER_ITERATIONS 6
-#define POSITION_CONSTRAINT_SOLVER_ITERATIONS 3
+#define POSITION_CONSTRAINT_SOLVER_ITERATIONS 4
 
 struct collision_scene_element {
     physics_object* object;
