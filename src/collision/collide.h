@@ -6,47 +6,49 @@
 #include "physics_object.h"
 #include "epa.h"
 
-
-/// @brief Attempts to create a new contact in the collision_scene and add it to the physics_objects list of active contacts.
-///
-/// @note It is important to know in which order the objects were tested during the EPA so the correct contact point of the result gets added.
-/// @param object the pointer of the object to add the contact to
-/// @param result the result of the EPA, containing the calculated contact points
-/// @param is_B flag if this object was object B during EPA - EpaResult will contain both contactA and contactB
-/// @param other_id the entity_id of the object that was collided against
+/// @brief Adds a contact constraint to the physics object's active contact list.
+/// @param object The physics object to add the contact to.
+/// @param constraint The contact constraint to add.
+/// @param other_object The other physics object involved in the collision.
 void collide_add_contact(physics_object* object, contact_constraint* constraint, physics_object* other_object);
 
-void correct_velocity(physics_object* b, const struct EpaResult* result, float friction, float bounce);
+/// @brief Applies velocity corrections to an object based on a collision result.
+/// @param object The object to correct.
+/// @param result The EPA result containing collision normal and penetration.
+/// @param friction The combined friction coefficient.
+/// @param bounce The combined bounce coefficient.
+void collide_correct_velocity(physics_object* object, const struct EpaResult* result, float friction, float bounce);
 
-// -------- NEW: DETECTION-ONLY FUNCTIONS FOR ITERATIVE SOLVER --------
+// ============================================================================
+// DETECTION-ONLY FUNCTIONS (Iterative Solver)
+// ============================================================================
 
-/// @brief Detects collision between two physics objects and stores the contact in the constraint cache.
-/// Does NOT resolve the collision - that happens later in the solver phases.
-/// @param a physics object a
-/// @param b physics object b
-void detect_contact_object_to_object(physics_object* a, physics_object* b);
+/// @brief Detects collision between two physics objects and caches the contact constraint.
+/// @param a The first physics object.
+/// @param b The second physics object.
+void collide_detect_object_to_object(physics_object* a, physics_object* b);
 
-/// @brief Detects collisions between a physics object and a static mesh collider, storing contacts in the constraint cache.
-/// Does NOT resolve collisions - that happens later in the solver phases.
-/// @param object the object to detect collisions for
-/// @param mesh the static mesh collider
-void detect_contacts_object_to_mesh(physics_object* object, const struct mesh_collider* mesh);
+/// @brief Detects collisions between a physics object and a static mesh collider.
+/// @param object The physics object.
+/// @param mesh The static mesh collider.
+void collide_detect_object_to_mesh(physics_object* object, const struct mesh_collider* mesh);
 
-/// @brief Detects collision between a physics object and a single triangle from a mesh.
-/// @param object the physics object
-/// @param mesh the mesh collider
-/// @param triangle_index the index of the triangle to check
-/// @return true if collision was detected and cached
-bool detect_contact_object_to_triangle(physics_object* object, const struct mesh_collider* mesh, int triangle_index);
+/// @brief Detects collision between a physics object and a single mesh triangle.
+/// @param object The physics object.
+/// @param mesh The mesh collider containing the triangle.
+/// @param triangle_index The index of the triangle in the mesh.
+/// @return true if a collision was detected and cached, false otherwise.
+bool collide_detect_object_to_triangle(physics_object* object, const struct mesh_collider* mesh, int triangle_index);
 
-/// @brief Stores a detected contact in the global constraint cache for later solving.
-/// @param entity_a first entity ID (0 for static mesh)
-/// @param entity_b second entity ID
-/// @param result EPA result containing contact information
-/// @param combined_friction combined friction coefficient
-/// @param combined_bounce combined bounce coefficient
-/// @param is_trigger whether this is a trigger contact
-contact_constraint* cache_contact_constraint(physics_object* objectA, physics_object* objectB, const struct EpaResult* result,
-                               float combined_friction, float combined_bounce, bool is_trigger);
+/// @brief Caches a detected contact constraint for later solving.
+/// @param object_a The first physics object (or NULL for static mesh).
+/// @param object_b The second physics object.
+/// @param result The EPA result containing contact information.
+/// @param combined_friction The combined friction coefficient.
+/// @param combined_bounce The combined bounce coefficient.
+/// @param is_trigger Whether this is a trigger interaction.
+/// @return A pointer to the cached contact constraint, or NULL if cache is full.
+contact_constraint *collide_cache_contact_constraint(physics_object *object_a, physics_object *object_b, const struct EpaResult *result,
+                                                     float combined_friction, float combined_bounce, bool is_trigger);
 
 #endif

@@ -10,12 +10,16 @@
 #include "shapes/ray_triangle_intersection.h"
 #include <stdio.h>
 
+/// @brief Internal structure to represent a swept physics object for GJK support.
 struct swept_physics_object {
     physics_object* object;
     Vector3 offset;
 };
 
-void swept_physics_object_gjk_support_function(const void* data, const Vector3* direction, Vector3* output) {
+/// @brief GJK support function for a swept physics object.
+/// The support point is the support point of the object at the current position,
+/// extended by the sweep offset if the direction aligns with the sweep.
+static void collide_swept_gjk_support_function(const void* data, const Vector3* direction, Vector3* output) {
     struct swept_physics_object* obj = (struct swept_physics_object*)data;
     Vector3 norm_dir;
     vector3Normalize(direction, &norm_dir);
@@ -26,7 +30,8 @@ void swept_physics_object_gjk_support_function(const void* data, const Vector3* 
     }
 }
 
-void object_mesh_collide_data_init(
+/// @brief Initializes the collision data structure.
+static void collide_swept_data_init(
     struct object_mesh_collide_data* data,
     Vector3* prev_pos,
     struct mesh_collider* mesh,
@@ -37,7 +42,8 @@ void object_mesh_collide_data_init(
     data->object = object;
 }
 
-bool collide_object_swept_to_triangle(void* data, int triangle_index) {
+/// @brief Checks for collision between a swept object and a single triangle.
+static bool collide_swept_triangle_check(void* data, int triangle_index) {
     struct object_mesh_collide_data* collide_data = (struct object_mesh_collide_data*)data;
     
     // Use raycast for high-speed tunneling prevention
@@ -87,7 +93,7 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
 
     struct Simplex simplex;
     Vector3 firstDir = gRight;
-    if (!gjkCheckForOverlap(&simplex, &triangle, mesh_triangle_gjk_support_function, &swept, swept_physics_object_gjk_support_function, &firstDir)) {
+    if (!gjkCheckForOverlap(&simplex, &triangle, mesh_triangle_gjk_support_function, &swept, collide_swept_gjk_support_function, &firstDir)) {
         return false;
     }
 
@@ -97,7 +103,7 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
             &triangle,
             mesh_triangle_gjk_support_function,
             &swept,
-            swept_physics_object_gjk_support_function,
+            collide_swept_gjk_support_function,
             collide_data->prev_pos,
             collide_data->object->position,
             &result))
@@ -106,6 +112,7 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
         return true;
     }
 
+    // Fallback: Check static collision at previous position if swept failed but overlap exists
     Vector3 final_pos = *collide_data->object->position;
     *collide_data->object->position = *collide_data->prev_pos;
 
@@ -129,6 +136,7 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
 
         if (!ignore) {
             collide_data->hit_result = result;
+            *collide_data->object->position = final_pos; // Restore position
             return true;
         }
     }
@@ -137,7 +145,8 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
     return false;
 }
 
-void collide_object_swept_bounce(
+/// @brief Resolves the collision by bouncing the object off the surface.
+static void collide_swept_resolve_bounce(
     physics_object* object, 
     struct object_mesh_collide_data* collide_data,
     Vector3* start_pos
@@ -162,7 +171,7 @@ void collide_object_swept_bounce(
     vector3Add(object->position, &move_amount_tangent, object->position);
 
     // don't include friction on a bounce
-    correct_velocity(object, &collide_data->hit_result, 0.0f, object->collision->bounce);
+    collide_correct_velocity(object, &collide_data->hit_result, 0.0f, object->collision->bounce);
 
     vector3Sub(object->position, start_pos, &move_amount);
     vector3Add(&move_amount, &object->bounding_box.min, &object->bounding_box.min);
@@ -170,10 +179,12 @@ void collide_object_swept_bounce(
 
     //Add new contact to object (object is contact Point B in the case of mesh collision)
     // Cache the contact (entity_a = 0 for static mesh)
-    contact_constraint *constraint = cache_contact_constraint(NULL, object, &collide_data->hit_result, 0, object->collision->bounce, false);
-    constraint->is_active = false;
-    // Still add to old contact list for ground detection logic
-    collide_add_contact(object, constraint, NULL);
+    contact_constraint *constraint = collide_cache_contact_constraint(NULL, object, &collide_data->hit_result, 0, object->collision->bounce, false);
+    if (constraint) {
+        constraint->is_active = false;
+        // Still add to old contact list for ground detection logic
+        collide_add_contact(object, constraint, NULL);
+    }
 }
 
 
@@ -183,7 +194,7 @@ bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* 
     }
 
     struct object_mesh_collide_data collide_data;
-    object_mesh_collide_data_init(&collide_data, prev_pos, mesh, object);
+    collide_swept_data_init(&collide_data, prev_pos, mesh, object);
 
     Vector3 start_pos = *object->position;
 
@@ -217,14 +228,14 @@ bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* 
     {
         int triangle_index = (int)AABB_tree_get_node_data(&mesh->aabbtree, results[j]);
 
-        did_hit = did_hit | collide_object_swept_to_triangle(&collide_data, triangle_index);
+        did_hit = did_hit | collide_swept_triangle_check(&collide_data, triangle_index);
     }
     if (!did_hit)
     {
         return false;
     }
 
-    collide_object_swept_bounce(object, &collide_data, &start_pos);
+    collide_swept_resolve_bounce(object, &collide_data, &start_pos);
 
     return true;
 }

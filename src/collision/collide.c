@@ -9,13 +9,13 @@
 #include <stdio.h>
 #include <math.h>
 
-const float baumgarteFactor = 0.3f;
-const float steeringConstant = 0.5f;
-const float maxCorrection = 0.04f;
-const float slop = 0.005;
+static const float BAUMGARTE_FACTOR = 0.3f;
+// static const float STEERING_CONSTANT = 0.5f;
+// static const float MAX_CORRECTION = 0.04f;
+// static const float SLOP = 0.005;
 
 
-void correct_velocity(physics_object* b, const struct EpaResult* result, float friction, float bounce) {
+void collide_correct_velocity(physics_object* b, const struct EpaResult* result, float friction, float bounce) {
     // EPA result normal points toward A (from B to A), A in this case would be the static mesh collision
     // Parameters match EPA order:
     // When A is on top of B, normal points upward (from B toward A)
@@ -131,7 +131,7 @@ void correct_velocity(physics_object* b, const struct EpaResult* result, float f
         denominator += vector3Dot(&rCrossN, &torquePerImpulse);
     }
 
-    float baumgarteBias = (baumgarteFactor / FIXED_DELTATIME) * result->penetration;
+    float baumgarteBias = (BAUMGARTE_FACTOR / FIXED_DELTATIME) * result->penetration;
 
 
     if (denominator < EPSILON) denominator = EPSILON;
@@ -214,7 +214,7 @@ void collide_add_contact(physics_object* object, contact_constraint* constraint,
 // NEW: DETECTION-ONLY FUNCTIONS FOR ITERATIVE CONSTRAINT SOLVER
 // ============================================================================
 
-contact_constraint* cache_contact_constraint(physics_object* a, physics_object* b, const struct EpaResult* result,
+contact_constraint* collide_cache_contact_constraint(physics_object* a, physics_object* b, const struct EpaResult* result,
                                float combined_friction, float combined_bounce, bool is_trigger) {
     struct collision_scene* scene = collision_scene_get();
 
@@ -394,7 +394,7 @@ validate_others:
     return cont_constraint;
 }
 
-bool detect_contact_object_to_triangle(physics_object* object, const struct mesh_collider* mesh, int triangle_index) {
+bool collide_detect_object_to_triangle(physics_object* object, const struct mesh_collider* mesh, int triangle_index) {
     struct mesh_triangle triangle;
     triangle.triangle = mesh->triangles[triangle_index];
     triangle.normal = mesh->normals[triangle_index];
@@ -417,7 +417,7 @@ bool detect_contact_object_to_triangle(physics_object* object, const struct mesh
             &result))
     {
         // Cache the contact (entity_a = 0 for static mesh)
-        contact_constraint* constraint = cache_contact_constraint(NULL, object, &result, object->collision->friction, object->collision->bounce, false);
+        contact_constraint* constraint = collide_cache_contact_constraint(NULL, object, &result, object->collision->friction, object->collision->bounce, false);
 
         // Still add to old contact list for ground detection logic
         collide_add_contact(object, constraint, NULL);
@@ -428,7 +428,7 @@ bool detect_contact_object_to_triangle(physics_object* object, const struct mesh
     return false;
 }
 
-void detect_contacts_object_to_mesh(physics_object* object, const struct mesh_collider* mesh) {
+void collide_detect_object_to_mesh(physics_object* object, const struct mesh_collider* mesh) {
     int result_count = 0;
     int max_results = 64; // Increased from 20 to handle complex geometry with multiple simultaneous contacts
     node_proxy results[max_results];
@@ -437,11 +437,11 @@ void detect_contacts_object_to_mesh(physics_object* object, const struct mesh_co
     for (size_t j = 0; j < result_count; j++)
     {
         int triangle_index = (int)AABB_tree_get_node_data(&mesh->aabbtree, results[j]);
-        detect_contact_object_to_triangle(object, mesh, triangle_index);
+        collide_detect_object_to_triangle(object, mesh, triangle_index);
     }
 }
 
-bool detect_sphere_sphere(physics_object* sphereA, physics_object* sphereB, struct EpaResult* result) {
+static bool detect_sphere_sphere(physics_object* sphereA, physics_object* sphereB, struct EpaResult* result) {
 
     Vector3 sphereACenter;
     if (sphereA->rotation) {
@@ -487,7 +487,7 @@ bool detect_sphere_sphere(physics_object* sphereA, physics_object* sphereB, stru
     return true;
 }
 
-bool detect_sphere_box(physics_object* sphere, physics_object* box, struct EpaResult* result) {
+static bool detect_sphere_box(physics_object* sphere, physics_object* box, struct EpaResult* result) {
     Vector3 sphereCenter;
     if (sphere->rotation) {
         Vector3 rotatedOffset;
@@ -591,7 +591,7 @@ bool detect_sphere_box(physics_object* sphere, physics_object* box, struct EpaRe
     return true;
 }
 
-bool detect_sphere_capsule(physics_object* sphere, physics_object* capsule, struct EpaResult* result) {
+static bool detect_sphere_capsule(physics_object* sphere, physics_object* capsule, struct EpaResult* result) {
     Vector3 sphereCenter;
     if (sphere->rotation) {
         Vector3 rotatedOffset;
@@ -690,7 +690,7 @@ bool detect_sphere_capsule(physics_object* sphere, physics_object* capsule, stru
     return true;
 }
 
-void detect_contact_object_to_object(physics_object* a, physics_object* b) {
+void collide_detect_object_to_object(physics_object* a, physics_object* b) {
     // If the Objects don't share any collision layers, don't collide
     if (!(a->collision_layers & b->collision_layers)) {
         return;
@@ -774,7 +774,7 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
         dummy_result.contactB = *b->position;
         dummy_result.penetration = 0.0f;
 
-        contact_constraint* constraint = cache_contact_constraint(a, b, &dummy_result, 0.0f, 0.0f, true);
+        contact_constraint* constraint = collide_cache_contact_constraint(a, b, &dummy_result, 0.0f, 0.0f, true);
 
         if (constraint) {
             if (a->is_trigger) {
@@ -860,7 +860,7 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
     float combined_bounce = a->collision->bounce * b->collision->bounce;//minf(a->collision->bounce, b->collision->bounce);
 
     // Cache the contact constraint
-    contact_constraint* constraint = cache_contact_constraint(a, b, &result, combined_friction, combined_bounce, false);
+    contact_constraint* constraint = collide_cache_contact_constraint(a, b, &result, combined_friction, combined_bounce, false);
 
     // Still add to old contact lists for compatibility
     if (constraint) {

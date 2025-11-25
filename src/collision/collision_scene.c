@@ -465,7 +465,7 @@ static void collision_scene_detect_all_contacts() {
                     continue;
 
                 // Narrow phase - only detect, don't resolve!
-                detect_contact_object_to_object(a, b);
+                collide_detect_object_to_object(a, b);
             }
         }
 
@@ -481,7 +481,7 @@ static void collision_scene_detect_all_contacts() {
             {
                 continue;
             }
-            detect_contacts_object_to_mesh(a, g_scene.mesh_collider);
+            collide_detect_object_to_mesh(a, g_scene.mesh_collider);
         }
     }
 
