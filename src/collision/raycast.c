@@ -34,7 +34,7 @@ float raycast_calc_distance_to_point(raycast* ray, Vector3* point) {
 }
 
 bool raycast_cast(raycast* ray, raycast_hit* hit){
-    struct collision_scene* collision_scene = collision_scene_get();
+    struct collision_scene* collision_scene = collision_scene_get_instance();
     // prepare result structures for AABB_tree BVH queries
     node_proxy results[RAYCAST_MAX_OBJECT_TESTS > RAYCAST_MAX_TRIANGLE_TESTS ? RAYCAST_MAX_OBJECT_TESTS : RAYCAST_MAX_TRIANGLE_TESTS];
     int result_count = 0;

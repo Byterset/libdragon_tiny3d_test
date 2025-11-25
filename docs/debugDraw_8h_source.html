@@ -108,59 +108,94 @@ $(function() {
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  debugDrawLine(fb, (<span class="keywordtype">int</span>)p0-&gt;v[0], (<span class="keywordtype">int</span>)p0-&gt;v[1], (<span class="keywordtype">int</span>)p1-&gt;v[0], (<span class="keywordtype">int</span>)p1-&gt;v[1], color);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span> debugDrawAABB(uint16_t *fb, <a class="code" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *min, <span class="keyword">const</span> <a class="code" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *max, T3DViewport *vp, <span class="keywordtype">float</span> scale, uint16_t color)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">static</span> <span class="keywordtype">bool</span> debugProjectPoint(T3DViewport *vp, T3DVec3 *out, <span class="keyword">const</span> T3DVec3 *pos)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="comment">// transform min/max to screen space</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  T3DVec3 points[8];</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  T3DVec3 pt0 = {{min-&gt;x*scale, min-&gt;y*scale, min-&gt;z*scale}};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  T3DVec3 pt1 = {{max-&gt;x*scale, min-&gt;y*scale, min-&gt;z*scale}};</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  t3d_viewport_calc_viewspace_pos(vp, &amp;points[0], &amp;pt0);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  t3d_viewport_calc_viewspace_pos(vp, &amp;points[1], &amp;pt1); pt0.v[1] = max-&gt;y*scale;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  t3d_viewport_calc_viewspace_pos(vp, &amp;points[2], &amp;pt0); pt1.v[1] = max-&gt;y*scale;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  t3d_viewport_calc_viewspace_pos(vp, &amp;points[3], &amp;pt1); pt0.v[2] = max-&gt;z*scale;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  t3d_viewport_calc_viewspace_pos(vp, &amp;points[4], &amp;pt0); pt1.v[2] = max-&gt;z*scale;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  t3d_viewport_calc_viewspace_pos(vp, &amp;points[5], &amp;pt1); pt0.v[1] = min-&gt;y*scale;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  t3d_viewport_calc_viewspace_pos(vp, &amp;points[6], &amp;pt0); pt1.v[1] = min-&gt;y*scale;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  t3d_viewport_calc_viewspace_pos(vp, &amp;points[7], &amp;pt1);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">// draw min/max as wireframe cube</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> indices[24] = {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    0, 1, 1, 3, 3, 2, 2, 0,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    4, 5, 5, 7, 7, 6, 6, 4,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    0, 6, 1, 7, 2, 4, 3, 5</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  };</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0; i&lt;24; i+=2) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    debugDrawLineVec3(fb, &amp;points[indices[i]], &amp;points[indices[i+1]], color);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">static</span> uint16_t DEBUG_COLORS[8] = {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  0x037f, 0x92ff, 0xca7f, 0xeab9,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  0xfb31, 0xfbe7, 0xfc9b, 0xfd41,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  T3DVec4 posScreen;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordflow">if</span>(vp-&gt;_isCamProjDirty) {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    t3d_mat4_mul(&amp;vp-&gt;matCamProj, &amp;vp-&gt;matProj, &amp;vp-&gt;matCamera);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    vp-&gt;_isCamProjDirty = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  t3d_mat4_mul_vec3(&amp;posScreen, &amp;vp-&gt;matCamProj, pos);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">if</span>(posScreen.v[3] &lt;= 0.0f) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// Behind camera</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">float</span> invW = 1.0f / posScreen.v[3];</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  out-&gt;v[0] = posScreen.v[0] * invW;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  out-&gt;v[1] = posScreen.v[1] * invW;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  out-&gt;v[2] = posScreen.v[2] * invW;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  out-&gt;v[0] *= vp-&gt;size[0] * 0.5f;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  out-&gt;v[1] *= -vp-&gt;size[1] * 0.5f;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  out-&gt;v[0] += vp-&gt;size[0] * 0.5f;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  out-&gt;v[1] += vp-&gt;size[1] * 0.5f;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  out-&gt;v[0] += vp-&gt;offset[0];</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  out-&gt;v[1] += vp-&gt;offset[1];</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span> debugDrawBVTreeNode(</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  uint16_t *fb, T3DViewport *vp,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <a class="code" href="aabb__tree_8h.html#a2da74af527862d4434e1ebed2d3de128">node_proxy</a> node, <a class="code" href="structAABB__tree.html">AABB_tree</a> *tree, <span class="keyword">const</span> T3DFrustum *frustum, <span class="keywordtype">float</span> scale, <span class="keywordtype">int</span> level, <span class="keywordtype">int</span> max_level</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordflow">if</span>(node != <a class="code" href="aabb__tree_8h.html#a4fc7331b7c43e63cf0bf178fd51d0845">AABB_TREE_NULL_NODE</a> &amp;&amp; level &lt;= max_level) {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">if</span>(t3d_frustum_vs_aabb(frustum, (T3DVec3*)(&amp;tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a82b43b24e02f64abdf87f337e4ddae4d">bounds</a>.<a class="code" href="structAABB.html#ab17ac6643c3b4071727a0c38bcaf9a01">min</a>), (T3DVec3*)(&amp;tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a82b43b24e02f64abdf87f337e4ddae4d">bounds</a>.<a class="code" href="structAABB.html#a03346b3f6a57bab432a14ff2cd7f600e">max</a>))) {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="keywordflow">if</span>(AABB_tree_node_isLeaf(&amp;tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node]))debugDrawAABB(fb, &amp;tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a82b43b24e02f64abdf87f337e4ddae4d">bounds</a>.<a class="code" href="structAABB.html#ab17ac6643c3b4071727a0c38bcaf9a01">min</a>, &amp;tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a82b43b24e02f64abdf87f337e4ddae4d">bounds</a>.<a class="code" href="structAABB.html#a03346b3f6a57bab432a14ff2cd7f600e">max</a>, vp, scale, DEBUG_COLORS[level &amp; 7]);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      debugDrawBVTreeNode(fb, vp, tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a42c515272e57d4cf243294b25deb218a">_left</a>, tree, frustum, scale, level+1, max_level);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      debugDrawBVTreeNode(fb, vp, tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a092f2b8b241c1da7fb8e7255d6912ddd">_right</a>, tree, frustum, scale, level+1, max_level);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span> debugDrawAABB(uint16_t *fb, <a class="code" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *min, <span class="keyword">const</span> <a class="code" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *max, T3DViewport *vp, <span class="keywordtype">float</span> scale, uint16_t color)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// transform min/max to screen space</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  T3DVec3 points[8];</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordtype">bool</span> visible[8];</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  T3DVec3 pt0 = {{min-&gt;x*scale, min-&gt;y*scale, min-&gt;z*scale}};</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  T3DVec3 pt1 = {{max-&gt;x*scale, min-&gt;y*scale, min-&gt;z*scale}};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  visible[0] = debugProjectPoint(vp, &amp;points[0], &amp;pt0);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  visible[1] = debugProjectPoint(vp, &amp;points[1], &amp;pt1); pt0.v[1] = max-&gt;y*scale;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  visible[2] = debugProjectPoint(vp, &amp;points[2], &amp;pt0); pt1.v[1] = max-&gt;y*scale;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  visible[3] = debugProjectPoint(vp, &amp;points[3], &amp;pt1); pt0.v[2] = max-&gt;z*scale;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  visible[4] = debugProjectPoint(vp, &amp;points[4], &amp;pt0); pt1.v[2] = max-&gt;z*scale;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  visible[5] = debugProjectPoint(vp, &amp;points[5], &amp;pt1); pt0.v[1] = min-&gt;y*scale;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  visible[6] = debugProjectPoint(vp, &amp;points[6], &amp;pt0); pt1.v[1] = min-&gt;y*scale;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  visible[7] = debugProjectPoint(vp, &amp;points[7], &amp;pt1);</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span> debugDrawBVTree(uint16_t *fb, <a class="code" href="structAABB__tree.html">AABB_tree</a> *tree, T3DViewport *vp, <span class="keyword">const</span> T3DFrustum *frustum, <span class="keywordtype">float</span> scale, <span class="keywordtype">int</span> start_level, <span class="keywordtype">int</span> max_level)</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;{</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  debugDrawBVTreeNode(fb, vp, tree-&gt;<a class="code" href="structAABB__tree.html#ad2bf3b3e3154fe876abc300d9ff59fa6">root</a>, tree, frustum, scale, start_level, max_level);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="comment">// draw min/max as wireframe cube</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> indices[24] = {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    0, 1, 1, 3, 3, 2, 2, 0,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    4, 5, 5, 7, 7, 6, 6, 4,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    0, 6, 1, 7, 2, 4, 3, 5</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  };</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0; i&lt;24; i+=2) {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">if</span>(visible[indices[i]] &amp;&amp; visible[indices[i+1]]) {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      debugDrawLineVec3(fb, &amp;points[indices[i]], &amp;points[indices[i+1]], color);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="keyword">static</span> uint16_t DEBUG_COLORS[8] = {</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  0x037f, 0x92ff, 0xca7f, 0xeab9,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  0xfb31, 0xfbe7, 0xfc9b, 0xfd41,</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;};</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span> debugDrawBVTreeNode(</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  uint16_t *fb, T3DViewport *vp,</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <a class="code" href="aabb__tree_8h.html#a2da74af527862d4434e1ebed2d3de128">node_proxy</a> node, <a class="code" href="structAABB__tree.html">AABB_tree</a> *tree, <span class="keyword">const</span> T3DFrustum *frustum, <span class="keywordtype">float</span> scale, <span class="keywordtype">int</span> level, <span class="keywordtype">int</span> max_level</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;) {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordflow">if</span>(node != <a class="code" href="aabb__tree_8h.html#a4fc7331b7c43e63cf0bf178fd51d0845">AABB_TREE_NULL_NODE</a> &amp;&amp; level &lt;= max_level) {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordflow">if</span>(t3d_frustum_vs_aabb(frustum, (T3DVec3*)(&amp;tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a82b43b24e02f64abdf87f337e4ddae4d">bounds</a>.<a class="code" href="structAABB.html#ab17ac6643c3b4071727a0c38bcaf9a01">min</a>), (T3DVec3*)(&amp;tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a82b43b24e02f64abdf87f337e4ddae4d">bounds</a>.<a class="code" href="structAABB.html#a03346b3f6a57bab432a14ff2cd7f600e">max</a>))) {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <span class="keywordflow">if</span>(AABB_tree_node_isLeaf(&amp;tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node]))debugDrawAABB(fb, &amp;tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a82b43b24e02f64abdf87f337e4ddae4d">bounds</a>.<a class="code" href="structAABB.html#ab17ac6643c3b4071727a0c38bcaf9a01">min</a>, &amp;tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a82b43b24e02f64abdf87f337e4ddae4d">bounds</a>.<a class="code" href="structAABB.html#a03346b3f6a57bab432a14ff2cd7f600e">max</a>, vp, scale, DEBUG_COLORS[level &amp; 7]);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      debugDrawBVTreeNode(fb, vp, tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a42c515272e57d4cf243294b25deb218a">_left</a>, tree, frustum, scale, level+1, max_level);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      debugDrawBVTreeNode(fb, vp, tree-&gt;<a class="code" href="structAABB__tree.html#a6c1c098e7b1c3fa31dc80df7c0dce369">nodes</a>[node].<a class="code" href="structAABB__tree__node.html#a092f2b8b241c1da7fb8e7255d6912ddd">_right</a>, tree, frustum, scale, level+1, max_level);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span> debugDrawBVTree(uint16_t *fb, <a class="code" href="structAABB__tree.html">AABB_tree</a> *tree, T3DViewport *vp, <span class="keyword">const</span> T3DFrustum *frustum, <span class="keywordtype">float</span> scale, <span class="keywordtype">int</span> start_level, <span class="keywordtype">int</span> max_level)</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;{</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  debugDrawBVTreeNode(fb, vp, tree-&gt;<a class="code" href="structAABB__tree.html#ad2bf3b3e3154fe876abc300d9ff59fa6">root</a>, tree, frustum, scale, start_level, max_level);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;}</div>
 <div class="ttc" id="aaabb__tree_8h_html"><div class="ttname"><a href="aabb__tree_8h.html">aabb_tree.h</a></div></div>
 <div class="ttc" id="aaabb__tree_8h_html_a2da74af527862d4434e1ebed2d3de128"><div class="ttname"><a href="aabb__tree_8h.html#a2da74af527862d4434e1ebed2d3de128">node_proxy</a></div><div class="ttdeci">int16_t node_proxy</div><div class="ttdef"><b>Definition:</b> aabb_tree.h:15</div></div>
 <div class="ttc" id="aaabb__tree_8h_html_a4fc7331b7c43e63cf0bf178fd51d0845"><div class="ttname"><a href="aabb__tree_8h.html#a4fc7331b7c43e63cf0bf178fd51d0845">AABB_TREE_NULL_NODE</a></div><div class="ttdeci">#define AABB_TREE_NULL_NODE</div><div class="ttdef"><b>Definition:</b> aabb_tree.h:9</div></div>

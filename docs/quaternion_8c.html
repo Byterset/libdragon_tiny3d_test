@@ -81,15 +81,17 @@ Include dependency graph for quaternion.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="quaternion_8c__incl.png" border="0" usemap="#asrc_2math_2quaternion_8c" alt=""/></div>
 <map name="asrc_2math_2quaternion_8c" id="asrc_2math_2quaternion_8c">
-<area shape="rect" title=" " alt="" coords="226,5,390,32"/>
-<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="108,80,212,107"/>
-<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="180,304,252,331"/>
-<area shape="rect" title=" " alt="" coords="287,304,355,331"/>
-<area shape="rect" title=" " alt="" coords="371,80,445,107"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="84,229,167,256"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="5,155,88,181"/>
-<area shape="rect" title=" " alt="" coords="163,155,245,181"/>
-<area shape="rect" title=" " alt="" coords="38,304,133,331"/>
+<area shape="rect" title=" " alt="" coords="250,5,414,32"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="204,80,308,107"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="19,304,91,331"/>
+<area shape="rect" title=" " alt="" coords="336,304,404,331"/>
+<area shape="rect" title=" " alt="" coords="447,80,522,107"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="183,229,266,256"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="136,155,219,181"/>
+<area shape="rect" title=" " alt="" coords="30,155,112,181"/>
+<area shape="rect" href="matrix_8h.html" title="This file contains the definition of the 4x4 matrix structure and functions to work with those matric..." alt="" coords="294,155,371,181"/>
+<area shape="rect" title=" " alt="" coords="177,304,272,331"/>
+<area shape="rect" href="vector4_8h.html" title=" " alt="" coords="290,229,372,256"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -101,30 +103,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a49741d3bc4d24f5be6ed52efd0d07772"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a49741d3bc4d24f5be6ed52efd0d07772">quatAxisComplex</a> (const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *axis, const <a class="el" href="unionVector2.html">Vector2</a> *complex, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
 <tr class="memdesc:a49741d3bc4d24f5be6ed52efd0d07772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similarly to quatAxisAngle this will construct a Quaternion that represents a rotation around an axis. But here the rotation is given by a complex number.  <a href="quaternion_8c.html#a49741d3bc4d24f5be6ed52efd0d07772">More...</a><br /></td></tr>
 <tr class="separator:a49741d3bc4d24f5be6ed52efd0d07772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11f642ccb2ec08fbc46781337f4c5716"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a11f642ccb2ec08fbc46781337f4c5716">quatConjugate</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *in, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
-<tr class="memdesc:a11f642ccb2ec08fbc46781337f4c5716"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the Conjugate of a quaternion.  <a href="quaternion_8c.html#a11f642ccb2ec08fbc46781337f4c5716">More...</a><br /></td></tr>
-<tr class="separator:a11f642ccb2ec08fbc46781337f4c5716"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d4ed35999eba41aa54a08d08063885d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a5d4ed35999eba41aa54a08d08063885d">quatNegate</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *in, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
-<tr class="memdesc:a5d4ed35999eba41aa54a08d08063885d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flips the sign of all components of the input Quaternion.  <a href="quaternion_8c.html#a5d4ed35999eba41aa54a08d08063885d">More...</a><br /></td></tr>
-<tr class="separator:a5d4ed35999eba41aa54a08d08063885d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bd662de396c2016df6b2380e35e1a73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a8bd662de396c2016df6b2380e35e1a73">quatEulerAngles</a> (const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *angles, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
 <tr class="memdesc:a8bd662de396c2016df6b2380e35e1a73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a quaternion from euler angles.  <a href="quaternion_8c.html#a8bd662de396c2016df6b2380e35e1a73">More...</a><br /></td></tr>
 <tr class="separator:a8bd662de396c2016df6b2380e35e1a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94b21df349768713cf8ca7d279615992"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a94b21df349768713cf8ca7d279615992">quatMultVector</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q, const <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *a, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *out)</td></tr>
 <tr class="memdesc:a94b21df349768713cf8ca7d279615992"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies a quaternion by a vector.  <a href="quaternion_8c.html#a94b21df349768713cf8ca7d279615992">More...</a><br /></td></tr>
 <tr class="separator:a94b21df349768713cf8ca7d279615992"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affa8766b0ea7161ffdf6cf215d308f4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#affa8766b0ea7161ffdf6cf215d308f4b">quatMultiply</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *a, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *b, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
-<tr class="memdesc:affa8766b0ea7161ffdf6cf215d308f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply two Quaternions.  <a href="quaternion_8c.html#affa8766b0ea7161ffdf6cf215d308f4b">More...</a><br /></td></tr>
-<tr class="separator:affa8766b0ea7161ffdf6cf215d308f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5348460efc33846d5f047d00ae80eb52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a5348460efc33846d5f047d00ae80eb52">quatAdd</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *a, const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *b, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
-<tr class="memdesc:a5348460efc33846d5f047d00ae80eb52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds two Quaternions together component-wise.  <a href="quaternion_8c.html#a5348460efc33846d5f047d00ae80eb52">More...</a><br /></td></tr>
-<tr class="separator:a5348460efc33846d5f047d00ae80eb52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc88114c0cf691570b85b482ac2844db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#afc88114c0cf691570b85b482ac2844db">quatToMatrix</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q, float out[4][4])</td></tr>
-<tr class="memdesc:afc88114c0cf691570b85b482ac2844db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an input quaternion into an equivalent 4x4 rotation matrix.  <a href="quaternion_8c.html#afc88114c0cf691570b85b482ac2844db">More...</a><br /></td></tr>
-<tr class="separator:afc88114c0cf691570b85b482ac2844db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a405c368e7e50e9eda4224cace8a41d5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a405c368e7e50e9eda4224cace8a41d5b">quatNormalize</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q, <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *out)</td></tr>
-<tr class="memdesc:a405c368e7e50e9eda4224cace8a41d5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalized a quaternion.  <a href="quaternion_8c.html#a405c368e7e50e9eda4224cace8a41d5b">More...</a><br /></td></tr>
-<tr class="separator:a405c368e7e50e9eda4224cace8a41d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0333a81c628a9ad3828ca4886d0ef75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#ab0333a81c628a9ad3828ca4886d0ef75">quatToMatrix4</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q, <a class="el" href="matrix_8h.html#af469b14aa3030c0daf30827c3ee28e85">Matrix4x4</a> *out)</td></tr>
+<tr class="memdesc:ab0333a81c628a9ad3828ca4886d0ef75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an input quaternion into an equivalent 4x4 rotation matrix.  <a href="quaternion_8c.html#ab0333a81c628a9ad3828ca4886d0ef75">More...</a><br /></td></tr>
+<tr class="separator:ab0333a81c628a9ad3828ca4886d0ef75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a758a587af88cbe5ac3c0f04795eca15f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a758a587af88cbe5ac3c0f04795eca15f">quatToMatrix3</a> (const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q, <a class="el" href="structMatrix3x3.html">Matrix3x3</a> *out)</td></tr>
+<tr class="memdesc:a758a587af88cbe5ac3c0f04795eca15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an input quaternion into an equivalent 3x3 rotation matrix.  <a href="quaternion_8c.html#a758a587af88cbe5ac3c0f04795eca15f">More...</a><br /></td></tr>
+<tr class="separator:a758a587af88cbe5ac3c0f04795eca15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ce32b242b038bc6011d0cd9e569c32d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="quaternion_8c.html#a8ce32b242b038bc6011d0cd9e569c32d">quatRandom</a> (<a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *q)</td></tr>
 <tr class="memdesc:a8ce32b242b038bc6011d0cd9e569c32d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a pseudo-random quaternion rotation.  <a href="quaternion_8c.html#a8ce32b242b038bc6011d0cd9e569c32d">More...</a><br /></td></tr>
 <tr class="separator:a8ce32b242b038bc6011d0cd9e569c32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,59 +135,6 @@ Functions</h2></td></tr>
 <tr class="separator:a3d7f2806941ed8af4966de5a484e926e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a5348460efc33846d5f047d00ae80eb52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5348460efc33846d5f047d00ae80eb52">&#9670;&nbsp;</a></span>quatAdd()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void quatAdd </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Adds two Quaternions together component-wise. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">a</td><td></td></tr>
-    <tr><td class="paramname">b</td><td></td></tr>
-    <tr><td class="paramname">out</td><td><br  />
- </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="ada71fa1c15f46797c6d4b4343013f167"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ada71fa1c15f46797c6d4b4343013f167">&#9670;&nbsp;</a></span>quatApplyAngularVelocity()</h2>
 
@@ -332,44 +269,6 @@ Functions</h2></td></tr>
     <tr><td class="paramname">axis</td><td>Axis to rotate around (must be normalized) </td></tr>
     <tr><td class="paramname">complex</td><td>2D Vector encoding the rotation </td></tr>
     <tr><td class="paramname">out</td><td>the resulting Quaternion </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a11f642ccb2ec08fbc46781337f4c5716"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11f642ccb2ec08fbc46781337f4c5716">&#9670;&nbsp;</a></span>quatConjugate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void quatConjugate </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Computes the Conjugate of a quaternion. </p>
-<p>The conjugate represents the inverse rotation if the quaternion is unit length. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">in</td><td></td></tr>
-    <tr><td class="paramname">out</td><td><br  />
- </td></tr>
   </table>
   </dd>
 </dl>
@@ -556,58 +455,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="affa8766b0ea7161ffdf6cf215d308f4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affa8766b0ea7161ffdf6cf215d308f4b">&#9670;&nbsp;</a></span>quatMultiply()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void quatMultiply </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Multiply two Quaternions. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">a</td><td></td></tr>
-    <tr><td class="paramname">b</td><td></td></tr>
-    <tr><td class="paramname">out</td><td>The Quaternion representing the combine Rotation </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a94b21df349768713cf8ca7d279615992"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a94b21df349768713cf8ca7d279615992">&#9670;&nbsp;</a></span>quatMultVector()</h2>
 
@@ -647,90 +494,6 @@ Functions</h2></td></tr>
     <tr><td class="paramname">q</td><td>Pointer to the quaternion to be multiplied. </td></tr>
     <tr><td class="paramname">a</td><td>Pointer to the vector to be multiplied. </td></tr>
     <tr><td class="paramname">out</td><td>Pointer to the vector where the result will be stored. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a5d4ed35999eba41aa54a08d08063885d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d4ed35999eba41aa54a08d08063885d">&#9670;&nbsp;</a></span>quatNegate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void quatNegate </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Flips the sign of all components of the input Quaternion. </p>
-<p>Result is -q and should be mathmatically equivalent to q. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">in</td><td></td></tr>
-    <tr><td class="paramname">out</td><td><br  />
- </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a405c368e7e50e9eda4224cace8a41d5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a405c368e7e50e9eda4224cace8a41d5b">&#9670;&nbsp;</a></span>quatNormalize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void quatNormalize </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>q</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
-          <td class="paramname"><em>out</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Normalized a quaternion. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">q</td><td></td></tr>
-    <tr><td class="paramname">out</td><td><br  />
- </td></tr>
   </table>
   </dd>
 </dl>
@@ -816,14 +579,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afc88114c0cf691570b85b482ac2844db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc88114c0cf691570b85b482ac2844db">&#9670;&nbsp;</a></span>quatToMatrix()</h2>
+<a id="a758a587af88cbe5ac3c0f04795eca15f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a758a587af88cbe5ac3c0f04795eca15f">&#9670;&nbsp;</a></span>quatToMatrix3()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void quatToMatrix </td>
+          <td class="memname">void quatToMatrix3 </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
           <td class="paramname"><em>q</em>, </td>
@@ -831,8 +594,46 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>out</em>[4][4]&#160;</td>
+          <td class="paramtype"><a class="el" href="structMatrix3x3.html">Matrix3x3</a> *&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts an input quaternion into an equivalent 3x3 rotation matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">q</td><td></td></tr>
+    <tr><td class="paramname">out</td><td><br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab0333a81c628a9ad3828ca4886d0ef75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0333a81c628a9ad3828ca4886d0ef75">&#9670;&nbsp;</a></span>quatToMatrix4()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void quatToMatrix4 </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="matrix_8h.html#af469b14aa3030c0daf30827c3ee28e85">Matrix4x4</a> *&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

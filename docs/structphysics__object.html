@@ -75,27 +75,30 @@ Collaboration diagram for physics_object:</div>
 <div class="dyncontent">
 <div class="center"><img src="structphysics__object__coll__graph.png" border="0" usemap="#aphysics__object_coll__map" alt="Collaboration graph"/></div>
 <map name="aphysics__object_coll__map" id="aphysics__object_coll__map">
-<area shape="rect" title=" " alt="" coords="181,288,299,315"/>
+<area shape="rect" title=" " alt="" coords="181,317,299,344"/>
+<area shape="rect" href="structcontact.html" title="contact struct containing information about a collision" alt="" coords="205,511,275,537"/>
+<area shape="rect" href="structcontact__constraint.html" title="contact constraint containing multiple contact points for a pair of objects" alt="" coords="49,421,191,448"/>
 <area shape="rect" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure." alt="" coords="5,102,64,129"/>
 <area shape="rect" href="structphysics__object__collision__data.html" title="Defines a set of functions and data to describe a collider." alt="" coords="133,199,347,225"/>
 <area shape="rect" href="unionphysics__object__collision__shape__data.html" title="Defines the parameters necessary to describe a collision shape." alt="" coords="164,95,343,136"/>
 <area shape="rect" href="unionVector2.html" title=" " alt="" coords="218,5,289,32"/>
-<area shape="rect" href="structcontact.html" title="contact struct containing information about a collision" alt="" coords="371,199,442,225"/>
+<area shape="rect" href="structMatrix3x3.html" title="3x3 Matrix with single precision floating point components." alt="" coords="372,199,460,225"/>
+<area shape="rect" href="structcontact__point.html" title="Single contact point data within a contact constraint." alt="" coords="35,317,146,344"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a442722b7ee0b8898ed91f9ed6608b1fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="entity__id_8h.html#a0b6e47c2160096e2e59d383c2c80dcd0">entity_id</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a442722b7ee0b8898ed91f9ed6608b1fb">entity_id</a></td></tr>
-<tr class="separator:a442722b7ee0b8898ed91f9ed6608b1fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbdde61a2892e816d2d50ab6c1b37cef"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structphysics__object__collision__data.html">physics_object_collision_data</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#afbdde61a2892e816d2d50ab6c1b37cef">collision</a></td></tr>
 <tr class="separator:afbdde61a2892e816d2d50ab6c1b37cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95537d19d9427886e1b448bda4c3334b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a95537d19d9427886e1b448bda4c3334b">position</a></td></tr>
 <tr class="separator:a95537d19d9427886e1b448bda4c3334b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa82999a7bb96471044782e17867c6df5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#aa82999a7bb96471044782e17867c6df5">_prev_step_pos</a></td></tr>
-<tr class="separator:aa82999a7bb96471044782e17867c6df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a822cbe6a1533675a4c3787706adc10f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a822cbe6a1533675a4c3787706adc10f6">rotation</a></td></tr>
 <tr class="separator:a822cbe6a1533675a4c3787706adc10f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad182fb6cfe2c0772e520c25a15d62913"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontact.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#ad182fb6cfe2c0772e520c25a15d62913">active_contacts</a></td></tr>
+<tr class="separator:ad182fb6cfe2c0772e520c25a15d62913"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa82999a7bb96471044782e17867c6df5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#aa82999a7bb96471044782e17867c6df5">_prev_step_pos</a></td></tr>
+<tr class="separator:aa82999a7bb96471044782e17867c6df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03c1f65985061d8d0ff9b9629c1bc734"><td class="memItemLeft" align="right" valign="top"><a class="el" href="quaternion_8h.html#a6b650dbe9845f0655da72e4a978a6358">Quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a03c1f65985061d8d0ff9b9629c1bc734">_prev_step_rot</a></td></tr>
 <tr class="separator:a03c1f65985061d8d0ff9b9629c1bc734"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4556e049b9912523c8600ed12483e4b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#af4556e049b9912523c8600ed12483e4b">velocity</a></td></tr>
@@ -106,6 +109,20 @@ Data Fields</h2></td></tr>
 <tr class="separator:a2903d62df16028cb876d3922b8832c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cba5525097c9a3df014d6720baaf822"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAABB.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a0cba5525097c9a3df014d6720baaf822">bounding_box</a></td></tr>
 <tr class="separator:a0cba5525097c9a3df014d6720baaf822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f363fc10ae902f0350ed73339fcfb18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a7f363fc10ae902f0350ed73339fcfb18">angular_velocity</a></td></tr>
+<tr class="separator:a7f363fc10ae902f0350ed73339fcfb18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11aff4b3b952d369f857d74603afeb35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a11aff4b3b952d369f857d74603afeb35">_torque_accumulator</a></td></tr>
+<tr class="separator:a11aff4b3b952d369f857d74603afeb35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b0120d9acde4eee3d8a41467fd6006d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a4b0120d9acde4eee3d8a41467fd6006d">_local_inertia_tensor</a></td></tr>
+<tr class="separator:a4b0120d9acde4eee3d8a41467fd6006d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9191a1f7ecef247e601ccf2a35e44e64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a9191a1f7ecef247e601ccf2a35e44e64">_inv_local_intertia_tensor</a></td></tr>
+<tr class="separator:a9191a1f7ecef247e601ccf2a35e44e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa69b98b9eb5a45e2fa315039d9e7b3fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMatrix3x3.html">Matrix3x3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#aa69b98b9eb5a45e2fa315039d9e7b3fa">_inv_world_inertia_tensor</a></td></tr>
+<tr class="separator:aa69b98b9eb5a45e2fa315039d9e7b3fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34d154206748e6a48aa3f52e01614c28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMatrix3x3.html">Matrix3x3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a34d154206748e6a48aa3f52e01614c28">_rotation_matrix</a></td></tr>
+<tr class="separator:a34d154206748e6a48aa3f52e01614c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad205c947709c50d04d1e5cf58b78d7be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#ad205c947709c50d04d1e5cf58b78d7be">_world_center_of_mass</a></td></tr>
+<tr class="separator:ad205c947709c50d04d1e5cf58b78d7be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bfb5808d601e9637074116fb33d1b0d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a4bfb5808d601e9637074116fb33d1b0d">time_scalar</a></td></tr>
 <tr class="separator:a4bfb5808d601e9637074116fb33d1b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1319d63314270cbc9223f9fd38d63884"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a1319d63314270cbc9223f9fd38d63884">_mass</a></td></tr>
@@ -114,6 +131,20 @@ Data Fields</h2></td></tr>
 <tr class="separator:a687c270abc4318d0116bdcda288a4cf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa29cd91f91bbe0db56e5956aa82fec69"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#aa29cd91f91bbe0db56e5956aa82fec69">gravity_scalar</a></td></tr>
 <tr class="separator:aa29cd91f91bbe0db56e5956aa82fec69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a165de65524dfb2e8833e80f575cadb67"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a165de65524dfb2e8833e80f575cadb67">angular_damping</a></td></tr>
+<tr class="separator:a165de65524dfb2e8833e80f575cadb67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a569d60e4b2cce4c0436ccd2777099754"><td class="memItemLeft" align="right" valign="top"><a class="el" href="aabb__tree_8h.html#a2da74af527862d4434e1ebed2d3de128">node_proxy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a569d60e4b2cce4c0436ccd2777099754">_aabb_tree_node_id</a></td></tr>
+<tr class="separator:a569d60e4b2cce4c0436ccd2777099754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a442722b7ee0b8898ed91f9ed6608b1fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="entity__id_8h.html#afdbdacc8829865b4df664099479ee8ce">entity_id</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a442722b7ee0b8898ed91f9ed6608b1fb">entity_id</a></td></tr>
+<tr class="separator:a442722b7ee0b8898ed91f9ed6608b1fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0be0375ee5b80fdfcf97b8d47d7904bf"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a0be0375ee5b80fdfcf97b8d47d7904bf">constraints</a></td></tr>
+<tr class="separator:a0be0375ee5b80fdfcf97b8d47d7904bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12a67f648dad597dde616e26b66c0502"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a12a67f648dad597dde616e26b66c0502">_sleep_counter</a></td></tr>
+<tr class="separator:a12a67f648dad597dde616e26b66c0502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c54292cf9e953d0a4c5342369caa4a0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a8c54292cf9e953d0a4c5342369caa4a0">collision_layers</a></td></tr>
+<tr class="separator:a8c54292cf9e953d0a4c5342369caa4a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a336184705b7ecd2ca11eb6320edd8182"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a336184705b7ecd2ca11eb6320edd8182">collision_group</a></td></tr>
+<tr class="separator:a336184705b7ecd2ca11eb6320edd8182"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86d9074d371f03a77fda9541c7ab0439"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a86d9074d371f03a77fda9541c7ab0439">has_gravity</a>: true</td></tr>
 <tr class="separator:a86d9074d371f03a77fda9541c7ab0439"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64eee5e3e921791a25787520d8c31eb4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a64eee5e3e921791a25787520d8c31eb4">is_trigger</a>: true</td></tr>
@@ -124,32 +155,6 @@ Data Fields</h2></td></tr>
 <tr class="separator:a6e34c921d225eb8640a6e46ceea04c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28b0472512c1b417e646faaf0d3365dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a28b0472512c1b417e646faaf0d3365dd">_is_sleeping</a>: true</td></tr>
 <tr class="separator:a28b0472512c1b417e646faaf0d3365dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0be0375ee5b80fdfcf97b8d47d7904bf"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a0be0375ee5b80fdfcf97b8d47d7904bf">constraints</a></td></tr>
-<tr class="separator:a0be0375ee5b80fdfcf97b8d47d7904bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12a67f648dad597dde616e26b66c0502"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a12a67f648dad597dde616e26b66c0502">_sleep_counter</a></td></tr>
-<tr class="separator:a12a67f648dad597dde616e26b66c0502"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c54292cf9e953d0a4c5342369caa4a0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a8c54292cf9e953d0a4c5342369caa4a0">collision_layers</a></td></tr>
-<tr class="separator:a8c54292cf9e953d0a4c5342369caa4a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a336184705b7ecd2ca11eb6320edd8182"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a336184705b7ecd2ca11eb6320edd8182">collision_group</a></td></tr>
-<tr class="separator:a336184705b7ecd2ca11eb6320edd8182"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad182fb6cfe2c0772e520c25a15d62913"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontact.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#ad182fb6cfe2c0772e520c25a15d62913">active_contacts</a></td></tr>
-<tr class="separator:ad182fb6cfe2c0772e520c25a15d62913"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a569d60e4b2cce4c0436ccd2777099754"><td class="memItemLeft" align="right" valign="top"><a class="el" href="aabb__tree_8h.html#a2da74af527862d4434e1ebed2d3de128">node_proxy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a569d60e4b2cce4c0436ccd2777099754">_aabb_tree_node_id</a></td></tr>
-<tr class="separator:a569d60e4b2cce4c0436ccd2777099754"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f363fc10ae902f0350ed73339fcfb18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a7f363fc10ae902f0350ed73339fcfb18">angular_velocity</a></td></tr>
-<tr class="separator:a7f363fc10ae902f0350ed73339fcfb18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11aff4b3b952d369f857d74603afeb35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a11aff4b3b952d369f857d74603afeb35">_torque_accumulator</a></td></tr>
-<tr class="separator:a11aff4b3b952d369f857d74603afeb35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b0120d9acde4eee3d8a41467fd6006d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a4b0120d9acde4eee3d8a41467fd6006d">_local_inertia_tensor</a></td></tr>
-<tr class="separator:a4b0120d9acde4eee3d8a41467fd6006d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9191a1f7ecef247e601ccf2a35e44e64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a9191a1f7ecef247e601ccf2a35e44e64">_inv_local_intertia_tensor</a></td></tr>
-<tr class="separator:a9191a1f7ecef247e601ccf2a35e44e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a165de65524dfb2e8833e80f575cadb67"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a165de65524dfb2e8833e80f575cadb67">angular_damping</a></td></tr>
-<tr class="separator:a165de65524dfb2e8833e80f575cadb67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f6133f905f56a4da813071204682760"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a2f6133f905f56a4da813071204682760">_prev_angular_speed_sq</a></td></tr>
-<tr class="separator:a2f6133f905f56a4da813071204682760"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16794d6bc201819bc9c3ec2cc5a6dd38"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structphysics__object.html#a16794d6bc201819bc9c3ec2cc5a6dd38">_ground_support_factor</a></td></tr>
-<tr class="separator:a16794d6bc201819bc9c3ec2cc5a6dd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Field Documentation</h2>
 <a id="a569d60e4b2cce4c0436ccd2777099754"></a>
@@ -160,20 +165,6 @@ Data Fields</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="aabb__tree_8h.html#a2da74af527862d4434e1ebed2d3de128">node_proxy</a> physics_object::_aabb_tree_node_id</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a16794d6bc201819bc9c3ec2cc5a6dd38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16794d6bc201819bc9c3ec2cc5a6dd38">&#9670;&nbsp;</a></span>_ground_support_factor</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float physics_object::_ground_support_factor</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -202,6 +193,20 @@ Data Fields</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">float physics_object::_inv_mass</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa69b98b9eb5a45e2fa315039d9e7b3fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa69b98b9eb5a45e2fa315039d9e7b3fa">&#9670;&nbsp;</a></span>_inv_world_inertia_tensor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMatrix3x3.html">Matrix3x3</a> physics_object::_inv_world_inertia_tensor</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -250,20 +255,6 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a2f6133f905f56a4da813071204682760"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f6133f905f56a4da813071204682760">&#9670;&nbsp;</a></span>_prev_angular_speed_sq</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float physics_object::_prev_angular_speed_sq</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aa82999a7bb96471044782e17867c6df5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa82999a7bb96471044782e17867c6df5">&#9670;&nbsp;</a></span>_prev_step_pos</h2>
 
@@ -292,6 +283,20 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
+<a id="a34d154206748e6a48aa3f52e01614c28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34d154206748e6a48aa3f52e01614c28">&#9670;&nbsp;</a></span>_rotation_matrix</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMatrix3x3.html">Matrix3x3</a> physics_object::_rotation_matrix</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a12a67f648dad597dde616e26b66c0502"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a12a67f648dad597dde616e26b66c0502">&#9670;&nbsp;</a></span>_sleep_counter</h2>
 
@@ -314,6 +319,20 @@ Data Fields</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> physics_object::_torque_accumulator</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad205c947709c50d04d1e5cf58b78d7be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad205c947709c50d04d1e5cf58b78d7be">&#9670;&nbsp;</a></span>_world_center_of_mass</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> physics_object::_world_center_of_mass</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -467,7 +486,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="entity__id_8h.html#a0b6e47c2160096e2e59d383c2c80dcd0">entity_id</a> physics_object::entity_id</td>
+          <td class="memname"><a class="el" href="entity__id_8h.html#afdbdacc8829865b4df664099479ee8ce">entity_id</a> physics_object::entity_id</td>
         </tr>
       </table>
 </div><div class="memdoc">

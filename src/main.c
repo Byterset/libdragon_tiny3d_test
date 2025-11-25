@@ -208,7 +208,7 @@ void render()
 
     struct mallinfo mall_inf = mallinfo();
     int ram_used = mall_inf.uordblks + ((uint32_t)HEAP_START_ADDR) - 0x80000000 - 0x10000;
-    struct collision_scene* c_scene = collision_scene_get();
+    struct collision_scene* c_scene = collision_scene_get_instance();
 
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "fps: %.1f, dT: %lu", fps, TICKS_TO_MS(deltatime_ticks));
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 10, "mem: %d", ram_used);
@@ -327,7 +327,7 @@ int main()
         };
         if (render_collision)
         {
-            struct collision_scene *collision_scene = collision_scene_get();
+            struct collision_scene *collision_scene = collision_scene_get_instance();
             T3DViewport* vp = t3d_viewport_get();
 
             for (int i = 0; i < collision_scene->objectCount; i++)
@@ -341,7 +341,7 @@ int main()
         }
 
         if(render_contacts){
-            struct collision_scene *collision_scene = collision_scene_get();
+            struct collision_scene *collision_scene = collision_scene_get_instance();
             
             for (int i = 0; i < collision_scene->cached_contact_constraint_count; i++) {
                 contact_constraint* cc = &collision_scene->cached_contact_constraints[i];

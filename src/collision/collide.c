@@ -196,7 +196,7 @@ void collide_correct_velocity(physics_object* b, const struct EpaResult* result,
 
 
 void collide_add_contact(physics_object* object, contact_constraint* constraint, physics_object* other_object) {
-    contact* contact = collision_scene_new_contact();
+    contact* contact = collision_scene_allocate_contact();
 
     if (!contact) {
         return;
@@ -216,7 +216,7 @@ void collide_add_contact(physics_object* object, contact_constraint* constraint,
 
 contact_constraint* collide_cache_contact_constraint(physics_object* a, physics_object* b, const struct EpaResult* result,
                                float combined_friction, float combined_bounce, bool is_trigger) {
-    struct collision_scene* scene = collision_scene_get();
+    struct collision_scene* scene = collision_scene_get_instance();
 
     contact_pair_id pid = contact_pair_id_get(a ? a->entity_id : (entity_id)0, b ? b->entity_id : (entity_id)0);
 

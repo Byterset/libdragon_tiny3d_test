@@ -80,17 +80,19 @@ Include dependency graph for transform.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="transform_8c__incl.png" border="0" usemap="#asrc_2math_2transform_8c" alt=""/></div>
 <map name="asrc_2math_2transform_8c" id="asrc_2math_2transform_8c">
-<area shape="rect" title=" " alt="" coords="181,5,339,32"/>
-<area shape="rect" href="transform_8h.html" title=" " alt="" coords="100,80,199,107"/>
-<area shape="rect" title=" " alt="" coords="223,80,297,107"/>
-<area shape="rect" href="defs_8h.html" title=" " alt="" coords="321,80,441,107"/>
-<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="101,304,184,331"/>
-<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="163,155,267,181"/>
-<area shape="rect" title=" " alt="" coords="194,379,289,405"/>
-<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="5,379,77,405"/>
-<area shape="rect" title=" " alt="" coords="102,379,170,405"/>
-<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="193,229,276,256"/>
-<area shape="rect" title=" " alt="" coords="300,229,383,256"/>
+<area shape="rect" title=" " alt="" coords="218,5,377,32"/>
+<area shape="rect" href="transform_8h.html" title=" " alt="" coords="137,80,236,107"/>
+<area shape="rect" title=" " alt="" coords="260,80,335,107"/>
+<area shape="rect" href="defs_8h.html" title=" " alt="" coords="359,80,479,107"/>
+<area shape="rect" href="vector3_8h.html" title=" " alt="" coords="181,304,264,331"/>
+<area shape="rect" href="quaternion_8h.html" title=" " alt="" coords="135,155,239,181"/>
+<area shape="rect" href="matrix_8h.html" title="This file contains the definition of the 4x4 matrix structure and functions to work with those matric..." alt="" coords="5,229,83,256"/>
+<area shape="rect" title=" " alt="" coords="67,379,162,405"/>
+<area shape="rect" href="mathf_8h.html" title="This file contains the declaration of commonly used math functions." alt="" coords="187,379,259,405"/>
+<area shape="rect" title=" " alt="" coords="283,379,351,405"/>
+<area shape="rect" href="vector2_8h.html" title=" " alt="" coords="107,229,189,256"/>
+<area shape="rect" title=" " alt="" coords="264,229,347,256"/>
+<area shape="rect" href="vector4_8h.html" title=" " alt="" coords="15,304,97,331"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -98,9 +100,9 @@ Include dependency graph for transform.c:</div>
 Functions</h2></td></tr>
 <tr class="memitem:ab1fdce3bac300a142e69c44937ad9dad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#ab1fdce3bac300a142e69c44937ad9dad">transformInitIdentity</a> (<a class="el" href="structTransform.html">Transform</a> *in)</td></tr>
 <tr class="separator:ab1fdce3bac300a142e69c44937ad9dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2dcc2b04d051d1eb89c83b582c824dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#ae2dcc2b04d051d1eb89c83b582c824dc">transformToMatrix</a> (<a class="el" href="structTransform.html">Transform</a> *in, float mtx[4][4])</td></tr>
-<tr class="memdesc:ae2dcc2b04d051d1eb89c83b582c824dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will convert a <a class="el" href="structTransform.html">Transform</a> consisting of a position, quaternion rotation, and scale into a 4x4 float matrix The resulting matrix will be scaled by the inverse of the model scale, which is the scale that was applied to the model during conversion from gltf to t3d This is done to ensure that the model is rendered at its original size.  <a href="transform_8c.html#ae2dcc2b04d051d1eb89c83b582c824dc">More...</a><br /></td></tr>
-<tr class="separator:ae2dcc2b04d051d1eb89c83b582c824dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53036d6eeb2a9a4125f4d894cb2927ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#a53036d6eeb2a9a4125f4d894cb2927ec">transformToMatrix</a> (<a class="el" href="structTransform.html">Transform</a> *in, <a class="el" href="matrix_8h.html#af469b14aa3030c0daf30827c3ee28e85">Matrix4x4</a> *mtx)</td></tr>
+<tr class="memdesc:a53036d6eeb2a9a4125f4d894cb2927ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will convert a <a class="el" href="structTransform.html">Transform</a> consisting of a position, quaternion rotation, and scale into a 4x4 float matrix The resulting matrix will be scaled by the inverse of the model scale, which is the scale that was applied to the model during conversion from gltf to t3d This is done to ensure that the model is rendered at its original size.  <a href="transform_8c.html#a53036d6eeb2a9a4125f4d894cb2927ec">More...</a><br /></td></tr>
+<tr class="separator:a53036d6eeb2a9a4125f4d894cb2927ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18c8382d87b13a06f02805ceb181c76c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8c.html#a18c8382d87b13a06f02805ceb181c76c">transformInvert</a> (<a class="el" href="structTransform.html">Transform</a> *in, <a class="el" href="structTransform.html">Transform</a> *out)</td></tr>
 <tr class="memdesc:a18c8382d87b13a06f02805ceb181c76c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an inverted transform from the input transform.  <a href="transform_8c.html#a18c8382d87b13a06f02805ceb181c76c">More...</a><br /></td></tr>
 <tr class="separator:a18c8382d87b13a06f02805ceb181c76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -348,8 +350,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae2dcc2b04d051d1eb89c83b582c824dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2dcc2b04d051d1eb89c83b582c824dc">&#9670;&nbsp;</a></span>transformToMatrix()</h2>
+<a id="a53036d6eeb2a9a4125f4d894cb2927ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53036d6eeb2a9a4125f4d894cb2927ec">&#9670;&nbsp;</a></span>transformToMatrix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -363,8 +365,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>mtx</em>[4][4]&#160;</td>
+          <td class="paramtype"><a class="el" href="matrix_8h.html#af469b14aa3030c0daf30827c3ee28e85">Matrix4x4</a> *&#160;</td>
+          <td class="paramname"><em>mtx</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

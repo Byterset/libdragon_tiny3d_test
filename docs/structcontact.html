@@ -78,7 +78,15 @@ Collaboration diagram for contact:</div>
 <div class="dyncontent">
 <div class="center"><img src="structcontact__coll__graph.png" border="0" usemap="#acontact_coll__map" alt="Collaboration graph"/></div>
 <map name="acontact_coll__map" id="acontact_coll__map">
-<area shape="rect" title="contact struct containing information about a collision" alt="" coords="5,5,76,32"/>
+<area shape="rect" title="contact struct containing information about a collision" alt="" coords="5,199,76,225"/>
+<area shape="rect" href="structphysics__object.html" title=" " alt="" coords="171,317,289,344"/>
+<area shape="rect" href="structcontact__constraint.html" title="contact constraint containing multiple contact points for a pair of objects" alt="" coords="159,421,301,448"/>
+<area shape="rect" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure." alt="" coords="277,102,335,129"/>
+<area shape="rect" href="structphysics__object__collision__data.html" title="Defines a set of functions and data to describe a collider." alt="" coords="404,199,619,225"/>
+<area shape="rect" href="unionphysics__object__collision__shape__data.html" title="Defines the parameters necessary to describe a collision shape." alt="" coords="435,95,614,136"/>
+<area shape="rect" href="unionVector2.html" title=" " alt="" coords="489,5,560,32"/>
+<area shape="rect" href="structMatrix3x3.html" title="3x3 Matrix with single precision floating point components." alt="" coords="643,199,731,225"/>
+<area shape="rect" href="structcontact__point.html" title="Single contact point data within a contact constraint." alt="" coords="313,317,424,344"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -86,16 +94,28 @@ Collaboration diagram for contact:</div>
 Data Fields</h2></td></tr>
 <tr class="memitem:aba80dfd2e4d64c3bd9875a88ee299e58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontact.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcontact.html#aba80dfd2e4d64c3bd9875a88ee299e58">next</a></td></tr>
 <tr class="separator:aba80dfd2e4d64c3bd9875a88ee299e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1469921f1a33a403230ef3fa721993d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcontact.html#a1469921f1a33a403230ef3fa721993d2">point</a></td></tr>
-<tr class="separator:a1469921f1a33a403230ef3fa721993d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32f6e3044e3d058ebc22a1858130e0a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcontact.html#a32f6e3044e3d058ebc22a1858130e0a3">normal</a></td></tr>
-<tr class="separator:a32f6e3044e3d058ebc22a1858130e0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacf3d1b190935bfda64b96fd0628d49f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="entity__id_8h.html#a0b6e47c2160096e2e59d383c2c80dcd0">entity_id</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcontact.html#aacf3d1b190935bfda64b96fd0628d49f">other_object</a></td></tr>
-<tr class="separator:aacf3d1b190935bfda64b96fd0628d49f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebd99094ac6eb2fd81c523c479c343ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontact__constraint.html">contact_constraint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcontact.html#aebd99094ac6eb2fd81c523c479c343ef">constraint</a></td></tr>
+<tr class="separator:aebd99094ac6eb2fd81c523c479c343ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79f9c3d410b8c8847a029aafd93a5894"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structphysics__object.html">physics_object</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcontact.html#a79f9c3d410b8c8847a029aafd93a5894">other_object</a></td></tr>
+<tr class="separator:a79f9c3d410b8c8847a029aafd93a5894"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>contact struct containing information about a collision </p>
 </div><h2 class="groupheader">Field Documentation</h2>
+<a id="aebd99094ac6eb2fd81c523c479c343ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebd99094ac6eb2fd81c523c479c343ef">&#9670;&nbsp;</a></span>constraint</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structcontact__constraint.html">contact_constraint</a>* contact::constraint</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aba80dfd2e4d64c3bd9875a88ee299e58"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba80dfd2e4d64c3bd9875a88ee299e58">&#9670;&nbsp;</a></span>next</h2>
 
@@ -110,42 +130,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a32f6e3044e3d058ebc22a1858130e0a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32f6e3044e3d058ebc22a1858130e0a3">&#9670;&nbsp;</a></span>normal</h2>
+<a id="a79f9c3d410b8c8847a029aafd93a5894"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79f9c3d410b8c8847a029aafd93a5894">&#9670;&nbsp;</a></span>other_object</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> contact::normal</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aacf3d1b190935bfda64b96fd0628d49f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacf3d1b190935bfda64b96fd0628d49f">&#9670;&nbsp;</a></span>other_object</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="entity__id_8h.html#a0b6e47c2160096e2e59d383c2c80dcd0">entity_id</a> contact::other_object</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1469921f1a33a403230ef3fa721993d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1469921f1a33a403230ef3fa721993d2">&#9670;&nbsp;</a></span>point</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> contact::point</td>
+          <td class="memname"><a class="el" href="structphysics__object.html">physics_object</a>* contact::other_object</td>
         </tr>
       </table>
 </div><div class="memdoc">

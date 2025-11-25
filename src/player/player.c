@@ -230,7 +230,7 @@ void player_update(struct player* player) {
         player->physics.velocity.y = jumpVelocity;
     }
     if (pressed.d_down){
-        struct collision_scene* cs = collision_scene_get();
+        struct collision_scene* cs = collision_scene_get_instance();
         player->look_target = cs->elements[randomInRange(0, cs->objectCount)].object->position;
     }
 

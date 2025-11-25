@@ -69,26 +69,32 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>The main collision scene structure holding all physics objects and contacts.  
+ <a href="structcollision__scene.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="collision__scene_8h_source.html">collision_scene.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for collision_scene:</div>
 <div class="dyncontent">
 <div class="center"><img src="structcollision__scene__coll__graph.png" border="0" usemap="#acollision__scene_coll__map" alt="Collaboration graph"/></div>
 <map name="acollision__scene_coll__map" id="acollision__scene_coll__map">
-<area shape="rect" title=" " alt="" coords="502,481,623,508"/>
-<area shape="rect" href="structhash__map.html" title=" " alt="" coords="229,392,318,419"/>
-<area shape="rect" href="structhash__map__entry.html" title=" " alt="" coords="208,288,339,315"/>
-<area shape="rect" href="structcollision__scene__element.html" title=" " alt="" coords="342,392,525,419"/>
-<area shape="rect" href="structphysics__object.html" title=" " alt="" coords="369,288,487,315"/>
-<area shape="rect" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure." alt="" coords="363,102,421,129"/>
-<area shape="rect" href="structphysics__object__collision__data.html" title="Defines a set of functions and data to describe a collider." alt="" coords="98,199,313,225"/>
-<area shape="rect" href="structAABB__tree__node.html" title="A node in the AABB_tree structure. Holds the bounds of the node, node_proxies to the parent,..." alt="" coords="665,199,796,225"/>
-<area shape="rect" href="unionphysics__object__collision__shape__data.html" title="Defines the parameters necessary to describe a collision shape." alt="" coords="5,95,184,136"/>
-<area shape="rect" href="unionVector2.html" title=" " alt="" coords="59,5,130,32"/>
-<area shape="rect" href="structcontact.html" title="contact struct containing information about a collision" alt="" coords="513,199,583,225"/>
-<area shape="rect" href="structAABB__tree.html" title="The AABB_tree holds the root node, the number of nodes in the tree, the capacity of the tree,..." alt="" coords="685,288,776,315"/>
-<area shape="rect" href="structmesh__collider.html" title=" " alt="" coords="834,392,947,419"/>
-<area shape="rect" href="structmesh__triangle__indices.html" title=" " alt="" coords="807,288,975,315"/>
+<area shape="rect" title="The main collision scene structure holding all physics objects and contacts." alt="" coords="663,528,785,555"/>
+<area shape="rect" href="structcontact__constraint.html" title="contact constraint containing multiple contact points for a pair of objects" alt="" coords="722,102,865,129"/>
+<area shape="rect" href="structcontact.html" title="contact struct containing information about a collision" alt="" coords="758,200,829,227"/>
+<area shape="rect" href="structphysics__object.html" title=" " alt="" coords="566,320,685,347"/>
+<area shape="rect" href="structcollision__scene__element.html" title="A wrapper for a physics object in the collision scene." alt="" coords="537,424,719,451"/>
+<area shape="rect" href="structAABB.html" title="The Axis Aligned Bounding Box (AABB) structure." alt="" coords="155,102,213,129"/>
+<area shape="rect" href="structphysics__object__collision__data.html" title="Defines a set of functions and data to describe a collider." alt="" coords="417,200,631,227"/>
+<area shape="rect" href="structAABB__tree__node.html" title="A node in the AABB_tree structure. Holds the bounds of the node, node_proxies to the parent,..." alt="" coords="5,200,136,227"/>
+<area shape="rect" href="unionphysics__object__collision__shape__data.html" title="Defines the parameters necessary to describe a collision shape." alt="" coords="435,95,613,136"/>
+<area shape="rect" href="unionVector2.html" title=" " alt="" coords="489,5,559,32"/>
+<area shape="rect" href="structMatrix3x3.html" title="3x3 Matrix with single precision floating point components." alt="" coords="304,200,392,227"/>
+<area shape="rect" href="structcontact__point.html" title="Single contact point data within a contact constraint." alt="" coords="738,5,849,32"/>
+<area shape="rect" href="structhash__map.html" title=" " alt="" coords="743,424,833,451"/>
+<area shape="rect" href="structhash__map__entry.html" title=" " alt="" coords="723,320,853,347"/>
+<area shape="rect" href="structAABB__tree.html" title="The AABB_tree holds the root node, the number of nodes in the tree, the capacity of the tree,..." alt="" coords="220,320,311,347"/>
+<area shape="rect" href="structmesh__collider.html" title=" " alt="" coords="399,424,513,451"/>
+<area shape="rect" href="structmesh__triangle__indices.html" title=" " alt="" coords="372,320,540,347"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -116,8 +122,16 @@ Data Fields</h2></td></tr>
 <tr class="separator:aba7d93f81060fd79efa301ac81cb6560"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cb30c70ffc73189ce1bd295b710995a"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#a3cb30c70ffc73189ce1bd295b710995a">_sleepy_count</a></td></tr>
 <tr class="separator:a3cb30c70ffc73189ce1bd295b710995a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad120a5923581d797980ad905e72cd9a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontact__constraint.html">contact_constraint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#ad120a5923581d797980ad905e72cd9a3">cached_contact_constraints</a></td></tr>
+<tr class="separator:ad120a5923581d797980ad905e72cd9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b881edd2503a110842b2434d2c8a7c3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#a7b881edd2503a110842b2434d2c8a7c3">cached_contact_constraint_count</a></td></tr>
+<tr class="separator:a7b881edd2503a110842b2434d2c8a7c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed899d3245e825e61db7e4832aff4941"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structhash__map.html">hash_map</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcollision__scene.html#aed899d3245e825e61db7e4832aff4941">contact_map</a></td></tr>
+<tr class="separator:aed899d3245e825e61db7e4832aff4941"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Field Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The main collision scene structure holding all physics objects and contacts. </p>
+</div><h2 class="groupheader">Field Documentation</h2>
 <a id="affa1dc792d60b66a1832dfd9653cf648"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#affa1dc792d60b66a1832dfd9653cf648">&#9670;&nbsp;</a></span>_moved_flags</h2>
 
@@ -174,6 +188,34 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
+<a id="a7b881edd2503a110842b2434d2c8a7c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b881edd2503a110842b2434d2c8a7c3">&#9670;&nbsp;</a></span>cached_contact_constraint_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int collision_scene::cached_contact_constraint_count</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad120a5923581d797980ad905e72cd9a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad120a5923581d797980ad905e72cd9a3">&#9670;&nbsp;</a></span>cached_contact_constraints</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structcontact__constraint.html">contact_constraint</a>* collision_scene::cached_contact_constraints</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aac47282ef26158f77a9949bef56a5a7d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac47282ef26158f77a9949bef56a5a7d">&#9670;&nbsp;</a></span>capacity</h2>
 
@@ -182,6 +224,20 @@ Data Fields</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">uint16_t collision_scene::capacity</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aed899d3245e825e61db7e4832aff4941"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed899d3245e825e61db7e4832aff4941">&#9670;&nbsp;</a></span>contact_map</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structhash__map.html">hash_map</a> collision_scene::contact_map</td>
         </tr>
       </table>
 </div><div class="memdoc">

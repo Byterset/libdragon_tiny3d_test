@@ -18,6 +18,10 @@
 
 struct collision_scene g_scene;
 
+// ============================================================================
+// Lifecycle
+// ============================================================================
+
 void collision_scene_reset() {
     free(g_scene.elements);
     free(g_scene.all_contacts);
@@ -52,9 +56,13 @@ void collision_scene_reset() {
     g_scene.cached_contact_constraint_count = 0;
 }
 
-struct collision_scene* collision_scene_get() {
+struct collision_scene* collision_scene_get_instance() {
     return &g_scene;
 }
+
+// ============================================================================
+// Object Management
+// ============================================================================
 
 void collision_scene_add(physics_object* object) {
     if (g_scene.objectCount >= g_scene.capacity) {
@@ -72,7 +80,6 @@ void collision_scene_add(physics_object* object) {
     object->_aabb_tree_node_id = AABB_tree_create_node(&g_scene.object_aabbtree, object->bounding_box, object);
 }
 
-/// @brief Returns the physics object associated with the given entity id if it exists in the collision scene.
 physics_object* collision_scene_find_object(entity_id id) {
     if (!id) {
         return 0;
@@ -90,7 +97,7 @@ physics_object* collision_scene_find_object(entity_id id) {
  *
  * @param object Pointer to the physics object whose active contacts are to be returned.
  */
-void collision_scene_release_object_contacts(physics_object* object) {
+static void collision_scene_release_object_contacts(physics_object* object) {
     if (!object->_is_sleeping) {
         contact* last_contact = object->active_contacts;
 
@@ -146,11 +153,6 @@ static void collision_scene_wake_island(physics_object* obj) {
     }
 }
 
-/// @brief Removes a physics object from the collision scene. 
-///
-/// The removed object will no longer be updated in the phys loop or considered for collision.
-/// All contacts associated with the object will be released.
-/// @param object 
 void collision_scene_remove(physics_object* object) {
     if(!collision_scene_find_object(object->entity_id))return;
 
@@ -232,22 +234,35 @@ void collision_scene_remove(physics_object* object) {
     }
 }
 
+// ============================================================================
+// Static Collision
+// ============================================================================
 
 void collision_scene_use_static_collision(struct mesh_collider* mesh_collider) {
     g_scene.mesh_collider = mesh_collider;
 }
 
-
-/// @brief Removes the current static collision mesh from the scene.
 void collision_scene_remove_static_collision() {
     AABB_tree_free(&g_scene.mesh_collider->aabbtree);
     g_scene.mesh_collider = NULL;
 }
 
+// ============================================================================
+// Internal / Helpers
+// ============================================================================
 
+contact* collision_scene_allocate_contact() {
+    if (!g_scene.next_free_contact) {
+        return NULL;
+    }
+
+    contact* result = g_scene.next_free_contact;
+    g_scene.next_free_contact = result->next;
+    return result;
+}
 
 // ============================================================================
-// NEW: ITERATIVE CONSTRAINT SOLVER PHASES
+// Simulation (Iterative Constraint Solver)
 // ============================================================================
 
 /// @brief Helper function to apply angular impulse directly to rotation (for position solver)
@@ -1200,7 +1215,6 @@ static void collision_scene_solve_position_constraints() {
     }
 }
 
-/// @brief performs a physics step on all objects in the scene using iterative constraint solver
 void collision_scene_step() {
     struct collision_scene_element* element;
 
@@ -1356,15 +1370,4 @@ void collision_scene_step() {
             g_scene._sleepy_count += 1;
         }
     }
-}
-
-/// @brief Returns a new contact from the global scene's free contact list, NULL if none are available.
-contact* collision_scene_new_contact() {
-    if (!g_scene.next_free_contact) {
-        return NULL;
-    }
-
-    contact* result = g_scene.next_free_contact;
-    g_scene.next_free_contact = result->next;
-    return result;
 }

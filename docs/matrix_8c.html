@@ -93,42 +93,33 @@ Include dependency graph for matrix.c:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad62a27efd7e7897df7de8a74c571da1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#ad62a27efd7e7897df7de8a74c571da1f">matrixPerspective</a> (float matrix[4][4], float l, float r, float t, float b, float near, float far)</td></tr>
-<tr class="memdesc:ad62a27efd7e7897df7de8a74c571da1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up a perspective projection matrix.  <a href="matrix_8c.html#ad62a27efd7e7897df7de8a74c571da1f">More...</a><br /></td></tr>
-<tr class="separator:ad62a27efd7e7897df7de8a74c571da1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91f21cc48e4711cd3a99af61d224f084"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#a91f21cc48e4711cd3a99af61d224f084">matrixNormalizedZValue</a> (float depth, float near, float far)</td></tr>
 <tr class="memdesc:a91f21cc48e4711cd3a99af61d224f084"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the normalized Z value for a given depth within a specified near and far plane.  <a href="matrix_8c.html#a91f21cc48e4711cd3a99af61d224f084">More...</a><br /></td></tr>
 <tr class="separator:a91f21cc48e4711cd3a99af61d224f084"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5844f869938d0bdc9e490a9b3d8a41b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#ac5844f869938d0bdc9e490a9b3d8a41b">matrixVec3Mul</a> (float matrix[4][4], <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *input, <a class="el" href="vector4_8h.html#a50a4b4084a2cac650185f6ecec689656">Vector4</a> *output)</td></tr>
-<tr class="memdesc:ac5844f869938d0bdc9e490a9b3d8a41b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies a 4x4 matrix by a 3D vector.  <a href="matrix_8c.html#ac5844f869938d0bdc9e490a9b3d8a41b">More...</a><br /></td></tr>
-<tr class="separator:ac5844f869938d0bdc9e490a9b3d8a41b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a896719dd14f4fc49bf15dc77bd8603ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#a896719dd14f4fc49bf15dc77bd8603ed">matrixFromBasis</a> (float matrix[4][4], <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *origin, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *x, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *y, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *z)</td></tr>
-<tr class="memdesc:a896719dd14f4fc49bf15dc77bd8603ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a 4x4 matrix from a basis.  <a href="matrix_8c.html#a896719dd14f4fc49bf15dc77bd8603ed">More...</a><br /></td></tr>
-<tr class="separator:a896719dd14f4fc49bf15dc77bd8603ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50707eb18723018de7e94e0ff97b9d68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#a50707eb18723018de7e94e0ff97b9d68">matrixFromPosition</a> (float matrix[4][4], <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *position)</td></tr>
-<tr class="memdesc:a50707eb18723018de7e94e0ff97b9d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a 4x4 matrix from a position.  <a href="matrix_8c.html#a50707eb18723018de7e94e0ff97b9d68">More...</a><br /></td></tr>
-<tr class="separator:a50707eb18723018de7e94e0ff97b9d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56cb7dedeb35f569f7bac66270aed84f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#a56cb7dedeb35f569f7bac66270aed84f">matrixFromScale</a> (float matrix[4][4], float scale)</td></tr>
-<tr class="memdesc:a56cb7dedeb35f569f7bac66270aed84f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a 4x4 matrix from a scale factor.  <a href="matrix_8c.html#a56cb7dedeb35f569f7bac66270aed84f">More...</a><br /></td></tr>
-<tr class="separator:a56cb7dedeb35f569f7bac66270aed84f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec3e3e3ae78cf64c5efe5b856957ba1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#aec3e3e3ae78cf64c5efe5b856957ba1f">matrixApplyPosition</a> (float matrix[4][4], <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *position)</td></tr>
-<tr class="memdesc:aec3e3e3ae78cf64c5efe5b856957ba1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies a position to a 4x4 matrix.  <a href="matrix_8c.html#aec3e3e3ae78cf64c5efe5b856957ba1f">More...</a><br /></td></tr>
-<tr class="separator:aec3e3e3ae78cf64c5efe5b856957ba1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e35d6780f3380b44e3ad47ff0ba7739"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#a1e35d6780f3380b44e3ad47ff0ba7739">matrixMul</a> (float a[4][4], float b[4][4], float output[4][4])</td></tr>
-<tr class="memdesc:a1e35d6780f3380b44e3ad47ff0ba7739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies two 4x4 matrices.  <a href="matrix_8c.html#a1e35d6780f3380b44e3ad47ff0ba7739">More...</a><br /></td></tr>
-<tr class="separator:a1e35d6780f3380b44e3ad47ff0ba7739"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a80d078a1a763f01aa880492a951d72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#a5a80d078a1a763f01aa880492a951d72">matrix4FromBasis</a> (float matrix[4][4], <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *origin, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *x, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *y, <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *z)</td></tr>
+<tr class="memdesc:a5a80d078a1a763f01aa880492a951d72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a 4x4 matrix from a basis.  <a href="matrix_8c.html#a5a80d078a1a763f01aa880492a951d72">More...</a><br /></td></tr>
+<tr class="separator:a5a80d078a1a763f01aa880492a951d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01d07f1abab947630ca5b04ca317fbe2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#a01d07f1abab947630ca5b04ca317fbe2">matrix4FromPosition</a> (float matrix[4][4], <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *position)</td></tr>
+<tr class="memdesc:a01d07f1abab947630ca5b04ca317fbe2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a 4x4 matrix from a position.  <a href="matrix_8c.html#a01d07f1abab947630ca5b04ca317fbe2">More...</a><br /></td></tr>
+<tr class="separator:a01d07f1abab947630ca5b04ca317fbe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3b53a58a350b58950dd0ae16b2fdffd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#ad3b53a58a350b58950dd0ae16b2fdffd">matrix4FromScale</a> (float matrix[4][4], float scale)</td></tr>
+<tr class="memdesc:ad3b53a58a350b58950dd0ae16b2fdffd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a 4x4 matrix from a scale factor.  <a href="matrix_8c.html#ad3b53a58a350b58950dd0ae16b2fdffd">More...</a><br /></td></tr>
+<tr class="separator:ad3b53a58a350b58950dd0ae16b2fdffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19acada36cfec24fe9ca490ac508d806"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matrix_8c.html#a19acada36cfec24fe9ca490ac508d806">matrix4ApplyPosition</a> (float matrix[4][4], <a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *position)</td></tr>
+<tr class="memdesc:a19acada36cfec24fe9ca490ac508d806"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies a position to a 4x4 matrix.  <a href="matrix_8c.html#a19acada36cfec24fe9ca490ac508d806">More...</a><br /></td></tr>
+<tr class="separator:a19acada36cfec24fe9ca490ac508d806"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file contains the implementation of 4x4 matrix functions. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="aec3e3e3ae78cf64c5efe5b856957ba1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec3e3e3ae78cf64c5efe5b856957ba1f">&#9670;&nbsp;</a></span>matrixApplyPosition()</h2>
+<a id="a19acada36cfec24fe9ca490ac508d806"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19acada36cfec24fe9ca490ac508d806">&#9670;&nbsp;</a></span>matrix4ApplyPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void matrixApplyPosition </td>
+          <td class="memname">void matrix4ApplyPosition </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>matrix</em>[4][4], </td>
@@ -159,14 +150,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a896719dd14f4fc49bf15dc77bd8603ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a896719dd14f4fc49bf15dc77bd8603ed">&#9670;&nbsp;</a></span>matrixFromBasis()</h2>
+<a id="a5a80d078a1a763f01aa880492a951d72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a80d078a1a763f01aa880492a951d72">&#9670;&nbsp;</a></span>matrix4FromBasis()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void matrixFromBasis </td>
+          <td class="memname">void matrix4FromBasis </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>matrix</em>[4][4], </td>
@@ -218,14 +209,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a50707eb18723018de7e94e0ff97b9d68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50707eb18723018de7e94e0ff97b9d68">&#9670;&nbsp;</a></span>matrixFromPosition()</h2>
+<a id="a01d07f1abab947630ca5b04ca317fbe2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01d07f1abab947630ca5b04ca317fbe2">&#9670;&nbsp;</a></span>matrix4FromPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void matrixFromPosition </td>
+          <td class="memname">void matrix4FromPosition </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>matrix</em>[4][4], </td>
@@ -256,14 +247,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a56cb7dedeb35f569f7bac66270aed84f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56cb7dedeb35f569f7bac66270aed84f">&#9670;&nbsp;</a></span>matrixFromScale()</h2>
+<a id="ad3b53a58a350b58950dd0ae16b2fdffd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3b53a58a350b58950dd0ae16b2fdffd">&#9670;&nbsp;</a></span>matrix4FromScale()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void matrixFromScale </td>
+          <td class="memname">void matrix4FromScale </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>matrix</em>[4][4], </td>
@@ -288,51 +279,6 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">matrix</td><td>The 4x4 matrix to be initialized. </td></tr>
     <tr><td class="paramname">scale</td><td>The scale factor. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a1e35d6780f3380b44e3ad47ff0ba7739"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e35d6780f3380b44e3ad47ff0ba7739">&#9670;&nbsp;</a></span>matrixMul()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void matrixMul </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>a</em>[4][4], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>b</em>[4][4], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>output</em>[4][4]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Multiplies two 4x4 matrices. </p>
-<p>This function multiplies two 4x4 matrices and stores the result in an output matrix.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">a</td><td>The first 4x4 matrix to be multiplied. </td></tr>
-    <tr><td class="paramname">b</td><td>The second 4x4 matrix to be multiplied. </td></tr>
-    <tr><td class="paramname">output</td><td>The output 4x4 matrix where the result will be stored. </td></tr>
   </table>
   </dd>
 </dl>
@@ -382,124 +328,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The normalized Z value. Returns -1.0 if the depth is greater than or equal to -near, 1.0 if the depth is less than or equal to -far, otherwise returns the computed normalized Z value. </dd></dl>
-
-</div>
-</div>
-<a id="ad62a27efd7e7897df7de8a74c571da1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad62a27efd7e7897df7de8a74c571da1f">&#9670;&nbsp;</a></span>matrixPerspective()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void matrixPerspective </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>matrix</em>[4][4], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>l</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>t</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>near</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>far</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets up a perspective projection matrix. </p>
-<p>This function initializes a 4x4 matrix to represent a perspective projection transformation. The resulting matrix can be used to transform 3D coordinates into a perspective view.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">matrix</td><td>The 4x4 matrix to be initialized. </td></tr>
-    <tr><td class="paramname">l</td><td>The coordinate for the left vertical clipping plane. </td></tr>
-    <tr><td class="paramname">r</td><td>The coordinate for the right vertical clipping plane. </td></tr>
-    <tr><td class="paramname">t</td><td>The coordinate for the top horizontal clipping plane. </td></tr>
-    <tr><td class="paramname">b</td><td>The coordinate for the bottom horizontal clipping plane. </td></tr>
-    <tr><td class="paramname">near</td><td>The distance to the near clipping plane. </td></tr>
-    <tr><td class="paramname">far</td><td>The distance to the far clipping plane. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac5844f869938d0bdc9e490a9b3d8a41b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5844f869938d0bdc9e490a9b3d8a41b">&#9670;&nbsp;</a></span>matrixVec3Mul()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void matrixVec3Mul </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>matrix</em>[4][4], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="vector3_8h.html#a9388e90302520bfda15dc15cdb488471">Vector3</a> *&#160;</td>
-          <td class="paramname"><em>input</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="vector4_8h.html#a50a4b4084a2cac650185f6ecec689656">Vector4</a> *&#160;</td>
-          <td class="paramname"><em>output</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Multiplies a 4x4 matrix by a 3D vector. </p>
-<p>This function multiplies a 4x4 matrix by a 3D vector, storing the result in a 4D vector.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">matrix</td><td>The 4x4 matrix to be multiplied. </td></tr>
-    <tr><td class="paramname">input</td><td>The input 3D vector to be multiplied. </td></tr>
-    <tr><td class="paramname">output</td><td>The output 4D vector where the result will be stored. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

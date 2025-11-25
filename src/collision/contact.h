@@ -11,12 +11,15 @@ typedef struct contact_constraint contact_constraint;
 typedef struct contact contact;
 typedef uint32_t contact_pair_id; //unique combination of two entity ids (enity_id is uint16_t)
 typedef struct physics_object physics_object;
+
+
 /// @brief contact struct containing information about a collision
 typedef struct contact {
     contact* next; // pointer to the next contact in a list
     contact_constraint* constraint; // pointer to the shared constraint data
     physics_object* other_object; // entity_id of the object that was collided with
 } contact;
+
 
 /// @brief Single contact point data within a contact constraint
 typedef struct contact_point {
@@ -39,6 +42,7 @@ typedef struct contact_point {
     Vector3 a_to_contact; // contact point relative to A's center of mass
     Vector3 b_to_contact; // contact point relative to B's center of mass
 } contact_point;
+
 
 /// @brief contact constraint containing multiple contact points for a pair of objects
 typedef struct contact_constraint {
@@ -67,12 +71,15 @@ typedef struct contact_constraint {
     int point_count; // number of active contact points (1-4 typically)
 } contact_constraint;
 
-
-inline contact_pair_id contact_pair_id_get(entity_id a, entity_id b){
-    if (a < b)
-        return ((uint32_t)a << 16) | b;
+/// @brief Create a unique contact pair id from two entity ids
+/// @param a 
+/// @param b 
+/// @return uint32_t pid
+inline contact_pair_id contact_pair_id_get(entity_id a_id, entity_id b_id){
+    if (a_id < b_id)
+        return ((uint32_t)a_id << 16) | b_id;
     else
-        return ((uint32_t)b << 16) | a;
+        return ((uint32_t)b_id << 16) | a_id;
 }
 
 #endif

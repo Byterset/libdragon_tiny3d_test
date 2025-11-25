@@ -105,11 +105,12 @@ $(function() {
 : <a class="el" href="physics__object_8h.html#a064714425b6c8cf7688bad8f6aec6a76">physics_object.h</a>
 </li>
 <li>physics_object
-: <a class="el" href="physics__object_8h.html#a3297d5601492f2df08fa64ed24b8e3af">physics_object.h</a>
+: <a class="el" href="contact_8h.html#a3297d5601492f2df08fa64ed24b8e3af">contact.h</a>
+, <a class="el" href="physics__object_8h.html#a3297d5601492f2df08fa64ed24b8e3af">physics_object.h</a>
 </li>
 <li>physics_object_accelerate()
-: <a class="el" href="physics__object_8c.html#afb5ef123445e07db8c7cebd20f074c81">physics_object.c</a>
-, <a class="el" href="physics__object_8h.html#afb5ef123445e07db8c7cebd20f074c81">physics_object.h</a>
+: <a class="el" href="physics__object_8h.html#afb5ef123445e07db8c7cebd20f074c81">physics_object.h</a>
+, <a class="el" href="physics__object_8c.html#afb5ef123445e07db8c7cebd20f074c81">physics_object.c</a>
 </li>
 <li>physics_object_apply_angular_impulse()
 : <a class="el" href="physics__object_8c.html#abdd02ad512da1775f95d6685db8e22be">physics_object.c</a>
@@ -145,6 +146,22 @@ $(function() {
 : <a class="el" href="physics__object_8c.html#a0de4ea4eb350ea128dd5837132165d7e">physics_object.c</a>
 , <a class="el" href="physics__object_8h.html#a0de4ea4eb350ea128dd5837132165d7e">physics_object.h</a>
 </li>
+<li>physics_object_integrate_angular_velocity()
+: <a class="el" href="physics__object_8c.html#a047241cf079cd8060206697143e39ec9">physics_object.c</a>
+, <a class="el" href="physics__object_8h.html#a047241cf079cd8060206697143e39ec9">physics_object.h</a>
+</li>
+<li>physics_object_integrate_position()
+: <a class="el" href="physics__object_8c.html#a61e4475ccc4554db44c52d3d8047f17e">physics_object.c</a>
+, <a class="el" href="physics__object_8h.html#a61e4475ccc4554db44c52d3d8047f17e">physics_object.h</a>
+</li>
+<li>physics_object_integrate_rotation()
+: <a class="el" href="physics__object_8h.html#a30260d0877ea02a849fb0cb91412986a">physics_object.h</a>
+, <a class="el" href="physics__object_8c.html#a30260d0877ea02a849fb0cb91412986a">physics_object.c</a>
+</li>
+<li>physics_object_integrate_velocity()
+: <a class="el" href="physics__object_8c.html#a50b5637a3f3e3037454b3a31c4ef66da">physics_object.c</a>
+, <a class="el" href="physics__object_8h.html#a50b5637a3f3e3037454b3a31c4ef66da">physics_object.h</a>
+</li>
 <li>physics_object_is_touching()
 : <a class="el" href="physics__object_8c.html#a3a3cea8d2a76640ca9d3312fe204e0d8">physics_object.c</a>
 , <a class="el" href="physics__object_8h.html#a3a3cea8d2a76640ca9d3312fe204e0d8">physics_object.h</a>
@@ -169,13 +186,15 @@ $(function() {
 : <a class="el" href="physics__object_8c.html#acecd534677a14de69cecfa39a0c54f6c">physics_object.c</a>
 , <a class="el" href="physics__object_8h.html#acecd534677a14de69cecfa39a0c54f6c">physics_object.h</a>
 </li>
-<li>physics_object_update_angular_velocity()
-: <a class="el" href="physics__object_8c.html#a8274a5233fb198a7a8d438f078916e14">physics_object.c</a>
-, <a class="el" href="physics__object_8h.html#a8274a5233fb198a7a8d438f078916e14">physics_object.h</a>
+<li>physics_object_sleep()
+: <a class="el" href="physics__object_8h.html#aa38196cb4c6fbb77c458b6eb56063509">physics_object.h</a>
 </li>
-<li>physics_object_update_velocity_semi_implicit_euler()
-: <a class="el" href="physics__object_8c.html#a45ed64e5de17aa6642abd836cff4049a">physics_object.c</a>
-, <a class="el" href="physics__object_8h.html#a45ed64e5de17aa6642abd836cff4049a">physics_object.h</a>
+<li>physics_object_update_world_inertia()
+: <a class="el" href="physics__object_8c.html#ace3b9b164374630cb1155525ea35a5d7">physics_object.c</a>
+, <a class="el" href="physics__object_8h.html#ace3b9b164374630cb1155525ea35a5d7">physics_object.h</a>
+</li>
+<li>physics_object_wake()
+: <a class="el" href="physics__object_8h.html#a37f11bd481fd4008af3cc6a93b5b131b">physics_object.h</a>
 </li>
 <li>PHYSICS_TICKRATE
 : <a class="el" href="time_8h.html#acc14909795a4c4ad67102c15a58df488">time.h</a>
@@ -199,8 +218,8 @@ $(function() {
 , <a class="el" href="plane_8h.html#ac47ad154ee1f11b55fb631268337777a">plane.h</a>
 </li>
 <li>planeRayIntersection()
-: <a class="el" href="plane_8h.html#abb6e8236f40b680cdf6f31008556d24f">plane.h</a>
-, <a class="el" href="plane_8c.html#abb6e8236f40b680cdf6f31008556d24f">plane.c</a>
+: <a class="el" href="plane_8c.html#abb6e8236f40b680cdf6f31008556d24f">plane.c</a>
+, <a class="el" href="plane_8h.html#abb6e8236f40b680cdf6f31008556d24f">plane.h</a>
 </li>
 <li>plat
 : <a class="el" href="main_8c.html#a5e0a8b59267a0142f08d108514e78f1d">main.c</a>
@@ -275,11 +294,11 @@ $(function() {
 <li>playerDef
 : <a class="el" href="main_8c.html#a64d44df028023506502d8bb24dc1d232">main.c</a>
 </li>
+<li>POSITION_CONSTRAINT_SOLVER_ITERATIONS
+: <a class="el" href="collision__scene_8h.html#a840e6cd7c3fab205824a65a8932b0afa">collision_scene.h</a>
+</li>
 <li>powf()
 : <a class="el" href="mathf_8h.html#a03f6d8cf8c48e1ee7b02eecf14e859d2">mathf.h</a>
-</li>
-<li>ProjectOnContactPlane()
-: <a class="el" href="player_8c.html#a7031635469b89841ede28cc5b18d6fd7">player.c</a>
 </li>
 <li>PYHS_OBJECT_AMPLIFY_ANG_SPEED_DAMPING_THRESHOLD
 : <a class="el" href="physics__object_8h.html#a7ab47e3b9ed474795611c93acf020ab6">physics_object.h</a>
