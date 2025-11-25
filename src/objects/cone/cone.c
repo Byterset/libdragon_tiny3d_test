@@ -41,6 +41,7 @@ void cone_init(struct cone* cone, struct generic_object_pos_definition* def){
 
     cone->physics.has_gravity = false;
     cone->physics.is_kinematic = false;
+    cone->physics.angular_damping = 0.02f;
     cone->physics.constraints |= CONSTRAINTS_FREEZE_POSITION_ALL;
 
     collision_scene_add(&cone->physics);

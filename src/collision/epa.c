@@ -782,8 +782,23 @@ bool epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_f
 
         // Raycast from the origin along the sweep direction to find time of impact
         float distance;
-        if (!planeRayIntersection(&facePlane, &gZeroVec, &raycastDir, &distance)) {
-            return false;
+        float moveOffset = vector3DistSqrd(bStart, bEnd);
+        bool has_intersection = planeRayIntersection(&facePlane, &gZeroVec, &raycastDir, &distance);
+
+        // If parallel, moving inwards (dist < 0), or intersection is too far (implying start is inside or grazing),
+        // treat as collision at START position to allow full sliding.
+        if (!has_intersection || distance < -0.001f || distance * distance >= moveOffset + 0.1f) {
+            result->penetration = 0;
+            
+            // Reset bEnd to bStart (collision at start of sweep)
+            *bEnd = *bStart;
+
+            // Project origin onto face to get contact point on simplex
+            Vector3 planePos;
+            vector3Scale(&closestFace->normal, &planePos, closestFace->distanceToOrigin);
+            
+            epaCalculateContact(&simplex, closestFace, &planePos, result);
+            return true;
         }
 
         // Add small epsilon to prevent numerical precision from causing slight overlap
@@ -793,13 +808,6 @@ bool epaSolveSwept(struct Simplex* startingSimplex, void* objectA, gjk_support_f
 
         Vector3 planePos;
         vector3Scale(&raycastDir, &planePos, distance);
-        float moveOffset = vector3DistSqrd(bStart, bEnd);
-
-        // Verify collision occurs within the sweep range
-        // Use a slightly larger epsilon for the check to avoid false negatives due to precision
-        if (distance * distance >= moveOffset + 0.1f) {
-            return false;
-        }
 
         // Update bEnd to the position at first contact
         vector3Add(bEnd, &planePos, bEnd);

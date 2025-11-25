@@ -6,6 +6,8 @@
 #include "collide.h"
 #include "gjk.h"
 #include "epa.h"
+#include "raycast.h"
+#include "shapes/ray_triangle_intersection.h"
 #include <stdio.h>
 
 struct swept_physics_object {
@@ -37,6 +39,43 @@ void object_mesh_collide_data_init(
 
 bool collide_object_swept_to_triangle(void* data, int triangle_index) {
     struct object_mesh_collide_data* collide_data = (struct object_mesh_collide_data*)data;
+    
+    // Use raycast for high-speed tunneling prevention
+    // This is more robust than EPA on swept hull for thin walls
+    Vector3 dir;
+    vector3FromTo(collide_data->prev_pos, collide_data->object->position, &dir);
+    float dist = vector3Mag(&dir);
+    
+    if (dist > 0.0001f) {
+        raycast ray;
+        ray.origin = *collide_data->prev_pos;
+        ray.dir = dir;
+        vector3Scale(&ray.dir, &ray.dir, 1.0f / dist);
+        ray.maxDistance = dist;
+        
+        struct mesh_triangle triangle;
+        triangle.vertices = collide_data->mesh->vertices;
+        triangle.triangle = collide_data->mesh->triangles[triangle_index];
+        triangle.normal = collide_data->mesh->normals[triangle_index];
+        
+        raycast_hit hit;
+        if (ray_triangle_intersection(&ray, &hit, &triangle)) {
+            // We hit the triangle with the center ray
+            // Construct a result that looks like EPA result
+            collide_data->hit_result.normal = hit.normal;
+            collide_data->hit_result.penetration = 0;
+            collide_data->hit_result.contactA = hit.point; // On triangle
+            collide_data->hit_result.contactB = hit.point; // On object (approx)
+            
+            // Move object to hit point (minus a small buffer)
+            Vector3 back_off;
+            vector3Scale(&ray.dir, &back_off, 0.01f); // Back off 1cm
+            vector3Sub(&hit.point, &back_off, collide_data->object->position);
+            
+            return true;
+        }
+    }
+
     struct swept_physics_object swept;
     swept.object = collide_data->object;
     vector3Sub(collide_data->prev_pos, collide_data->object->position, &swept.offset);
@@ -53,7 +92,6 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
     }
 
     struct EpaResult result;
-    Vector3 saved_pos = *collide_data->object->position;
     if (epaSolveSwept(
             &simplex,
             &triangle,
@@ -64,21 +102,8 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
             collide_data->object->position,
             &result))
     {
-        bool ignore = false;
-        contact* c = collide_data->object->active_contacts;
-        while (c) {
-            if (c->other_object == NULL && vector3Dot(&result.normal, &c->constraint->normal) > 0.9f) {
-                ignore = true;
-                break;
-            }
-            c = c->next;
-        }
-
-        if (!ignore) {
-            collide_data->hit_result = result;
-            return true;
-        }
-        *collide_data->object->position = saved_pos;
+        collide_data->hit_result = result;
+        return true;
     }
 
     Vector3 final_pos = *collide_data->object->position;
@@ -135,6 +160,7 @@ void collide_object_swept_bounce(
 
     vector3Add(object->position, &move_amount_normal, object->position);
     vector3Add(object->position, &move_amount_tangent, object->position);
+
     // don't include friction on a bounce
     correct_velocity(object, &collide_data->hit_result, 0.0f, object->collision->bounce);
 
