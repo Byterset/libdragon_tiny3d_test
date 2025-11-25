@@ -53,6 +53,7 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
     }
 
     struct EpaResult result;
+    Vector3 saved_pos = *collide_data->object->position;
     if (epaSolveSwept(
             &simplex,
             &triangle,
@@ -63,8 +64,21 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
             collide_data->object->position,
             &result))
     {
-        collide_data->hit_result = result;
-        return true;
+        bool ignore = false;
+        contact* c = collide_data->object->active_contacts;
+        while (c) {
+            if (c->other_object == NULL && vector3Dot(&result.normal, &c->constraint->normal) > 0.9f) {
+                ignore = true;
+                break;
+            }
+            c = c->next;
+        }
+
+        if (!ignore) {
+            collide_data->hit_result = result;
+            return true;
+        }
+        *collide_data->object->position = saved_pos;
     }
 
     Vector3 final_pos = *collide_data->object->position;
@@ -78,8 +92,20 @@ bool collide_object_swept_to_triangle(void* data, int triangle_index) {
             physics_object_gjk_support_function,
             &result))
     {
-        collide_data->hit_result = result;
-        return true;
+        bool ignore = false;
+        contact* c = collide_data->object->active_contacts;
+        while (c) {
+            if (c->other_object == NULL && vector3Dot(&result.normal, &c->constraint->normal) > 0.9f) {
+                ignore = true;
+                break;
+            }
+            c = c->next;
+        }
+
+        if (!ignore) {
+            collide_data->hit_result = result;
+            return true;
+        }
     }
     *collide_data->object->position = final_pos;
 

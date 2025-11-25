@@ -385,8 +385,22 @@ static void collision_scene_fix_sweep_collisions() {
             if (obj->_is_sleeping || obj->is_trigger || obj->is_kinematic || all_position_frozen || !(obj->collision_layers & COLLISION_LAYER_TANGIBLE)) {
                 continue;
             }
+
+            // Check if object is already in contact with the mesh
+            bool has_mesh_contact = false;
+            contact* c = obj->active_contacts;
+            while (c) {
+                if (c->other_object == NULL) { // Static mesh contact
+                    has_mesh_contact = true;
+                    break;
+                }
+                c = c->next;
+            }
+
+            if (has_mesh_contact) continue; // Skip swept check if already touching mesh
+
             Vector3* prev_pos = &obj->_prev_step_pos;
-            for (int i = 0; i < MAX_SWEPT_ITERATIONS; i += 1)
+            for (int k = 0; k < MAX_SWEPT_ITERATIONS; k += 1)
             {
                 Vector3 offset;
                 vector3Sub(obj->position, prev_pos, &offset);
@@ -401,11 +415,11 @@ static void collision_scene_fix_sweep_collisions() {
                 {
                     if (!collide_object_to_mesh_swept(obj, g_scene.mesh_collider, prev_pos))
                     {
-                        return;
+                        break;
                     }
                 }
                 else {
-                    return;
+                    break;
                 }
             }
 
