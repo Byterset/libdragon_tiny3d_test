@@ -346,7 +346,7 @@ int main()
             for (int i = 0; i < collision_scene->cached_contact_constraint_count; i++) {
                 contact_constraint* cc = &collision_scene->cached_contact_constraints[i];
                 
-                // if (!cc->is_active) continue;
+                if (!cc->is_active) continue;
 
                 for (int j = 0; j < cc->point_count; j++){
                     Vector3 cA = cc->points[j].contactA;

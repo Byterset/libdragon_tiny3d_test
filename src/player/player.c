@@ -13,13 +13,13 @@
 #include "../render/defs.h"
 #include "../collectables/collectable.h"
 
-#define PLAYER_MAX_SPEED    30.0f
+#define PLAYER_MAX_SPEED    16.0f
 #define PLAYER_MAX_ACC       80.0f
-#define PLAYER_MAX_ACC_AIR   50.0f
-#define PLAYER_MAX_ANGLE_GROUND 45.0f
+#define PLAYER_MAX_ACC_AIR   30.0f
+#define PLAYER_MAX_ANGLE_GROUND 50.0f
 #define PLAYER_MAX_ANGLE_GROUND_DOT cosf(T3D_DEG_TO_RAD(PLAYER_MAX_ANGLE_GROUND))
 #define PLAYER_JUMP_HEIGHT  5.2f
-#define PLAYER_TURN_SPEED 20.0f
+#define PLAYER_TURN_SPEED 25.0f
 
 static Vector2 player_max_rotation;
 

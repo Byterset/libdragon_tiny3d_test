@@ -34,7 +34,7 @@ void crate_init(struct crate* crate, struct generic_object_pos_definition* def){
         &crate->transform.position,
         &crate->transform.rotation,
         gZeroVec,
-        200.0f
+        100.0f
     );
     collision_scene_add(&crate->physics);
 }

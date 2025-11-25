@@ -365,15 +365,6 @@ void physics_object_gjk_support_function(const void* data, const Vector3* direct
     if(object->rotation){
         // localDir = R^T * direction
         // Since R is orthogonal, R^T = R^-1.
-        // We can use matrix3Vec3Mul with the transpose of the rotation matrix.
-        // Or we can manually do the transpose multiply:
-        // x = R[0][0]*dx + R[0][1]*dy + R[0][2]*dz
-        // y = R[1][0]*dx + R[1][1]*dy + R[1][2]*dz
-        // z = R[2][0]*dx + R[2][1]*dy + R[2][2]*dz
-        // This matches the manual code I wrote before, which is correct for R^T * v
-        // But let's use the library function if possible.
-        // matrix3Vec3Mul does M * v.
-        // So we need M^T.
         Matrix3x3 rotation_transpose;
         matrix3Transpose(&object->_rotation_matrix, &rotation_transpose);
         matrix3Vec3Mul(&rotation_transpose, direction, &localDir);

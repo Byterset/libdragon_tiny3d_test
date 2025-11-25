@@ -60,10 +60,10 @@ void camera_controller_update_position(struct camera_controller* controller, Tra
             
             if (hit_distance < controller->collision_distance - hysteresis_factor) {
                 // Moving closer to wall - respond quickly
-                controller->collision_distance = fm_lerp(controller->collision_distance, hit_distance, deltatime_sec * 8.0f);
+                controller->collision_distance = fm_lerp(controller->collision_distance, hit_distance, FIXED_DELTATIME * 8.0f);
             } else if (hit_distance > controller->collision_distance + hysteresis_factor) {
                 // Moving away from wall - respond more slowly
-                controller->collision_distance = fm_lerp(controller->collision_distance, hit_distance, deltatime_sec * 3.0f);
+                controller->collision_distance = fm_lerp(controller->collision_distance, hit_distance, FIXED_DELTATIME * 3.0f);
             }
             // Within hysteresis band - don't change
         }
@@ -72,7 +72,7 @@ void camera_controller_update_position(struct camera_controller* controller, Tra
     } else {
         // No collision - smoothly return to desired distance
         if (controller->collision_distance > 0.0f) {
-            controller->collision_distance = fm_lerp(controller->collision_distance, desired_distance, deltatime_sec * 2.0f);
+            controller->collision_distance = fm_lerp(controller->collision_distance, desired_distance, FIXED_DELTATIME * 2.0f);
             if (fabsf(controller->collision_distance - desired_distance) < 0.01f) {
                 controller->collision_distance = 0.0f;
             }
@@ -102,7 +102,7 @@ void camera_controller_update_position(struct camera_controller* controller, Tra
         lerp_speed = 2.0f; // Slow for precision
     }
     
-    vector3Lerp(&current_pos, &desiredCamPos, deltatime_sec * lerp_speed, &controller->camera->transform.position);
+    vector3Lerp(&current_pos, &desiredCamPos, FIXED_DELTATIME * lerp_speed, &controller->camera->transform.position);
     
     //6. Smooth look-at with damping
     Vector3 look_dir;
@@ -116,7 +116,7 @@ void camera_controller_update_position(struct camera_controller* controller, Tra
     
     // Smooth rotation
     quatLerp(&controller->camera->transform.rotation, &desired_rotation, 
-              deltatime_sec * 5.0f, &controller->camera->transform.rotation);
+              FIXED_DELTATIME * 5.0f, &controller->camera->transform.rotation);
 }
 
 void camera_controller_update(struct camera_controller* controller) {

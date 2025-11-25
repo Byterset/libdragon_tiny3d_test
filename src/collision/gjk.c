@@ -7,7 +7,7 @@
 
 #include "gjk.h"
 
-#define GJK_MAX_ITERATIONS  18
+#define GJK_MAX_ITERATIONS  24
 
 Vector3* simplexAddPoint(struct Simplex* simplex, Vector3* aPoint, Vector3* bPoint) {
     if (simplex->nPoints == GJK_MAX_SIMPLEX_SIZE) {

@@ -1078,8 +1078,8 @@ static void collision_scene_solve_velocity_constraints()
 /// @brief Solve position constraints iteratively
 static void collision_scene_solve_position_constraints() {
     const float slop = 0.01f;
-    const float steeringConstant = 0.2f;
-    const float maxCorrection = 0.08f;
+    const float steeringConstant = 0.3f;
+    const float maxCorrection = 0.04f;
 
     for (int i = 0; i < g_scene.cached_contact_constraint_count; i++) {
         contact_constraint* cc = &g_scene.cached_contact_constraints[i];
@@ -1097,7 +1097,7 @@ static void collision_scene_solve_position_constraints() {
             if (cp->penetration < slop)
                 continue;
 
-            const float steeringForce = clampf(steeringConstant * (cp->penetration + slop), 0, maxCorrection);
+            const float steeringForce = clampf(steeringConstant * (cp->penetration - slop), 0, maxCorrection);
 
             bool aMovementConstrained = a && (a->is_kinematic || ((a->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
             bool bMovementConstrained = b && (b->is_kinematic || ((b->constraints & CONSTRAINTS_FREEZE_POSITION_ALL) == CONSTRAINTS_FREEZE_POSITION_ALL));
@@ -1194,6 +1194,8 @@ static void collision_scene_solve_position_constraints() {
                     physics_object_apply_angular_impulse_to_rotation(b, &angularImpulse);
                 }
             }
+
+            cp->penetration -= steeringForce;
         }
     }
 }

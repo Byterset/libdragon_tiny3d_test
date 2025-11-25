@@ -305,7 +305,7 @@ contact_constraint* cache_contact_constraint(physics_object* a, physics_object* 
 
 
     // Try to match this contact point with an existing point by proximity
-    const float match_distance_sq = 0.05f; // sqrt(x) units are considered the same
+    const float match_distance_sq = 0.02f; // sqrt(x) units are considered the same
     int matched_point_index = -1;
     float best_dist_sq = match_distance_sq;
 
@@ -573,7 +573,7 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
     
     // Use a threshold slightly higher than the sleep threshold to ensure stability.
     // If objects are moving slower than the sleep threshold, they shouldn't wake each other up.
-    const float wake_threshold_sq = PHYS_OBJECT_SPEED_SLEEP_THRESHOLD_SQ * 1.5f;
+    const float wake_threshold_sq = PHYS_OBJECT_SPEED_SLEEP_THRESHOLD_SQ * 1.2f;
 
     if (impactSpeedSq > wake_threshold_sq) {
         if (a && !a->is_kinematic) physics_object_wake(a);
