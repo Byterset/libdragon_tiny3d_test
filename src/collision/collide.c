@@ -57,7 +57,7 @@ void correct_velocity(physics_object* b, const struct EpaResult* result, float f
     if (b->rotation)
     {
         Vector3 rotatedOffset;
-        quatMultVector(b->rotation, &b->center_offset, &rotatedOffset);
+        matrix3Vec3Mul(&b->_rotation_matrix, &b->center_offset, &rotatedOffset);
         vector3Add(b->position, &rotatedOffset, &centerOfMassB);
     }
     else
@@ -441,6 +441,255 @@ void detect_contacts_object_to_mesh(physics_object* object, const struct mesh_co
     }
 }
 
+bool detect_sphere_sphere(physics_object* sphereA, physics_object* sphereB, struct EpaResult* result) {
+
+    Vector3 sphereACenter;
+    if (sphereA->rotation) {
+        Vector3 rotatedOffset;
+        matrix3Vec3Mul(&sphereA->_rotation_matrix, &sphereA->center_offset, &rotatedOffset);
+        vector3Add(sphereA->position, &rotatedOffset, &sphereACenter);
+    } else {
+        vector3Add(sphereA->position, &sphereA->center_offset, &sphereACenter);
+    }
+
+    Vector3 sphereBCenter;
+    if (sphereB->rotation)
+    {
+        Vector3 rotatedOffset;
+        matrix3Vec3Mul(&sphereB->_rotation_matrix, &sphereB->center_offset, &rotatedOffset);
+        vector3Add(sphereB->position, &rotatedOffset, &sphereBCenter);
+    }
+    else
+    {
+        vector3Add(sphereB->position, &sphereB->center_offset, &sphereBCenter);
+    }
+
+    Vector3 delta;
+    float dist_sq;
+    float radii_sum;
+
+    vector3FromTo(&sphereBCenter, &sphereACenter, &delta);
+    dist_sq = vector3MagSqrd(&delta);
+    radii_sum = sphereA->collision->shape_data.sphere.radius + sphereB->collision->shape_data.sphere.radius;
+    float radii_sum_sq = radii_sum * radii_sum;
+    if (dist_sq >= radii_sum_sq)
+        return false;
+
+    float dist = sqrtf(dist_sq);
+    result->penetration = radii_sum - dist;
+    if (dist > EPSILON)
+        vector3Normalize(&delta, &result->normal);
+    else
+        result->normal = gUp;
+
+    vector3AddScaled(&sphereACenter, &result->normal, -sphereA->collision->shape_data.sphere.radius, &result->contactA);
+    vector3AddScaled(&sphereBCenter, &result->normal, sphereB->collision->shape_data.sphere.radius, &result->contactB);
+    return true;
+}
+
+bool detect_sphere_box(physics_object* sphere, physics_object* box, struct EpaResult* result) {
+    Vector3 sphereCenter;
+    if (sphere->rotation) {
+        Vector3 rotatedOffset;
+        matrix3Vec3Mul(&sphere->_rotation_matrix, &sphere->center_offset, &rotatedOffset);
+        vector3Add(sphere->position, &rotatedOffset, &sphereCenter);
+    } else {
+        vector3Add(sphere->position, &sphere->center_offset, &sphereCenter);
+    }
+
+    Vector3 boxCenter;
+    if (box->rotation) {
+        Vector3 rotatedOffset;
+        matrix3Vec3Mul(&box->_rotation_matrix, &box->center_offset, &rotatedOffset);
+        vector3Add(box->position, &rotatedOffset, &boxCenter);
+    } else {
+        vector3Add(box->position, &box->center_offset, &boxCenter);
+    }
+
+    // Transform sphere center to box local space
+    Vector3 relPos;
+    vector3Sub(&sphereCenter, &boxCenter, &relPos);
+
+    Vector3 localPos = relPos;
+    if (box->rotation) {
+        Matrix3x3 rotation_transpose;
+        matrix3Transpose(&box->_rotation_matrix, &rotation_transpose);
+        matrix3Vec3Mul(&rotation_transpose, &relPos, &localPos);
+    }
+
+    Vector3 halfSize = box->collision->shape_data.box.half_size;
+
+    // Find closest point on box to sphere center
+    Vector3 closestLocal;
+    closestLocal.x = fmaxf(-halfSize.x, fminf(localPos.x, halfSize.x));
+    closestLocal.y = fmaxf(-halfSize.y, fminf(localPos.y, halfSize.y));
+    closestLocal.z = fmaxf(-halfSize.z, fminf(localPos.z, halfSize.z));
+
+    Vector3 distVec;
+    vector3Sub(&localPos, &closestLocal, &distVec);
+    float distSq = vector3MagSqrd(&distVec);
+    float radius = sphere->collision->shape_data.sphere.radius;
+
+    if (distSq > radius * radius) {
+        return false;
+    }
+
+    float dist = sqrtf(distSq);
+    Vector3 normalLocal;
+    Vector3 contactLocalOnBox;
+    float penetration;
+
+    if (dist > EPSILON) {
+        // Sphere center is outside the box
+        vector3Scale(&distVec, &normalLocal, 1.0f / dist);
+        penetration = radius - dist;
+        contactLocalOnBox = closestLocal;
+    } else {
+        // Sphere center is inside the box
+        // Find the closest face to push out
+        float distToFaceX = halfSize.x - fabsf(localPos.x);
+        float distToFaceY = halfSize.y - fabsf(localPos.y);
+        float distToFaceZ = halfSize.z - fabsf(localPos.z);
+
+        normalLocal = gZeroVec;
+        contactLocalOnBox = localPos;
+
+        if (distToFaceX < distToFaceY && distToFaceX < distToFaceZ) {
+            normalLocal.x = localPos.x > 0.0f ? 1.0f : -1.0f;
+            penetration = radius + distToFaceX;
+            contactLocalOnBox.x = halfSize.x * normalLocal.x;
+        } else if (distToFaceY < distToFaceZ) {
+            normalLocal.y = localPos.y > 0.0f ? 1.0f : -1.0f;
+            penetration = radius + distToFaceY;
+            contactLocalOnBox.y = halfSize.y * normalLocal.y;
+        } else {
+            normalLocal.z = localPos.z > 0.0f ? 1.0f : -1.0f;
+            penetration = radius + distToFaceZ;
+            contactLocalOnBox.z = halfSize.z * normalLocal.z;
+        }
+    }
+
+    // Transform results back to world space
+    if (box->rotation) {
+        matrix3Vec3Mul(&box->_rotation_matrix, &normalLocal, &result->normal);
+        Vector3 rotatedContact;
+        matrix3Vec3Mul(&box->_rotation_matrix, &contactLocalOnBox, &rotatedContact);
+        vector3Add(&boxCenter, &rotatedContact, &result->contactB);
+    } else {
+        result->normal = normalLocal;
+        vector3Add(&boxCenter, &contactLocalOnBox, &result->contactB);
+    }
+
+    // ContactA is on the sphere
+    // contactA = sphereCenter - normal * radius
+    Vector3 normalScaled;
+    vector3Scale(&result->normal, &normalScaled, radius);
+    vector3Sub(&sphereCenter, &normalScaled, &result->contactA);
+
+    result->penetration = penetration;
+
+    return true;
+}
+
+bool detect_sphere_capsule(physics_object* sphere, physics_object* capsule, struct EpaResult* result) {
+    Vector3 sphereCenter;
+    if (sphere->rotation) {
+        Vector3 rotatedOffset;
+        matrix3Vec3Mul(&sphere->_rotation_matrix, &sphere->center_offset, &rotatedOffset);
+        vector3Add(sphere->position, &rotatedOffset, &sphereCenter);
+    } else {
+        vector3Add(sphere->position, &sphere->center_offset, &sphereCenter);
+    }
+
+    Vector3 capsuleCenter;
+    if (capsule->rotation) {
+        Vector3 rotatedOffset;
+        matrix3Vec3Mul(&capsule->_rotation_matrix, &capsule->center_offset, &rotatedOffset);
+        vector3Add(capsule->position, &rotatedOffset, &capsuleCenter);
+    } else {
+        vector3Add(capsule->position, &capsule->center_offset, &capsuleCenter);
+    }
+
+    // Transform sphere center to capsule local space
+    Vector3 relPos;
+    vector3Sub(&sphereCenter, &capsuleCenter, &relPos);
+
+    Vector3 localPos = relPos;
+    if (capsule->rotation) {
+        Matrix3x3 rotation_transpose;
+        matrix3Transpose(&capsule->_rotation_matrix, &rotation_transpose);
+        matrix3Vec3Mul(&rotation_transpose, &relPos, &localPos);
+    }
+
+    float halfHeight = capsule->collision->shape_data.capsule.inner_half_height;
+    float capsuleRadius = capsule->collision->shape_data.capsule.radius;
+    float sphereRadius = sphere->collision->shape_data.sphere.radius;
+
+    // Find closest point on capsule segment to sphere center
+    // Segment is on Y axis from -halfHeight to +halfHeight
+    Vector3 closestLocal;
+    closestLocal.x = 0.0f;
+    closestLocal.y = fmaxf(-halfHeight, fminf(localPos.y, halfHeight));
+    closestLocal.z = 0.0f;
+
+    Vector3 distVec;
+    vector3Sub(&localPos, &closestLocal, &distVec);
+    float distSq = vector3MagSqrd(&distVec);
+    float radiusSum = sphereRadius + capsuleRadius;
+
+    if (distSq > radiusSum * radiusSum) {
+        return false;
+    }
+
+    float dist = sqrtf(distSq);
+    Vector3 normalLocal;
+    Vector3 contactLocalOnCapsule;
+    float penetration;
+
+    if (dist > EPSILON) {
+        // Sphere center is outside the capsule segment
+        vector3Scale(&distVec, &normalLocal, 1.0f / dist);
+        penetration = radiusSum - dist;
+        
+        // Contact point on capsule surface
+        Vector3 normalScaled;
+        vector3Scale(&normalLocal, &normalScaled, capsuleRadius);
+        vector3Add(&closestLocal, &normalScaled, &contactLocalOnCapsule);
+    } else {
+        // Sphere center is exactly on the segment (rare)
+        // Push out along X (arbitrary)
+        normalLocal.x = 1.0f;
+        normalLocal.y = 0.0f;
+        normalLocal.z = 0.0f;
+        penetration = radiusSum;
+        
+        Vector3 normalScaled;
+        vector3Scale(&normalLocal, &normalScaled, capsuleRadius);
+        vector3Add(&closestLocal, &normalScaled, &contactLocalOnCapsule);
+    }
+
+    // Transform results back to world space
+    if (capsule->rotation) {
+        matrix3Vec3Mul(&capsule->_rotation_matrix, &normalLocal, &result->normal);
+        Vector3 rotatedContact;
+        matrix3Vec3Mul(&capsule->_rotation_matrix, &contactLocalOnCapsule, &rotatedContact);
+        vector3Add(&capsuleCenter, &rotatedContact, &result->contactB);
+    } else {
+        result->normal = normalLocal;
+        vector3Add(&capsuleCenter, &contactLocalOnCapsule, &result->contactB);
+    }
+
+    // ContactA is on the sphere
+    // contactA = sphereCenter - normal * radius
+    Vector3 normalScaled;
+    vector3Scale(&result->normal, &normalScaled, sphereRadius);
+    vector3Sub(&sphereCenter, &normalScaled, &result->contactA);
+
+    result->penetration = penetration;
+
+    return true;
+}
+
 void detect_contact_object_to_object(physics_object* a, physics_object* b) {
     // If the Objects don't share any collision layers, don't collide
     if (!(a->collision_layers & b->collision_layers)) {
@@ -460,21 +709,56 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
     struct Simplex simplex;
     struct EpaResult result;
 
-    Vector3 delta;
-    float dist_sq;
-    float radii_sum;
     bool is_sphere_sphere = a->collision->shape_type == COLLISION_SHAPE_SPHERE && b->collision->shape_type == COLLISION_SHAPE_SPHERE;
+    bool is_sphere_box = a->collision->shape_type == COLLISION_SHAPE_SPHERE && b->collision->shape_type == COLLISION_SHAPE_BOX;
+    bool is_box_sphere = a->collision->shape_type == COLLISION_SHAPE_BOX && b->collision->shape_type == COLLISION_SHAPE_SPHERE;
+    bool is_sphere_capsule = a->collision->shape_type == COLLISION_SHAPE_SPHERE && b->collision->shape_type == COLLISION_SHAPE_CAPSULE;
+    bool is_capsule_sphere = a->collision->shape_type == COLLISION_SHAPE_CAPSULE && b->collision->shape_type == COLLISION_SHAPE_SPHERE;
+    bool epa_skip = false;
 
-    // Sphere-Sphere Optimization
+    // Sphere-Sphere Optimization ()
     if(is_sphere_sphere){
-        vector3FromTo(b->position, a->position, &delta);
-        dist_sq = vector3MagSqrd(&delta);
-        radii_sum = a->collision->shape_data.sphere.radius + b->collision->shape_data.sphere.radius;
-        float radii_sum_sq = radii_sum * radii_sum;
-        if(dist_sq >= radii_sum_sq)
+        if(detect_sphere_sphere(a,b, &result)) {
+            epa_skip = true;
+        }
+        else {
             return;
+        }
     }
-    else{
+    else if (is_sphere_box || is_box_sphere) {
+        physics_object* sphere = is_sphere_box ? a : b;
+        physics_object* box = is_sphere_box ? b : a;
+        
+        if (detect_sphere_box(sphere, box, &result)) {
+            epa_skip = true;
+            if (is_box_sphere) {
+                vector3Scale(&result.normal, &result.normal, -1.0f);
+                Vector3 tmp = result.contactA;
+                result.contactA = result.contactB;
+                result.contactB = tmp;
+            }
+        } else {
+            return;
+        }
+    }
+    else if (is_sphere_capsule || is_capsule_sphere) {
+        physics_object* sphere = is_sphere_capsule ? a : b;
+        physics_object* capsule = is_sphere_capsule ? b : a;
+        
+        if (detect_sphere_capsule(sphere, capsule, &result)) {
+            epa_skip = true;
+            if (is_capsule_sphere) {
+                vector3Scale(&result.normal, &result.normal, -1.0f);
+                Vector3 tmp = result.contactA;
+                result.contactA = result.contactB;
+                result.contactB = tmp;
+            }
+        } else {
+            return;
+        }
+    }
+    else
+    {
         Vector3 firstDir = gRight;
         if (!gjkCheckForOverlap(&simplex, a, physics_object_gjk_support_function, b, physics_object_gjk_support_function, &firstDir))
         {
@@ -504,19 +788,8 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
     }
 
     // Compute EPA result
-    if(is_sphere_sphere){
-        float dist = sqrtf(dist_sq);
-        result.penetration = radii_sum - dist;
-        if (dist > EPSILON)
-            vector3Normalize(&delta, &result.normal);
-        else
-            result.normal = gUp;
-
-        vector3AddScaled(a->position, &result.normal, -a->collision->shape_data.sphere.radius, &result.contactA);
-        vector3AddScaled(b->position, &result.normal, b->collision->shape_data.sphere.radius, &result.contactB);
-    }
-    else{
-        bool epa_success = epaSolve(
+    if (!epa_skip) {
+        bool success = epaSolve(
             &simplex,
             a,
             physics_object_gjk_support_function,
@@ -524,7 +797,7 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
             physics_object_gjk_support_function,
             &result);
 
-        if (!epa_success)
+        if (!success)
         {
             return; // Skip if EPA fails
         }
@@ -540,7 +813,7 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
         if (a->rotation) {
             Vector3 centerOfMassA;
             Vector3 rotatedOffset;
-            quatMultVector(a->rotation, &a->center_offset, &rotatedOffset);
+            matrix3Vec3Mul(&a->_rotation_matrix, &a->center_offset, &rotatedOffset);
             vector3Add(a->position, &rotatedOffset, &centerOfMassA);
             
             Vector3 rA;
@@ -556,7 +829,7 @@ void detect_contact_object_to_object(physics_object* a, physics_object* b) {
         if (b->rotation) {
             Vector3 centerOfMassB;
             Vector3 rotatedOffset;
-            quatMultVector(b->rotation, &b->center_offset, &rotatedOffset);
+            matrix3Vec3Mul(&b->_rotation_matrix, &b->center_offset, &rotatedOffset);
             vector3Add(b->position, &rotatedOffset, &centerOfMassB);
             
             Vector3 rB;
