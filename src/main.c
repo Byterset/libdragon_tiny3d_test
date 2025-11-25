@@ -114,6 +114,8 @@ struct generic_object_pos_definition can_def = {
 
 void setup()
 {
+    vector3NormalizeSelf(&lightDirVec);
+
     // TODO: load initial world state, for now load meshes and animations manually
     render_scene_reset();
     update_reset();
@@ -226,24 +228,32 @@ void render()
 
 int main()
 {
+    //init debugging/logging capabilities
     debug_init_isviewer();
     debug_init_usblog();
+
+    //init filesystem
     dfs_init(DFS_DEFAULT_LOCATION);
-    
 
-    display_init(RESOLUTION_320x240, DEPTH_16_BPP, FRAMEBUFFER_COUNT, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS_DEDITHER);
-    display_set_fps_limit(60);
+    //init audio
+    audio_init(44100, 4);
+	mixer_init(32);
 
-    rdpq_init();
-    // rdpq_debug_start();
+    //init input
     joypad_init();
 
-    t3d_init((T3DInitParams){});
+    //init graphics
+    display_init(RESOLUTION_320x240, DEPTH_16_BPP, FRAMEBUFFER_COUNT, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS_DEDITHER);
+    display_set_fps_limit(60);
+    rdpq_init();
+    // rdpq_debug_start(); // log debug information about rdpq
     rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
-    setup();
 
-    t3d_vec3_norm((T3DVec3*)&lightDirVec);
-    const int64_t l_fixed_dt_ticks = TICKS_FROM_US(SEC_TO_USEC(FIXED_DELTATIME));
+    //init T3D
+    t3d_init((T3DInitParams){});
+
+    //set up the game
+    setup();
 
     debugf("Completed Initialization!\n");
 
@@ -268,14 +278,14 @@ int main()
         }
         
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //
-        while (accumulator_ticks >= l_fixed_dt_ticks)
+        while (accumulator_ticks >= FIXED_DELTATIME_TICKS)
         {
             fixed_update_dispatch();
             if (update_has_layer(UPDATE_LAYER_WORLD))
             {
                 collision_scene_step();
             }
-            accumulator_ticks -= l_fixed_dt_ticks;
+            accumulator_ticks -= FIXED_DELTATIME_TICKS;
         }
 
         // ======== Run the Update Callbacks ======== //

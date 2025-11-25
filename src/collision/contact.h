@@ -9,7 +9,7 @@
 
 typedef struct contact_constraint contact_constraint;
 typedef struct contact contact;
-typedef uint32_t contact_pair_id; //unique combination of two entity ids (enity_id is uint16_t)
+typedef uint32_t contact_pair_id; //unique combination of two entity ids (enity_id is uint16_t), must be double size of entity_id
 typedef struct physics_object physics_object;
 
 
@@ -77,9 +77,9 @@ typedef struct contact_constraint {
 /// @return uint32_t pid
 inline contact_pair_id contact_pair_id_get(entity_id a_id, entity_id b_id){
     if (a_id < b_id)
-        return ((uint32_t)a_id << 16) | b_id;
+        return ((contact_pair_id)a_id << (sizeof(entity_id) * __CHAR_BIT__)) | b_id;
     else
-        return ((uint32_t)b_id << 16) | a_id;
+        return ((contact_pair_id)b_id << (sizeof(entity_id) * __CHAR_BIT__)) | a_id;
 }
 
 #endif
