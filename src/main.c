@@ -52,8 +52,8 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
-#define NUM_CRATES 3
-#define NUM_BALLS 4
+#define NUM_CRATES 2
+#define NUM_BALLS 2
 #define NUM_COINS 5
 
 struct player player;
@@ -75,6 +75,8 @@ struct camera camera;
 struct camera_controller camera_controller;
 
 T3DViewport viewport;
+
+xm64player_t xm;
 
 struct player_definition playerDef = {
     (Vector3){{95, -2.05f, -127}},
@@ -236,7 +238,7 @@ int main()
     dfs_init(DFS_DEFAULT_LOCATION);
 
     //init audio
-    audio_init(44100, 4);
+    audio_init(20000, 4);
 	mixer_init(32);
 
     //init input
@@ -244,7 +246,7 @@ int main()
 
     //init graphics
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, FRAMEBUFFER_COUNT, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS_DEDITHER);
-    display_set_fps_limit(60);
+    display_set_fps_limit(40);
     rdpq_init();
     // rdpq_debug_start(); // log debug information about rdpq
     rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
@@ -257,9 +259,19 @@ int main()
 
     debugf("Completed Initialization!\n");
 
+    char *song_name = "rom:/audio/songs/ToysXM-8bit.xm64";
+
+    xm64player_open(&xm, song_name);
+    xm64player_set_loop(&xm, true);
+    xm64player_set_vol(&xm, 0.55);
+    xm64player_play(&xm, 0);
+
+    
+
     // ======== GAME LOOP ======== //
     for (;;)
     {
+
         // ======== Update the Time ======== //
 
         update_time();
@@ -276,10 +288,23 @@ int main()
             render_contacts = !render_contacts;
             // crate_destroy(&crates[0]);
         }
-        
+
+        //Wait until audio buffer can be written, then write
+        //TODO: find a better way this takes up a hell of frame time
+        // int audiosz = audio_get_buffer_length();
+        // while (!audio_can_write())
+        // {
+        // }
+        // int16_t *out = audio_write_begin();
+        // mixer_poll(out, audiosz);
+        // audio_write_end();
+        mixer_try_play();
+
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //
         while (accumulator_ticks >= FIXED_DELTATIME_TICKS)
         {
+            // Check whether one audio buffer is ready, otherwise wait for next
+            // frame to perform mixing.
             fixed_update_dispatch();
             if (update_has_layer(UPDATE_LAYER_WORLD))
             {

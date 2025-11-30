@@ -101,6 +101,25 @@ filesystem/%.mat: assets/%.mat.json
 	$(MK_ASSET) -o $(dir $@) -w 4 $(@:filesystem/%.mat=build/assets/%.mat)
 
 #----------------
+# Audio
+#----------------
+
+#AUDIOCONV_FLAGS ?= --xm-ext-samples filesystem/samples
+
+ASSETS_XM1 = $(wildcard assets/audio/songs/*.xm)
+
+AUDIO_SONGS = $(addprefix filesystem/audio/songs/,$(notdir $(ASSETS_XM1:%.xm=%.xm64)))
+
+# Run audioconv64 on all XM/YM files under assets/
+# We do this file by file, but we could even do it just once for the whole
+# directory, because audioconv64 supports directory walking.
+filesystem/audio/songs/%.xm64: assets/audio/songs/%.xm
+	@mkdir -p $(dir $@)
+	@echo "    [AUDIO] $@"
+	@$(N64_AUDIOCONV) $(AUDIOCONV_FLAGS) -o filesystem/audio/songs "$<"
+
+
+#----------------
 # Code
 #----------------
 
@@ -116,7 +135,7 @@ DEPS := $(SOURCE_OBJS:.o=.d)
 # Filesystem & Linking
 #----------------	
 
-filesystem/: $(SPRITES) $(T3DMESHES) $(FONTS) $(MATERIALS) $(COLLISION_MESHES)
+filesystem/: $(SPRITES) $(T3DMESHES) $(FONTS) $(MATERIALS) $(COLLISION_MESHES) $(AUDIO_SONGS)
 
 $(BUILD_DIR)/$(PROJECT_NAME).dfs: filesystem/ $(SPRITES) $(T3DMESHES) $(FONTS) $(MATERIALS) $(COLLISION_MESHES)
 $(BUILD_DIR)/$(PROJECT_NAME).elf: $(SOURCE_OBJS)
