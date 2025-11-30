@@ -504,52 +504,142 @@ void* AABB_tree_get_node_data(const AABB_tree *tree, node_proxy node)
 }
 
 
-/// @brief Wrapper as point-aabb query function for generic tree query
-/// @param bounds 
-/// @param ctx void pointer to aabb struct
-/// @return 
-const bool _queryAABBOverlap(const AABB *bounds, const void *ctx) {
-    AABB *query_box = (AABB*)ctx;
-    return AABBHasOverlap(bounds, query_box);
-}
-
-
 void AABB_tree_query_bounds(const AABB_tree *tree, const AABB *query_box, node_proxy *results, int *result_count, int max_results)
 {
-    AABB_tree_query_generic(tree, _queryAABBOverlap, query_box, results, result_count, max_results);
-}
+    // return if the tree is empty
+    if (tree->root == AABB_TREE_NULL_NODE)
+    {
+        return;
+    }
 
+    // initialize the stack with the root node
+    node_stack stack = {.top = 1};
+    stack.stack[0] = tree->root;
 
-/// @brief Wrapper as point-aabb query function for generic tree query
-/// @param bounds 
-/// @param ctx void pointer to vector3 struct
-/// @return 
-const bool _queryAABBContainsPoint(const AABB *bounds, const void *ctx) {
-    Vector3 *point = (Vector3*)ctx;
-    return AABBContainsPoint(bounds, point);
+    AABB_tree_node *nodes = tree->nodes;
+    int count = 0;
+
+    while (stack.top > 0 && count < max_results)
+    {
+        node_proxy current = node_stack_pop(&stack);
+
+        // if the point is not inside the bounds of the current node, continue and thus discard all child nodes
+        AABB_tree_node *node = &nodes[current];
+
+        if (!AABBHasOverlap(&node->bounds, query_box))
+            continue;
+
+        // Check if leaf using cached node
+        if (AABB_tree_node_isLeaf(node))
+        {
+            results[count++] = current;
+        }
+        else
+        {
+            // guard for stack overflow
+            if (stack.top + 2 > AABB_TREE_NODE_QUERY_STACK_SIZE)
+                break;
+
+            // Order matters for cache locality - push right first so left is processed first
+            node_stack_push(&stack, node->_right);
+            node_stack_push(&stack, node->_left);
+        }
+    }
+
+    *result_count = count;
 }
 
 
 void AABB_tree_query_point(const AABB_tree *tree, const Vector3 point, node_proxy *results, int *result_count, int max_results)
 {
-    AABB_tree_query_generic(tree, _queryAABBContainsPoint, &point, results, result_count, max_results);
+    // return if the tree is empty
+    if (tree->root == AABB_TREE_NULL_NODE)
+    {
+        return;
+    }
+
+    // initialize the stack with the root node
+    node_stack stack = {.top = 1};
+    stack.stack[0] = tree->root;
+
+    AABB_tree_node *nodes = tree->nodes;
+    int count = 0;
+
+    while (stack.top > 0 && count < max_results)
+    {
+        node_proxy current = node_stack_pop(&stack);
+
+        // if the point is not inside the bounds of the current node, continue and thus discard all child nodes
+        AABB_tree_node *node = &nodes[current];
+
+        if (!AABBContainsPoint(&node->bounds, &point))
+            continue;
+
+        // Check if leaf using cached node
+        if (AABB_tree_node_isLeaf(node))
+        {
+            results[count++] = current;
+        }
+        else
+        {
+            // guard for stack overflow
+            if (stack.top + 2 > AABB_TREE_NODE_QUERY_STACK_SIZE)
+                break;
+
+            // Order matters for cache locality - push right first so left is processed first
+            node_stack_push(&stack, node->_right);
+            node_stack_push(&stack, node->_left);
+        }
+    }
+
+    *result_count = count;
 }
 
-/// @brief Wrapper as ray-aabb query function for generic tree query
-/// @param bounds 
-/// @param ctx void pointer to raycast struct
-/// @return 
-const bool _queryAABBIntersectsRay(const AABB *bounds, const void *ctx) {
-    raycast *ray = (raycast*)ctx;
-    return AABBIntersectsRay(bounds, ray);
+
+void AABB_tree_query_ray(const AABB_tree *tree, const raycast *ray, node_proxy *results, int *result_count, int max_results)
+{
+    // return if the tree is empty
+    if (tree->root == AABB_TREE_NULL_NODE)
+    {
+        return;
+    }
+
+    // initialize the stack with the root node
+    node_stack stack = {.top = 1};
+    stack.stack[0] = tree->root;
+
+    AABB_tree_node *nodes = tree->nodes;
+    int count = 0;
+
+    while (stack.top > 0 && count < max_results)
+    {
+        node_proxy current = node_stack_pop(&stack);
+
+        // if the point is not inside the bounds of the current node, continue and thus discard all child nodes
+        AABB_tree_node *node = &nodes[current];
+        
+        if (!AABBIntersectsRay(&node->bounds, ray))
+            continue;
+
+        // Check if leaf using cached node
+        if (AABB_tree_node_isLeaf(node))
+        {
+            results[count++] = current;
+        }
+        else
+        {
+            // guard for stack overflow
+            if (stack.top + 2 > AABB_TREE_NODE_QUERY_STACK_SIZE)
+                break;
+
+            // Order matters for cache locality - push right first so left is processed first
+            node_stack_push(&stack, node->_right);
+            node_stack_push(&stack, node->_left);
+        }
+    }
+
+    *result_count = count;
 }
-
-
-
-void AABB_tree_query_ray(const AABB_tree *tree, const raycast* ray, node_proxy *results, int *result_count, int max_results){
-    AABB_tree_query_generic(tree, _queryAABBIntersectsRay, ray, results, result_count, max_results);
-}
-
 
 void AABB_tree_query_generic(
     const AABB_tree *tree,

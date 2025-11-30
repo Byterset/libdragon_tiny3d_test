@@ -37,13 +37,17 @@ static inline node_proxy node_stack_pop(node_stack* s) {
 
 /// @brief A node in the AABB_tree structure. Holds the bounds of the node, node_proxies to the parent, 
 /// left and right children, the next node and a pointer to the collider data contained within.
-typedef struct AABB_tree_node {
+typedef struct __attribute__((aligned(16))) AABB_tree_node {
     AABB bounds; /*The bounds of the Node in World Space*/
+
     node_proxy _parent;
     node_proxy _left;
     node_proxy _right;
     node_proxy _next;
+
     void* data;
+
+    uint8_t _padding[12];
 } AABB_tree_node;
 
 

@@ -14,7 +14,7 @@ typedef struct physics_object physics_object;
 
 
 /// @brief contact struct containing information about a collision
-typedef struct contact {
+typedef struct __attribute__((aligned(16))) contact {
     contact* next; // pointer to the next contact in a list
     contact_constraint* constraint; // pointer to the shared constraint data
     physics_object* other_object; // entity_id of the object that was collided with
@@ -22,15 +22,15 @@ typedef struct contact {
 
 
 /// @brief Single contact point data within a contact constraint
-typedef struct contact_point {
+typedef struct __attribute__((aligned(16))) contact_point {
     Vector3 point; // the 3D position in world space of the contact point
     Vector3 contactA; // contact point on surface A (world space)
     Vector3 contactB; // contact point on surface B (world space)
     Vector3 localPointA; // contact point on surface A (local space)
     Vector3 localPointB; // contact point on surface B (local space)
+    Vector3 a_to_contact; // contact point relative to A's center of mass
+    Vector3 b_to_contact; // contact point relative to B's center of mass
     float penetration; // depth of penetration for this point
-    bool active; // whether this point was updated/validated this frame
-
     // Cached data for warm starting and iterative solving (per point)
     float accumulated_normal_impulse; // accumulated normal impulse for warm starting
     float accumulated_tangent_impulse_u; // accumulated tangent impulse for friction (first tangent direction)
@@ -39,14 +39,13 @@ typedef struct contact_point {
     float tangent_mass_u; // cached effective mass for first tangent direction
     float tangent_mass_v; // cached effective mass for second tangent direction
     float velocity_bias; // velocity bias for restitution
-    Vector3 a_to_contact; // contact point relative to A's center of mass
-    Vector3 b_to_contact; // contact point relative to B's center of mass
+
+    bool active; // whether this point was updated/validated this frame
 } contact_point;
 
 
 /// @brief contact constraint containing multiple contact points for a pair of objects
-typedef struct contact_constraint {
-    contact_pair_id pid; // unique ID for this contact pair (combination of both entity IDs)
+typedef struct __attribute__((aligned(16))) contact_constraint {
     physics_object* objectA; // first object in the contact pair
     physics_object* objectB; // second object in the contact pair
     
@@ -59,16 +58,18 @@ typedef struct contact_constraint {
     float combined_friction;
     float combined_bounce;
 
+    contact_pair_id pid; // unique ID for this contact pair (combination of both entity IDs)
+    int next_same_pid_index; // Optimization: Linked list of constraints with the same PID
+    int point_count; // number of active contact points (1-4 typically)
+
     // Flags
     bool is_active; // was this contact found this frame?
     bool is_trigger; // is this a trigger contact (no resolution)?
-
-    // Optimization: Linked list of constraints with the same PID
-    int next_same_pid_index;
+    uint8_t _padding[2]; // Explicit padding to align next member
 
     // Multiple contact points for this pair
     contact_point points[MAX_CONTACT_POINTS_PER_PAIR];
-    int point_count; // number of active contact points (1-4 typically)
+
 } contact_constraint;
 
 /// @brief Create a unique contact pair id from two entity ids

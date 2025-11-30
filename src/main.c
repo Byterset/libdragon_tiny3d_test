@@ -22,6 +22,7 @@
 #include "objects/crate/crate.h"
 #include "objects/ball/ball.h"
 #include "objects/cone/cone.h"
+#include "objects/pyramid/pyramid.h"
 #include "objects/cylinder/cylinder.h"
 #include "objects/soda_can/soda_can.h"
 #include "objects/platform/platform.h"
@@ -52,7 +53,7 @@ uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
-#define NUM_CRATES 2
+#define NUM_CRATES 3
 #define NUM_BALLS 2
 #define NUM_COINS 5
 
@@ -62,6 +63,7 @@ struct crate crates[NUM_CRATES];
 struct ball balls[NUM_BALLS];
 struct collectable coins[NUM_COINS];
 struct cone cone;
+struct pyramid pyramid;
 struct cylinder cylinder;
 struct platform plat;
 struct soda_can soda_can;
@@ -93,6 +95,10 @@ struct generic_object_pos_definition ball_def = {
 
 struct generic_object_pos_definition cone_def = {
     (Vector3){{120, 0, -141}}
+};
+
+struct generic_object_pos_definition pyramid_def = {
+    (Vector3){{140, 0, -149}}
 };
 
 struct collectable_definition collectableDef = {
@@ -145,6 +151,7 @@ void setup()
     }
 
     cone_init(&cone, &cone_def);
+    pyramid_init(&pyramid, &pyramid_def);
     cylinder_init(&cylinder, &cyl_def);
     // soda_can_init(&soda_can, &can_def);
     
@@ -221,7 +228,6 @@ void render()
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 40, "ray fwd dist %.1f, entity_id: %d", player.ray_fwd_hit.distance, player.ray_fwd_hit.hit_entity_id);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 50, "ray fwd hit (%.2f, %.2f, %.2f)", player.ray_fwd_hit.point.x, player.ray_fwd_hit.point.y, player.ray_fwd_hit.point.z);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 60, "cached contacts: %i", c_scene->cached_contact_constraint_count);
-    rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 70, "sleeping: %i", player.physics._is_sleeping);
     posY = 200;
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY, "Pos: %.2f, %.2f, %.2f", player.transform.position.x, player.transform.position.y, player.transform.position.z);
     rdpq_text_printf(NULL, FONT_BUILTIN_DEBUG_MONO, posX, posY + 20, "Vel: %.2f, %.2f, %.2f", player.physics.velocity.x, player.physics.velocity.y, player.physics.velocity.z);
@@ -238,15 +244,15 @@ int main()
     dfs_init(DFS_DEFAULT_LOCATION);
 
     //init audio
-    audio_init(20000, 4);
-	mixer_init(32);
+    // audio_init(20000, 4);
+	// mixer_init(32);
 
     //init input
     joypad_init();
 
     //init graphics
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, FRAMEBUFFER_COUNT, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS_DEDITHER);
-    display_set_fps_limit(40);
+    display_set_fps_limit(60);
     rdpq_init();
     // rdpq_debug_start(); // log debug information about rdpq
     rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
@@ -259,12 +265,11 @@ int main()
 
     debugf("Completed Initialization!\n");
 
-    char *song_name = "rom:/audio/songs/ToysXM-8bit.xm64";
 
-    xm64player_open(&xm, song_name);
-    xm64player_set_loop(&xm, true);
-    xm64player_set_vol(&xm, 0.55);
-    xm64player_play(&xm, 0);
+    // xm64player_open(&xm, "rom:/audio/songs/ToysXM-8bit.xm64");
+    // xm64player_set_loop(&xm, true);
+    // xm64player_set_vol(&xm, 0.55);
+    // xm64player_play(&xm, 0);
 
     
 
@@ -289,18 +294,17 @@ int main()
             // crate_destroy(&crates[0]);
         }
 
-        //Wait until audio buffer can be written, then write
-        //TODO: find a better way this takes up a hell of frame time
-        // int audiosz = audio_get_buffer_length();
-        // while (!audio_can_write())
-        // {
-        // }
-        // int16_t *out = audio_write_begin();
-        // mixer_poll(out, audiosz);
-        // audio_write_end();
-        mixer_try_play();
+
+        // mixer_try_play();
+
 
         // ======== Run the Physics and fixed Update Callbacks in a fixed Deltatime Loop ======== //
+        #define MAX_PHYSICS_STEPS 5
+        // Safety Clamp
+        if (accumulator_ticks > FIXED_DELTATIME_TICKS * MAX_PHYSICS_STEPS)
+        {
+            accumulator_ticks = FIXED_DELTATIME_TICKS * MAX_PHYSICS_STEPS;
+        }
         while (accumulator_ticks >= FIXED_DELTATIME_TICKS)
         {
             // Check whether one audio buffer is ready, otherwise wait for next

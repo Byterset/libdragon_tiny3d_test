@@ -79,6 +79,7 @@ typedef enum physics_object_collision_shape_type {
     COLLISION_SHAPE_CONE,
     COLLISION_SHAPE_CYLINDER,
     COLLISION_SHAPE_SWEEP,
+    COLLISION_SHAPE_PYRAMID
 } physics_object_collision_shape_type;
 
 /// @brief Flags for physics_object constraints
@@ -106,6 +107,7 @@ union physics_object_collision_shape_data
     struct { float radius; float half_height; } cone;
     struct { float radius; float half_height; } cylinder;
     struct { Vector2 range; float radius; float half_height; } sweep;
+    struct { Vector2 base_half_widths; float half_height; } pyramid;
 };
 
 /// @brief Defines a set of functions and data to describe a collider.
@@ -123,35 +125,41 @@ struct physics_object_collision_data {
 };
 
 /// @brief 
-typedef struct physics_object {
-    struct physics_object_collision_data* collision; // information about the collision shape
+typedef struct __attribute__((aligned(16))) physics_object {
+    // Hot Data (integration)
     Vector3* position;
     Quaternion* rotation;
+    Vector3 velocity;
+    Vector3 angular_velocity;
+
+    float _inv_mass; //must be recalculated if mass changes!
+    float time_scalar; // a scalar to adjust the time step for the object, default is 1.0
+    float gravity_scalar; // how much gravity affects the object, default is 1.0
+    float angular_damping; // defines the decay rate of an objects angular velocity. Higher = object rotation slows down faster.
+
+    // Warm data (collision info)
+    AABB bounding_box; // the bounding box fitting the object collider, used for broad phase collision detection
+    Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
+    struct physics_object_collision_data* collision; // information about the collision shape
     contact* active_contacts; // contacts with other objects from the last physics step
     
-    Vector3 _prev_step_pos;
-    Quaternion _prev_step_rot;
-    Vector3 velocity;
-    Vector3 acceleration;
-    Vector3 center_offset; // offset from the origin of the object to the center of the collision shape
-    AABB bounding_box; // the bounding box fitting the object collider, used for broad phase collision detection
-    Vector3 angular_velocity;
-    Vector3 _torque_accumulator;
-    Vector3 _local_inertia_tensor; // must be recalculated if mass or collision changes!
-    Vector3 _inv_local_intertia_tensor; // must be recalculated if _local_inertia_tensor changes!
     Matrix3x3 _inv_world_inertia_tensor; // 3x3 matrix, recalculated every frame
     Matrix3x3 _rotation_matrix; // 3x3 rotation matrix, cached every frame
     Vector3 _world_center_of_mass; // cached world center of mass
 
-    float time_scalar; // a scalar to adjust the time step for the object, default is 1.0
-    float _mass; // the mass of the object, cannot be zero - change only via physics_object_set_mass!
-    float _inv_mass; //must be recalculated if mass changes!
-    float gravity_scalar; // how much gravity affects the object, default is 1.0
-    float angular_damping; // defines the decay rate of an objects angular velocity. Higher = object rotation slows down faster.
+    // Cold Data (Flags and state)
+    Vector3 acceleration;
+    Vector3 _torque_accumulator;
+    Vector3 _prev_step_pos;
+    Quaternion _prev_step_rot;
+    
+    Vector3 _local_inertia_tensor; // must be recalculated if mass or collision changes!
+    Vector3 _inv_local_intertia_tensor; // must be recalculated if _local_inertia_tensor changes!
 
+    float _mass; // the mass of the object, cannot be zero - change only via physics_object_set_mass!
+    entity_id entity_id;
     node_proxy _aabb_tree_node_id; // the node id of the object in the phys-object AABB tree of the collision scene
 
-    entity_id entity_id;
     uint16_t constraints; // flags that control which degrees of freedom are allowed for the simulation of this object
     uint16_t _sleep_counter;
     uint16_t collision_layers; // objects that share at least one layer can collide
@@ -162,6 +170,7 @@ typedef struct physics_object {
     bool is_kinematic: true;
     bool is_grounded: true;
     bool _is_sleeping: true;
+    uint8_t _padding[3]; //align to 4 bytes
 } physics_object;
 
 

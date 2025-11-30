@@ -363,11 +363,16 @@ void physics_object_gjk_support_function(const void* data, const Vector3* direct
     Vector3 localDir;
     
     if(object->rotation){
-        // localDir = R^T * direction
-        // Since R is orthogonal, R^T = R^-1.
-        Matrix3x3 rotation_transpose;
-        matrix3Transpose(&object->_rotation_matrix, &rotation_transpose);
-        matrix3Vec3Mul(&rotation_transpose, direction, &localDir);
+        // LocalDir = R^T * direction
+        // R^T * v is equivalent to:
+        // x = dot(col0, v)
+        // y = dot(col1, v)
+        // z = dot(col2, v)
+        // Col0: m[0][0], m[0][1], m[0][2]
+        Matrix3x3 *m = &object->_rotation_matrix;
+        localDir.x = m->m[0][0] * direction->x + m->m[0][1] * direction->y + m->m[0][2] * direction->z;
+        localDir.y = m->m[1][0] * direction->x + m->m[1][1] * direction->y + m->m[1][2] * direction->z;
+        localDir.z = m->m[2][0] * direction->x + m->m[2][1] * direction->y + m->m[2][2] * direction->z;
     }
     else{
         vector3Copy(direction, &localDir);

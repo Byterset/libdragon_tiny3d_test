@@ -4,7 +4,6 @@
 #include "../../render/render_scene.h"
 #include "../../collision/collision_scene.h"
 #include "../../collision/shapes/cone.h"
-#include "../../collision/shapes/cylinder.h"
 #include "../../time/time.h"
 #include "../../entity/entity_id.h"
 #include "../../render/defs.h"
@@ -27,7 +26,6 @@ void cone_init(struct cone* cone, struct generic_object_pos_definition* def){
 
     render_scene_add_renderable(&cone->renderable, 14.0f);
 
-
     physics_object_init(
         entity_id,
         &cone->physics,
@@ -35,9 +33,8 @@ void cone_init(struct cone* cone, struct generic_object_pos_definition* def){
         COLLISION_LAYER_TANGIBLE,
         &cone->transform.position,
         &cone->transform.rotation,
-        (Vector3){{0,cone_collision.shape_data.cone.half_height,0}},
-        100.0f
-    );
+        (Vector3){{0, cone_collision.shape_data.cone.half_height, 0}},
+        100.0f);
 
     cone->physics.has_gravity = false;
     cone->physics.is_kinematic = false;
