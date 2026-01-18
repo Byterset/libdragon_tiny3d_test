@@ -54,7 +54,7 @@ uint8_t colorDir[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 Vector3 lightDirVec = {{1.0f, 1.0f, -1.0f}};
 
 #define NUM_CRATES 3
-#define NUM_BALLS 2
+#define NUM_BALLS 3
 #define NUM_COINS 5
 
 struct player player;

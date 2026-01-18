@@ -310,9 +310,17 @@ void player_update(struct player* player) {
 
         int head_index = t3d_skeleton_find_bone(&player->renderable.model->skeleton, "Mouth");
         T3DBone *head_bone = &player->renderable.model->skeleton.bones[head_index];
+        
 
-        // TODO: actually derive the head bones position in world space somehow - for now use the player position
-        vector3FromTo(&player->transform.position, player->look_target, &lookDir);
+        // Extract the model space bone position from the matrix. (correcting for model export scale)
+        Vector3 head_bone_pos = (Vector3)t3d_skeleton_get_bone_pos_model_space(&player->renderable.model->skeleton, head_index);
+        vector3Scale(&head_bone_pos, &head_bone_pos, INV_MODEL_SCALE);
+
+        // transform from model into world space
+        transformPoint(&player->transform, &head_bone_pos, &head_bone_pos);
+        
+
+        vector3FromTo(&head_bone_pos, player->look_target, &lookDir);
 
         // Negate effect of player rotation
         Quaternion inverse_player_rot;
@@ -326,7 +334,7 @@ void player_update(struct player* player) {
         quatMultiply(&lookAtQuat, &mouthForwardOffset, &finalHeadRot);
         quatMultiply(&inverse_player_rot, &finalHeadRot, &finalHeadRot);
 
-        // Set the bone rotation (replace original, don't multiply)
+        // Set the bone rotation
         player->renderable.model->skeleton.bones[head_index].rotation = finalHeadRot;
         player->renderable.model->skeleton.bones[head_index].hasChanged = true;
     }
@@ -371,7 +379,8 @@ void player_init(struct player* player, struct player_definition* definition, Tr
         &player_collision,
         COLLISION_LAYER_TANGIBLE | COLLISION_LAYER_PLAYER | COLLISION_LAYER_COLLECTABLES,
         &player->transform.position,
-        &player->transform.rotation,
+        NULL,
+        // &player->transform.rotation,
         (Vector3){{0,player_collision.shape_data.capsule.inner_half_height + player_collision.shape_data.capsule.radius,0}},
         70.0f
     );
