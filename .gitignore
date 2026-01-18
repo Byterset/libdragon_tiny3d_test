@@ -58,8 +58,15 @@ filesystem/
 archive/
 **/__pycache__/**
 
+#wsl
+*Zone.Identifier
+
+#blender
 *.blend1
 
+#n64 specific
 *.z64
+*.pak
 
+#proprietary assets
 assets/maps/bob_omb_battlefield
