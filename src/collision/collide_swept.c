@@ -152,7 +152,7 @@ static void collide_swept_resolve_bounce(
     Vector3* start_pos
 ) {
     // this is the new prev position when iterating
-    // over mulitple swept collisions
+    // over multiple swept collisions
     *collide_data->prev_pos = *object->position;
 
     Vector3 move_amount;

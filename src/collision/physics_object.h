@@ -65,7 +65,7 @@ enum collision_group {
     COLLISION_GROUP_ALL = 0xff
 };
 
-/// @brief Defines a function pointer for a general bounding_box_calculater function. These functions are implemented for each collider shape.
+/// @brief Defines a function pointer for a general bounding_box_calculator function. These functions are implemented for each collider shape.
 typedef void (*bounding_box_calculator)(const void* data, const Quaternion* rotation, AABB* box);
 
 /// @brief Defines a function pointer for a inertia_calculator function. These functions are implemented per collision shape.
@@ -124,7 +124,7 @@ struct physics_object_collision_data {
     float friction;
 };
 
-/// @brief 
+/// @brief Physics Body / RigidBody Struct
 typedef struct __attribute__((aligned(16))) physics_object {
     // Hot Data (integration)
     Vector3* position;
@@ -181,7 +181,7 @@ typedef struct __attribute__((aligned(16))) physics_object {
 /// @param collision_layers Flags that define which layers the object can collide/interact with. See enum collision_layer
 /// @param position Pointer to the 3D vector that represents the objects position (usually shared with the owners). Must be set!
 /// @param rotation Pointer to the quaternion rotation that represents the objects rotation (usually shared with owner). May be NULL.
-/// @param center_offset 3D vector that describes how the phys objects collision is offset from the position (eg if the model orign is not at center)
+/// @param center_offset 3D vector that describes how the phys objects collision is offset from the position (eg if the model origin is not at center)
 /// @param mass The mass of the physics object. Must be > 0.
 void physics_object_init(
     entity_id entity_id,
@@ -296,7 +296,7 @@ void physics_object_apply_position_constraints(physics_object* object);
 /// @param output the resulting Support point in world space
 void physics_object_gjk_support_function(const void* data, const Vector3* direction, Vector3* output);
 
-/// @brief re-caluclates the bounding box of the object using the collision type's bounding box function.
+/// @brief re-calculates the bounding box of the object using the collision type's bounding box function.
 ///
 /// This will also take into account the center_offset and rotation of the object.
 /// @param object

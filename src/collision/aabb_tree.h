@@ -149,9 +149,7 @@ void* AABB_tree_get_node_data(const AABB_tree *tree, node_proxy node);
 /// @param query_box the AABB to query for
 /// @param results the pre-initialized array of NodeProxies to store the results
 /// @param result_count the amount of results found
-/// @param aabbChecks the amount of AABB checks performed
 /// @param max_results the maximum amount of results to find
-/// @param skipRootCheck if the root node should be checked
 void AABB_tree_query_bounds(const AABB_tree *tree, const AABB *query_box, node_proxy *results, int* result_count, int max_results);
 
 

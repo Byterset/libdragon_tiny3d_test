@@ -17,7 +17,7 @@ typedef struct physics_object physics_object;
 typedef struct __attribute__((aligned(16))) contact {
     contact* next; // pointer to the next contact in a list
     contact_constraint* constraint; // pointer to the shared constraint data
-    physics_object* other_object; // entity_id of the object that was collided with
+    physics_object* other_object; // pointer to the object that was collided with
 } contact;
 
 

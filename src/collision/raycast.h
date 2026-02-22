@@ -25,10 +25,10 @@ typedef struct raycast {
     Vector3 origin; // The origin of the ray
     Vector3 dir; // The direction of the ray (will be normalized on initialization)
     Vector3 _invDir; // The inverse direction of the ray, precomputed for repeated testing against BVH nodes
-    float maxDistance; // The maximum distance the ray will travel, limited to 1000.0f, cannot be negative
+    float maxDistance; // The maximum distance the ray will travel, limited to RAYCAST_MAX_DISTANCE, cannot be negative
     raycast_collision_scene_mask mask; // Determines what the ray will test against (static collision, physics objects, etc.)
     uint16_t collision_layers; // The rays collision layers, the layers the ray will be able to hit
-    uint16_t ignore_layers; // The collision layers the ray will explicily ignore even if they pass the collision layer mask (e.g. hit tangible objects but ignore player even though he's tangible)
+    uint16_t ignore_layers; // The collision layers the ray will explicitly ignore even if they pass the collision layer mask (e.g. hit tangible objects but ignore player even though he's tangible)
     bool interact_trigger; // If true, the ray will test for hits with trigger colliders
 } raycast;
 
@@ -64,13 +64,13 @@ void raycast_transform(Transform* transform, raycast* ray, raycast* output);
 /// @return 
 float raycast_calc_distance_to_point(raycast* ray, Vector3* point);
 
-/// @brief cast a ray into the existing collision scene and return true if an object or static collision triangle fitting
+/// @brief cast a ray into the collision scene and return true if an object or static collision triangle matching
 /// the settings of the raycast is hit.
 ///
 /// The hit object will contain the raycast hit information of the intersection with the least distance
 /// @param ray pointer to the ray to be cast
 /// @param hit pointer to the resulting hit object
-/// @return true if the raycast has hit anything mathing the mask & filter, false otherwise
+/// @return true if the raycast has hit anything matching the mask & filter, false otherwise
 bool raycast_cast(raycast* ray, raycast_hit* hit);
 
 #endif
