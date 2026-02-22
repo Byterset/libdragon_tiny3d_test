@@ -16,6 +16,26 @@ struct swept_physics_object {
     Vector3 offset;
 };
 
+struct swept_hit_candidate {
+    bool has_hit;
+    float t;
+    Vector3 position;
+    struct EpaResult result;
+};
+
+struct swept_triangle_check_ctx {
+    struct object_mesh_collide_data* collide_data;
+    Vector3 sweep_start;
+    Vector3 sweep_end;
+    Vector3 sweep_dir;
+    float sweep_dist;
+    struct swept_hit_candidate best;
+};
+
+#define COLLIDE_SWEPT_MAX_ITERATIONS 4
+#define COLLIDE_SWEPT_EPSILON 0.0001f
+#define COLLIDE_SWEPT_BACKOFF 0.01f
+
 /// @brief GJK support function for a swept physics object.
 /// The support point is the support point of the object at the current position,
 /// extended by the sweep offset if the direction aligns with the sweep.
@@ -44,17 +64,17 @@ static void collide_swept_data_init(
 
 /// @brief Checks for collision between a swept object and a single triangle.
 static bool collide_swept_triangle_check(void* data, int triangle_index) {
-    struct object_mesh_collide_data* collide_data = (struct object_mesh_collide_data*)data;
+    struct swept_triangle_check_ctx* ctx = (struct swept_triangle_check_ctx*)data;
+    struct object_mesh_collide_data* collide_data = ctx->collide_data;
     
     // Use raycast for high-speed tunneling prevention
     // This is more robust than EPA on swept hull for thin walls
-    Vector3 dir;
-    vector3FromTo(collide_data->prev_pos, collide_data->object->position, &dir);
-    float dist = vector3Mag(&dir);
+    Vector3 dir = ctx->sweep_dir;
+    float dist = ctx->sweep_dist;
     
-    if (dist > 0.0001f) {
+    if (dist > COLLIDE_SWEPT_EPSILON) {
         raycast ray;
-        ray.origin = *collide_data->prev_pos;
+        ray.origin = ctx->sweep_start;
         ray.dir = dir;
         vector3Scale(&ray.dir, &ray.dir, 1.0f / dist);
         ray.maxDistance = dist;
@@ -66,25 +86,35 @@ static bool collide_swept_triangle_check(void* data, int triangle_index) {
         
         raycast_hit hit;
         if (ray_triangle_intersection(&ray, &hit, &triangle)) {
-            // We hit the triangle with the center ray
+            float t = hit.distance / dist;
+            if (t < 0.0f) t = 0.0f;
+            if (t > 1.0f) t = 1.0f;
+
             // Construct a result that looks like EPA result
-            collide_data->hit_result.normal = hit.normal;
-            collide_data->hit_result.penetration = 0;
-            collide_data->hit_result.contactA = hit.point; // On triangle
-            collide_data->hit_result.contactB = hit.point; // On object (approx)
-            
-            // Move object to hit point (minus a small buffer)
+            struct EpaResult ray_result;
+            ray_result.normal = hit.normal;
+            ray_result.penetration = 0.0f;
+            ray_result.contactA = hit.point; // On triangle
+            ray_result.contactB = hit.point; // On object (approx)
+
+            // Candidate position is the hit point minus a small back-off along travel dir
             Vector3 back_off;
-            vector3Scale(&ray.dir, &back_off, 0.01f); // Back off 1cm
-            vector3Sub(&hit.point, &back_off, collide_data->object->position);
-            
-            return true;
+            Vector3 candidate_pos;
+            vector3Scale(&ray.dir, &back_off, COLLIDE_SWEPT_BACKOFF);
+            vector3Sub(&hit.point, &back_off, &candidate_pos);
+
+            if (!ctx->best.has_hit || t < ctx->best.t) {
+                ctx->best.has_hit = true;
+                ctx->best.t = t;
+                ctx->best.position = candidate_pos;
+                ctx->best.result = ray_result;
+            }
         }
     }
 
     struct swept_physics_object swept;
     swept.object = collide_data->object;
-    vector3Sub(collide_data->prev_pos, collide_data->object->position, &swept.offset);
+    vector3Sub(&ctx->sweep_start, &ctx->sweep_end, &swept.offset);
 
     struct mesh_triangle triangle;
     triangle.vertices = collide_data->mesh->vertices;
@@ -98,23 +128,36 @@ static bool collide_swept_triangle_check(void* data, int triangle_index) {
     }
 
     struct EpaResult result;
+    Vector3 swept_end_candidate = ctx->sweep_end;
     if (epaSolveSwept(
             &simplex,
             &triangle,
             mesh_triangle_gjk_support_function,
             &swept,
             collide_swept_gjk_support_function,
-            collide_data->prev_pos,
-            collide_data->object->position,
+            &ctx->sweep_start,
+            &swept_end_candidate,
             &result))
     {
-        collide_data->hit_result = result;
+        float t = 0.0f;
+        if (ctx->sweep_dist > COLLIDE_SWEPT_EPSILON) {
+            t = vector3Dist(&ctx->sweep_start, &swept_end_candidate) / ctx->sweep_dist;
+            if (t < 0.0f) t = 0.0f;
+            if (t > 1.0f) t = 1.0f;
+        }
+
+        if (!ctx->best.has_hit || t < ctx->best.t) {
+            ctx->best.has_hit = true;
+            ctx->best.t = t;
+            ctx->best.position = swept_end_candidate;
+            ctx->best.result = result;
+        }
         return true;
     }
 
     // Fallback: Check static collision at previous position if swept failed but overlap exists
     Vector3 final_pos = *collide_data->object->position;
-    *collide_data->object->position = *collide_data->prev_pos;
+    *collide_data->object->position = ctx->sweep_start;
 
     if (epaSolve(
             &simplex,
@@ -135,7 +178,12 @@ static bool collide_swept_triangle_check(void* data, int triangle_index) {
         }
 
         if (!ignore) {
-            collide_data->hit_result = result;
+            if (!ctx->best.has_hit || 0.0f < ctx->best.t) {
+                ctx->best.has_hit = true;
+                ctx->best.t = 0.0f;
+                ctx->best.position = ctx->sweep_start;
+                ctx->best.result = result;
+            }
             *collide_data->object->position = final_pos; // Restore position
             return true;
         }
@@ -196,46 +244,64 @@ bool collide_object_to_mesh_swept(physics_object* object, struct mesh_collider* 
     struct object_mesh_collide_data collide_data;
     collide_swept_data_init(&collide_data, prev_pos, mesh, object);
 
-    Vector3 start_pos = *object->position;
+    bool did_any_hit = false;
 
-    Vector3 offset;
+    for (int iteration = 0; iteration < COLLIDE_SWEPT_MAX_ITERATIONS; ++iteration) {
+        Vector3 sweep_start = *prev_pos;
+        Vector3 sweep_end = *object->position;
+        Vector3 sweep_dir;
+        vector3FromTo(&sweep_start, &sweep_end, &sweep_dir);
+        float sweep_dist = vector3Mag(&sweep_dir);
 
+        if (sweep_dist <= COLLIDE_SWEPT_EPSILON) {
+            break;
+        }
 
-    vector3Sub(
-        object->position,
-        prev_pos,
-        &offset);
+        Vector3 box_extent;
+        vector3Sub(&object->bounding_box.max, &object->bounding_box.min, &box_extent);
+        vector3Scale(&box_extent, &box_extent, 0.5f);
 
-    Vector3 box_extent;
-    vector3Sub(&object->bounding_box.max, &object->bounding_box.min, &box_extent);
-    vector3Scale(&box_extent, &box_extent, 0.5f);
-    AABB prev_box;
-    vector3Sub(prev_pos, &box_extent, &prev_box.min);
-    vector3Add(prev_pos, &box_extent, &prev_box.max);
+        AABB sweep_start_box;
+        vector3Sub(&sweep_start, &box_extent, &sweep_start_box.min);
+        vector3Add(&sweep_start, &box_extent, &sweep_start_box.max);
 
-    // span a box from the previous position to the current position to catch all possible triangle collisions
-    AABB expanded_box = AABBUnion(&prev_box, &object->bounding_box);
+        AABB sweep_end_box;
+        vector3Sub(&sweep_end, &box_extent, &sweep_end_box.min);
+        vector3Add(&sweep_end, &box_extent, &sweep_end_box.max);
 
+        // Span a box from sweep start to sweep end to catch all possible triangle collisions
+        AABB expanded_box = AABBUnion(&sweep_start_box, &sweep_end_box);
 
-    int result_count = 0;
-    int max_results = 20;
-    node_proxy results[max_results];
+        int result_count = 0;
+        int max_results = 20;
+        node_proxy results[max_results];
+        AABB_tree_query_bounds(&mesh->aabbtree, &expanded_box, results, &result_count, max_results);
 
-    AABB_tree_query_bounds(&mesh->aabbtree, &expanded_box, results, &result_count, max_results);
-    
-    bool did_hit = false;
-    for (size_t j = 0; j < result_count; j++)
-    {
-        int triangle_index = (int)AABB_tree_get_node_data(&mesh->aabbtree, results[j]);
+        struct swept_triangle_check_ctx check_ctx;
+        check_ctx.collide_data = &collide_data;
+        check_ctx.sweep_start = sweep_start;
+        check_ctx.sweep_end = sweep_end;
+        check_ctx.sweep_dir = sweep_dir;
+        check_ctx.sweep_dist = sweep_dist;
+        check_ctx.best.has_hit = false;
+        check_ctx.best.t = FLT_MAX;
 
-        did_hit = did_hit | collide_swept_triangle_check(&collide_data, triangle_index);
+        for (size_t j = 0; j < result_count; j++) {
+            int triangle_index = (int)AABB_tree_get_node_data(&mesh->aabbtree, results[j]);
+            collide_swept_triangle_check(&check_ctx, triangle_index);
+        }
+
+        if (!check_ctx.best.has_hit) {
+            break;
+        }
+
+        did_any_hit = true;
+        *object->position = check_ctx.best.position;
+        collide_data.hit_result = check_ctx.best.result;
+
+        // Resolve using the motion target from this iteration and continue with remaining motion
+        collide_swept_resolve_bounce(object, &collide_data, &sweep_end);
     }
-    if (!did_hit)
-    {
-        return false;
-    }
 
-    collide_swept_resolve_bounce(object, &collide_data, &start_pos);
-
-    return true;
+    return did_any_hit;
 }
