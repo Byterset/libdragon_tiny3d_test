@@ -1109,6 +1109,37 @@ static void collision_scene_solve_position_constraints() {
         for (int p = 0; p < cc->point_count; p++)
         {
             contact_point *cp = &cc->points[p];
+
+            // Refresh world-space contact data from local anchors for current transforms
+            if (a) {
+                Vector3 rA = cp->localPointA;
+                if (a->rotation) {
+                    quatMultVector(a->rotation, &rA, &rA);
+                }
+                vector3Add(a->position, &rA, &cp->contactA);
+                vector3Sub(&cp->contactA, &a->_world_center_of_mass, &cp->a_to_contact);
+            } else {
+                cp->contactA = cp->localPointA;
+                cp->a_to_contact = gZeroVec;
+            }
+
+            if (b) {
+                Vector3 rB = cp->localPointB;
+                if (b->rotation) {
+                    quatMultVector(b->rotation, &rB, &rB);
+                }
+                vector3Add(b->position, &rB, &cp->contactB);
+                vector3Sub(&cp->contactB, &b->_world_center_of_mass, &cp->b_to_contact);
+            } else {
+                cp->contactB = cp->localPointB;
+                cp->b_to_contact = gZeroVec;
+            }
+
+            // Recompute penetration from refreshed contact points and current normal
+            Vector3 diff;
+            vector3Sub(&cp->contactA, &cp->contactB, &diff);
+            cp->penetration = -vector3Dot(&diff, &cc->normal);
+
             if (cp->penetration < slop)
                 continue;
 
@@ -1210,7 +1241,6 @@ static void collision_scene_solve_position_constraints() {
                 }
             }
 
-            cp->penetration -= steeringForce;
         }
     }
 }
@@ -1273,7 +1303,7 @@ void collision_scene_step() {
     }
 
     // ========================================================================
-    // PHASE 6: Integrate positions from velocities and update AABBs
+    // PHASE 6: Integrate positions from velocities
     // ========================================================================
     for (int i = 0; i < g_scene.objectCount; i++) {
         element = &g_scene.elements[i];
@@ -1285,20 +1315,6 @@ void collision_scene_step() {
         // Integrate angular velocity into rotation
         physics_object_integrate_rotation(obj);
 
-        // Recalculate AABB if object is awake (position may have changed due to velocity integration or solver)
-        if (!obj->_is_sleeping) {
-            // Check if object actually moved or rotated this frame
-            const bool has_moved = !vector3IsIdentical(&obj->_prev_step_pos, obj->position);
-            const bool has_rotated = obj->rotation ? !quatIsIdentical(obj->rotation, &obj->_prev_step_rot) : false;
-
-            if (has_moved || has_rotated) {
-                physics_object_recalculate_aabb(obj);
-                Vector3 displacement;
-                vector3FromTo(&obj->_prev_step_pos, obj->position, &displacement);
-                AABB_tree_move_node(&g_scene.object_aabbtree, obj->_aabb_tree_node_id,
-                                    obj->bounding_box, &displacement);
-            }
-        }
     }
 
     // ========================================================================
@@ -1311,7 +1327,7 @@ void collision_scene_step() {
     collision_scene_fix_sweep_collisions();
 
     // ========================================================================
-    // PHASE 8: Apply position constraints and update sleep states
+    // PHASE 8: Apply position constraints, sync broadphase, and update sleep states
     // ========================================================================
     g_scene._sleepy_count = 0;
     for (int i = 0; i < g_scene.objectCount; i++) {
@@ -1320,6 +1336,20 @@ void collision_scene_step() {
 
         // Apply physical constraints to the object
         physics_object_apply_position_constraints(obj);
+
+        // Sync broadphase to final corrected transform for this frame
+        if (!obj->_is_sleeping) {
+            const bool has_moved = !vector3IsIdentical(&obj->_prev_step_pos, obj->position);
+            const bool has_rotated = obj->rotation ? !quatIsIdentical(obj->rotation, &obj->_prev_step_rot) : false;
+
+            if (has_moved || has_rotated) {
+                physics_object_recalculate_aabb(obj);
+                Vector3 displacement;
+                vector3FromTo(&obj->_prev_step_pos, obj->position, &displacement);
+                AABB_tree_move_node(&g_scene.object_aabbtree, obj->_aabb_tree_node_id,
+                                    obj->bounding_box, &displacement);
+            }
+        }
 
         // Update sleep state
         // Check for external position changes (non-physics movement)
