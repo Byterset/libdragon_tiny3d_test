@@ -18,6 +18,26 @@
 
 struct collision_scene g_scene;
 
+#ifndef COLLISION_SCENE_PROFILE
+#define COLLISION_SCENE_PROFILE 0
+#endif
+
+#define COLLISION_SCENE_PROFILE_LOG_EVERY_N_STEPS 30
+
+enum collision_scene_profile_stage {
+    COLLISION_PROFILE_STAGE_UPDATE_WORLD_INERTIA = 0,
+    COLLISION_PROFILE_STAGE_INTEGRATE_VELOCITY,
+    COLLISION_PROFILE_STAGE_DETECT_CONTACTS,
+    COLLISION_PROFILE_STAGE_PRE_SOLVE,
+    COLLISION_PROFILE_STAGE_WARM_START,
+    COLLISION_PROFILE_STAGE_SOLVE_VELOCITY,
+    COLLISION_PROFILE_STAGE_INTEGRATE_POSITION,
+    COLLISION_PROFILE_STAGE_SOLVE_POSITION,
+    COLLISION_PROFILE_STAGE_SWEEP_FIX,
+    COLLISION_PROFILE_STAGE_FINALIZE,
+    COLLISION_PROFILE_STAGE_COUNT,
+};
+
 // ============================================================================
 // Lifecycle
 // ============================================================================
@@ -1248,6 +1268,16 @@ static void collision_scene_solve_position_constraints() {
 void collision_scene_step() {
     struct collision_scene_element* element;
 
+#if COLLISION_SCENE_PROFILE
+    static uint64_t profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_COUNT] = {0};
+    static uint64_t profile_accum_total_ticks = 0;
+    static uint32_t profile_step_count = 0;
+
+    uint64_t profile_stage_ticks[COLLISION_PROFILE_STAGE_COUNT] = {0};
+    uint64_t profile_total_start = get_ticks();
+    uint64_t profile_stage_start = profile_total_start;
+#endif
+
     // ========================================================================
     // PHASE 0: Update world inertia tensors
     // ========================================================================
@@ -1257,6 +1287,11 @@ void collision_scene_step() {
             physics_object_update_world_inertia(obj);
         }
     }
+
+#if COLLISION_SCENE_PROFILE
+    profile_stage_ticks[COLLISION_PROFILE_STAGE_UPDATE_WORLD_INERTIA] = get_ticks() - profile_stage_start;
+    profile_stage_start = get_ticks();
+#endif
 
     // ========================================================================
     // PHASE 1: Apply gravity and integrate velocities
@@ -1280,20 +1315,40 @@ void collision_scene_step() {
         physics_object_integrate_angular_velocity(obj);
     }
 
+#if COLLISION_SCENE_PROFILE
+    profile_stage_ticks[COLLISION_PROFILE_STAGE_INTEGRATE_VELOCITY] = get_ticks() - profile_stage_start;
+    profile_stage_start = get_ticks();
+#endif
+
     // ========================================================================
     // PHASE 2: Detect all contacts (without resolving)
     // ========================================================================
     collision_scene_detect_all_contacts();
+
+#if COLLISION_SCENE_PROFILE
+    profile_stage_ticks[COLLISION_PROFILE_STAGE_DETECT_CONTACTS] = get_ticks() - profile_stage_start;
+    profile_stage_start = get_ticks();
+#endif
 
     // ========================================================================
     // PHASE 3: Pre-solve - calculate effective masses and prepare constraints
     // ========================================================================
     collision_scene_pre_solve_contacts();
 
+#if COLLISION_SCENE_PROFILE
+    profile_stage_ticks[COLLISION_PROFILE_STAGE_PRE_SOLVE] = get_ticks() - profile_stage_start;
+    profile_stage_start = get_ticks();
+#endif
+
     // ========================================================================
     // PHASE 4: Warm start - apply cached impulses from previous frame
     // ========================================================================
     collision_scene_warm_start();
+
+#if COLLISION_SCENE_PROFILE
+    profile_stage_ticks[COLLISION_PROFILE_STAGE_WARM_START] = get_ticks() - profile_stage_start;
+    profile_stage_start = get_ticks();
+#endif
 
     // ========================================================================
     // PHASE 5: Solve velocity constraints iteratively
@@ -1301,6 +1356,11 @@ void collision_scene_step() {
     for (int iter = 0; iter < VELOCITY_CONSTRAINT_SOLVER_ITERATIONS; iter++) {
         collision_scene_solve_velocity_constraints();
     }
+
+#if COLLISION_SCENE_PROFILE
+    profile_stage_ticks[COLLISION_PROFILE_STAGE_SOLVE_VELOCITY] = get_ticks() - profile_stage_start;
+    profile_stage_start = get_ticks();
+#endif
 
     // ========================================================================
     // PHASE 6: Integrate positions from velocities
@@ -1317,6 +1377,11 @@ void collision_scene_step() {
 
     }
 
+#if COLLISION_SCENE_PROFILE
+    profile_stage_ticks[COLLISION_PROFILE_STAGE_INTEGRATE_POSITION] = get_ticks() - profile_stage_start;
+    profile_stage_start = get_ticks();
+#endif
+
     // ========================================================================
     // PHASE 7: Solve position constraints iteratively
     // ========================================================================
@@ -1324,7 +1389,17 @@ void collision_scene_step() {
         collision_scene_solve_position_constraints();
     }
 
+#if COLLISION_SCENE_PROFILE
+    profile_stage_ticks[COLLISION_PROFILE_STAGE_SOLVE_POSITION] = get_ticks() - profile_stage_start;
+    profile_stage_start = get_ticks();
+#endif
+
     collision_scene_fix_sweep_collisions();
+
+#if COLLISION_SCENE_PROFILE
+    profile_stage_ticks[COLLISION_PROFILE_STAGE_SWEEP_FIX] = get_ticks() - profile_stage_start;
+    profile_stage_start = get_ticks();
+#endif
 
     // ========================================================================
     // PHASE 8: Apply position constraints, sync broadphase, and update sleep states
@@ -1400,4 +1475,40 @@ void collision_scene_step() {
             g_scene._sleepy_count += 1;
         }
     }
+
+#if COLLISION_SCENE_PROFILE
+    profile_stage_ticks[COLLISION_PROFILE_STAGE_FINALIZE] = get_ticks() - profile_stage_start;
+
+    uint64_t profile_total_ticks = get_ticks() - profile_total_start;
+    profile_accum_total_ticks += profile_total_ticks;
+    profile_step_count += 1;
+
+    for (int i = 0; i < COLLISION_PROFILE_STAGE_COUNT; i++) {
+        profile_accum_stage_ticks[i] += profile_stage_ticks[i];
+    }
+
+    if (profile_step_count >= COLLISION_SCENE_PROFILE_LOG_EVERY_N_STEPS) {
+        debugf(
+            "[collision_profile] avg_us over %lu steps: total=%llu p0_inertia=%llu p1_integrate_vel=%llu p2_detect=%llu p3_pre=%llu p4_warm=%llu p5_vel_solve=%llu p6_integrate_pos=%llu p7_pos_solve=%llu p8_sweep=%llu p9_finalize=%llu\n",
+            (unsigned long)profile_step_count,
+            (unsigned long long)TICKS_TO_US(profile_accum_total_ticks / profile_step_count),
+            (unsigned long long)TICKS_TO_US(profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_UPDATE_WORLD_INERTIA] / profile_step_count),
+            (unsigned long long)TICKS_TO_US(profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_INTEGRATE_VELOCITY] / profile_step_count),
+            (unsigned long long)TICKS_TO_US(profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_DETECT_CONTACTS] / profile_step_count),
+            (unsigned long long)TICKS_TO_US(profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_PRE_SOLVE] / profile_step_count),
+            (unsigned long long)TICKS_TO_US(profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_WARM_START] / profile_step_count),
+            (unsigned long long)TICKS_TO_US(profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_SOLVE_VELOCITY] / profile_step_count),
+            (unsigned long long)TICKS_TO_US(profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_INTEGRATE_POSITION] / profile_step_count),
+            (unsigned long long)TICKS_TO_US(profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_SOLVE_POSITION] / profile_step_count),
+            (unsigned long long)TICKS_TO_US(profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_SWEEP_FIX] / profile_step_count),
+            (unsigned long long)TICKS_TO_US(profile_accum_stage_ticks[COLLISION_PROFILE_STAGE_FINALIZE] / profile_step_count)
+        );
+
+        profile_step_count = 0;
+        profile_accum_total_ticks = 0;
+        for (int i = 0; i < COLLISION_PROFILE_STAGE_COUNT; i++) {
+            profile_accum_stage_ticks[i] = 0;
+        }
+    }
+#endif
 }
