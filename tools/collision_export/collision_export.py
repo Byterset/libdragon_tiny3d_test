@@ -18,7 +18,7 @@ def write_collision_data(output_path, base_scale):
             continue  # Skip non-mesh objects
 
         mesh = obj.data
-        mesh.calc_normals_split()  # Ensure the normals are calculated
+        # mesh.calc_normals_split()  # Ensure the normals are calculated
         vert_offset = len(vertices)  # Keep track of vertex indices offset for each object
 
 

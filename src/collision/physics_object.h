@@ -168,7 +168,6 @@ typedef struct __attribute__((aligned(16))) physics_object {
     bool has_gravity: true;
     bool is_trigger: true;
     bool is_kinematic: true;
-    bool is_grounded: true;
     bool _is_sleeping: true;
     uint8_t _padding[3]; //align to 4 bytes
 } physics_object;

@@ -34,7 +34,6 @@ void physics_object_init(
     object->has_gravity = true;
     object->is_trigger = false;
     object->is_kinematic = false;
-    object->is_grounded = false;
     object->_is_sleeping = false;
     object->constraints = CONSTRAINTS_NONE;
     object->collision_layers = collision_layers;
@@ -178,8 +177,6 @@ void physics_object_integrate_position(physics_object* object) {
 
     // Update position using current velocity
     vector3AddScaled(object->position, &object->velocity, FIXED_DELTATIME * object->time_scalar, object->position);
-
-    object->is_grounded = false;
 }
 
 void physics_object_integrate_rotation(physics_object* object) {

@@ -237,6 +237,11 @@ void render_batch_execute(struct render_batch *batch, Matrix4x4 view_proj_matrix
                         view_proj_matrix.m[1][2] * view_proj_matrix.m[1][2]) *
                     0.5f * 4;
 
+    // Match Tiny3D's quantized W normalization and clamped depth scale.
+    float norm_w_scale = (uint16_t)roundf(0xFFFF * viewport->_normScaleW);
+    float depth_scale = fminf(norm_w_scale * 128.0f, 0x7FFF);
+    float billboard_depth_scale = depth_scale * 0xFFFF / (512.0f * norm_w_scale);
+
     sort_indices(order, batch->element_count, batch, (sort_compare)render_batch_compare_element);
 
     bool is_sprite_mode = false;
@@ -355,16 +360,16 @@ void render_batch_execute(struct render_batch *batch, Matrix4x4 view_proj_matrix
                 // Calculate screen space coordinates
                 float x = (transformed.x * wInv + 1.0f) * 0.5f ;
                 float y = (-transformed.y * wInv + 1.0f) * 0.5f ;
-                float z = (transformed.z * wInv + 1.0f) * 0.5f; // Corrected z calculation
+                float z = transformed.z * wInv;
                 float billboard_size = sprite.radius * wInv;
 
-                if (z < 0.0f || z > 1.0f)
+                if (z < -1.0f || z > 1.0f)
                 {
                     continue; // Skip if outside the depth range
                 }
 
                 // Override Z-buffer with sprite depth
-                rdpq_mode_zoverride(true, z, 0);
+                rdpq_mode_zoverride(true, (z * billboard_depth_scale + 0x3FFF) / 0x7FFF, 0);
 
                 // Convert to screen space coordinates
                 int screen_x = (int)(x * (viewport->size[0])) + viewport->offset[0];

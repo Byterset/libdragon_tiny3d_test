@@ -73,7 +73,7 @@ filesystem/%.t3dm: assets/%.glb
 MAP_SOURCES := $(shell find assets/maps -type f -name '*.blend' | sort)
 
 COLLISION_EXPORT_FILE := $(shell find tools/collision_export/ -type f -name '*.py' | sort)
-BLENDER_4 := blender
+BLENDER_4 := /mnt/c/Program\ Files/Blender\ Foundation/Blender\ 4.5/blender.exe
 
 COLLISION_MESHES := $(MAP_SOURCES:assets/maps/%.blend=filesystem/maps/%.cmsh)
 

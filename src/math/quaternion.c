@@ -68,19 +68,6 @@ void quatMultVector(const Quaternion* q, const Vector3* a, Vector3* out) {
     out->x = a->x + q->w * tx + (q->y * tz - q->z * ty);
     out->y = a->y + q->w * ty + (q->z * tx - q->x * tz);
     out->z = a->z + q->w * tz + (q->x * ty - q->y * tx);
-
-    // Quaternion tmp;
-    // Quaternion conj;
-    // quatConjugate(q, &conj);
-    // tmp.x = q->w*a->x + q->y*a->z - q->z*a->y;
-    // tmp.y = q->w*a->y + q->z*a->x - q->x*a->z;
-    // tmp.z = q->w*a->z + q->x*a->y - q->y*a->x;
-    // tmp.w = - q->x*a->x - q->y*a->y - q->z*a->z;
-
-    // out->x = tmp.w*conj.x + tmp.x*q->w + tmp.y*conj.z - tmp.z*conj.y;
-    // out->y = tmp.w*conj.y + tmp.y*q->w + tmp.z*conj.x - tmp.x*conj.z;
-    // out->z = tmp.w*conj.z + tmp.z*q->w + tmp.x*conj.y - tmp.y*conj.x;
-
 }
 
 
